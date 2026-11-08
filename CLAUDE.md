@@ -71,6 +71,8 @@ Les adresses e-mail @santeo.net dépendent du même nom de domaine.
 ## Repères techniques
 
 - Maquette actuelle du comparateur (page privée de Fabrice) : https://claude.ai/artifact/QQfDwqPtbxZnAetF7EQcsW
+- Source de la maquette : dossier `maquette/` (mode d'emploi dans `maquette/README.md`). Toute modification se fait
+  dans `maquette/template.html`, puis la page est reconstruite et vérifiée (PC et téléphone) avant d'être montrée.
 - Moteur et tarifs : `fabcoh/santeo-tarifs`, fichiers `src/moteur.js`, `src/tarifs_all.json`,
   `src/garanties.json` (lecture seule ; conversation « comparateur claude »).
 - Hébergement prévu : GitHub Pages, à l'adresse santeo.net.
