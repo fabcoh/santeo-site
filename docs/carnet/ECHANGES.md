@@ -160,7 +160,7 @@ Statut : À TRAITER
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
-1. Mettre la source de la maquette dans ce dépôt.
+1. Mettre la source de la maquette dans ce dépôt : dossier `maquette/` (demande de fusion du 08/11/2026).
 2. Une version de test du site sur GitHub Pages, sur PC et téléphone.
 3. Le formulaire relié au CRM Santéo.
 4. Les pages pour le référencement (Google et moteurs d'IA).
