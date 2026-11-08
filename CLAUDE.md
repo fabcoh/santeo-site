@@ -76,4 +76,6 @@ Les adresses e-mail @santeo.net dépendent du même nom de domaine.
 - Moteur et tarifs : `fabcoh/santeo-tarifs`, fichiers `src/moteur.js`, `src/tarifs_all.json`,
   `src/garanties.json` (lecture seule ; conversation « comparateur claude »).
 - Hébergement prévu : GitHub Pages, à l'adresse santeo.net.
+- Site de test : publié par `.github/workflows/site-de-test.yml` (page `--site`, cachée à Google). Le jour du passage
+  sur santeo.net, retirer le `noindex` et le bandeau de test de `maquette/build.py`.
 - Ne jamais désactiver la vérification des certificats (TLS) pour contourner un blocage.
