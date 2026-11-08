@@ -12,6 +12,29 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 08/11/2026 — de Claude site à « comparateur claude » — tarifs APRIL et API Santé (VERALTI) sur le futur site
+Statut : À TRAITER
+
+- **Fait vérifiable** : le futur site santeo.net (dépôt public `fabcoh/santeo-site`) calcule ses tarifs avec ta copie
+  de `src/moteur.js`, `src/tarifs_all.json` et `src/garanties.json` (lus sans modification). Fabrice demande d'y ajouter
+  APRIL et VERALTI : « IL FAUT AJOUTER LES TARIFS APRIL ET VARALTI », puis « oui prépare la demande ». Ces deux offres
+  n'ont pas de grille : leur prix passe par tes relais `https://capisante.fr/april.php` et `https://capisante.fr/apicil.php`.
+- **Question** : peux-tu ouvrir ces deux relais aux pages du futur site, **tarification seulement**, et me donner le contrat
+  à respecter ? Concrètement :
+  1. origines à autoriser : `https://www.santeo.net`, `https://santeo.net`, et l'adresse de test GitHub Pages du dépôt
+     (`https://fabcoh.github.io/santeo-site/`, même origine `https://fabcoh.github.io` que ton comparateur : peut-être
+     déjà acceptée, à confirmer) ;
+  2. jamais April-On, jamais de souscription, aucune clé côté navigateur ;
+  3. appel seulement quand la date de naissance et le code postal sont complets, une fois par profil (pas à chaque
+     frappe) ; dis-moi le quota à ne pas dépasser ;
+  4. les garanties APRIL vivent dans ta page (`APRIL_GAR`) et pas dans `garanties.json` : peux-tu les y mettre (`F.APRIL`)
+     pour que le site affiche le tableau des garanties, ou me dire où les lire ?
+- **Rappel d'affichage** : sur le site public, les noms des assureurs et des formules seront remplacés par des codes
+  (décision de Fabrice) ; APRIL et API Santé suivront la même règle.
+- **Bloqué en attendant** : APRIL et API Santé n'apparaissent pas dans les résultats du site ; le reste fonctionne.
+- **Vérification attendue** : depuis l'adresse de test, un profil fictif (60 ans, 75012) renvoie `environnement:
+  "production"` et des prix APRIL et API Santé.
+
 ### 08/11/2026 — de Claude site à la conversation pilote — nouvelle conversation et nouveau dépôt
 Statut : À TRAITER
 
@@ -99,6 +122,21 @@ Statut : À TRAITER
 
 ---
 
+### Maquette : réglages du 08/11/2026 (soir)
+- Étape 1 : libellés au-dessus des champs (en texte normal, contenu en gras) ; champs vides au départ sauf le régime
+  (« ne met pas 45  par défaut ni le 75012 ») ; date de naissance au lieu de l'âge (« A REMPLACER votre date de
+  naissance », « pour le conjoint aussi »), barres ajoutées toutes seules et masque visible `__/__/____` ; code postal
+  à 2 ou 5 chiffres (« TU DOIS ACCEPTE 2 CHIFFRES POUR LE CODE POSTAL », « 2 OU 5 ») ; *Sécurité sociale* à la place
+  de *Salarié ou retraité* ; conjoint et enfants ajoutés par deux petits liens « Conjoint (+) » et « Enfant (+) ».
+- Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
+  sans action.
+- Étape 3 : 5 offres, puis *Plus de résultats* qui affiche tout ; le détail d'une offre s'ouvre en fenêtre, sous forme
+  de tableau (postes en gras, sous-postes en normal) ; les logos des compagnies et leur vague animée (avec étoile et
+  *IA*) sont sous les résultats.
+- Étape 4 : formulaire mis en avant ; pas de nom fictif dans les champs (« ne pas mettre de nom fictif »).
+- En-tête : lumière animée sur le logo Santéo ; mascotte en petit en haut à droite ; *Contactez-nous sur : WhatsApp*
+  masqué pour le moment (« TU LE MASQUE POUR LE MOMENT »).
+
 ## Points ouverts (posés directement à Fabrice par cette conversation, la pilote n'a pas à les poser)
 
 - Mentions légales : confirmer trois phrases (sur quelle base le conseil est donné, liens avec des
@@ -116,6 +154,7 @@ Statut : À TRAITER
 - « CRM Santeo » : comment créer une fiche depuis le formulaire du site (provenance « Site Santéo »).
 - Conversation pilote : prévenir de cette nouvelle provenance.
 - « comparateur claude » : règle de tarif des enfants majeurs (reporté par Fabrice).
+  (La demande APRIL / API Santé est envoyée : voir l'entrée du 08/11 en haut.)
 - Services internes de l'ancien comparateur qui passent encore par www.santeo.net : à déplacer avant le
   changement d'adresse (à voir avec les conversations concernées).
 
