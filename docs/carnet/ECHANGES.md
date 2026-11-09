@@ -66,7 +66,8 @@ Statut : À TRAITER
 
 ### Parcours du comparateur
 - Étape 1 : âge, code postal, régime ; les tarifs s'affichent tout de suite, sans nom ni logo de
-  compagnie. Intitulé dans la maquette : *Simulez sans vous dévoiler : indiquez juste votre âge, CP, régime*.
+  compagnie. Intitulé (09/11/2026) : « Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime »
+  (remplace *Simulez sans vous dévoiler…*).
 - Famille : conjoint (âge ou date de naissance, saisi directement dans le champ) et nombre d'enfants
   mineurs (liste). Enfants majeurs : « retire les enfants majeurs pour le moment laisse juste la case
   mineur et conjoint » (le moteur n'a pas encore de règle de tarif pour eux).
