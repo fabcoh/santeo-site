@@ -224,6 +224,16 @@ Points relevés le 09/11/2026 :
 - registre public : CAPI FINANCE, SAS au capital de 21 342 €, créée le 29/07/1992, SIREN 388 103 301 (à confirmer
   sur le site de l'ORIAS, inaccessible depuis cette conversation).
 
+Fait le 09/11/2026 au soir :
+- la conversation pilote a écrit la porte d'entrée du CRM (fabcoh/WhatsApp_Solution, demande de fusion 501,
+  fusionnée) : `https://crm.capisante.fr/api/site/demande`. À 21 h 25 (Paris), elle n'était pas encore en service
+  (l'adresse renvoyait la page du CRM). Le site y est branché (`maquette/reglages-site.json`) ; une réponse qui n'est pas
+  un « ok » explicite du CRM est traitée comme un échec, et le visiteur peut réessayer ou passer par WhatsApp ;
+- les mails de devis de l'ancien comparateur affichent le logo depuis `www.santeo.net/images/Logo_santeo_pt.png` :
+  cette adresse est gardée sur le nouveau site (logo Santéo actuel) ;
+- point ouvert : d'après « Comparateur Santeo » (carnet de la conversation pilote, 08/11), d'anciens mails de devis
+  renvoient vers `www.santeo.net/files/<gamme>/` ; après la bascule, ces liens mèneront à l'accueil du nouveau site.
+
 Avant la mise en ligne (Claude, 09/11 au soir) :
 1. Demande au CRM pour recevoir les demandes du formulaire (entrée pour la conversation pilote, en haut).
 2. Version « en ligne » de la page : visible par Google, sans bandeau de test ; titre et description pour Google ;

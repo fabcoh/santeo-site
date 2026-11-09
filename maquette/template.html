@@ -995,7 +995,7 @@ function envoyer(){
   const rate=()=>{b.disabled=false;b.textContent=lib;
     $("form-err").innerHTML="Votre demande n'a pas pu partir. Vérifiez votre connexion et réessayez"+(lienWA?', ou <a href="'+lienWA+'" target="_blank" rel="noopener">envoyez-la sur WhatsApp</a>':"")+"."};
   fetch(ENVOI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)})
-    .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok===false)throw new Error(j.erreur||rep.status);
+    .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true)throw new Error(j.erreur||rep.status);
       b.disabled=false;b.textContent=lib;
       fini("<strong>Merci, votre demande est bien arrivée.</strong><br>Un conseiller Santéo vous envoie votre devis par e-mail"+(d.accord_recontact?" et pourra vous appeler ou vous écrire sur WhatsApp, comme vous l'avez accepté.":"."))}))
     .catch(rate);

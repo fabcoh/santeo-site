@@ -1,5 +1,5 @@
 # Images du site en ligne : aperçu de partage (WhatsApp, réseaux) et icônes de l'onglet.
-#   python3 -I maquette/outils/partage.py maquette   -> maquette/images-site/partage.jpg, icone-48.png, icone-180.png
+#   python3 -I maquette/outils/partage.py maquette   -> maquette/images-site/partage.jpg, icone-48.png, icone-180.png, logo-mail.png
 # Le fond est la couleur du fond de la mascotte : elle s'y fond sans détourage. Le logo Santéo (fond blanc) est rendu
 # transparent par « blanc vers transparence », pour se poser proprement sur ce fond.
 import sys
@@ -42,4 +42,9 @@ img.save(S + "/images-site/partage.jpg", quality=86, optimize=True, progressive=
 carre = oiseau.crop((40, 60, 1200, 1220))
 for n in (48, 180):
     carre.resize((n, n), Image.LANCZOS).save(S + "/images-site/icone-%d.png" % n, optimize=True)
-print("partage.jpg", img.size, "icônes 48 et 180")
+# Logo des anciens mails de devis : emplacement de 166 x 68 (dessiné ici en double), fond blanc, logo entier centré
+mail = Image.new("RGB", (332, 136), (255, 255, 255))
+l = logo.copy(); l.thumbnail((316, 120), Image.LANCZOS)
+mail.paste(l, ((332 - l.width) // 2, (136 - l.height) // 2), l)
+mail.save(S + "/images-site/logo-mail.png", optimize=True)
+print("partage.jpg", img.size, "icônes 48 et 180, logo-mail", mail.size)

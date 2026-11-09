@@ -73,8 +73,7 @@ else:
                'padding:.5rem .8rem;font-size:.88rem;text-align:center}</style>\n')
     out = out.replace("</style>", "</style>\n" + retrait, 1)
     if not EN_LIGNE:
-        bandeau = ('<div class="wrap">\n  <p class="bandeau-test" role="note">Version de test du nouveau site Santéo : '
-                   'les demandes ne sont pas encore transmises.</p>')
+        bandeau = '<div class="wrap">\n  <p class="bandeau-test" role="note">Version de test du nouveau site Santéo.</p>'
         assert out.count('<div class="wrap">') == 1
         out = out.replace('<div class="wrap">', bandeau, 1)
     page = tete + out + "\n</html>\n"
@@ -82,6 +81,10 @@ else:
     def ecrire(nom, texte): open(os.path.join(SITE, nom), "w", encoding="utf-8").write(texte)
     ecrire("index.html", page)
     for f in ("partage.jpg", "icone-48.png", "icone-180.png"): shutil.copyfile(S + "/images-site/" + f, os.path.join(SITE, f))
+    # Les devis envoyés par l'ancien comparateur affichent le logo depuis www.santeo.net/images/Logo_santeo_pt.png :
+    # cette adresse est gardée (logo Santéo actuel, fond blanc, aux proportions de l'emplacement du mail : 166 x 68).
+    os.makedirs(os.path.join(SITE, "images"), exist_ok=True)
+    shutil.copyfile(S + "/images-site/logo-mail.png", os.path.join(SITE, "images", "Logo_santeo_pt.png"))
     # Petites pages de renvoi : /mentions-legales (citée dans les devis du comparateur) et toute ancienne adresse (404)
     def renvoi(cible, titre, texte, robots):
         return ('<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
