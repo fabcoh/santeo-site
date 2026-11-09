@@ -88,6 +88,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .vous-grid input.a-remplir{background:var(--a-remplir);border-color:var(--a-remplir-ligne)}
 .vous-grid .masque.a-remplir{background:var(--a-remplir)}
 .vous-grid input.a-remplir:focus-visible{border-color:var(--accent)}
+.vous-grid select.a-remplir{background-color:var(--a-remplir);border-color:var(--a-remplir-ligne)}
 /* Masque visible de la date : __/__/____ */
 .masque{position:relative;display:block;background:var(--bg);border-radius:7px}
 .masque input{position:relative;z-index:1;background:transparent!important}
@@ -689,7 +690,10 @@ masqueDate("age"); masqueDate("cnj");
 function champComplet(id){const v=$(id).value.trim();
   if(id==="cp"){const c=v.toUpperCase();return !!Moteur.departement(c)&&/^(\d{2}|\d{5}|2A|2B|97[1-6])$/.test(c)}
   return ageDeDate(v)!=null}
-function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=!champComplet(id);el.classList.toggle("a-remplir",vide);const m=el.closest(".masque");if(m)m.classList.toggle("a-remplir",vide)})}
+function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=!champComplet(id);el.classList.toggle("a-remplir",vide);const m=el.closest(".masque");if(m)m.classList.toggle("a-remplir",vide)});
+  $("reg").classList.toggle("a-remplir",!$("reg").dataset.vu)}
+/* Régime : rouge pâle aussi, jusqu'à ce que le visiteur l'ait touché (ouvert ou changé) */
+["focus","change","pointerdown"].forEach(ev=>$("reg").addEventListener(ev,()=>{$("reg").dataset.vu="1";marquerChamps()}));
 ["age","cp","cnj"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,marquerChamps)));
 marquerChamps();
 $("cnj").addEventListener("input",()=>{const v=$("cnj").value.trim();S.cnj=v===""?null:v;S.shown=5;S.chosen=null;upd()});

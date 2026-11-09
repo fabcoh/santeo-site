@@ -69,7 +69,8 @@ Statut : À TRAITER
   compagnie. Intitulé (09/11/2026) : « Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime »
   (remplace *Simulez sans vous dévoiler…*).
   Date de naissance, code postal (et date du conjoint) : fond rouge pâle tant qu'ils sont vides ou incomplets, pour
-  montrer où remplir (demande de Fabrice, 09/11/2026).
+  montrer où remplir (demande de Fabrice, 09/11/2026). Le régime aussi (« tu peux mettre en rouge sécurité social ? ») :
+  rouge pâle jusqu'à ce que le visiteur l'ait ouvert ou changé.
 - Famille : conjoint (âge ou date de naissance, saisi directement dans le champ) et nombre d'enfants
   mineurs (liste). Enfants majeurs : « retire les enfants majeurs pour le moment laisse juste la case
   mineur et conjoint » (le moteur n'a pas encore de règle de tarif pour eux).
