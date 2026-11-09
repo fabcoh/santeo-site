@@ -10,13 +10,14 @@ const S = process.argv[2], R = process.argv[3];
 const CRM = 'https://crm.exemple.invalid/devis';
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'site-'));
 const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, ...opts]); return d; };
-const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--repli', 'whatsapp'), test: construire('test') };
+const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test') };
 const errs = [], err = m => errs.push(m);
 const types = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.txt': 'text/plain', '.xml': 'application/xml' };
 
 // Sert un dossier construit à une adresse donnée, comme GitHub Pages (dossier/ -> dossier/index.html, sinon 404.html)
 async function servir(ctx, base, dir) {
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+  await ctx.route(/crm\.capisante\.fr/, r => { err('un essai a tenté de joindre le vrai CRM'); r.abort(); });   // jamais de vraie demande pendant un essai
   await ctx.route(base + '**', r => {
     let f = decodeURIComponent(new URL(r.request().url()).pathname.slice(new URL(base).pathname.length));
     if (f === '' || f.endsWith('/')) f += 'index.html';
@@ -39,7 +40,7 @@ async function remplir(p) {
   const b = await chromium.launch();
   // 1. Fichiers du site en ligne
   const d = sites.crm, idx = fs.readFileSync(d + '/index.html', 'utf8');
-  for (const f of ['index.html', '404.html', 'mentions-legales/index.html', 'robots.txt', 'sitemap.xml', 'partage.jpg', 'icone-48.png', 'icone-180.png'])
+  for (const f of ['index.html', '404.html', 'mentions-legales/index.html', 'robots.txt', 'sitemap.xml', 'partage.jpg', 'icone-48.png', 'icone-180.png', 'images/Logo_santeo_pt.png'])
     if (!fs.existsSync(path.join(d, f))) err('en ligne : fichier manquant ' + f);
   const doit = (cond, m) => { if (!cond) err(m); };
   doit(/<meta name="robots" content="index, follow">/.test(idx), 'en ligne : pas « index, follow »');
@@ -79,6 +80,10 @@ async function remplir(p) {
     doit(recu.provenance === 'Site Santéo – WhatsApp', nom + ' : la provenance doit rester pendant la visite');
     doit(recu.accord_recontact === true && recu.texte_accord.length > 20, nom + ' : accord coché non transmis');
     console.log(nom, '| erreur CRM :', e2.trim());
+    // 2 ter. L'adresse renvoie une page (CRM pas encore en service) : ce n'est pas une confirmation
+    reponse = { status: 200, body: '<!doctype html><html></html>' };
+    await p.goto('https://www.santeo.net/'); await remplir(p); await p.click('#send'); await p.waitForTimeout(500);
+    doit(/n'a pas pu partir/.test((await p.textContent('#form-err')) || '') && !(await p.isVisible('#done')), nom + ' : une page HTML a été prise pour une confirmation');
     // 3. Anciennes adresses : /mentions-legales ouvre les mentions, toute autre adresse revient à l'accueil
     await p.goto('https://www.santeo.net/mentions-legales'); await p.waitForURL('https://www.santeo.net/#mentions-legales', { timeout: 8000 }).catch(() => {}); await p.waitForTimeout(400);
     doit(p.url() === 'https://www.santeo.net/#mentions-legales' && await p.isVisible('#vue-mentions'), nom + ' : /mentions-legales -> ' + p.url());
