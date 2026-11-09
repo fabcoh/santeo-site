@@ -334,6 +334,8 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 #lead input:hover,#lead select:hover{border-color:var(--accent)}
 #lead input:focus-visible,#lead select:focus-visible{border-color:var(--accent);outline:3px solid var(--accent);outline-offset:1px}
 #lead .manque{border-color:#c0392b!important;background:var(--warn-soft)!important}
+/* Champ piège : invisible, seuls les robots le remplissent */
+.piege{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
 #send{font-size:1.08rem;padding:.85rem 1.6rem;border-radius:10px;box-shadow:0 3px 10px rgba(10,122,165,.28)}
 @media (max-width:599px){#lead .wa{flex-direction:column;align-items:stretch}#send{width:100%}#lead .wa .wa-btn{justify-content:center}}
 @keyframes attire{0%{box-shadow:var(--form-shadow),0 0 0 0 rgba(10,122,165,.55)}70%{box-shadow:var(--form-shadow),0 0 0 14px rgba(10,122,165,0)}100%{box-shadow:var(--form-shadow),0 0 0 0 rgba(10,122,165,0)}}
@@ -429,6 +431,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
     <p class="form-intro">Indiquez vos coordonnées : un conseiller Santéo vous envoie le devis de cette offre. Tous les champs sont obligatoires.</p>
     <div class="chosen-box" id="chosen-box"></div>
     <form id="lead" novalidate>
+      <label class="piege" aria-hidden="true">Ne pas remplir <input id="site_web" type="text" tabindex="-1" autocomplete="off"></label>
       <div class="fields">
         <label class="f" for="civ">Civilité
           <select id="civ"><option value="">Choisir</option><option>Madame</option><option>Monsieur</option></select></label>
@@ -498,29 +501,29 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
   <main id="vue-mentions" class="mentions" hidden>
     <p><a class="retour" href="#comparateur">← Retour au comparateur</a></p>
     <h1>Mentions légales</h1>
-    <p class="small">Mise à jour : 08/11/2026</p>
+    <p class="small">Mise à jour : 10/11/2026</p>
 
     <div class="a-confirmer">
       <strong>Maquette : points à confirmer par Fabrice avant la mise en ligne</strong>
       <ul>
-                <li>Forme et capital : l'attestation d'assurance indique une SAS ; l'ancienne page santeo.net indiquait une SARL au capital de 21 342 €.</li>
+        <li>Forme et capital : SAS au capital de 21 342 € d'après le registre public (verif.com, 09/11/2026), à confirmer.</li>
         <li>Base du conseil (liste d'assureurs ci-dessous), mode de rémunération, absence de liens capitalistiques.</li>
-        <li>Numéro de TVA intracommunautaire, capital social, adresses e-mail de contact.</li>
-        <li>Hébergeur définitif du nouveau site (OVH indiqué ci-dessous).</li>
+        <li>Numéro de TVA intracommunautaire : caché sur le site tant qu'il n'est pas confirmé (le courtage d'assurance est en principe exonéré de TVA).</li>
+        <li>Hébergeur : GitHub (le site est publié par GitHub Pages).</li>
       </ul>
     </div>
 
     <section>
       <h2>Éditeur du site</h2>
-      <p>Le site www.santeo.net est édité par <strong>CAPI FINANCE</strong>, société par actions simplifiée au capital de <em>[à confirmer]</em>, immatriculée au registre du commerce et des sociétés de Paris sous le numéro <strong>388 103 301</strong>, code APE 6622Z. Santéo est une marque de CAPI FINANCE.</p>
+      <p>Le site www.santeo.net est édité par <strong>CAPI FINANCE</strong>, société par actions simplifiée au capital de 21 342 €, immatriculée au registre du commerce et des sociétés de Paris sous le numéro <strong>388 103 301</strong>, code APE 6622Z. Santéo est une marque de CAPI FINANCE.</p>
       <p>Siège social : 72 rue du Rendez-vous, 75012 Paris. Téléphone : 01 53 19 17 17. E-mail : gestion@santeo.net.</p>
-      <p>Numéro de TVA intracommunautaire : <em>à compléter</em>.</p>
+      <p class="a-confirmer">Numéro de TVA intracommunautaire : <em>à compléter</em>.</p>
       <p>Directeur de la publication : <strong>Fabrice Cohen</strong>.</p>
     </section>
 
     <section>
       <h2>Hébergeur</h2>
-      <p>OVH SAS, au capital de 10 059 500 €, RCS Lille Métropole 424 761 419, siège social : 2 rue Kellermann, 59100 Roubaix, France. Téléphone : 1007 (depuis la France).</p>
+      <p>GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis. Téléphone : +1 877 448 4820.</p>
     </section>
 
     <section>
@@ -544,7 +547,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
       <p>Toute réclamation peut être adressée gratuitement à CAPI FINANCE :</p>
       <ul>
         <li>par courrier : CAPI FINANCE, service réclamations, 72 rue du Rendez-vous, 75012 Paris ;</li>
-        <li>par e-mail : fcohen@santeo.net ;</li>
+        <li>par e-mail : gestion@santeo.net ;</li>
         <li>par téléphone : 01 53 19 17 17.</li>
       </ul>
       <p>Nous accusons réception de votre réclamation dans un délai de 10 jours ouvrables, sauf si la réponse vous est apportée dans ce délai, et nous vous répondons dans un délai de 2 mois au plus à compter de sa réception.</p>
@@ -937,11 +940,66 @@ $("lead").addEventListener("submit",e=>{
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($("mail").value.trim()))$("mail").classList.add("manque");
   if(miss.length){$("form-err").textContent="Il manque "+miss.join(", ")+".";const m=document.querySelector("#lead .manque");if(m)m.focus();return}
   $("form-err").textContent="";
-  const canaux=$("c-accord").checked?["téléphone et WhatsApp","offres et relances par e-mail ou WhatsApp"]:[];
-  const preuve=new Date().toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"short"});
-  $("lead").hidden=true; $("done").hidden=false;
-  $("done").innerHTML="<strong>Maquette : rien n'a été envoyé.</strong><br>En service, cette demande créerait une fiche dans le CRM Santéo (provenance « Site Santéo »), avec l'option choisie, vos besoins précis et les accords donnés : "+(canaux.length?canaux.join(" ; "):"aucune relance : devis par e-mail seulement")+". Preuve des accords enregistrée le "+preuve+".";
+  envoyer();
 });
+
+/* ---------- Envoi de la demande ----------
+   Maquette : rien n'est envoyé. Site : la demande part vers le CRM Santéo (adresse ENVOI) ; si cette adresse n'est pas
+   encore ouverte et que REPLI vaut "whatsapp", la demande s'ouvre dans WhatsApp, prête à envoyer à la ligne Santéo. */
+const MODE="__MODE__", ENVOI="__ENVOI__", REPLI="__REPLI__";
+// Provenance : ?src=whatsapp (lien envoyé aux clients WhatsApp), ?utm_source=… ou une annonce Google ; gardée pendant la visite
+const SOURCE=(()=>{let v="";try{const q=new URLSearchParams(location.search);
+  v=(q.get("src")||q.get("utm_source")||(q.get("gclid")?"google-ads":"")).toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,30);
+  if(v)sessionStorage.setItem("santeo-source",v);else v=sessionStorage.getItem("santeo-source")||""}catch(e){}return v})();
+function provenance(){return SOURCE==="whatsapp"?"Site Santéo – WhatsApp":SOURCE?"Site Santéo – "+SOURCE:"Site Santéo"}
+function texteAccord(){const l=document.querySelector('label[for="c-accord"] span');return l?l.textContent.replace(/\s+/g," ").trim():""}
+function laDemande(){
+  const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
+  return {civilite:$("civ").value,prenom:$("prenom").value.trim(),nom:$("nom").value.trim(),telephone:$("tel").value.trim(),email:$("mail").value.trim(),
+    date_naissance:$("age").value.trim(),code_postal:$("cp").value.trim().toUpperCase(),regime:$("reg").options[$("reg").selectedIndex].text,
+    conjoint:S.cnj!==null?{date_naissance:S.cnj.trim()}:null,enfants:S.kids,
+    offre:x?{numero:S.chosen+1,cotisation_mensuelle:Math.round(x.total*100)/100,gamme:x.gamme,formule:x.formule}:null,
+    niveaux:Object.assign({},S.need),besoins:besoinsPrecis().map(t=>t.replace(/&lt;/g,"<")).join(" ; "),
+    accord_recontact:$("c-accord").checked,texte_accord:$("c-accord").checked?texteAccord():"",date_accord:new Date().toISOString(),
+    provenance:provenance(),page:location.href.split("#")[0],site_web:$("site_web").value,test:/[?&]test=1(&|$)/.test(location.search)};
+}
+function messageWhatsApp(d){
+  const L=["Bonjour, je demande un devis depuis le site Santéo."];
+  if(d.offre)L.push("Option "+d.offre.numero+" à "+eur(d.offre.cotisation_mensuelle)+" par mois.");
+  L.push("Né(e) le "+d.date_naissance+", code postal "+d.code_postal+", "+d.regime+".");
+  if(d.conjoint)L.push("Conjoint né(e) le "+d.conjoint.date_naissance+".");
+  if(d.enfants)L.push(d.enfants+" enfant"+(d.enfants>1?"s":"")+".");
+  if(d.besoins)L.push("Besoins précis : "+d.besoins+".");
+  L.push(d.civilite+" "+d.prenom+" "+d.nom+", "+d.telephone+", "+d.email+".");
+  L.push(d.accord_recontact?"J'accepte d'être recontacté(e) par téléphone et WhatsApp.":"Merci de m'envoyer le devis par e-mail seulement.");
+  return L.join("\n");
+}
+function fini(html){$("lead").hidden=true;$("done").hidden=false;$("done").innerHTML=html;$("done").scrollIntoView({block:"nearest"})}
+function envoyer(){
+  const d=laDemande(), b=$("send");
+  if(MODE!=="site"){
+    const canaux=d.accord_recontact?["téléphone et WhatsApp","offres et relances par e-mail ou WhatsApp"]:[];
+    const preuve=new Date().toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"short"});
+    fini("<strong>Maquette : rien n'a été envoyé.</strong><br>En service, cette demande créerait une fiche dans le CRM Santéo (provenance « "+d.provenance+" »), avec l'option choisie, vos besoins précis et les accords donnés : "+(canaux.length?canaux.join(" ; "):"aucune relance : devis par e-mail seulement")+". Preuve des accords enregistrée le "+preuve+".");
+    return;
+  }
+  const lienWA=waLien(messageWhatsApp(d));
+  if(!ENVOI){
+    if(REPLI==="whatsapp"&&lienWA){
+      fini('<strong>Dernière étape : envoyez votre demande sur WhatsApp.</strong><br>WhatsApp s\'ouvre avec votre demande déjà écrite : il vous reste à appuyer sur « Envoyer ».<div class="wa" style="margin-top:.7rem"><a class="btn" href="'+lienWA+'" target="_blank" rel="noopener">Ouvrir WhatsApp</a></div>');
+      try{window.open(lienWA,"_blank","noopener")}catch(e){}
+    } else $("form-err").textContent="L'envoi des demandes n'est pas encore ouvert. Appelez-nous au 01 53 19 17 17.";
+    return;
+  }
+  b.disabled=true; const lib=b.textContent; b.textContent="Envoi en cours…";
+  const rate=()=>{b.disabled=false;b.textContent=lib;
+    $("form-err").innerHTML="Votre demande n'a pas pu partir. Vérifiez votre connexion et réessayez"+(lienWA?', ou <a href="'+lienWA+'" target="_blank" rel="noopener">envoyez-la sur WhatsApp</a>':"")+"."};
+  fetch(ENVOI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)})
+    .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok===false)throw new Error(j.erreur||rep.status);
+      b.disabled=false;b.textContent=lib;
+      fini("<strong>Merci, votre demande est bien arrivée.</strong><br>Un conseiller Santéo vous envoie votre devis par e-mail"+(d.accord_recontact?" et pourra vous appeler ou vous écrire sur WhatsApp, comme vous l'avez accepté.":"."))}))
+    .catch(rate);
+}
 
 /* ---------- Gestion des compagnies (maquette) ---------- */
 function appliquerLogos(){document.querySelectorAll(".logo-box").forEach(b=>{b.hidden=!CFG.logos[b.dataset.co]})}
