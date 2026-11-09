@@ -1019,7 +1019,7 @@ $("adm-all").onclick=()=>{Object.keys(CFG.gammes).forEach(k=>CFG.gammes[k]=true)
 $("adm-reset").onclick=()=>{CFG=CFG_DEPART();garder();renderAdmin();appliquerLogos();upd()};
 
 /* ---------- WhatsApp (ligne 86 46) ---------- */
-const WA_NUMERO="33153188646";   // ligne 86 46 : 01 53 18 86 46 (Fabrice, 08/11/2026), au format international sans « + »
+const WA_NUMERO="33153198646";   // ligne 86 46 : 01 53 19 86 46 (Fabrice, 09/11/2026 : « 0153198646 »), au format international sans « + »
 function waLien(texte){return WA_NUMERO?("https://wa.me/"+WA_NUMERO+"?text="+encodeURIComponent(texte)):null}
 function majWhatsApp(){
   const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
