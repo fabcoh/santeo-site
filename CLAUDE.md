@@ -77,5 +77,6 @@ Les adresses e-mail @santeo.net dépendent du même nom de domaine.
   `src/garanties.json` (lecture seule ; conversation « comparateur claude »).
 - Hébergement prévu : GitHub Pages, à l'adresse santeo.net.
 - Site de test : publié par `.github/workflows/site-de-test.yml` (page `--site`, cachée à Google). Le jour du passage
-  sur santeo.net, retirer le `noindex` et le bandeau de test de `maquette/build.py`.
+  sur santeo.net, une fois le certificat actif, ajouter `--en-ligne` à la commande de construction du workflow (visible
+  par Google, sans bandeau). Adresse du CRM qui reçoit les demandes : `maquette/reglages-site.json`.
 - Ne jamais désactiver la vérification des certificats (TLS) pour contourner un blocage.
