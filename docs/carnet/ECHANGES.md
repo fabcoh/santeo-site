@@ -147,6 +147,10 @@ Statut : À TRAITER
 - Étape 4 : formulaire mis en avant ; pas de nom fictif dans les champs (« ne pas mettre de nom fictif »).
 - En-tête : lumière animée sur le logo Santéo ; mascotte en petit en haut à droite ; *Contactez-nous sur : WhatsApp*
   masqué pour le moment (« TU LE MASQUE POUR LE MOMENT »).
+- En-tête (09/11/2026) : la mascotte est animée (« Tu peux animer l'oiseau du site ? ») : elle flotte, bat des ailes et
+  son étoile scintille, en continu ; immobile si l'appareil demande moins d'animations. Vitesses choisies par Claude
+  (Mon idée), à valider par Fabrice. Au passage, le trou transparent dans le visage de la mascotte en mode sombre est
+  corrigé.
 
 ## Points ouverts (posés directement à Fabrice par cette conversation, la pilote n'a pas à les poser)
 

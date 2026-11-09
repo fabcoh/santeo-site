@@ -34,20 +34,27 @@ et chaque jour, pour reprendre les tarifs à jour du comparateur.
 | `logos/santeo.b64` | le logo Santéo |
 | `logos/santeo-masque.b64` | masque des lettres SANTÉO : la lumière passe derrière elles |
 | `logos/comete-trajet.txt` | trajet de la lumière sur la courbe du logo |
-| `logos/mascotte.b64` | la mascotte, fond retiré |
+| `logos/mascotte.json` | la mascotte, fond retiré, découpée en quatre calques (corps, aile gauche, aile droite, étoile) avec les points autour desquels les ailes tournent |
 | `images-source/` | images reçues de Fabrice (logo Santéo, logo Alptis, mascotte) |
-| `outils/` | scripts qui refont `santeo-masque.b64`, `mascotte.b64` et `comete-trajet.txt` à partir des sources |
-| `tests/test-comparateur.js` | essai automatique (téléphone et PC) : étoiles, fenêtre « Précisez », cases, choix d'une offre |
+| `outils/` | scripts qui refont `santeo-masque.b64`, `mascotte.json` et `comete-trajet.txt` à partir des sources |
+| `tests/test-comparateur.js` | essai automatique (téléphone et PC) : mascotte, étoiles, fenêtre « Précisez », cases, choix d'une offre |
 
 ## Vérifier
 
 ```bash
-node maquette/tests/test-comparateur.js maquette
+node maquette/tests/test-comparateur.js "$PWD/maquette"
 ```
 
-Le test doit finir par `ERREURS: aucune`. Il demande Playwright et Chromium.
+Le test doit finir par `ERREURS: aucune`. Il demande Playwright et Chromium, et le chemin complet du dossier `maquette`.
 
 ## À savoir
+
+- La mascotte bouge : elle flotte, bat des ailes et son étoile scintille. Les vitesses et l'ampleur se règlent dans
+  `template.html` (règles `m-vol`, `m-aile-g`, `m-aile-d`, `m-etoile`). Elle reste immobile chez les personnes qui ont
+  demandé moins d'animations dans les réglages de leur appareil.
+- Pour refaire les calques après un changement d'image : `python3 -I maquette/outils/mascotte.py maquette`. Le script
+  écrit aussi des images de contrôle `maquette/mascotte-*.png` (non versionnées) : calques empilés sur fond clair et
+  sombre, et chaque calque seul. Si l'image change, les lignes de coupe des ailes (`COUPE_G`, `COUPE_D`) sont à reprendre.
 
 - Dans la maquette seulement, le nom de la gamme et de la formule s'affiche sous chaque option (« Maquette : … »).
   Sur le vrai site, les assureurs seront remplacés par des codes.

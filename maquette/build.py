@@ -20,7 +20,11 @@ logos = json.load(open(S + "/logos/logos.json"))
 out = out.replace("__LOGOS__", "".join('<span class="logo-box" data-co="%s"><img src="%s" alt="%s"></span>' % (l["nom"], l["src"], l["nom"]) for l in logos))
 out = out.replace("__SANTEO_LOGO__", open(S + "/logos/santeo.b64").read().strip())
 out = out.replace("__SANTEO_MASQUE__", open(S + "/logos/santeo-masque.b64").read().strip())
-out = out.replace("__MASCOTTE__", open(S + "/logos/mascotte.b64").read().strip())
+mascotte = json.load(open(S + "/logos/mascotte.json"))     # calques de la mascotte animée et points d'articulation
+for cle in ("corps", "aile_g", "aile_d", "etoile", "pivot_g", "pivot_d", "pivot_etoile"):
+    repere = "__MASCOTTE_%s__" % cle.upper()
+    assert repere in out, repere
+    out = out.replace(repere, mascotte[cle])
 out = out.replace("__COMETE_D__", open(S + "/logos/comete-trajet.txt").read().strip())
 if SITE is None:
     open(S + "/comparateur-santeo.html", "w", encoding="utf-8").write(out)
