@@ -137,6 +137,10 @@ Statut : À TRAITER
   de *Salarié ou retraité* ; conjoint et enfants ajoutés par deux petits liens « Conjoint (+) » et « Enfant (+) ».
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
+- Étape 2 (09/11/2026) : la fenêtre *Précisez* ne s'ouvre plus toute seule quand on met des étoiles, seulement au clic
+  sur *(+) Précisez* (« Uniquement tu ouvres le popup si il clique sur préciser »). Dès que la date de naissance et le
+  code postal sont remplis, les étoiles de chaque poste s'allument de 1 à 5 puis s'éteignent, poste après poste
+  (environ 0,8 s chacun), une seule fois par visite ; l'animation ne choisit rien et s'arrête si on touche une étoile.
 - Étape 3 : 5 offres, puis *Plus de résultats* qui affiche tout ; le détail d'une offre s'ouvre en fenêtre, sous forme
   de tableau (postes en gras, sous-postes en normal) ; les logos des compagnies et leur vague animée (avec étoile et
   *IA*) sont sous les résultats.
