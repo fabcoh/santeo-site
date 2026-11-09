@@ -68,6 +68,9 @@ Statut : À TRAITER
 - Étape 1 : âge, code postal, régime ; les tarifs s'affichent tout de suite, sans nom ni logo de
   compagnie. Intitulé (09/11/2026) : « Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime »
   (remplace *Simulez sans vous dévoiler…*).
+  Dessous, en plus petit, en italique et de la même couleur bleue (demande du 09/11/2026) : « Si une offre vous intéresse
+  vous pourrez indiquez vos informations afin de recevoir votre devis sur votre boite mail. », affiché avec trois
+  corrections d'orthographe (virgule après « intéresse », « indiquer », « boîte »).
   Date de naissance, code postal (et date du conjoint) : fond rouge pâle tant qu'ils sont vides ou incomplets, pour
   montrer où remplir (demande de Fabrice, 09/11/2026). Le régime aussi (« tu peux mettre en rouge sécurité social ? ») :
   rouge pâle jusqu'à ce que le visiteur l'ait ouvert ou changé.
