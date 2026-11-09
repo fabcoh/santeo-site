@@ -68,6 +68,8 @@ Statut : À TRAITER
 - Étape 1 : âge, code postal, régime ; les tarifs s'affichent tout de suite, sans nom ni logo de
   compagnie. Intitulé (09/11/2026) : « Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime »
   (remplace *Simulez sans vous dévoiler…*).
+  Date de naissance, code postal (et date du conjoint) : fond rouge pâle tant qu'ils sont vides ou incomplets, pour
+  montrer où remplir (demande de Fabrice, 09/11/2026).
 - Famille : conjoint (âge ou date de naissance, saisi directement dans le champ) et nombre d'enfants
   mineurs (liste). Enfants majeurs : « retire les enfants majeurs pour le moment laisse juste la case
   mineur et conjoint » (le moteur n'a pas encore de règle de tarif pour eux).

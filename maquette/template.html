@@ -8,6 +8,7 @@
   --bg:#ffffff; --surface:#ffffff; --fg:#0f2430; --muted:#526b77; --line:#d3e2e8;
   --accent:#0a7aa5; --accent-fg:#ffffff; --accent-soft:#e0f2f9; --star:#d99a00; --star-off:#c9d6dc;
   --field-line:#8db2c2; --form-shadow:0 8px 28px rgba(10,122,165,.18);
+  --a-remplir:#fdeaea; --a-remplir-ligne:#e3a3a3;
   --warn-soft:#fdf1d8; --warn:#7a5200; --ok:#1d6b3a; --logo-bg:#ffffff; --wa:#25d366; --wa-fg:#ffffff;
   --f-display:"Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
   --brand-1:#0e5883; --brand-2:#07a4c7;
@@ -18,12 +19,14 @@
   --bg:#0c161b; --surface:#13212a; --fg:#e3eef2; --muted:#9db3bd; --line:#27404c;
   --accent:#4cc3ee; --accent-fg:#06202b; --accent-soft:#143341; --star:#f2bd3a; --star-off:#3a5260;
   --field-line:#4f7688; --form-shadow:0 8px 28px rgba(0,0,0,.45);
+  --a-remplir:#3a2124; --a-remplir-ligne:#8a4b51;
   --warn-soft:#33290f; --warn:#f0c870; --ok:#7fd69d; color-scheme:dark } }
 :root[data-theme="dark"]{
   --brand-1:#5fb8e6; --brand-2:#3fd6e8;
   --bg:#0c161b; --surface:#13212a; --fg:#e3eef2; --muted:#9db3bd; --line:#27404c;
   --accent:#4cc3ee; --accent-fg:#06202b; --accent-soft:#143341; --star:#f2bd3a; --star-off:#3a5260;
   --field-line:#4f7688; --form-shadow:0 8px 28px rgba(0,0,0,.45);
+  --a-remplir:#3a2124; --a-remplir-ligne:#8a4b51;
   --warn-soft:#33290f; --warn:#f0c870; --ok:#7fd69d; color-scheme:dark }
 
 *{box-sizing:border-box}
@@ -81,6 +84,10 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .vous-grid .f{font-size:.9rem;gap:.2rem;font-weight:400;display:flex;flex-direction:column;min-width:0}
 .vous-grid input,.vous-grid select{height:2.3rem;padding:0 .5rem;font-size:.9rem;font-weight:700;border:1.5px solid var(--field-line);border-radius:7px;width:100%;min-width:0}
 #vous-err:empty{display:none}
+/* Champs à remplir (date de naissance, code postal, date du conjoint) : fond rouge pâle tant qu'ils sont vides ou incomplets */
+.vous-grid input.a-remplir{background:var(--a-remplir);border-color:var(--a-remplir-ligne)}
+.vous-grid .masque.a-remplir{background:var(--a-remplir)}
+.vous-grid input.a-remplir:focus-visible{border-color:var(--accent)}
 /* Masque visible de la date : __/__/____ */
 .masque{position:relative;display:block;background:var(--bg);border-radius:7px}
 .masque input{position:relative;z-index:1;background:transparent!important}
@@ -678,12 +685,19 @@ function fondMasque(id){const el=$(id),f=el.parentElement.querySelector(".masque
   f.innerHTML='<span class="m-tape"></span><span class="m-reste"></span>';f.firstChild.textContent=v;f.lastChild.textContent=v.length<MASQ.length?MASQ.slice(v.length):""}
 masqueDate("age"); masqueDate("cnj");
 ["age","cnj"].forEach(id=>{$(id).addEventListener("input",()=>fondMasque(id));fondMasque(id)});
+/* Fond rouge pâle sur les champs à remplir, jusqu'à ce qu'ils soient complets et valables */
+function champComplet(id){const v=$(id).value.trim();
+  if(id==="cp"){const c=v.toUpperCase();return !!Moteur.departement(c)&&/^(\d{2}|\d{5}|2A|2B|97[1-6])$/.test(c)}
+  return ageDeDate(v)!=null}
+function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=!champComplet(id);el.classList.toggle("a-remplir",vide);const m=el.closest(".masque");if(m)m.classList.toggle("a-remplir",vide)})}
+["age","cp","cnj"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,marquerChamps)));
+marquerChamps();
 $("cnj").addEventListener("input",()=>{const v=$("cnj").value.trim();S.cnj=v===""?null:v;S.shown=5;S.chosen=null;upd()});
 $("kids").addEventListener("change",()=>{S.kids=+$("kids").value;S.shown=5;S.chosen=null;upd()});
 /* Conjoint (+) / Enfant (+) : le champ apparaît à la demande, × le retire */
 function montrer(champ,bouton,oui){$(champ).hidden=!oui;$(bouton).hidden=oui;ajoutsVisibles()}
 $("aj-cnj").onclick=()=>{montrer("f-cnj","aj-cnj",true);$("cnj").focus()};
-$("rt-cnj").onclick=e=>{e.preventDefault();$("cnj").value="";fondMasque("cnj");S.cnj=null;montrer("f-cnj","aj-cnj",false);S.shown=5;S.chosen=null;upd();$("aj-cnj").focus()};
+$("rt-cnj").onclick=e=>{e.preventDefault();$("cnj").value="";fondMasque("cnj");marquerChamps();S.cnj=null;montrer("f-cnj","aj-cnj",false);S.shown=5;S.chosen=null;upd();$("aj-cnj").focus()};
 function ajoutsVisibles(){const z=$("ajouts");z.hidden=$("aj-cnj").hidden&&$("aj-enf").hidden}
 $("aj-enf").onclick=()=>{montrer("f-kids","aj-enf",true);$("kids").value="1";S.kids=1;S.shown=5;S.chosen=null;upd();$("kids").focus()};
 $("rt-enf").onclick=e=>{e.preventDefault();$("kids").value="0";S.kids=0;montrer("f-kids","aj-enf",false);S.shown=5;S.chosen=null;upd();$("aj-enf").focus()};
