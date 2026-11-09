@@ -62,6 +62,8 @@ header.top{display:flex;flex-direction:column;gap:.35rem;position:relative;flex:
 @media (prefers-reduced-motion: reduce){.comete{display:none!important}}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.85rem .95rem;display:flex;flex-direction:column;gap:.75rem}
 .step{display:flex;align-items:baseline;gap:.6rem}
+.step-textes{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.sous-etape{font-size:.86rem;font-style:italic;color:var(--brand-1);margin:0}
 .step b{font-family:var(--f-body);font-size:.72rem;color:var(--accent);background:var(--accent-soft);border-radius:99px;padding:.1rem .55rem;white-space:nowrap}
 
 /* Vous */
@@ -195,6 +197,10 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .stars{display:inline-flex;gap:0}
 .stars button{background:none;border:0;padding:0;font-size:.64rem;line-height:1.1;color:var(--star-off);pointer-events:none}
 .stars button.on{color:var(--star)}
+/* Allumage des étoiles (une fois la date de naissance et le code postal remplis) */
+.stars button.allume{color:var(--star);transform:scale(1.18);transition:color .08s,transform .08s}
+.cell.allumage{border-color:var(--star);box-shadow:0 0 0 2px rgba(217,154,0,.18)}
+.cycle.allumage{color:var(--star)}
 .besoins-zone{position:relative}
 #needpanel{position:absolute;z-index:30;left:0;top:0;width:min(22rem,calc(100% - 1rem))}
 #needpanel:empty{display:none}
@@ -374,7 +380,8 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
   <div id="vue-comparateur" class="vue">
 
   <section class="panel" aria-labelledby="t-vous">
-    <div class="step"><b>1</b><h2 id="t-vous">Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime</h2></div>
+    <div class="step"><b>1</b><div class="step-textes"><h2 id="t-vous">Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime</h2>
+    <p class="sous-etape">Si une offre vous intéresse, vous pourrez indiquer vos informations afin de recevoir votre devis sur votre boîte mail.</p></div></div>
     <div class="vous-grid">
       <label class="f" for="age" id="f-age"><span class="fl-t"><span class="lab-full">Votre date de naissance</span><span class="lab-short">Date de naissance</span></span>
         <span class="masque"><input id="age" type="text" inputmode="numeric" maxlength="10" autocomplete="bday" aria-describedby="date-aide"><span class="masque-fond" aria-hidden="true"></span></span></label>
@@ -690,8 +697,32 @@ masqueDate("age"); masqueDate("cnj");
 function champComplet(id){const v=$(id).value.trim();
   if(id==="cp"){const c=v.toUpperCase();return !!Moteur.departement(c)&&/^(\d{2}|\d{5}|2A|2B|97[1-6])$/.test(c)}
   return ageDeDate(v)!=null}
+/* Allumage : chaque poste s'allume de 1 à 5 étoiles puis s'éteint, l'un après l'autre (environ 0,8 s par poste).
+   Une seule fois par visite ; ne choisit rien ; s'arrête dès que le visiteur touche une étoile. */
+const ALLUMAGE={fait:false,actif:false,minuteur:null};
+function allumageStop(){if(!ALLUMAGE.actif)return;ALLUMAGE.actif=false;clearTimeout(ALLUMAGE.minuteur);
+  document.querySelectorAll("#needs .cell.allumage").forEach(c=>c.classList.remove("allumage"));
+  document.querySelectorAll("#needs .stars button.allume").forEach(b=>b.classList.remove("allume"));
+  document.querySelectorAll("#needs .cycle").forEach(c=>{const k=c.dataset.cyc;c.classList.remove("allumage");c.innerHTML=starsOf(S.need[k]||0)})}
+function allumageLancer(){
+  if(ALLUMAGE.fait)return; ALLUMAGE.fait=true;
+  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  if(POSTES.some(p=>S.need[p.k]>0))return;
+  ALLUMAGE.actif=true; let i=0,n=0;
+  const pas=()=>{
+    if(!ALLUMAGE.actif)return;
+    const col=document.querySelectorAll("#needs .col")[i]; if(!col){allumageStop();return}
+    const cell=col.querySelector(".cell"),btns=col.querySelectorAll(".stars button"),cyc=col.querySelector(".cycle");
+    if(n<=5){cell.classList.add("allumage");btns.forEach((b,j)=>b.classList.toggle("allume",j<n));if(cyc){cyc.classList.add("allumage");cyc.innerHTML=starsOf(n)}n++;ALLUMAGE.minuteur=setTimeout(pas,n===6?180:90);return}
+    cell.classList.remove("allumage");btns.forEach(b=>b.classList.remove("allume"));if(cyc){cyc.classList.remove("allumage");cyc.innerHTML=starsOf(S.need[cyc.dataset.cyc]||0)}
+    i++;n=0; if(i>=POSTES.length){ALLUMAGE.actif=false;return}
+    ALLUMAGE.minuteur=setTimeout(pas,60);
+  };
+  ALLUMAGE.minuteur=setTimeout(pas,250);
+}
 function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=!champComplet(id);el.classList.toggle("a-remplir",vide);const m=el.closest(".masque");if(m)m.classList.toggle("a-remplir",vide)});
-  $("reg").classList.toggle("a-remplir",!$("reg").dataset.vu)}
+  $("reg").classList.toggle("a-remplir",!$("reg").dataset.vu);
+  if(champComplet("age")&&champComplet("cp"))allumageLancer()}
 /* Régime : rouge pâle aussi, jusqu'à ce que le visiteur l'ait touché (ouvert ou changé) */
 ["focus","change","pointerdown"].forEach(ev=>$("reg").addEventListener(ev,()=>{$("reg").dataset.vu="1";marquerChamps()}));
 ["age","cp","cnj"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,marquerChamps)));
@@ -708,8 +739,9 @@ $("rt-enf").onclick=e=>{e.preventDefault();$("kids").value="0";S.kids=0;montrer(
 
 /* ---------- Besoins ---------- */
 function starsHtml(k,n,nm){let h="";for(let i=1;i<=5;i++)h+='<button type="button" data-k="'+k+'" data-v="'+i+'" class="'+(i<=n?"on":"")+'" aria-label="'+nm+' : '+i+' étoile'+(i>1?"s":"")+'" aria-pressed="'+(i===n)+'">★</button>';return h}
-function ouvrirSiBesoin(k,avant){if(S.need[k]>=2&&S.need[k]!==avant)S.open=k}
-function setNeed(k,v){if(S.open&&S.open!==k)S.open=null;const avant=S.need[k];S.need[k]=(S.need[k]===v)?v-1:v;ouvrirSiBesoin(k,avant);S.shown=5;renderNeeds();upd()}
+/* La fenêtre « Précisez » ne s'ouvre plus toute seule (décision du 09/11/2026) : seulement au clic sur « (+) Précisez ». */
+function ouvrirSiBesoin(){}
+function setNeed(k,v){allumageStop();if(S.open&&S.open!==k)S.open=null;const avant=S.need[k];S.need[k]=(S.need[k]===v)?v-1:v;ouvrirSiBesoin(k,avant);S.shown=5;renderNeeds();upd()}
 function renderNeedsKeepPanel(){renderNeeds()}
 /* Fermeture automatique du volet « Précisez » : 4 s sans action.
    En pause tant que la souris est sur le volet ou que l'on écrit dans « Autre ». */
@@ -750,8 +782,8 @@ function renderNeeds(){
     box.appendChild(d);
   });
   box.querySelectorAll(".stars button").forEach(b=>b.onclick=()=>setNeed(b.dataset.k,+b.dataset.v));
-  box.querySelectorAll("[data-cyc]").forEach(b=>b.onclick=()=>{const k=b.dataset.cyc,avant=S.need[k];if(S.open&&S.open!==k)S.open=null;S.need[k]=S.need[k]>=5?0:S.need[k]+1;ouvrirSiBesoin(k,avant);S.shown=5;renderNeeds();upd()});
-  box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const k=b.dataset.open;S.open=(S.open===k)?null:k;renderNeeds()});
+  box.querySelectorAll("[data-cyc]").forEach(b=>b.onclick=()=>{allumageStop();const k=b.dataset.cyc,avant=S.need[k];if(S.open&&S.open!==k)S.open=null;S.need[k]=S.need[k]>=5?0:S.need[k]+1;ouvrirSiBesoin(k,avant);S.shown=5;renderNeeds();upd()});
+  box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{allumageStop();const k=b.dataset.open;S.open=(S.open===k)?null:k;renderNeeds()});
   const pn=$("needpanel"); pn.innerHTML="";
   const p=POSTES.find(q=>q.k===S.open); if(!p) return;
   pn.innerHTML='<div class="needpanel" role="dialog" aria-label="Préciser '+p.nm+'"><div class="needpanel-head"><strong>'+p.nm+' : précisez</strong><button type="button" class="np-x" id="np-close" aria-label="Fermer">×</button></div>'+

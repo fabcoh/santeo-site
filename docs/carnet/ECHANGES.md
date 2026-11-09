@@ -68,6 +68,9 @@ Statut : À TRAITER
 - Étape 1 : âge, code postal, régime ; les tarifs s'affichent tout de suite, sans nom ni logo de
   compagnie. Intitulé (09/11/2026) : « Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime »
   (remplace *Simulez sans vous dévoiler…*).
+  Dessous, en plus petit, en italique et de la même couleur bleue (demande du 09/11/2026) : « Si une offre vous intéresse
+  vous pourrez indiquez vos informations afin de recevoir votre devis sur votre boite mail. », affiché avec trois
+  corrections d'orthographe (virgule après « intéresse », « indiquer », « boîte »).
   Date de naissance, code postal (et date du conjoint) : fond rouge pâle tant qu'ils sont vides ou incomplets, pour
   montrer où remplir (demande de Fabrice, 09/11/2026). Le régime aussi (« tu peux mettre en rouge sécurité social ? ») :
   rouge pâle jusqu'à ce que le visiteur l'ait ouvert ou changé.
@@ -134,6 +137,10 @@ Statut : À TRAITER
   de *Salarié ou retraité* ; conjoint et enfants ajoutés par deux petits liens « Conjoint (+) » et « Enfant (+) ».
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
+- Étape 2 (09/11/2026) : la fenêtre *Précisez* ne s'ouvre plus toute seule quand on met des étoiles, seulement au clic
+  sur *(+) Précisez* (« Uniquement tu ouvres le popup si il clique sur préciser »). Dès que la date de naissance et le
+  code postal sont remplis, les étoiles de chaque poste s'allument de 1 à 5 puis s'éteignent, poste après poste
+  (environ 0,8 s chacun), une seule fois par visite ; l'animation ne choisit rien et s'arrête si on touche une étoile.
 - Étape 3 : 5 offres, puis *Plus de résultats* qui affiche tout ; le détail d'une offre s'ouvre en fenêtre, sous forme
   de tableau (postes en gras, sous-postes en normal) ; les logos des compagnies et leur vague animée (avec étoile et
   *IA*) sont sous les résultats.
