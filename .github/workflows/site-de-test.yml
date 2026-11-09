@@ -1,0 +1,49 @@
+# Site de test sur GitHub Pages : reconstruit la page à chaque fusion sur main, et chaque jour
+# pour reprendre les tarifs à jour du comparateur de Claude (dépôt public fabcoh/santeo-tarifs, lecture seule).
+# La page est cachée aux moteurs de recherche (noindex) et porte un bandeau « version de test ».
+name: Site de test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: site-de-test
+  cancel-in-progress: true
+
+jobs:
+  construire:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le site
+        uses: actions/checkout@v4
+      - name: Récupérer le moteur et les tarifs du comparateur
+        uses: actions/checkout@v4
+        with:
+          repository: fabcoh/santeo-tarifs
+          path: santeo-tarifs
+          sparse-checkout: src
+      - name: Construire la page
+        run: python3 -I maquette/build.py maquette santeo-tarifs --site _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  publier:
+    needs: construire
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publication.outputs.page_url }}
+    steps:
+      - id: publication
+        uses: actions/deploy-pages@v4

@@ -161,7 +161,8 @@ Statut : À TRAITER
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
 1. Mettre la source de la maquette dans ce dépôt : dossier `maquette/` (demande de fusion du 08/11/2026).
-2. Une version de test du site sur GitHub Pages, sur PC et téléphone.
+2. Une version de test du site sur GitHub Pages, sur PC et téléphone : publication automatique préparée le 08/11/2026
+   (`.github/workflows/site-de-test.yml`), à activer par Fabrice dans les réglages du dépôt (Pages → GitHub Actions).
 3. Le formulaire relié au CRM Santéo.
 4. Les pages pour le référencement (Google et moteurs d'IA).
 5. Le changement d'adresse dans OVH, ligne par ligne, sans toucher aux mails.

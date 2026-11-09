@@ -14,6 +14,16 @@ python3 -I maquette/build.py maquette <chemin-de-la-copie-de-santeo-tarifs>
 
 Résultat : `maquette/comparateur-santeo.html` (une seule page, tout compris).
 
+Version **site de test** (page complète pour téléphone et PC, cachée à Google, bandeau « version de test »,
+sans les éléments réservés à la maquette) :
+
+```bash
+python3 -I maquette/build.py maquette <chemin-de-la-copie-de-santeo-tarifs> --site _site
+```
+
+GitHub la reconstruit et la publie tout seul (`.github/workflows/site-de-test.yml`) à chaque fusion sur `main`
+et chaque jour, pour reprendre les tarifs à jour du comparateur.
+
 ## Contenu
 
 | Élément | Rôle |
