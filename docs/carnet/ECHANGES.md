@@ -12,10 +12,13 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
-### 09/11/2026 — de Claude site à la conversation pilote — demande pour Manus
-Statut : À ENVOYER À MANUS
-Quoi : dans le CRM Santéo, ouvrir une adresse de réception des demandes de devis du nouveau site www.santeo.net,
+### 09/11/2026 — de Claude site à la conversation pilote — porte d'entrée du site dans le CRM
+Statut : À TRAITER (code : conversation pilote, dépôt `WhatsApp_Solution` ; mise en service : Manus)
+Quoi : dans le CRM, ouvrir une adresse de réception des demandes de devis du nouveau site www.santeo.net,
 appelable depuis le navigateur du visiteur, **sans clé** (la page est publique : une clé y serait lisible par tous).
+Modèle existant, lu le 09/11/2026 : `server/csmLeadRouter.ts` (leads Comparadise, circuit « Autres provenances »).
+Ses deux contrôles, jeton et adresse IP du partenaire, sont impossibles depuis une page publique ; ils sont remplacés
+par les contrôles 2 et 3 ci-dessous.
 1. Une adresse `POST` qui reçoit du JSON et répond `{"ok": true, "id": "<numéro de la fiche>"}` (ou `{"ok": false,
    "erreur": "<raison>"}`). Le nom de l'adresse est libre ; le dire dans la réponse.
 2. Navigateurs acceptés (CORS) : `https://www.santeo.net`, `https://santeo.net` et `https://fabcoh.github.io` (site de
@@ -222,7 +225,7 @@ Points relevés le 09/11/2026 :
   sur le site de l'ORIAS, inaccessible depuis cette conversation).
 
 Avant la mise en ligne (Claude, 09/11 au soir) :
-1. Demande au CRM pour recevoir les demandes du formulaire (entrée pour Manus, en haut).
+1. Demande au CRM pour recevoir les demandes du formulaire (entrée pour la conversation pilote, en haut).
 2. Version « en ligne » de la page : visible par Google, sans bandeau de test ; titre et description pour Google ;
    aperçu propre quand le lien est partagé sur WhatsApp ; plan du site pour Google ; vraie page `/mentions-legales` ;
    anciennes adresses du site renvoyées vers l'accueil.
