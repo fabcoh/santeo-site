@@ -25,9 +25,9 @@ appelable depuis le navigateur du visiteur, **sans clé** (la page est publique 
    obligatoire manque ou si le téléphone ou l'e-mail est mal formé.
 4. Champs envoyés (obligatoires en gras) : **`civilite`** (Madame ou Monsieur), **`prenom`**, **`nom`**, **`telephone`**,
    **`email`**, **`date_naissance`** (JJ/MM/AAAA), **`code_postal`** (2 ou 5 chiffres), **`regime`**, `conjoint`
-   (`{date_naissance, regime}` ou rien), `enfants` (liste de `{date_naissance}`), **`offre`** (`{numero, cotisation_mensuelle,
-   gamme, formule}` : nom réel de l'assureur et de la formule, pour le conseiller seulement), `niveaux` (étoiles
-   choisies par poste), `besoins` (texte des besoins précis), **`accord_recontact`** (vrai ou faux),
+   (`{date_naissance}` ou `null`), `enfants` (nombre d'enfants), **`offre`** (`{numero, cotisation_mensuelle, gamme,
+   formule}` : code de la gamme et nom de la formule, pour le conseiller seulement), `niveaux` (étoiles choisies par
+   poste, de 0 à 5), `besoins` (texte des besoins précis), `site_web` (champ piège, voir 3), **`accord_recontact`** (vrai ou faux),
    **`texte_accord`** (texte exact de la case cochée), **`date_accord`** (date et heure), **`provenance`** (`Site Santéo`,
    ou `Site Santéo – WhatsApp` quand le visiteur arrive par le lien envoyé sur WhatsApp), `page` (adresse de la page),
    `test` (vrai pour un essai).
@@ -40,6 +40,8 @@ appelable depuis le navigateur du visiteur, **sans clé** (la page est publique 
    lui-même au client un e-mail de confirmation (sinon le conseiller envoie le devis à la main).
 Pourquoi : Fabrice met le site en ligne le 10/11/2026 pour recevoir des demandes de devis directement dans le CRM
 (« J'ai fait ça pour publier un site et recevoir des demandes de devis »).
+Exemple de demande (coordonnées inventées) :
+`{"civilite":"Madame","prenom":"Camille","nom":"Essai","telephone":"06 12 34 56 78","email":"camille.essai@exemple.fr","date_naissance":"21/07/1981","code_postal":"75012","regime":"Sécurité sociale","conjoint":null,"enfants":0,"offre":{"numero":1,"cotisation_mensuelle":32.04,"gamme":"MCCINOVA","formule":"Socle"},"niveaux":{"hosp":0,"hono":0,"dent":0,"opt":0,"autres":0},"besoins":"","accord_recontact":false,"texte_accord":"","date_accord":"2026-11-09T20:00:00.000Z","provenance":"Site Santéo – WhatsApp","page":"https://www.santeo.net/?src=whatsapp","site_web":"","test":true}`
 Vérification attendue : depuis le site de test, une demande d'essai (prénom inventé, `test: true`) crée une fiche
 « TEST » visible dans le CRM avec sa note ; la même demande envoyée d'une autre origine est refusée ; une demande
 avec le champ piège rempli ne crée rien.
