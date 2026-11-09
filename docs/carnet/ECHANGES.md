@@ -12,6 +12,43 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 09/11/2026 — de Claude site à la conversation pilote — porte d'entrée du site dans le CRM
+Statut : À TRAITER (code : conversation pilote, dépôt `WhatsApp_Solution` ; mise en service : Manus)
+Quoi : dans le CRM, ouvrir une adresse de réception des demandes de devis du nouveau site www.santeo.net,
+appelable depuis le navigateur du visiteur, **sans clé** (la page est publique : une clé y serait lisible par tous).
+Modèle existant, lu le 09/11/2026 : `server/csmLeadRouter.ts` (leads Comparadise, circuit « Autres provenances »).
+Ses deux contrôles, jeton et adresse IP du partenaire, sont impossibles depuis une page publique ; ils sont remplacés
+par les contrôles 2 et 3 ci-dessous.
+1. Une adresse `POST` qui reçoit du JSON et répond `{"ok": true, "id": "<numéro de la fiche>"}` (ou `{"ok": false,
+   "erreur": "<raison>"}`). Le nom de l'adresse est libre ; le dire dans la réponse.
+2. Navigateurs acceptés (CORS) : `https://www.santeo.net`, `https://santeo.net` et `https://fabcoh.github.io` (site de
+   test). Toute autre origine refusée.
+3. Protection contre les robots, puisqu'il n'y a pas de clé : champ piège `site_web` qui doit arriver vide (sinon
+   répondre `ok: true` sans rien créer) ; au plus 10 demandes par heure et par adresse IP ; refus si un champ
+   obligatoire manque ou si le téléphone ou l'e-mail est mal formé.
+4. Champs envoyés (obligatoires en gras) : **`civilite`** (Madame ou Monsieur), **`prenom`**, **`nom`**, **`telephone`**,
+   **`email`**, **`date_naissance`** (JJ/MM/AAAA), **`code_postal`** (2 ou 5 chiffres), **`regime`**, `conjoint`
+   (`{date_naissance}` ou `null`), `enfants` (nombre d'enfants), **`offre`** (`{numero, cotisation_mensuelle, gamme,
+   formule}` : code de la gamme et nom de la formule, pour le conseiller seulement), `niveaux` (étoiles choisies par
+   poste, de 0 à 5), `besoins` (texte des besoins précis), `site_web` (champ piège, voir 3), **`accord_recontact`** (vrai ou faux),
+   **`texte_accord`** (texte exact de la case cochée), **`date_accord`** (date et heure), **`provenance`** (`Site Santéo`,
+   ou `Site Santéo – WhatsApp` quand le visiteur arrive par le lien envoyé sur WhatsApp), `page` (adresse de la page),
+   `test` (vrai pour un essai).
+5. À chaque demande : créer la fiche contact avec la provenance reçue, y joindre une note lisible (offre choisie,
+   prix, besoins, accords avec leur date et leur texte), et prévenir les conseillers comme pour un nouveau contact.
+   Si un contact existe déjà avec le même téléphone ou le même e-mail, ajouter la demande à sa fiche au lieu d'en
+   créer une seconde.
+6. Avec `test: true` : créer la fiche marquée « TEST », facile à supprimer.
+7. Réponse à écrire dans le carnet de la conversation pilote : l'adresse exacte à appeler, et si le CRM peut envoyer
+   lui-même au client un e-mail de confirmation (sinon le conseiller envoie le devis à la main).
+Pourquoi : Fabrice met le site en ligne le 10/11/2026 pour recevoir des demandes de devis directement dans le CRM
+(« J'ai fait ça pour publier un site et recevoir des demandes de devis »).
+Exemple de demande (coordonnées inventées) :
+`{"civilite":"Madame","prenom":"Camille","nom":"Essai","telephone":"06 12 34 56 78","email":"camille.essai@exemple.fr","date_naissance":"21/07/1981","code_postal":"75012","regime":"Sécurité sociale","conjoint":null,"enfants":0,"offre":{"numero":1,"cotisation_mensuelle":32.04,"gamme":"MCCINOVA","formule":"Socle"},"niveaux":{"hosp":0,"hono":0,"dent":0,"opt":0,"autres":0},"besoins":"","accord_recontact":false,"texte_accord":"","date_accord":"2026-11-09T20:00:00.000Z","provenance":"Site Santéo – WhatsApp","page":"https://www.santeo.net/?src=whatsapp","site_web":"","test":true}`
+Vérification attendue : depuis le site de test, une demande d'essai (prénom inventé, `test: true`) crée une fiche
+« TEST » visible dans le CRM avec sa note ; la même demande envoyée d'une autre origine est refusée ; une demande
+avec le champ piège rempli ne crée rien.
+
 ### 08/11/2026 — de Claude site à « comparateur claude » — tarifs APRIL et API Santé (VERALTI) sur le futur site
 Statut : À TRAITER
 
@@ -168,6 +205,52 @@ Statut : À TRAITER
   (La demande APRIL / API Santé est envoyée : voir l'entrée du 08/11 en haut.)
 - Services internes de l'ancien comparateur qui passent encore par www.santeo.net : à déplacer avant le
   changement d'adresse (à voir avec les conversations concernées).
+
+## Mise en ligne de www.santeo.net (demandée le 09/11/2026 pour le 10/11/2026)
+
+Demande de Fabrice : « tu vas référencer tout ce qu'il y a à faire et on met en place tout ça pour le publier
+demain ». But : « publier un site et recevoir des demandes de devis, commencer à référencer le site, commencer à te
+mettre en place des achats de mots-clés », et avoir « une référence pour mes clients qui viennent de WhatsApp ».
+
+Constat vérifié le 09/11/2026 : le certificat de sécurité de santeo.net et de www.santeo.net a expiré le 05/10/2026.
+Les visiteurs de l'adresse actuelle voient donc une alerte de sécurité. Sur GitHub, le certificat est gratuit et
+renouvelé automatiquement.
+
+Points relevés le 09/11/2026 :
+- les devis envoyés par le comparateur de « comparateur claude » renvoient vers `santeo.net/mentions-legales` et
+  « Infos légales : www.santeo.net » : le nouveau site doit garder cette adresse de page ;
+- aucun appel technique du comparateur actuel vers santeo.net trouvé (seulement des adresses e-mail et ces
+  mentions) ; les services de l'ancien comparateur (OggoData) ne sont plus utilisés ;
+- registre public : CAPI FINANCE, SAS au capital de 21 342 €, créée le 29/07/1992, SIREN 388 103 301 (à confirmer
+  sur le site de l'ORIAS, inaccessible depuis cette conversation).
+
+Avant la mise en ligne (Claude, 09/11 au soir) :
+1. Demande au CRM pour recevoir les demandes du formulaire (entrée pour la conversation pilote, en haut).
+2. Version « en ligne » de la page : visible par Google, sans bandeau de test ; titre et description pour Google ;
+   aperçu propre quand le lien est partagé sur WhatsApp ; plan du site pour Google ; vraie page `/mentions-legales` ;
+   anciennes adresses du site renvoyées vers l'accueil.
+3. Mentions légales : capital, hébergeur GitHub, e-mail de réclamation générique (pas d'adresse personnelle).
+4. Formulaire : envoi vers le CRM dès que l'adresse est connue.
+5. Lien à envoyer aux clients WhatsApp : `https://www.santeo.net/?src=whatsapp` (la demande arrive avec la provenance
+   « Site Santéo – WhatsApp »).
+
+Le jour de la mise en ligne (Fabrice clique, Claude guide une étape par message) :
+6. Fabrice fusionne les demandes de fusion.
+7. Fabrice montre toute la zone DNS de santeo.net dans OVH (capture). Le relevé est gardé hors du dépôt, qui est
+   public (il contient des adresses de serveur).
+8. GitHub, réglages du dépôt, Pages : domaine personnalisé `www.santeo.net`, puis « Enforce HTTPS ».
+9. OVH : `www` vers `fabcoh.github.io.` ; `santeo.net` sans www vers les quatre adresses de GitHub Pages. Jamais les
+   lignes MX, SPF, DKIM, DMARC, ni les sous-domaines du CRM et de GestCom ; vérifier avant qu'aucun sous-domaine ne
+   dépend de la ligne `santeo.net`.
+10. Claude passe la publication en mode « en ligne » et vérifie l'adresse sur PC et téléphone, certificat compris.
+11. Google Search Console : envoyer le plan du site `https://www.santeo.net/sitemap.xml`.
+
+Ensuite, un lot à la fois :
+12. Pages pour le référencement (Google et moteurs d'IA).
+13. Achats de mots-clés (Google Ads) : la mesure des demandes reçues demande un bandeau d'accord pour les cookies
+    (règle de la CNIL), à faire avant la première campagne.
+14. APRIL et API Santé (en attente de « comparateur claude »).
+15. Gestion des compagnies réservée à Santéo.
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
