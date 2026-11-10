@@ -63,6 +63,9 @@ async function remplir(p) {
     await ctx.route(CRM, r => { if (r.request().method() === 'POST') recu = JSON.parse(r.request().postData()); r.fulfill({ status: reponse.status, contentType: 'application/json', body: reponse.body, headers: { 'access-control-allow-origin': 'https://www.santeo.net' } }); });
     let p = await ctx.newPage(); p.on('pageerror', e => err(nom + ' : ' + e.message));
     await p.goto('https://www.santeo.net/?src=whatsapp'); await remplir(p);
+    // « Votre accord » : le détail des accords et des données est replié, et s'affiche au clic
+    const replie = !(await p.isVisible('.votre-accord p.rgpd')); await p.click('.votre-accord summary');
+    doit(replie && await p.isVisible('.votre-accord p.rgpd'), nom + ' : « Votre accord » ne s\'ouvre pas comme prévu');
     await p.click('#send'); await p.waitForTimeout(500);
     const fin = (await p.textContent('#done')) || '';
     doit(/bien arrivée/.test(fin), nom + ' : pas de confirmation après envoi (' + fin.slice(0, 60) + ')');
