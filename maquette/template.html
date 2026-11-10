@@ -401,7 +401,16 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 .tchat-avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);border:1px solid var(--line);color:var(--brand-1);font-weight:800;font-family:var(--f-display);font-size:1.15rem;flex:none;overflow:hidden}
 /* L'avatar d'Antony est l'oiseau de l'en-tête (Fabrice, 10/11/2026) */
 .tchat-avatar img{width:118%;height:118%;object-fit:contain;transform:translate(3%,4%)}
-@media (max-width:599px){.tchat.discret .tchat-bouton[aria-expanded="false"]{opacity:0;visibility:hidden}}
+@media (max-width:599px){.tchat.discret .tchat-bouton[aria-expanded="false"],.tchat.discret .tchat-invite{opacity:0;visibility:hidden}}
+/* Petite bulle « Posez-moi vos questions » au-dessus de l'oiseau (Fabrice, 10/11/2026 : « pas sous mais au dessus »),
+   cachée quand la fenêtre est ouverte */
+.tchat-pied{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem}
+.tchat-invite{background:var(--surface);color:var(--brand-1);border:1px solid var(--line);border-radius:14px 14px 4px 14px;box-shadow:0 4px 14px rgba(10,40,60,.16);padding:.35rem .7rem;font:inherit;font-size:.8rem;font-weight:600;line-height:1.2;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+.tchat-invite[hidden]{display:none}
+.tchat-invite:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:599px){.tchat-invite{font-size:.74rem;padding:.3rem .6rem}}
+@media (prefers-reduced-motion: no-preference){.tchat-invite{animation:tchat-invite-arrive .4s ease-out 1.2s both}}
+@keyframes tchat-invite-arrive{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .tchat-fenetre{width:min(360px,calc(100vw - 32px));max-height:min(540px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(10,40,60,.28);overflow:hidden}
 .tchat-fenetre[hidden]{display:none}
 .tchat-tete{display:flex;align-items:center;gap:.6rem;padding:.65rem .75rem;background:var(--accent-soft);border-bottom:1px solid var(--line)}
@@ -656,7 +665,10 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
     <div class="tchat-fil" id="tchat-fil" aria-live="polite"></div>
     <form class="tchat-saisie" id="tchat-saisie"><label class="cache-visuel" for="tchat-texte">Votre message à Antony</label><textarea id="tchat-texte" rows="2" maxlength="600" placeholder="Votre message"></textarea><button type="submit" class="tchat-envoyer">Envoyer</button></form>
   </section>
+  <div class="tchat-pied">
+    <button type="button" class="tchat-invite" id="tchat-invite">Posez-moi vos questions</button>
   <button type="button" class="tchat-bouton" id="tchat-bouton" aria-expanded="false" aria-controls="tchat-fenetre" aria-label="Écrire à Antony"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-pastille" id="tchat-pastille" aria-label="Nouveau message d'Antony" hidden></span></button>
+  </div>
 </div>
 
 <script>
@@ -1144,7 +1156,8 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       offre:x?{numero:S.chosen+1,prix:x.total,gamme:x.gamme,formule:x.formule}:null};
   }
   function bulle(t,qui){const b=document.createElement("div");b.className="tchat-msg "+qui;b.textContent=t;fil.appendChild(b);fil.scrollTop=fil.scrollHeight;return b}
-  function fermer(){fen.hidden=true;bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
+  const invite=$("tchat-invite");
+  function fermer(){fen.hidden=true;invite.hidden=false;bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
   $("tchat-x").onclick=()=>fermer();
   fen.addEventListener("keydown",e=>{if(e.key==="Escape")fermer()});
   // Sur téléphone, la bulle s'efface quand l'étape 4 est à l'écran : elle couvrirait le bouton « Recevoir mon devis »
@@ -1169,8 +1182,9 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       }
     });
   }
-  function ouvrir(){fen.hidden=false;bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
+  function ouvrir(){fen.hidden=false;invite.hidden=true;bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
   bouton.onclick=()=>fen.hidden?ouvrir():fermer();
+  invite.onclick=ouvrir;
   const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error(j.erreur||rep.status);e.status=rep.status;throw e}return j}));
   // Conversation inconnue du CRM (404) : on repart d'une conversation neuve au prochain message
   const oublier=()=>{etat={conversation:null,messages:[],dernier:null,activite:0};garderT();if(!fen.hidden)afficher()};
