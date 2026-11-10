@@ -353,6 +353,11 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .consent label{display:flex;gap:.55rem;align-items:flex-start;font-size:.93rem}
 .consent input{margin-top:.25rem;flex:0 0 auto}
 .done{background:var(--accent-soft);border-radius:8px;padding:.8rem .9rem}
+/* Confirmation après l'envoi : ce qui va se passer */
+.merci-titre{font-weight:700;color:var(--fg);margin:0 0 .5rem}
+.merci-suite{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem}
+.merci-suite li{line-height:1.45}
+.merci-suite a{color:var(--accent);font-weight:700}
 .wa{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
 
 /* Notes */
@@ -932,6 +937,7 @@ function choose(i){
     '<div class="ch-gar">'+postesAffiches().map(p=>'<span>'+p.nm+' <b>'+valeur(p,x)+'</b></span>').join("")+'</div>'+
     (bp.length?'<div class="ch-plus">Vos besoins précis : '+bp.join(", ")+'</div>':"");
   $("form-panel").hidden=false; $("done").hidden=true; $("lead").hidden=false;
+  document.querySelector("#form-panel .form-intro").hidden=false; $("t-form").textContent="Recevoir mon devis";
   upd(); majWhatsApp();
   const fp=$("form-panel"), doux=!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
   fp.scrollIntoView({behavior:doux?"smooth":"auto",block:"start"});
@@ -984,7 +990,9 @@ function messageWhatsApp(d){
   L.push(d.accord_recontact?"J'accepte d'être recontacté(e) par téléphone et WhatsApp.":"Merci de m'envoyer le devis par e-mail seulement.");
   return L.join("\n");
 }
-function fini(html){$("lead").hidden=true;$("done").hidden=false;$("done").innerHTML=html;$("done").scrollIntoView({block:"nearest"})}
+function fini(html,titre){$("lead").hidden=true;document.querySelector("#form-panel .form-intro").hidden=true;if(titre)$("t-form").textContent=titre;
+  $("done").hidden=false;$("done").innerHTML=html;$("done").scrollIntoView({block:"nearest"})}
+const html=t=>String(t).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 function envoyer(){
   const d=laDemande(), b=$("send");
   if(MODE!=="site"){
@@ -1009,7 +1017,12 @@ function envoyer(){
   fetch(ENVOI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)})
     .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error("refus");if(typeof j.erreur==="string")e.raison=j.erreur.slice(0,200);throw e}
       b.disabled=false;b.textContent=lib;
-      fini("<strong>Merci, votre demande est bien arrivée.</strong><br>Un conseiller Santéo vous envoie votre devis par e-mail"+(d.accord_recontact?" et pourra vous appeler ou vous écrire sur WhatsApp, comme vous l'avez accepté.":"."))}))
+      const waQ=waLien("Bonjour, je viens de demander un devis sur le site Santéo"+(d.offre?" (option "+d.offre.numero+")":"")+".");
+      fini('<p class="merci-titre">✓ Merci '+html(d.prenom)+', votre demande est bien arrivée.</p><ul class="merci-suite">'+
+        '<li><b>Votre devis</b> : un conseiller Santéo l\'étudie et vous l\'envoie par e-mail à <b>'+html(d.email)+'</b>.</li>'+
+        (d.accord_recontact?'<li><b>Un conseiller peut vous appeler</b> ou vous écrire sur WhatsApp au <b>'+html(d.telephone)+'</b>, du lundi au vendredi, entre 10 h et 13 h ou entre 14 h et 20 h.</li>'
+          :'<li><b>Aucun appel</b> : vous recevez seulement votre devis par e-mail.</li>')+
+        '<li><b>Une question d\'ici là ?</b> '+(waQ?'<a href="'+waQ+'" target="_blank" rel="noopener">Écrivez-nous sur WhatsApp</a> ou appelez':'Appelez')+' le 01 53 19 17 17.</li></ul>',"Demande envoyée")}))
     .catch(rate);
 }
 
