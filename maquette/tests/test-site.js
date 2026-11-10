@@ -11,6 +11,7 @@ const CRM = 'https://crm.exemple.invalid/devis';
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'site-'));
 const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, ...opts]); return d; };
 const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test'),
+  sansTchat: construire('sanstchat', '--en-ligne', '--envoi', CRM, '--tchat', 'aucun'),
   tchat: construire('tchat', '--en-ligne', '--envoi', CRM, '--tchat', 'direct', '--tchat-crm', 'https://crm.exemple.invalid/tchat') };
 const errs = [], err = m => errs.push(m);
 const types = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.txt': 'text/plain', '.xml': 'application/xml' };
@@ -110,9 +111,10 @@ async function remplir(p) {
     const msg = lien ? decodeURIComponent(new URL(lien).searchParams.get('text') || '') : '';
     doit(/^https:\/\/wa\.me\/33153198646\?text=/.test(lien || '') && /Option 1 à/.test(msg) && /Camille Essai/.test(msg) && /75012/.test(msg), nom + ' : repli WhatsApp ' + lien);
     console.log(nom, '| repli WhatsApp :', msg.split('\n').length, 'lignes');
-    // 5. Sans relais du CRM (réglage « aucun »), pas de tchat : il n'ouvre jamais WhatsApp
-    await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300);
-    doit(!(await p.isVisible('#tchat-bouton')), nom + ' : le tchat doit être caché tant que le relais du CRM n\'est pas en service');
+    // 5. Réglage « aucun » : pas de tchat
+    { const c5 = await b.newContext(opt); await servir(c5, 'https://www.santeo.net/', sites.sansTchat); const p5 = await c5.newPage();
+      await p5.goto('https://www.santeo.net/'); await p5.waitForTimeout(300);
+      doit(!(await p5.isVisible('#tchat-bouton')), nom + ' : avec le réglage « aucun », le tchat doit être caché'); await c5.close(); }
     await ctx.close();
     // 6. Tchat « direct » : le message part au CRM (simulé), la réponse d'Antony s'affiche ici, la conversation reste après rechargement
     ctx = await b.newContext(opt); await servir(ctx, 'https://www.santeo.net/', sites.tchat);
