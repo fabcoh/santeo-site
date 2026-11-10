@@ -244,7 +244,7 @@ Statut : À TRAITER
   mais au dessus »), cachée quand la fenêtre est ouverte. Entrée envoie le message, Maj + Entrée passe à la ligne (« on dois pouvoir
   faire entrée pour envoyer un message depuis le clavier », transmis par « CRM Santeo » le 10/11). Fenêtre bien
   distincte de la page (« Le Tchat est confondu avec l'arrière plan il faut pouvoir le distinguer ») : en-tête bleu,
-  cadre bleu, fond propre au tchat, et sur téléphone un voile sombre derrière (toucher le voile ferme le tchat).
+  cadre bleu, fond propre au tchat ; sur téléphone, le tchat ouvert prend tout l'écran (« Surtout depuis un portable »).
 - Étape 1 (10/11/2026, transmis par « CRM Santeo ») : « Comparez sans vous dévoiler : indiquez juste votre âge, Code
   Postal, Régime sécu (avec le filtre actuel) » ; mise en forme inchangée (titre en avant avec son reflet, suite en
   italique). Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
