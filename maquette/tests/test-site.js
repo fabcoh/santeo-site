@@ -109,6 +109,21 @@ async function remplir(p) {
     const msg = lien ? decodeURIComponent(new URL(lien).searchParams.get('text') || '') : '';
     doit(/^https:\/\/wa\.me\/33153198646\?text=/.test(lien || '') && /Option 1 à/.test(msg) && /Camille Essai/.test(msg) && /75012/.test(msg), nom + ' : repli WhatsApp ' + lien);
     console.log(nom, '| repli WhatsApp :', msg.split('\n').length, 'lignes');
+    // 5. Tchat avec Antony : accueil selon l'avancement, question envoyée sur WhatsApp avec le profil et l'offre
+    await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300);
+    await p.click('#tchat-bouton'); const accueil0 = (await p.textContent('#tchat-fil')) || '';
+    await p.click('#tchat-x');
+    await p.fill('#age', '21/07/1981'); await p.fill('#cp', '75012'); await p.waitForTimeout(250); await p.click('[data-c="0"]'); await p.waitForTimeout(700);
+    await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(200);
+    await p.click('#tchat-bouton'); const accueil1 = (await p.textContent('#tchat-fil')) || '';
+    await p.fill('#tchat-texte', 'Les lunettes sont-elles bien remboursées ?'); await p.click('.tchat-envoyer'); await p.waitForTimeout(300);
+    const lienT = await p.getAttribute('#tchat-fil a.tchat-lien', 'href').catch(() => null);
+    const msgT = lienT ? decodeURIComponent(new URL(lienT).searchParams.get('text') || '') : '';
+    doit(/Une question sur votre mutuelle/.test(accueil0) && /option 1 à/.test(accueil1)
+      && /^https:\/\/wa\.me\/33153198646\?text=/.test(lienT || '') && /Les lunettes sont-elles bien remboursées/.test(msgT) && /code postal 75012/.test(msgT) && /option 1 à/.test(msgT),
+      nom + ' : tchat (' + accueil0.slice(0, 40) + ' | ' + accueil1.slice(0, 60) + ' | ' + msgT.slice(0, 60) + ')');
+    await p.keyboard.press('Escape'); doit(!(await p.isVisible('#tchat-fenetre')), nom + ' : le tchat ne se ferme pas avec Échap');
+    console.log(nom, '| tchat :', accueil1.slice(0, 70), '…');
     await ctx.close();
   }
   await b.close(); fs.rmSync(tmp, { recursive: true, force: true });

@@ -224,6 +224,11 @@ Statut : À TRAITER
   grand, un reflet lumineux le traverse toutes les 5 secondes, immobile si l'appareil demande moins d'animations) ;
   *: indiquez juste votre âge, CP, régime* en italique, sans gras (« comparez sans vous dévoiler doit etre en avant si tu
   peux ajouter une sorte d'animation du texte et le texte à coté a droite cp régime doit en italique et pas en gras »).
+- Tchat avec Antony (10/11/2026) : « on créer un tchat bot relié au whatsapp de antony / il doit etre idividualisé »,
+  numéro « 01 53 19 86 46 ». Bulle en bas à droite (PC et téléphone ; sur téléphone elle s'efface quand l'étape 4 est à
+  l'écran). L'accueil s'adapte à l'avancement du visiteur (rien saisi, âge et code postal, offre choisie, demande
+  envoyée) ; le visiteur écrit sa question, WhatsApp s'ouvre vers Antony avec la question, l'âge, le code postal, le
+  régime et l'offre. Textes : Mon idée. Avatar provisoire « A » en attendant une photo d'Antony.
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
 - Étape 2 (09/11/2026) : la fenêtre *Précisez* ne s'ouvre plus toute seule quand on met des étoiles, seulement au clic
