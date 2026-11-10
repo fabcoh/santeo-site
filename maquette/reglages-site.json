@@ -1,6 +1,6 @@
 {
   "envoi_crm": "https://crm.capisante.fr/api/site/demande",
   "repli": "",
-  "tchat": "aucun",
-  "tchat_crm": ""
+  "tchat": "direct",
+  "tchat_crm": "https://crm.capisante.fr/api/site/tchat"
 }

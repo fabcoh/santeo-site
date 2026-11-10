@@ -1171,7 +1171,9 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   }
   function ouvrir(){fen.hidden=false;bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
   bouton.onclick=()=>fen.hidden?ouvrir():fermer();
-  const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true)throw new Error(j.erreur||rep.status);return j}));
+  const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error(j.erreur||rep.status);e.status=rep.status;throw e}return j}));
+  // Conversation inconnue du CRM (404) : on repart d'une conversation neuve au prochain message
+  const oublier=()=>{etat={conversation:null,messages:[],dernier:null,activite:0};garderT();if(!fen.hidden)afficher()};
   function envoyer(t){
     const c=contexte(), m={id:"local-"+Date.now(),de:"visiteur",texte:t,date:new Date().toISOString(),statut:"envoi"};
     etat.messages.push(m); etat.activite=Date.now(); afficher();
@@ -1198,7 +1200,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       });
       if(neufs){garderT();if(fen.hidden){if(neufs>0){nonLus+=neufs;majPastille()}}else afficher()}
     })
-    .catch(()=>{})
+    .catch(e=>{if(e&&e.status===404)oublier()})
     .then(suivreBientot);
   }
   if(etat.conversation)suivreBientot();

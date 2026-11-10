@@ -237,7 +237,9 @@ Statut : À TRAITER
   prospects sur le crm ») : après une demande de devis, chaque message porte le numéro de fiche rendu par le CRM.
   Le visiteur n'ouvre jamais WhatsApp (« je veux pas que le client ouvre WhatsApp. Ce n'est pas le but. Le but, c'est
   de rester dans le chat. Et lui, c'est invisible pour lui. ») : le mode « whatsapp » est supprimé ; tant que le relais
-  du CRM n'est pas en service, le tchat est caché (réglage « aucun »). Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
+  du CRM n'est pas en service, le tchat est caché (réglage « aucun »). Relais écrit par la conversation pilote (fabcoh/WhatsApp_Solution, demande de
+  fusion 508, 10/11) : `https://crm.capisante.fr/api/site/tchat` ; avec `?test=1`, les messages vont à Fabrice seul
+  (« 🧪 ESSAI »), jamais à Antony. Le site passe en mode « direct » dès que le relais est en service. Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
   contrat : `POST /api/site/tchat`, `GET /api/site/tchat/<conversation>?depuis=`).
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
