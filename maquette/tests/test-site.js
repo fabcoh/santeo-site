@@ -129,9 +129,11 @@ async function remplir(p) {
     });
     p = await ctx.newPage(); p.on('pageerror', e => err(nom + ' tchat direct : ' + e.message));
     await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300);
-    await p.click('#tchat-bouton'); const ligne = 'vous répond ici';
+    doit(/Posez-moi vos questions/.test((await p.textContent('#tchat-invite')) || '') && await p.isVisible('#tchat-invite'), nom + ' : bulle « Posez-moi vos questions » absente');
+    await p.click('#tchat-invite'); const ligne = 'vous répond ici';
+    doit(await p.isVisible('#tchat-fenetre') && !(await p.isVisible('#tchat-invite')), nom + ' : la bulle doit ouvrir le tchat et se cacher');
     doit((await p.textContent('.tchat-envoyer')) === 'Envoyer' && ((await p.textContent('#tchat-fil')) || '').trim() === '', nom + ' : tchat direct : bouton « Envoyer » et fenêtre vide au départ');
-    await p.fill('#tchat-texte', 'Les lunettes ?'); await p.click('.tchat-envoyer'); await p.waitForTimeout(5200);
+    await p.fill('#tchat-texte', 'Les lunettes ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(5200);   // Entrée envoie
     const filD = (await p.textContent('#tchat-fil')) || '';
     doit(/vous répond ici/.test(ligne) && envoiT && envoiT.texte === 'Les lunettes ?' && envoiT.conversation === null && envoiT.site_web === '' && 'contexte' in envoiT
       && /200 € tous les deux ans/.test(filD) && !waOuvert, nom + ' : tchat direct (' + ligne + ' | ' + JSON.stringify(envoiT) + ' | ' + filD.slice(-80) + ')');

@@ -239,7 +239,13 @@ Statut : À TRAITER
   de rester dans le chat. Et lui, c'est invisible pour lui. ») : le mode « whatsapp » est supprimé ; tant que le relais
   du CRM n'est pas en service, le tchat est caché (réglage « aucun »). Relais écrit par la conversation pilote (fabcoh/WhatsApp_Solution, demande de
   fusion 508, 10/11) : `https://crm.capisante.fr/api/site/tchat` ; avec `?test=1`, les messages vont à Fabrice seul
-  (« 🧪 ESSAI »), jamais à Antony. Le site passe en mode « direct » dès que le relais est en service. Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
+  (« 🧪 ESSAI »), jamais à Antony. Le site passe en mode « direct » dès que le relais est en service. Bulle « Posez-moi vos
+  questions » au-dessus de l'oiseau (« sous l'oiseau du tchat petit message "Posez moi vos questions" », puis « pas sous
+  mais au dessus »), cachée quand la fenêtre est ouverte. Entrée envoie le message, Maj + Entrée passe à la ligne (« on dois pouvoir
+  faire entrée pour envoyer un message depuis le clavier », transmis par « CRM Santeo » le 10/11).
+- Étape 1 (10/11/2026, transmis par « CRM Santeo ») : « Comparez sans vous dévoiler : indiquez juste votre âge, Code
+  Postal, Régime sécu (avec le filtre actuel) » ; mise en forme inchangée (titre en avant avec son reflet, suite en
+  italique). Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
   contrat : `POST /api/site/tchat`, `GET /api/site/tchat/<conversation>?depuis=`).
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
