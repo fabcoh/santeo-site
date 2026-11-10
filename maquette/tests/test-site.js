@@ -69,6 +69,8 @@ async function remplir(p) {
     await p.click('#send'); await p.waitForTimeout(500);
     const fin = (await p.textContent('#done')) || '';
     doit(/bien arrivée/.test(fin), nom + ' : pas de confirmation après envoi (' + fin.slice(0, 60) + ')');
+    doit(/Merci Camille/.test(fin) && /camille\.essai@exemple\.fr/.test(fin) && /Aucun appel/.test(fin) && !(await p.isVisible('#form-panel .form-intro'))
+      && (await p.textContent('#t-form')) === 'Demande envoyée', nom + ' : confirmation incomplète ou phrase « Indiquez vos coordonnées » encore affichée');
     doit(recu && recu.provenance === 'Site Santéo – WhatsApp' && recu.prenom === 'Camille' && recu.offre && recu.offre.numero === 1
       && recu.offre.cotisation_mensuelle > 0 && recu.offre.gamme && recu.code_postal === '75012' && recu.date_naissance === '21/07/1981'
       && recu.accord_recontact === false && recu.texte_accord === '' && recu.site_web === '' && recu.test === false && /^https:\/\/www\.santeo\.net\//.test(recu.page),
