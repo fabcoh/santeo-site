@@ -232,8 +232,9 @@ Statut : À TRAITER
 - Tchat (10/11/2026, correction de Fabrice) : « je veux qu'il écrive ici mais pas qu'il ouvre leur whatsapp et
   qu'antony puisse voir la conversation et y répondre depuis sont whatsapp ». Mode « direct » préparé côté site
   (`maquette/reglages-site.json`, `tchat` et `tchat_crm`) : le message part au CRM, les réponses d'Antony s'affichent dans
-  la fenêtre, la conversation reste après rechargement, et sans réponse au bout de 3 minutes le visiteur est invité à
-  laisser son prénom et son numéro. Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
+  la fenêtre, la conversation reste après rechargement. Fenêtre sans texte : seulement la conversation, la saisie et
+  « Envoyer » (« retirer tout les textes jsute un chat et un bouton envoyer »). Identification (« bien identifier les
+  prospects sur le crm ») : après une demande de devis, chaque message porte le numéro de fiche rendu par le CRM. Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
   contrat : `POST /api/site/tchat`, `GET /api/site/tchat/<conversation>?depuis=`). Tant qu'il n'est pas en service, le
   tchat reste en mode « whatsapp » (ou « aucun », au choix de Fabrice).
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
