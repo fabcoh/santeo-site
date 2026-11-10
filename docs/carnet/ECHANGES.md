@@ -230,6 +230,9 @@ Statut : À TRAITER
   de tableau (postes en gras, sous-postes en normal) ; les logos des compagnies et leur vague animée (avec étoile et
   *IA*) sont sous les résultats.
 - Étape 4 : formulaire mis en avant ; pas de nom fictif dans les champs (« ne pas mettre de nom fictif »).
+- Étape 4 (10/11/2026) : sous la case d'accord, le détail (retrait de l'accord, données personnelles) est replié derrière
+  un lien souligné *Votre accord* qui l'affiche au clic (« cette partie ne doit pas etre intégré au formulaire d'envoi
+  sous cette forme mais avec un Votre accord (souligné) et cela affiche l'enselble du texte »).
 - En-tête : lumière animée sur le logo Santéo ; mascotte en petit en haut à droite ; *Contactez-nous sur : WhatsApp*
   masqué pour le moment (« TU LE MASQUE POUR LE MOMENT »).
 

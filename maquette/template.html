@@ -343,6 +343,13 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 @media (prefers-reduced-motion: reduce){#form-panel.attire{animation:none}}
 .consent{display:flex;flex-direction:column;gap:.5rem}
 .accords{border:2px solid var(--accent);border-radius:10px;padding:.7rem .85rem;display:flex;flex-direction:column;gap:.5rem}
+/* « Votre accord » : lien souligné sous la case ; un clic affiche le détail (retrait de l'accord, données personnelles) */
+.votre-accord{margin-top:.6rem}
+.votre-accord summary{display:inline-block;cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:2px;font-size:.88rem;padding:.25rem 0;list-style:none}
+.votre-accord summary::-webkit-details-marker{display:none}
+.votre-accord summary::marker{content:""}
+.votre-accord summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.votre-accord p{margin-top:.45rem}
 .consent label{display:flex;gap:.55rem;align-items:flex-start;font-size:.93rem}
 .consent input{margin-top:.25rem;flex:0 0 auto}
 .done{background:var(--accent-soft);border-radius:8px;padding:.8rem .9rem}
@@ -450,8 +457,11 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
           <label for="c-accord"><input type="checkbox" id="c-accord"> <span>J'accepte d'être contacté(e) par téléphone, WhatsApp par un conseiller de Santéo (CAPI FINANCE) au sujet de ma demande de devis de complémentaire santé, pendant les 3 prochains mois, du lundi au vendredi, entre 10 h et 13 h ou entre 14 h et 20 h.<br>J'accepte de recevoir par e-mail ou WhatsApp les offres de Santéo et les relances (CAPI FINANCE) sur ma complémentaire santé.</span></label>
           <p class="small" style="font-weight:700;color:var(--fg)">Vos coordonnées restent chez Santéo : un seul interlocuteur, aucune revente.</p>
         </div>
-        <p class="small">Votre devis vous est envoyé par e-mail dans tous les cas. Vous pouvez retirer votre accord à tout moment : répondez « STOP » sur WhatsApp, cliquez sur le lien de désinscription d'un e-mail, ou écrivez à gestion@santeo.net. La date, l'heure et le texte de chaque accord sont enregistrés avec votre demande.</p>
-        <p class="small rgpd">CAPI FINANCE (Santéo), 72 rue du Rendez-vous, 75012 Paris, traite les informations de ce formulaire pour établir votre devis, vous recontacter selon les accords cochés ci-dessus et suivre votre dossier. Elles sont réservées aux conseillers de Santéo et, si vous adhérez, à l'assureur que vous choisissez : elles ne sont ni vendues ni cédées à d'autres sociétés. Elles sont conservées 3 ans après notre dernier contact. Vous pouvez y accéder, les faire corriger ou effacer, et vous opposer à leur utilisation en écrivant à gestion@santeo.net ; vous pouvez aussi adresser une réclamation à la CNIL. Pour en savoir plus : notre politique de confidentialité (page à rédiger).</p>
+        <details class="votre-accord">
+          <summary>Votre accord</summary>
+          <p class="small">Votre devis vous est envoyé par e-mail dans tous les cas. Vous pouvez retirer votre accord à tout moment : répondez « STOP » sur WhatsApp, cliquez sur le lien de désinscription d'un e-mail, ou écrivez à gestion@santeo.net. La date, l'heure et le texte de chaque accord sont enregistrés avec votre demande.</p>
+          <p class="small rgpd">CAPI FINANCE (Santéo), 72 rue du Rendez-vous, 75012 Paris, traite les informations de ce formulaire pour établir votre devis, vous recontacter selon les accords cochés ci-dessus et suivre votre dossier. Elles sont réservées aux conseillers de Santéo et, si vous adhérez, à l'assureur que vous choisissez : elles ne sont ni vendues ni cédées à d'autres sociétés. Elles sont conservées 3 ans après notre dernier contact. Vous pouvez y accéder, les faire corriger ou effacer, et vous opposer à leur utilisation en écrivant à gestion@santeo.net ; vous pouvez aussi adresser une réclamation à la CNIL. Pour en savoir plus : notre politique de confidentialité (page à rédiger).</p>
+        </details>
       </div>
       <p class="small" id="form-err" role="alert" style="color:var(--warn);margin-top:.6rem"></p>
       <div class="wa" style="margin-top:.8rem">
