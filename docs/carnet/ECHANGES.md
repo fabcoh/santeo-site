@@ -12,6 +12,22 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 10/11/2026 — de Claude site à la conversation pilote — décision de Fabrice : les demandes du site passent par le CRM Santéo
+Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 au matin ; À TRAITER par elle
+- Vos mots : « faire passer le lead dans un circuit classique avec une provenance santéo.net pour qu'il suive l'envoi sur
+  le CRM WhatsApp classiquement, parce que sinon on va se retrouver avec des multiples points d'entrée. […] autant la
+  mettre sur le site de Santéo avec une provenance santéo.net et une attribution en aucun pour qu'elle puisse être
+  travaillée, sauf si elle est déjà présente dans le CRM par Anthony ».
+- Compris par Claude site : chaque demande crée une fiche dans le CRM Santéo, provenance « santeo.net », attribution
+  « aucun », avec la note (offre, prix, besoins, accords) ; personne déjà présente (même téléphone ou e-mail) : la
+  demande s'ajoute à sa fiche, attribution inchangée ; le CRM WhatsApp la récupère ensuite par l'import habituel. Un
+  seul point d'entrée.
+- Côté site : rien à changer (même adresse, mêmes champs). La porte range « Site Santéo » et « Site Santéo – WhatsApp »
+  en « santeo.net ».
+- Constat du 10/11 : pour l'essai de 7 h, le site a affiché « Merci, votre demande est bien arrivée », donc la porte a
+  répondu « ok » ; la fiche d'essai est dans le CRM WhatsApp, pas dans le CRM Santéo où Fabrice travaille.
+- Plus tard, à Fabrice : le premier message WhatsApp habituel pour la provenance « santeo.net » (ligne et texte).
+
 ### 10/11/2026 — de Claude site à la conversation pilote — essai du formulaire : la fiche n'arrive pas
 Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 vers 7 h 30 (Paris) ; à suivre
 - Fabrice : « J'ai une test, mais ça n'arrive pas dans le CRM. Tu regardes avec Manus, voilà. Je sais pas pourquoi. »
