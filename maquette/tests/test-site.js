@@ -110,21 +110,9 @@ async function remplir(p) {
     const msg = lien ? decodeURIComponent(new URL(lien).searchParams.get('text') || '') : '';
     doit(/^https:\/\/wa\.me\/33153198646\?text=/.test(lien || '') && /Option 1 à/.test(msg) && /Camille Essai/.test(msg) && /75012/.test(msg), nom + ' : repli WhatsApp ' + lien);
     console.log(nom, '| repli WhatsApp :', msg.split('\n').length, 'lignes');
-    // 5. Tchat avec Antony : accueil selon l'avancement, question envoyée sur WhatsApp avec le profil et l'offre
+    // 5. Sans relais du CRM (réglage « aucun »), pas de tchat : il n'ouvre jamais WhatsApp
     await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300);
-    await p.click('#tchat-bouton'); const accueil0 = (await p.textContent('#tchat-fil')) || '';
-    await p.click('#tchat-x');
-    await p.fill('#age', '21/07/1981'); await p.fill('#cp', '75012'); await p.waitForTimeout(250); await p.click('[data-c="0"]'); await p.waitForTimeout(700);
-    await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(200);
-    await p.click('#tchat-bouton'); const accueil1 = (await p.textContent('#tchat-fil')) || '';
-    await p.fill('#tchat-texte', 'Les lunettes sont-elles bien remboursées ?'); await p.click('.tchat-envoyer'); await p.waitForTimeout(300);
-    const lienT = await p.getAttribute('#tchat-fil a.tchat-lien', 'href').catch(() => null);
-    const msgT = lienT ? decodeURIComponent(new URL(lienT).searchParams.get('text') || '') : '';
-    doit(accueil0.trim() === '' && accueil1.trim() === '' && (await p.textContent('.tchat-envoyer')) === 'Envoyer'
-      && /^https:\/\/wa\.me\/33153198646\?text=/.test(lienT || '') && /Les lunettes sont-elles bien remboursées/.test(msgT) && /code postal 75012/.test(msgT) && /option 1 à/.test(msgT),
-      nom + ' : tchat (' + accueil0.slice(0, 40) + ' | ' + accueil1.slice(0, 60) + ' | ' + msgT.slice(0, 60) + ')');
-    await p.keyboard.press('Escape'); doit(!(await p.isVisible('#tchat-fenetre')), nom + ' : le tchat ne se ferme pas avec Échap');
-    console.log(nom, '| tchat (mode whatsapp) : fenêtre sans texte, lien', (lienT || '').slice(0, 40));
+    doit(!(await p.isVisible('#tchat-bouton')), nom + ' : le tchat doit être caché tant que le relais du CRM n\'est pas en service');
     await ctx.close();
     // 6. Tchat « direct » : le message part au CRM (simulé), la réponse d'Antony s'affiche ici, la conversation reste après rechargement
     ctx = await b.newContext(opt); await servir(ctx, 'https://www.santeo.net/', sites.tchat);
