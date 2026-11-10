@@ -390,26 +390,30 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 /* ---------- Tchat avec Antony (bulle en bas à droite, PC et téléphone) ---------- */
 .tchat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
 .tchat>*{pointer-events:auto}
-.tchat-bouton{display:flex;align-items:center;gap:.55rem;border:2px solid #128c4a;border-radius:999px;background:var(--surface);color:var(--fg);box-shadow:0 6px 22px rgba(10,40,60,.22);padding:.35rem 1rem .35rem .35rem;font:inherit;font-size:.92rem;cursor:pointer;transition:opacity .2s}
-.tchat-bouton:focus-visible,.tchat-x:focus-visible,.tchat-envoyer:focus-visible,.tchat-idees button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.tchat-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);border:1px solid var(--line);color:var(--brand-1);font-weight:800;font-family:var(--f-display);font-size:1.15rem;flex:none;overflow:hidden}
+.tchat[hidden]{display:none}
+.tchat-bouton{position:relative}
+.tchat-pastille{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:#c0392b;color:#fff;font-size:.72rem;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.tchat-pastille[hidden]{display:none}
+.tchat-msg.en-cours{opacity:.6}
+.tchat-reessayer{align-self:flex-end;border:0;background:transparent;color:#c0392b;font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer;padding:0}
+.tchat-bouton{display:flex;align-items:center;gap:.55rem;border:2px solid #128c4a;border-radius:999px;background:var(--surface);color:var(--fg);box-shadow:0 6px 22px rgba(10,40,60,.22);padding:.3rem;font:inherit;font-size:.92rem;cursor:pointer;transition:opacity .2s}
+.tchat-bouton:focus-visible,.tchat-x:focus-visible,.tchat-envoyer:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tchat-avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);border:1px solid var(--line);color:var(--brand-1);font-weight:800;font-family:var(--f-display);font-size:1.15rem;flex:none;overflow:hidden}
 /* L'avatar d'Antony est l'oiseau de l'en-tête (Fabrice, 10/11/2026) */
 .tchat-avatar img{width:118%;height:118%;object-fit:contain;transform:translate(3%,4%)}
-@media (max-width:599px){.tchat-bouton-texte{display:none}.tchat-bouton{padding:.3rem}.tchat.discret .tchat-bouton[aria-expanded="false"]{opacity:0;visibility:hidden}}
+@media (max-width:599px){.tchat.discret .tchat-bouton[aria-expanded="false"]{opacity:0;visibility:hidden}}
 .tchat-fenetre{width:min(360px,calc(100vw - 32px));max-height:min(540px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(10,40,60,.28);overflow:hidden}
 .tchat-fenetre[hidden]{display:none}
 .tchat-tete{display:flex;align-items:center;gap:.6rem;padding:.65rem .75rem;background:var(--accent-soft);border-bottom:1px solid var(--line)}
 .tchat-qui{display:flex;flex-direction:column;line-height:1.25;flex:1;min-width:0;color:var(--fg)}
 .tchat-qui span{font-size:.78rem;color:var(--muted)}
 .tchat-x{border:0;background:transparent;font-size:1.6rem;line-height:1;color:var(--muted);cursor:pointer;padding:.1rem .45rem;border-radius:6px}
-.tchat-fil{padding:.8rem;display:flex;flex-direction:column;gap:.5rem;overflow-y:auto;flex:1;min-height:6rem}
+.tchat-fil{padding:.8rem;display:flex;flex-direction:column;gap:.5rem;overflow-y:auto;flex:1;min-height:3rem}
+.tchat-fil:empty{display:none}
 .tchat-msg{max-width:88%;padding:.55rem .75rem;border-radius:14px;font-size:.92rem;line-height:1.4;white-space:pre-wrap}
 .tchat-msg.lui{background:var(--accent-soft);color:var(--fg);border-bottom-left-radius:4px;align-self:flex-start}
 .tchat-msg.moi{background:#d9fdd3;color:#111b21;border-bottom-right-radius:4px;align-self:flex-end}
 .tchat-lien{align-self:flex-start;color:#0b6b37;font-weight:700;font-size:.9rem}
-.tchat-idees{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 .8rem .6rem}
-.tchat-idees:empty{display:none}
-.tchat-idees button{border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:999px;padding:.3rem .7rem;font:inherit;font-size:.82rem;cursor:pointer}
 .tchat-saisie{display:flex;flex-direction:column;gap:.45rem;padding:.7rem .8rem;border-top:1px solid var(--line)}
 .tchat-saisie textarea{width:100%;resize:none;border:1px solid var(--line);border-radius:10px;padding:.55rem .65rem;font:inherit;font-size:16px;background:var(--bg);color:var(--fg)}
 .tchat-envoyer{border:0;border-radius:999px;background:#128c4a;color:#fff;font:inherit;font-weight:700;padding:.6rem 1rem;cursor:pointer}
@@ -650,12 +654,11 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 <!-- Tchat avec Antony : la question du visiteur part sur WhatsApp (ligne 01 53 19 86 46), avec ce qu'il a déjà saisi -->
 <div class="tchat" id="tchat">
   <section class="tchat-fenetre" id="tchat-fenetre" role="dialog" aria-labelledby="tchat-nom" hidden>
-    <div class="tchat-tete"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-qui"><strong id="tchat-nom">Antony</strong><span>Conseiller Santéo · vous répond sur WhatsApp</span></span><button type="button" class="tchat-x" id="tchat-x" aria-label="Fermer la discussion">×</button></div>
+    <div class="tchat-tete"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-qui"><strong id="tchat-nom">Antony</strong></span><button type="button" class="tchat-x" id="tchat-x" aria-label="Fermer la discussion">×</button></div>
     <div class="tchat-fil" id="tchat-fil" aria-live="polite"></div>
-    <div class="tchat-idees" id="tchat-idees"></div>
-    <form class="tchat-saisie" id="tchat-saisie"><label class="cache-visuel" for="tchat-texte">Votre message à Antony</label><textarea id="tchat-texte" rows="2" maxlength="600" placeholder="Votre question…"></textarea><button type="submit" class="tchat-envoyer">Envoyer sur WhatsApp</button></form>
+    <form class="tchat-saisie" id="tchat-saisie"><label class="cache-visuel" for="tchat-texte">Votre message à Antony</label><textarea id="tchat-texte" rows="2" maxlength="600" placeholder="Votre message"></textarea><button type="submit" class="tchat-envoyer">Envoyer</button></form>
   </section>
-  <button type="button" class="tchat-bouton" id="tchat-bouton" aria-expanded="false" aria-controls="tchat-fenetre"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-bouton-texte">Une question ? <b>Antony</b> vous répond</span></button>
+  <button type="button" class="tchat-bouton" id="tchat-bouton" aria-expanded="false" aria-controls="tchat-fenetre" aria-label="Écrire à Antony"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-pastille" id="tchat-pastille" aria-label="Nouveau message d'Antony" hidden></span></button>
 </div>
 
 <script>
@@ -1071,7 +1074,7 @@ function envoyer(){
   fetch(ENVOI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)})
     .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error("refus");if(typeof j.erreur==="string")e.raison=j.erreur.slice(0,200);throw e}
       b.disabled=false;b.textContent=lib;
-      if(window.tchatDemandeEnvoyee)window.tchatDemandeEnvoyee(d.prenom);
+      if(window.tchatDemandeEnvoyee)window.tchatDemandeEnvoyee(d,j.id);
       const waQ=waLien("Bonjour, je viens de demander un devis sur le site Santéo"+(d.offre?" (option "+d.offre.numero+")":"")+".");
       fini('<p class="merci-titre">✓ Merci '+html(d.prenom)+', votre demande est bien arrivée.</p><ul class="merci-suite">'+
         '<li><b>Votre devis</b> : un conseiller Santéo l\'étudie et vous l\'envoie par e-mail à <b>'+html(d.email)+'</b>.</li>'+
@@ -1117,56 +1120,109 @@ window.addEventListener("hashchange",route);
 
 
 
-/* ---------- Tchat avec Antony (WhatsApp 01 53 19 86 46) ----------
-   Le visiteur écrit sa question ; WhatsApp s'ouvre vers Antony avec la question et ce qu'il a déjà saisi
-   (âge, code postal, régime, offre choisie). L'accueil change selon l'avancement du visiteur. Textes : Mon idée. */
+/* ---------- Tchat avec Antony ----------
+   Trois modes (maquette/reglages-site.json, « tchat ») :
+   - « direct » : le visiteur écrit ici ; le CRM transmet au WhatsApp d'Antony et renvoie ses réponses, affichées ici ;
+   - « whatsapp » : WhatsApp s'ouvre vers le 01 53 19 86 46 avec la question et ce que le visiteur a déjà saisi ;
+   - « aucun » : pas de tchat.
+   Fenêtre sans texte (Fabrice, 10/11/2026 : « retirer tout les textes jsute un chat et un bouton envoyer »). */
+const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 (function(){
-  const bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte"), idees=$("tchat-idees");
+  const zone=$("tchat"), bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte");
   if(!bouton)return;
+  if(TCHAT_MODE==="aucun"||(TCHAT_MODE==="direct"&&!TCHAT_CRM)){zone.hidden=true;return}
+  const direct=TCHAT_MODE==="direct";
   // Avatar : l'oiseau de l'en-tête, repris tel quel (sans le copier une seconde fois dans la page) ; sinon la lettre « A »
   const oiseau=document.querySelector("img.mascotte");
   document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau&&oiseau.src)i.src=oiseau.src;else i.replaceWith("A")});
-  let prenomEnvoye=null; window.tchatDemandeEnvoyee=p=>{prenomEnvoye=p};
+  // Identification du prospect : après une demande de devis, le numéro de fiche rendu par le CRM accompagne ses messages
+  let identite=null; try{identite=JSON.parse(localStorage.getItem("santeo-fiche")||"null")}catch(err){}
+  window.tchatDemandeEnvoyee=(d,fiche)=>{identite={fiche:fiche?String(fiche):null,prenom:d.prenom,nom:d.nom,telephone:d.telephone,email:d.email};
+    try{localStorage.setItem("santeo-fiche",JSON.stringify({fiche:identite.fiche}))}catch(err){}};
   function contexte(){
     const age=ageDeDate($("age").value), cp=$("cp").value.trim().toUpperCase();
     const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
-    return {age, cp:cp&&Moteur.departement(cp)?cp:"", reg:$("reg").options[$("reg").selectedIndex].text, offre:x?{numero:S.chosen+1,prix:x.total}:null};
+    return {age, cp:cp&&Moteur.departement(cp)?cp:"", reg:$("reg").options[$("reg").selectedIndex].text,
+      offre:x?{numero:S.chosen+1,prix:x.total,gamme:x.gamme,formule:x.formule}:null};
   }
-  function accueil(){
-    const c=contexte(), moi="Bonjour, je suis Antony, conseiller chez Santéo. ";
-    if(prenomEnvoye)return "Merci "+prenomEnvoye+", votre demande est bien arrivée. Une question en attendant votre devis ? Écrivez-moi ici, je vous réponds sur WhatsApp.";
-    if(c.offre)return moi+"Vous regardez l'option "+c.offre.numero+" à "+eur(c.offre.prix)+" par mois : une question sur ses garanties ou sur l'adhésion ?";
-    if(c.age!=null&&c.cp)return moi+"Vous comparez pour "+c.age+" ans ("+c.cp+") : une question sur les offres ? Je vous réponds sur WhatsApp.";
-    return moi+"Une question sur votre mutuelle santé ? Écrivez-moi ici, je vous réponds sur WhatsApp.";
-  }
-  const IDEES=["Quelle offre me conseillez-vous ?","Comment résilier ma mutuelle actuelle ?","Je préfère être rappelé(e)"];
-  function bulle(t,qui){const b=document.createElement("div");b.className="tchat-msg "+qui;b.textContent=t;fil.appendChild(b);fil.scrollTop=fil.scrollHeight}
-  function ouvrir(){
-    fil.innerHTML=""; bulle(accueil(),"lui");
-    idees.innerHTML=""; IDEES.forEach(t=>{const i=document.createElement("button");i.type="button";i.textContent=t;i.onclick=()=>{texte.value=t;texte.focus()};idees.appendChild(i)});
-    fen.hidden=false; bouton.setAttribute("aria-expanded","true"); texte.focus({preventScroll:true});
-  }
-  function fermer(){fen.hidden=true;bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true})}
-  bouton.onclick=()=>fen.hidden?ouvrir():fermer();
-  $("tchat-x").onclick=fermer;
+  function bulle(t,qui){const b=document.createElement("div");b.className="tchat-msg "+qui;b.textContent=t;fil.appendChild(b);fil.scrollTop=fil.scrollHeight;return b}
+  function fermer(){fen.hidden=true;bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});if(direct)suivreBientot()}
+  $("tchat-x").onclick=()=>fermer();
   fen.addEventListener("keydown",e=>{if(e.key==="Escape")fermer()});
-  $("tchat-saisie").addEventListener("submit",e=>{
-    e.preventDefault(); const t=texte.value.trim(); if(!t){texte.focus();return}
-    const c=contexte(), L=[t,"","— Envoyé depuis le site santeo.net"];
-    const profil=[c.age!=null?c.age+" ans":"",c.cp?"code postal "+c.cp:"",c.age!=null?c.reg:""].filter(Boolean).join(", ");
-    if(profil)L.push("Mon profil : "+profil+".");
-    if(c.offre)L.push("Je regarde l'option "+c.offre.numero+" à "+eur(c.offre.prix)+" par mois.");
-    const lien=waLien(L.join("\n"));
-    bulle(t,"moi"); texte.value=""; idees.innerHTML="";
-    if(!lien)return;
-    bulle("WhatsApp s'ouvre avec votre message : appuyez sur « Envoyer » pour me le transmettre.","lui");
-    const a=document.createElement("a"); a.href=lien; a.target="_blank"; a.rel="noopener"; a.className="tchat-lien"; a.textContent="Ouvrir WhatsApp";
-    fil.appendChild(a); fil.scrollTop=fil.scrollHeight;
-    try{window.open(lien,"_blank","noopener")}catch(err){}
-  });
   // Sur téléphone, la bulle s'efface quand l'étape 4 est à l'écran : elle couvrirait le bouton « Recevoir mon devis »
   const fp=$("form-panel");
-  if(window.IntersectionObserver&&fp)new IntersectionObserver(es=>es.forEach(en=>$("tchat").classList.toggle("discret",en.isIntersecting)),{threshold:.05}).observe(fp);
+  if(window.IntersectionObserver&&fp)new IntersectionObserver(es=>es.forEach(en=>zone.classList.toggle("discret",en.isIntersecting)),{threshold:.05}).observe(fp);
+
+  /* --- Mode « whatsapp » : la question part par WhatsApp, le visiteur appuie sur « Envoyer » --- */
+  if(!direct){
+    bouton.onclick=()=>{if(!fen.hidden){fermer();return}fen.hidden=false;bouton.setAttribute("aria-expanded","true");texte.focus({preventScroll:true})};
+    $("tchat-saisie").addEventListener("submit",e=>{
+      e.preventDefault(); const t=texte.value.trim(); if(!t){texte.focus();return}
+      const c=contexte(), L=[t,"","— Envoyé depuis le site santeo.net"];
+      const profil=[c.age!=null?c.age+" ans":"",c.cp?"code postal "+c.cp:"",c.age!=null?c.reg:""].filter(Boolean).join(", ");
+      if(profil)L.push("Mon profil : "+profil+".");
+      if(c.offre)L.push("Je regarde l'option "+c.offre.numero+" à "+eur(c.offre.prix)+" par mois.");
+      const lien=waLien(L.join("\n"));
+      bulle(t,"moi"); texte.value="";
+      if(!lien)return;
+      const a=document.createElement("a"); a.href=lien; a.target="_blank"; a.rel="noopener"; a.className="tchat-lien"; a.textContent="Ouvrir WhatsApp";
+      fil.appendChild(a); fil.scrollTop=fil.scrollHeight;
+      try{window.open(lien,"_blank","noopener")}catch(err){}
+    });
+    return;
+  }
+
+  /* --- Mode « direct » : la conversation reste ici ; Antony répond depuis son WhatsApp, par le CRM --- */
+  const CLE="santeo-tchat", ARRET_SUIVI=30*60*1000, ESSAI=/[?&]test=1(&|$)/.test(location.search);
+  let etat={conversation:null,messages:[],dernier:null,activite:0}, minuterie=null, nonLus=0;
+  try{const e=JSON.parse(localStorage.getItem(CLE)||"null");if(e&&e.conversation&&Date.now()-(e.activite||0)<7*864e5)etat=Object.assign(etat,e)}catch(err){}
+  const garderT=()=>{try{localStorage.setItem(CLE,JSON.stringify(etat))}catch(err){}};
+  const pastille=$("tchat-pastille");
+  function majPastille(){pastille.hidden=!nonLus;pastille.textContent=nonLus>9?"9+":String(nonLus)}
+  function afficher(){
+    fil.innerHTML="";
+    etat.messages.forEach(m=>{
+      const b=bulle(m.texte,m.de==="antony"?"lui":"moi");
+      if(m.de==="visiteur"&&m.statut==="envoi")b.classList.add("en-cours");
+      if(m.de==="visiteur"&&m.statut==="echec"){
+        const r=document.createElement("button");r.type="button";r.className="tchat-reessayer";r.textContent="Non envoyé. Réessayer";
+        r.onclick=()=>{etat.messages=etat.messages.filter(x=>x!==m);envoyer(m.texte)};b.after(r);
+      }
+    });
+  }
+  function ouvrir(){fen.hidden=false;bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
+  bouton.onclick=()=>fen.hidden?ouvrir():fermer();
+  const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true)throw new Error(j.erreur||rep.status);return j}));
+  function envoyer(t){
+    const c=contexte(), m={id:"local-"+Date.now(),de:"visiteur",texte:t,date:new Date().toISOString(),statut:"envoi"};
+    etat.messages.push(m); etat.activite=Date.now(); afficher();
+    appel(TCHAT_CRM,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+      conversation:etat.conversation,texte:t,
+      contexte:{age:c.age,code_postal:c.cp,regime:c.age!=null?c.reg:"",offre:c.offre?{numero:c.offre.numero,cotisation_mensuelle:Math.round(c.offre.prix*100)/100,gamme:c.offre.gamme,formule:c.offre.formule}:null},
+      identite:identite&&(identite.fiche||identite.telephone)?identite:null,
+      provenance:provenance(),page:location.href.split("#")[0],site_web:"",test:ESSAI})})
+    .then(j=>{etat.conversation=j.conversation||etat.conversation;if(j.message)m.id=String(j.message);m.statut="ok"})
+    .catch(()=>{m.statut="echec"})
+    .then(()=>{garderT();if(!fen.hidden)afficher();suivreBientot()});
+  }
+  $("tchat-saisie").addEventListener("submit",e=>{e.preventDefault();const t=texte.value.trim();if(!t){texte.focus();return}texte.value="";envoyer(t)});
+  // Réponses d'Antony : toutes les 4 secondes fenêtre ouverte, toutes les 30 secondes fermée, arrêt après 30 minutes sans activité
+  function suivreBientot(){clearTimeout(minuterie);if(!etat.conversation||Date.now()-etat.activite>ARRET_SUIVI)return;minuterie=setTimeout(suivre,fen.hidden?30000:4000)}
+  function suivre(){
+    appel(TCHAT_CRM+"/"+encodeURIComponent(etat.conversation)+(etat.dernier?"?depuis="+encodeURIComponent(etat.dernier):""),{method:"GET"})
+    .then(j=>{
+      let neufs=0;
+      (j.messages||[]).forEach(r=>{
+        const id=String(r.id); etat.dernier=id;
+        if(etat.messages.some(x=>x.id===id))return;
+        if(r.de==="antony"){etat.messages.push({id,de:"antony",texte:String(r.texte||""),date:r.date||""});neufs++;etat.activite=Date.now()}
+      });
+      if(neufs){garderT();if(fen.hidden){if(neufs>0){nonLus+=neufs;majPastille()}}else afficher()}
+    })
+    .catch(()=>{})
+    .then(suivreBientot);
+  }
+  if(etat.conversation)suivreBientot();
 })();
 
 /* ---------- Démarrage ---------- */

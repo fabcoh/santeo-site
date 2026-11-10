@@ -10,7 +10,8 @@ const S = process.argv[2], R = process.argv[3];
 const CRM = 'https://crm.exemple.invalid/devis';
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'site-'));
 const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, ...opts]); return d; };
-const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test') };
+const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test'),
+  tchat: construire('tchat', '--en-ligne', '--envoi', CRM, '--tchat', 'direct', '--tchat-crm', 'https://crm.exemple.invalid/tchat') };
 const errs = [], err = m => errs.push(m);
 const types = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.txt': 'text/plain', '.xml': 'application/xml' };
 
@@ -119,11 +120,34 @@ async function remplir(p) {
     await p.fill('#tchat-texte', 'Les lunettes sont-elles bien remboursées ?'); await p.click('.tchat-envoyer'); await p.waitForTimeout(300);
     const lienT = await p.getAttribute('#tchat-fil a.tchat-lien', 'href').catch(() => null);
     const msgT = lienT ? decodeURIComponent(new URL(lienT).searchParams.get('text') || '') : '';
-    doit(/Une question sur votre mutuelle/.test(accueil0) && /option 1 à/.test(accueil1)
+    doit(accueil0.trim() === '' && accueil1.trim() === '' && (await p.textContent('.tchat-envoyer')) === 'Envoyer'
       && /^https:\/\/wa\.me\/33153198646\?text=/.test(lienT || '') && /Les lunettes sont-elles bien remboursées/.test(msgT) && /code postal 75012/.test(msgT) && /option 1 à/.test(msgT),
       nom + ' : tchat (' + accueil0.slice(0, 40) + ' | ' + accueil1.slice(0, 60) + ' | ' + msgT.slice(0, 60) + ')');
     await p.keyboard.press('Escape'); doit(!(await p.isVisible('#tchat-fenetre')), nom + ' : le tchat ne se ferme pas avec Échap');
-    console.log(nom, '| tchat :', accueil1.slice(0, 70), '…');
+    console.log(nom, '| tchat (mode whatsapp) : fenêtre sans texte, lien', (lienT || '').slice(0, 40));
+    await ctx.close();
+    // 6. Tchat « direct » : le message part au CRM (simulé), la réponse d'Antony s'affiche ici, la conversation reste après rechargement
+    ctx = await b.newContext(opt); await servir(ctx, 'https://www.santeo.net/', sites.tchat);
+    let envoiT = null, lectures = 0, waOuvert = false;
+    await ctx.route(/wa\.me|whatsapp\.com/, r => { waOuvert = true; r.abort(); });
+    await ctx.route('https://crm.exemple.invalid/tchat**', r => {
+      const req = r.request(), cors = { 'access-control-allow-origin': 'https://www.santeo.net' };
+      if (req.method() === 'POST') { envoiT = JSON.parse(req.postData()); return r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: '{"ok":true,"conversation":"c-123","message":"m1"}' }); }
+      lectures++;
+      const msgs = lectures === 1 ? [{ id: 'm1', de: 'visiteur', texte: 'Les lunettes ?' }, { id: 'm2', de: 'antony', texte: 'Bonjour, oui : 200 € tous les deux ans.' }] : [];
+      r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify({ ok: true, messages: msgs }) });
+    });
+    p = await ctx.newPage(); p.on('pageerror', e => err(nom + ' tchat direct : ' + e.message));
+    await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300);
+    await p.click('#tchat-bouton'); const ligne = 'vous répond ici';
+    doit((await p.textContent('.tchat-envoyer')) === 'Envoyer' && ((await p.textContent('#tchat-fil')) || '').trim() === '', nom + ' : tchat direct : bouton « Envoyer » et fenêtre vide au départ');
+    await p.fill('#tchat-texte', 'Les lunettes ?'); await p.click('.tchat-envoyer'); await p.waitForTimeout(5200);
+    const filD = (await p.textContent('#tchat-fil')) || '';
+    doit(/vous répond ici/.test(ligne) && envoiT && envoiT.texte === 'Les lunettes ?' && envoiT.conversation === null && envoiT.site_web === '' && 'contexte' in envoiT
+      && /200 € tous les deux ans/.test(filD) && !waOuvert, nom + ' : tchat direct (' + ligne + ' | ' + JSON.stringify(envoiT) + ' | ' + filD.slice(-80) + ')');
+    await p.reload(); await p.waitForTimeout(300); await p.click('#tchat-bouton');
+    doit(/200 € tous les deux ans/.test((await p.textContent('#tchat-fil')) || ''), nom + ' : la conversation du tchat ne reste pas après rechargement');
+    console.log(nom, '| tchat direct : envoi', envoiT && envoiT.texte, '| lectures', lectures);
     await ctx.close();
   }
   await b.close(); fs.rmSync(tmp, { recursive: true, force: true });

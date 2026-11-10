@@ -1,4 +1,6 @@
 {
   "envoi_crm": "https://crm.capisante.fr/api/site/demande",
-  "repli": ""
+  "repli": "",
+  "tchat": "whatsapp",
+  "tchat_crm": ""
 }

@@ -15,6 +15,9 @@ EN_LIGNE = "--en-ligne" in sys.argv
 ADRESSE = "https://www.santeo.net/" if EN_LIGNE else "https://fabcoh.github.io/santeo-site/"
 reglages = json.load(open(S + "/reglages-site.json", encoding="utf-8"))
 ENVOI = option("--envoi", reglages["envoi_crm"]); REPLI = option("--repli", reglages["repli"])
+TCHAT = option("--tchat", reglages.get("tchat", "whatsapp")); TCHAT_CRM = option("--tchat-crm", reglages.get("tchat_crm", ""))
+assert TCHAT in ("whatsapp", "direct", "aucun"), TCHAT
+assert TCHAT_CRM == "" or TCHAT_CRM.startswith("https://"), "l'adresse du tchat doit commencer par https://"
 assert ENVOI == "" or ENVOI.startswith("https://"), "l'adresse du CRM doit commencer par https://"
 assert REPLI in ("", "whatsapp"), REPLI
 t = open(S + "/template.html", encoding="utf-8").read()
@@ -33,7 +36,8 @@ out = out.replace("__SANTEO_LOGO__", open(S + "/logos/santeo.b64").read().strip(
 out = out.replace("__SANTEO_MASQUE__", open(S + "/logos/santeo-masque.b64").read().strip())
 out = out.replace("__MASCOTTE__", open(S + "/logos/mascotte.b64").read().strip())
 out = out.replace("__COMETE_D__", open(S + "/logos/comete-trajet.txt").read().strip())
-for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__", ENVOI if SITE else ""), ("__REPLI__", REPLI if SITE else "")):
+for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__", ENVOI if SITE else ""), ("__REPLI__", REPLI if SITE else ""),
+                       ("__TCHAT_MODE__", TCHAT if SITE else "whatsapp"), ("__TCHAT_CRM__", TCHAT_CRM if SITE else "")):
     assert out.count(repere) == 1, repere
     out = out.replace(repere, valeur.replace('"', ""))
 if SITE is None:

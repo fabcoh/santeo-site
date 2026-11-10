@@ -229,6 +229,14 @@ Statut : À TRAITER
   l'écran). L'accueil s'adapte à l'avancement du visiteur (rien saisi, âge et code postal, offre choisie, demande
   envoyée) ; le visiteur écrit sa question, WhatsApp s'ouvre vers Antony avec la question, l'âge, le code postal, le
   régime et l'offre. Textes : Mon idée. Avatar : l'oiseau de l'en-tête (« l'avatar c'est loiseau du haut »).
+- Tchat (10/11/2026, correction de Fabrice) : « je veux qu'il écrive ici mais pas qu'il ouvre leur whatsapp et
+  qu'antony puisse voir la conversation et y répondre depuis sont whatsapp ». Mode « direct » préparé côté site
+  (`maquette/reglages-site.json`, `tchat` et `tchat_crm`) : le message part au CRM, les réponses d'Antony s'affichent dans
+  la fenêtre, la conversation reste après rechargement. Fenêtre sans texte : seulement la conversation, la saisie et
+  « Envoyer » (« retirer tout les textes jsute un chat et un bouton envoyer »). Identification (« bien identifier les
+  prospects sur le crm ») : après une demande de devis, chaque message porte le numéro de fiche rendu par le CRM. Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
+  contrat : `POST /api/site/tchat`, `GET /api/site/tchat/<conversation>?depuis=`). Tant qu'il n'est pas en service, le
+  tchat reste en mode « whatsapp » (ou « aucun », au choix de Fabrice).
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
 - Étape 2 (09/11/2026) : la fenêtre *Précisez* ne s'ouvre plus toute seule quand on met des étoiles, seulement au clic
