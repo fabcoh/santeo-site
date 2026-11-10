@@ -413,14 +413,12 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 .tchat-msg{max-width:88%;padding:.55rem .75rem;border-radius:14px;font-size:.92rem;line-height:1.4;white-space:pre-wrap}
 .tchat-msg.lui{background:var(--accent-soft);color:var(--fg);border-bottom-left-radius:4px;align-self:flex-start}
 .tchat-msg.moi{background:#d9fdd3;color:#111b21;border-bottom-right-radius:4px;align-self:flex-end}
-.tchat-lien{align-self:flex-start;color:#0b6b37;font-weight:700;font-size:.9rem}
 .tchat-saisie{display:flex;flex-direction:column;gap:.45rem;padding:.7rem .8rem;border-top:1px solid var(--line)}
 .tchat-saisie textarea{width:100%;resize:none;border:1px solid var(--line);border-radius:10px;padding:.55rem .65rem;font:inherit;font-size:16px;background:var(--bg);color:var(--fg)}
 .tchat-envoyer{border:0;border-radius:999px;background:#128c4a;color:#fff;font:inherit;font-weight:700;padding:.6rem 1rem;cursor:pointer}
 .cache-visuel{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tchat-msg.moi{background:#005c4b;color:#e9edef}:root:not([data-theme="light"]) .tchat-lien{color:#7fd69d}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tchat-msg.moi{background:#005c4b;color:#e9edef}}
 :root[data-theme="dark"] .tchat-msg.moi{background:#005c4b;color:#e9edef}
-:root[data-theme="dark"] .tchat-lien{color:#7fd69d}
 @media (prefers-reduced-motion: no-preference){.tchat-fenetre:not([hidden]){animation:tchat-ouvre .18s ease-out}}
 @keyframes tchat-ouvre{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media print{.tchat{display:none}}
@@ -1121,17 +1119,17 @@ window.addEventListener("hashchange",route);
 
 
 /* ---------- Tchat avec Antony ----------
-   Trois modes (maquette/reglages-site.json, « tchat ») :
-   - « direct » : le visiteur écrit ici ; le CRM transmet au WhatsApp d'Antony et renvoie ses réponses, affichées ici ;
-   - « whatsapp » : WhatsApp s'ouvre vers le 01 53 19 86 46 avec la question et ce que le visiteur a déjà saisi ;
-   - « aucun » : pas de tchat.
+   Deux modes (maquette/reglages-site.json, « tchat ») :
+   - « direct » : le visiteur écrit ici et reste ici ; le CRM transmet au WhatsApp d'Antony et renvoie ses réponses,
+     affichées ici. Le visiteur n'ouvre jamais WhatsApp (Fabrice, 10/11/2026 : « je veux pas que le client ouvre
+     WhatsApp […] Le but, c'est de rester dans le chat ») ;
+   - « aucun » : pas de tchat (tant que le relais du CRM n'est pas en service).
    Fenêtre sans texte (Fabrice, 10/11/2026 : « retirer tout les textes jsute un chat et un bouton envoyer »). */
 const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 (function(){
   const zone=$("tchat"), bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte");
   if(!bouton)return;
-  if(TCHAT_MODE==="aucun"||(TCHAT_MODE==="direct"&&!TCHAT_CRM)){zone.hidden=true;return}
-  const direct=TCHAT_MODE==="direct";
+  if(TCHAT_MODE!=="direct"||!TCHAT_CRM){zone.hidden=true;return}
   // Avatar : l'oiseau de l'en-tête, repris tel quel (sans le copier une seconde fois dans la page) ; sinon la lettre « A »
   const oiseau=document.querySelector("img.mascotte");
   document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau&&oiseau.src)i.src=oiseau.src;else i.replaceWith("A")});
@@ -1146,33 +1144,14 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       offre:x?{numero:S.chosen+1,prix:x.total,gamme:x.gamme,formule:x.formule}:null};
   }
   function bulle(t,qui){const b=document.createElement("div");b.className="tchat-msg "+qui;b.textContent=t;fil.appendChild(b);fil.scrollTop=fil.scrollHeight;return b}
-  function fermer(){fen.hidden=true;bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});if(direct)suivreBientot()}
+  function fermer(){fen.hidden=true;bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
   $("tchat-x").onclick=()=>fermer();
   fen.addEventListener("keydown",e=>{if(e.key==="Escape")fermer()});
   // Sur téléphone, la bulle s'efface quand l'étape 4 est à l'écran : elle couvrirait le bouton « Recevoir mon devis »
   const fp=$("form-panel");
   if(window.IntersectionObserver&&fp)new IntersectionObserver(es=>es.forEach(en=>zone.classList.toggle("discret",en.isIntersecting)),{threshold:.05}).observe(fp);
 
-  /* --- Mode « whatsapp » : la question part par WhatsApp, le visiteur appuie sur « Envoyer » --- */
-  if(!direct){
-    bouton.onclick=()=>{if(!fen.hidden){fermer();return}fen.hidden=false;bouton.setAttribute("aria-expanded","true");texte.focus({preventScroll:true})};
-    $("tchat-saisie").addEventListener("submit",e=>{
-      e.preventDefault(); const t=texte.value.trim(); if(!t){texte.focus();return}
-      const c=contexte(), L=[t,"","— Envoyé depuis le site santeo.net"];
-      const profil=[c.age!=null?c.age+" ans":"",c.cp?"code postal "+c.cp:"",c.age!=null?c.reg:""].filter(Boolean).join(", ");
-      if(profil)L.push("Mon profil : "+profil+".");
-      if(c.offre)L.push("Je regarde l'option "+c.offre.numero+" à "+eur(c.offre.prix)+" par mois.");
-      const lien=waLien(L.join("\n"));
-      bulle(t,"moi"); texte.value="";
-      if(!lien)return;
-      const a=document.createElement("a"); a.href=lien; a.target="_blank"; a.rel="noopener"; a.className="tchat-lien"; a.textContent="Ouvrir WhatsApp";
-      fil.appendChild(a); fil.scrollTop=fil.scrollHeight;
-      try{window.open(lien,"_blank","noopener")}catch(err){}
-    });
-    return;
-  }
-
-  /* --- Mode « direct » : la conversation reste ici ; Antony répond depuis son WhatsApp, par le CRM --- */
+  /* --- La conversation reste ici ; Antony répond depuis son WhatsApp, par le CRM --- */
   const CLE="santeo-tchat", ARRET_SUIVI=30*60*1000, ESSAI=/[?&]test=1(&|$)/.test(location.search);
   let etat={conversation:null,messages:[],dernier:null,activite:0}, minuterie=null, nonLus=0;
   try{const e=JSON.parse(localStorage.getItem(CLE)||"null");if(e&&e.conversation&&Date.now()-(e.activite||0)<7*864e5)etat=Object.assign(etat,e)}catch(err){}

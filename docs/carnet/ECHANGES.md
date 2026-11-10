@@ -234,9 +234,11 @@ Statut : À TRAITER
   (`maquette/reglages-site.json`, `tchat` et `tchat_crm`) : le message part au CRM, les réponses d'Antony s'affichent dans
   la fenêtre, la conversation reste après rechargement. Fenêtre sans texte : seulement la conversation, la saisie et
   « Envoyer » (« retirer tout les textes jsute un chat et un bouton envoyer »). Identification (« bien identifier les
-  prospects sur le crm ») : après une demande de devis, chaque message porte le numéro de fiche rendu par le CRM. Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
-  contrat : `POST /api/site/tchat`, `GET /api/site/tchat/<conversation>?depuis=`). Tant qu'il n'est pas en service, le
-  tchat reste en mode « whatsapp » (ou « aucun », au choix de Fabrice).
+  prospects sur le crm ») : après une demande de devis, chaque message porte le numéro de fiche rendu par le CRM.
+  Le visiteur n'ouvre jamais WhatsApp (« je veux pas que le client ouvre WhatsApp. Ce n'est pas le but. Le but, c'est
+  de rester dans le chat. Et lui, c'est invisible pour lui. ») : le mode « whatsapp » est supprimé ; tant que le relais
+  du CRM n'est pas en service, le tchat est caché (réglage « aucun »). Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
+  contrat : `POST /api/site/tchat`, `GET /api/site/tchat/<conversation>?depuis=`).
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
 - Étape 2 (09/11/2026) : la fenêtre *Précisez* ne s'ouvre plus toute seule quand on met des étoiles, seulement au clic
