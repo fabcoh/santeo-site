@@ -392,7 +392,9 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 .tchat>*{pointer-events:auto}
 .tchat-bouton{display:flex;align-items:center;gap:.55rem;border:2px solid #128c4a;border-radius:999px;background:var(--surface);color:var(--fg);box-shadow:0 6px 22px rgba(10,40,60,.22);padding:.35rem 1rem .35rem .35rem;font:inherit;font-size:.92rem;cursor:pointer;transition:opacity .2s}
 .tchat-bouton:focus-visible,.tchat-x:focus-visible,.tchat-envoyer:focus-visible,.tchat-idees button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.tchat-avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--brand-1),var(--brand-2));color:#fff;font-weight:800;font-family:var(--f-display);font-size:1.15rem;flex:none}
+.tchat-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);border:1px solid var(--line);color:var(--brand-1);font-weight:800;font-family:var(--f-display);font-size:1.15rem;flex:none;overflow:hidden}
+/* L'avatar d'Antony est l'oiseau de l'en-tête (Fabrice, 10/11/2026) */
+.tchat-avatar img{width:118%;height:118%;object-fit:contain;transform:translate(3%,4%)}
 @media (max-width:599px){.tchat-bouton-texte{display:none}.tchat-bouton{padding:.3rem}.tchat.discret .tchat-bouton[aria-expanded="false"]{opacity:0;visibility:hidden}}
 .tchat-fenetre{width:min(360px,calc(100vw - 32px));max-height:min(540px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(10,40,60,.28);overflow:hidden}
 .tchat-fenetre[hidden]{display:none}
@@ -648,12 +650,12 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 <!-- Tchat avec Antony : la question du visiteur part sur WhatsApp (ligne 01 53 19 86 46), avec ce qu'il a déjà saisi -->
 <div class="tchat" id="tchat">
   <section class="tchat-fenetre" id="tchat-fenetre" role="dialog" aria-labelledby="tchat-nom" hidden>
-    <div class="tchat-tete"><span class="tchat-avatar" aria-hidden="true">A</span><span class="tchat-qui"><strong id="tchat-nom">Antony</strong><span>Conseiller Santéo · vous répond sur WhatsApp</span></span><button type="button" class="tchat-x" id="tchat-x" aria-label="Fermer la discussion">×</button></div>
+    <div class="tchat-tete"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-qui"><strong id="tchat-nom">Antony</strong><span>Conseiller Santéo · vous répond sur WhatsApp</span></span><button type="button" class="tchat-x" id="tchat-x" aria-label="Fermer la discussion">×</button></div>
     <div class="tchat-fil" id="tchat-fil" aria-live="polite"></div>
     <div class="tchat-idees" id="tchat-idees"></div>
     <form class="tchat-saisie" id="tchat-saisie"><label class="cache-visuel" for="tchat-texte">Votre message à Antony</label><textarea id="tchat-texte" rows="2" maxlength="600" placeholder="Votre question…"></textarea><button type="submit" class="tchat-envoyer">Envoyer sur WhatsApp</button></form>
   </section>
-  <button type="button" class="tchat-bouton" id="tchat-bouton" aria-expanded="false" aria-controls="tchat-fenetre"><span class="tchat-avatar" aria-hidden="true">A</span><span class="tchat-bouton-texte">Une question ? <b>Antony</b> vous répond</span></button>
+  <button type="button" class="tchat-bouton" id="tchat-bouton" aria-expanded="false" aria-controls="tchat-fenetre"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-bouton-texte">Une question ? <b>Antony</b> vous répond</span></button>
 </div>
 
 <script>
@@ -1121,6 +1123,9 @@ window.addEventListener("hashchange",route);
 (function(){
   const bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte"), idees=$("tchat-idees");
   if(!bouton)return;
+  // Avatar : l'oiseau de l'en-tête, repris tel quel (sans le copier une seconde fois dans la page) ; sinon la lettre « A »
+  const oiseau=document.querySelector("img.mascotte");
+  document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau&&oiseau.src)i.src=oiseau.src;else i.replaceWith("A")});
   let prenomEnvoye=null; window.tchatDemandeEnvoyee=p=>{prenomEnvoye=p};
   function contexte(){
     const age=ageDeDate($("age").value), cp=$("cp").value.trim().toUpperCase();
