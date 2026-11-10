@@ -12,6 +12,15 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 10/11/2026 — de Claude site à la conversation pilote — porte d'entrée : codes postaux de Corse et d'outre-mer
+Statut : À TRAITER
+- **Fait vérifiable** : le site accepte comme code postal un département à 2 caractères, y compris `2A` et `2B`, ou à
+  3 chiffres pour l'outre-mer (`971` à `976`), ou un code postal à 5 chiffres. La porte d'entrée
+  (`server/siteDemandeFlux.ts`, `lireDemandeSite`) n'accepte que `^(\d{2}|\d{5})$` : un visiteur de Corse ou
+  d'outre-mer qui tape son département reçoit « Format invalide : code_postal » et sa demande n'arrive pas.
+- **Demande** : accepter aussi `2A`, `2B` (majuscules ou minuscules) et `971` à `976`.
+- **Vérification attendue** : une demande d'essai avec `"code_postal":"2A"` répond `ok: true`.
+
 ### 09/11/2026 — de Claude site à la conversation pilote — porte d'entrée du site dans le CRM
 Statut : À TRAITER (code : conversation pilote, dépôt `WhatsApp_Solution` ; mise en service : Manus)
 Quoi : dans le CRM, ouvrir une adresse de réception des demandes de devis du nouveau site www.santeo.net,

@@ -72,18 +72,19 @@ async function remplir(p) {
       nom + ' : demande reçue incomplète ' + JSON.stringify(recu));
     console.log(nom, '| CRM :', fin.trim().slice(0, 70), '| provenance :', recu && recu.provenance, '| offre :', recu && JSON.stringify(recu.offre));
     // 2 bis. Le CRM répond par une erreur : le visiteur peut réessayer ou passer par WhatsApp
-    reponse = { status: 500, body: '{"ok":false,"erreur":"essai"}' };
+    reponse = { status: 409, body: '{"ok":false,"erreur":"Essai refusé : ce téléphone appartient à une fiche réelle"}' };
     await p.goto('https://www.santeo.net/'); await remplir(p); await p.check('#c-accord');
     await p.click('#send'); await p.waitForTimeout(500);
     const e2 = (await p.textContent('#form-err')) || '';
-    doit(/n'a pas pu partir/.test(e2) && await p.isEnabled('#send') && await p.isVisible('#lead'), nom + ' : erreur du CRM mal signalée (' + e2 + ')');
+    doit(/n'a pas pu partir : Essai refusé : ce téléphone appartient à une fiche réelle\. Corrigez et réessayez/.test(e2) && await p.isEnabled('#send') && await p.isVisible('#lead'), nom + ' : erreur du CRM mal signalée (' + e2 + ')');
     doit(recu.provenance === 'Site Santéo – WhatsApp', nom + ' : la provenance doit rester pendant la visite');
     doit(recu.accord_recontact === true && recu.texte_accord.length > 20, nom + ' : accord coché non transmis');
     console.log(nom, '| erreur CRM :', e2.trim());
     // 2 ter. L'adresse renvoie une page (CRM pas encore en service) : ce n'est pas une confirmation
     reponse = { status: 200, body: '<!doctype html><html></html>' };
     await p.goto('https://www.santeo.net/'); await remplir(p); await p.click('#send'); await p.waitForTimeout(500);
-    doit(/n'a pas pu partir/.test((await p.textContent('#form-err')) || '') && !(await p.isVisible('#done')), nom + ' : une page HTML a été prise pour une confirmation');
+    const e3 = (await p.textContent('#form-err')) || '';
+    doit(/n'a pas pu partir\. Vérifiez votre connexion/.test(e3) && !(await p.isVisible('#done')), nom + ' : une page HTML a été prise pour une confirmation (' + e3 + ')');
     // 3. Anciennes adresses : /mentions-legales ouvre les mentions, toute autre adresse revient à l'accueil
     await p.goto('https://www.santeo.net/mentions-legales'); await p.waitForURL('https://www.santeo.net/#mentions-legales', { timeout: 8000 }).catch(() => {}); await p.waitForTimeout(400);
     doit(p.url() === 'https://www.santeo.net/#mentions-legales' && await p.isVisible('#vue-mentions'), nom + ' : /mentions-legales -> ' + p.url());
