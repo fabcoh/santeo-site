@@ -388,6 +388,11 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
 
 /* ---------- Tchat avec Antony (bulle en bas à droite, PC et téléphone) ---------- */
+:root{--tchat-fond:#eef4f8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--tchat-fond:#0b1a22}}
+:root[data-theme="dark"]{--tchat-fond:#0b1a22}
+.tchat-voile{position:fixed;inset:0;background:rgba(5,20,30,.5);display:none}
+@media (max-width:599px){.tchat-voile.ouvert{display:block}}
 .tchat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
 .tchat>*{pointer-events:auto}
 .tchat[hidden]{display:none}
@@ -411,19 +416,19 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (max-width:599px){.tchat-invite{font-size:.74rem;padding:.3rem .6rem}}
 @media (prefers-reduced-motion: no-preference){.tchat-invite{animation:tchat-invite-arrive .4s ease-out 1.2s both}}
 @keyframes tchat-invite-arrive{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.tchat-fenetre{width:min(360px,calc(100vw - 32px));max-height:min(540px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px rgba(10,40,60,.28);overflow:hidden}
+.tchat-fenetre{position:relative;width:min(360px,calc(100vw - 32px));max-height:min(540px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--tchat-fond);border:2px solid var(--brand-1);border-radius:16px;box-shadow:0 18px 50px rgba(5,30,50,.42),0 0 0 5px rgba(14,88,131,.10);overflow:hidden}
 .tchat-fenetre[hidden]{display:none}
-.tchat-tete{display:flex;align-items:center;gap:.6rem;padding:.65rem .75rem;background:var(--accent-soft);border-bottom:1px solid var(--line)}
-.tchat-qui{display:flex;flex-direction:column;line-height:1.25;flex:1;min-width:0;color:var(--fg)}
+.tchat-tete{display:flex;align-items:center;gap:.6rem;padding:.65rem .75rem;background:linear-gradient(135deg,#0e5883,#0a7aa5);color:#fff}   /* mêmes bleus foncés en clair et en sombre : texte blanc lisible */
+.tchat-qui{display:flex;flex-direction:column;line-height:1.25;flex:1;min-width:0;color:#fff;font-size:1.05rem}
 .tchat-qui span{font-size:.78rem;color:var(--muted)}
-.tchat-x{border:0;background:transparent;font-size:1.6rem;line-height:1;color:var(--muted);cursor:pointer;padding:.1rem .45rem;border-radius:6px}
+.tchat-x{border:0;background:rgba(255,255,255,.18);font-size:1.5rem;line-height:1;color:#fff;cursor:pointer;padding:.05rem .5rem .15rem;border-radius:8px}
 .tchat-fil{padding:.8rem;display:flex;flex-direction:column;gap:.5rem;overflow-y:auto;flex:1;min-height:3rem}
 .tchat-fil:empty{display:none}
 .tchat-msg{max-width:88%;padding:.55rem .75rem;border-radius:14px;font-size:.92rem;line-height:1.4;white-space:pre-wrap}
-.tchat-msg.lui{background:var(--accent-soft);color:var(--fg);border-bottom-left-radius:4px;align-self:flex-start}
+.tchat-msg.lui{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
 .tchat-msg.moi{background:#d9fdd3;color:#111b21;border-bottom-right-radius:4px;align-self:flex-end}
-.tchat-saisie{display:flex;flex-direction:column;gap:.45rem;padding:.7rem .8rem;border-top:1px solid var(--line)}
-.tchat-saisie textarea{width:100%;resize:none;border:1px solid var(--line);border-radius:10px;padding:.55rem .65rem;font:inherit;font-size:16px;background:var(--bg);color:var(--fg)}
+.tchat-saisie{display:flex;flex-direction:column;gap:.45rem;padding:.7rem .8rem;border-top:1px solid var(--line);background:var(--surface)}
+.tchat-saisie textarea{width:100%;resize:none;border:2px solid var(--brand-1);border-radius:10px;padding:.55rem .65rem;font:inherit;font-size:16px;background:var(--surface);color:var(--fg)}
 .tchat-envoyer{border:0;border-radius:999px;background:#128c4a;color:#fff;font:inherit;font-weight:700;padding:.6rem 1rem;cursor:pointer}
 .cache-visuel{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tchat-msg.moi{background:#005c4b;color:#e9edef}}
@@ -660,6 +665,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 
 <!-- Tchat avec Antony : la question du visiteur part sur WhatsApp (ligne 01 53 19 86 46), avec ce qu'il a déjà saisi -->
 <div class="tchat" id="tchat">
+  <div class="tchat-voile" id="tchat-voile" aria-hidden="true"></div>
   <section class="tchat-fenetre" id="tchat-fenetre" role="dialog" aria-labelledby="tchat-nom" hidden>
     <div class="tchat-tete"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-qui"><strong id="tchat-nom">Antony</strong></span><button type="button" class="tchat-x" id="tchat-x" aria-label="Fermer la discussion">×</button></div>
     <div class="tchat-fil" id="tchat-fil" aria-live="polite"></div>
@@ -1157,7 +1163,8 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   }
   function bulle(t,qui){const b=document.createElement("div");b.className="tchat-msg "+qui;b.textContent=t;fil.appendChild(b);fil.scrollTop=fil.scrollHeight;return b}
   const invite=$("tchat-invite");
-  function fermer(){fen.hidden=true;invite.hidden=false;bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
+  const voile=$("tchat-voile"); voile.onclick=()=>fermer();
+  function fermer(){fen.hidden=true;invite.hidden=false;voile.classList.remove("ouvert");bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
   $("tchat-x").onclick=()=>fermer();
   fen.addEventListener("keydown",e=>{if(e.key==="Escape")fermer()});
   // Sur téléphone, la bulle s'efface quand l'étape 4 est à l'écran : elle couvrirait le bouton « Recevoir mon devis »
@@ -1182,7 +1189,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       }
     });
   }
-  function ouvrir(){fen.hidden=false;invite.hidden=true;bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
+  function ouvrir(){fen.hidden=false;invite.hidden=true;voile.classList.add("ouvert");bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
   bouton.onclick=()=>fen.hidden?ouvrir():fermer();
   invite.onclick=ouvrir;
   const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error(j.erreur||rep.status);e.status=rep.status;throw e}return j}));
