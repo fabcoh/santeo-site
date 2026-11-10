@@ -992,10 +992,12 @@ function envoyer(){
     return;
   }
   b.disabled=true; const lib=b.textContent; b.textContent="Envoi en cours…";
-  const rate=()=>{b.disabled=false;b.textContent=lib;
-    $("form-err").innerHTML="Votre demande n'a pas pu partir. Vérifiez votre connexion et réessayez"+(lienWA?', ou <a href="'+lienWA+'" target="_blank" rel="noopener">envoyez-la sur WhatsApp</a>':"")+"."};
+  // Refus du CRM : sa raison est affichée (champ mal formé, essai refusé…) ; sinon, problème de connexion
+  const rate=e=>{b.disabled=false;b.textContent=lib;
+    const raison=e&&e.raison?String(e.raison).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c])):"";
+    $("form-err").innerHTML="Votre demande n'a pas pu partir"+(raison?" : "+raison+". Corrigez et réessayez":". Vérifiez votre connexion et réessayez")+(lienWA?', ou <a href="'+lienWA+'" target="_blank" rel="noopener">envoyez-la sur WhatsApp</a>':"")+"."};
   fetch(ENVOI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)})
-    .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true)throw new Error(j.erreur||rep.status);
+    .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error("refus");if(typeof j.erreur==="string")e.raison=j.erreur.slice(0,200);throw e}
       b.disabled=false;b.textContent=lib;
       fini("<strong>Merci, votre demande est bien arrivée.</strong><br>Un conseiller Santéo vous envoie votre devis par e-mail"+(d.accord_recontact?" et pourra vous appeler ou vous écrire sur WhatsApp, comme vous l'avez accepté.":"."))}))
     .catch(rate);
