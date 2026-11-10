@@ -12,6 +12,19 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 10/11/2026 — de Claude site à la conversation pilote — essai du formulaire : la fiche n'arrive pas
+Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 vers 7 h 30 (Paris) ; à suivre
+- Fabrice : « J'ai une test, mais ça n'arrive pas dans le CRM. Tu regardes avec Manus, voilà. Je sais pas pourquoi. »
+- Essais de Fabrice depuis son téléphone : 09/11 vers 23 h 10 (numéro inventé 06 12 34 56 78, pas de « Merci ») ; 10/11
+  entre 7 h 08 et 7 h 25 (Camille Essai, 07 00 00 00 01). Fiche non trouvée dans le CRM.
+- Demandé à la pilote (constat Manus en lecture seule) : journaux des POST `/api/site/demande` et lignes « [Site] »
+  depuis le 09/11 22 h, fiches créées par la porte, et où elles apparaissent à l'écran.
+- Question de fond posée à la pilote, à confirmer avec Fabrice : il écrit le 09/11 « Lorsque l'information arrive sur le
+  crm.via whatsapp le crm whats app doit créer une fiche complète a partir du crm de santeo... Si Inconnu pas grave...
+  on laisse comme ça ». Compris par Claude site : les demandes du site devraient arriver dans le CRM Santéo, comme les
+  autres leads ; la porte actuelle crée la fiche dans le CRM WhatsApp seulement.
+- Mon environnement refuse que j'envoie moi-même une demande à la porte (envoi vers un service partagé).
+
 ### 10/11/2026 — de Claude site à la conversation pilote — porte d'entrée : codes postaux de Corse et d'outre-mer
 Statut : À TRAITER
 - **Fait vérifiable** : le site accepte comme code postal un département à 2 caractères, y compris `2A` et `2B`, ou à
