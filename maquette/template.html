@@ -40,6 +40,15 @@ h1,h2{font-weight:800;color:var(--brand-1)}
 }
 h1{font-size:1.4rem}
 h2{font-size:1.05rem}
+/* Étape 1 : « Comparez sans vous dévoiler » mis en avant, un reflet lumineux le traverse ; la suite en italique, sans gras */
+#t-vous .accroche{font-size:1.32em;font-weight:800;letter-spacing:-.005em}
+#t-vous .accroche-suite{font-family:var(--f-body);font-style:italic;font-weight:400}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  #t-vous .accroche{background:linear-gradient(105deg,var(--brand-1) 0%,var(--brand-1) 38%,var(--brand-2) 47%,#bff0ff 50%,var(--brand-2) 53%,var(--brand-1) 62%,var(--brand-1) 100%);
+    background-size:260% 100%;background-position:0 0;-webkit-background-clip:text;background-clip:text;color:transparent}
+  @media (prefers-reduced-motion: no-preference){#t-vous .accroche{animation:accroche-reflet 5s ease-in-out .8s infinite}}
+}
+@keyframes accroche-reflet{0%{background-position:100% 0}45%,100%{background-position:0 0}}
 p{margin:0}
 .small{font-size:.88rem;color:var(--muted)}
 .banner{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:.6rem .9rem;font-size:.9rem}
@@ -394,7 +403,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
   <div id="vue-comparateur" class="vue">
 
   <section class="panel" aria-labelledby="t-vous">
-    <div class="step"><b>1</b><div class="step-textes"><h2 id="t-vous">Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime</h2>
+    <div class="step"><b>1</b><div class="step-textes"><h2 id="t-vous"><span class="accroche">Comparez sans vous dévoiler</span><span class="accroche-suite"> : indiquez juste votre âge, CP, régime</span></h2>
     <p class="sous-etape">Si une offre vous intéresse, vous pourrez indiquer vos informations afin de recevoir votre devis sur votre boîte mail.</p></div></div>
     <div class="vous-grid">
       <label class="f" for="age" id="f-age"><span class="fl-t"><span class="lab-full">Votre date de naissance</span><span class="lab-short">Date de naissance</span></span>
