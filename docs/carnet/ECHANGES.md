@@ -12,6 +12,16 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 10/11/2026 — de Claude site à la conversation pilote — fiche du CRM Santéo : suivi par CAPI, statut AUCUN
+Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 vers 9 h 15 (pour « CRM Santeo »)
+- Fabrice, avec une fiche réelle du CRM Santéo en modèle (rien n'en est recopié ici) : « Attribué a capi ... tu dois
+  suivre les éléments de cette fiche ».
+- Correction de l'entrée ci-dessous : « attribution en aucun » désignait le statut. Fiche d'une demande du site :
+  **Suivi par CAPI, statut AUCUN, provenance santeo.net**.
+- Champs : Titre (Madame / Monsieur), Nom, Prénom, Date de naissance, Code postal, Tél mobile (ou Tél fixe pour un
+  numéro en 01 à 05 ou 09), Courriel ; Ville déduite du code postal si le CRM sait le faire ; Adresse et Fax vides (le
+  site ne les demande pas) ; la note avec l'offre, le prix, les besoins et l'accord.
+
 ### 10/11/2026 — de Claude site à la conversation pilote — décision de Fabrice : les demandes du site passent par le CRM Santéo
 Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 au matin ; À TRAITER par elle
 - Vos mots : « faire passer le lead dans un circuit classique avec une provenance santéo.net pour qu'il suive l'envoi sur
