@@ -15,7 +15,9 @@ const RELAIS_APICIL = 'https://relais.exemple.invalid/apicil.php';
 const RELAIS_REGLAGES = 'https://relais.exemple.invalid/reglages';
 let reglagesReponse = { status: 200, corps: { ok: true, produits: {}, logos: {} } };
 // Sans « --google », les sites d'essai sont construits sans statistiques Google, quel que soit reglages-site.json
-const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, '--apicil', RELAIS_APICIL, '--reglages', RELAIS_REGLAGES, ...(opts.includes('--google') ? [] : ['--google', '']), ...opts]); return d; };
+const RELAIS_APRIL = 'https://relais.exemple.invalid/april.php';
+let appelsApril = [];
+const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, '--apicil', RELAIS_APICIL, '--reglages', RELAIS_REGLAGES, '--april', RELAIS_APRIL, ...(opts.includes('--google') ? [] : ['--google', '']), ...opts]); return d; };
 let appelsApicil = [];
 const FORMULES_APICIL = [['siApiSanteEquilibre1', 85.52], ['siApiSanteEquilibre2', 131.97], ['siApiSanteSerenite1', 106.59]];
 const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test'),
@@ -31,6 +33,11 @@ async function servir(ctx, base, dir) {
   await ctx.route(/crm\.capisante\.fr/, r => { err('un essai a tenté de joindre le vrai CRM'); r.abort(); });   // jamais de vraie demande pendant un essai
   await ctx.route(/\/\/capisante\.fr\//, r => { err('un essai a tenté de joindre le vrai relais'); r.abort(); });
   await ctx.route(RELAIS_REGLAGES, r => r.fulfill({ status: reglagesReponse.status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(reglagesReponse.corps) }));
+  await ctx.route(RELAIS_APRIL, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: { 'access-control-allow-origin': 'https://www.santeo.net', 'access-control-allow-headers': 'Content-Type', 'access-control-allow-methods': 'POST, OPTIONS' } });
+    const corps = JSON.parse(r.request().postData() || 'null'); appelsApril.push(corps);
+    const tarifs = { SanteMix: { '01|01': 72.6, '02|01': 80.1, '02|02': 86.52 }, SimplySante: { '01': 89.35, '02': 100.98 } };
+    r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'https://www.santeo.net' },
+      body: JSON.stringify({ environnement: 'production', famille: false, liensFamille: true, produits: (corps.produits || []).map(c => tarifs[c] ? { produit: c, etat: 'ok', niveaux: tarifs[c] } : { produit: c, etat: 'refus', message: 'essai' }) }) }); });
   await ctx.route(RELAIS_APICIL, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: { 'access-control-allow-origin': 'https://www.santeo.net', 'access-control-allow-headers': 'Content-Type', 'access-control-allow-methods': 'POST, OPTIONS' } });
     appelsApicil.push(JSON.parse(r.request().postData() || 'null'));
     r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'https://www.santeo.net' }, body: JSON.stringify({ Formules: FORMULES_APICIL.map(([c, t]) => ({ LibelleFormule: c, TarifFormule: String(t) })) }) }); });
@@ -305,6 +312,26 @@ async function remplir(p) {
     doit(ordinaire.length === 0, nom + ' : un visiteur ordinaire ne doit pas voir les noms (' + ordinaire.length + ')');
     doit(controle.length >= 5 && controle.every(t => /^Contrôle : /.test(t)), nom + ' : vue de contrôle sans les noms ' + JSON.stringify(controle.slice(0, 2)));
     console.log(nom, '| vue de contrôle :', controle.slice(0, 2).join(' ; '));
+    await c.close();
+  }
+  // 13. APRIL : un appel par profil, produits cochés (pas de produit d'indépendant pour un salarié), niveaux de la diagonale
+  for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {
+    appelsApril = [];
+    const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
+    q.on('pageerror', e => err(nom + ' april : ' + e.message));
+    await q.goto('https://www.santeo.net/?controle=1'); await q.fill('#cp', '75012'); await q.type('#age', '21071966', { delay: 30 }); await q.waitForTimeout(1800);
+    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(120); }
+    const april = await q.$$eval('#offers article.offer', l => l.map(o => o.querySelector('.o-real').textContent + ' ' + o.querySelector('.o-price').textContent).filter(t => /APRIL/.test(t)));
+    const a0 = appelsApril[0] || {};
+    doit(appelsApril.length === 1 && JSON.stringify(a0.produits) === '["SanteMix","SimplySante"]' && a0.regime === 'SS' && a0.cp === '75012' && a0.assures && a0.assures[0].naissance === '1966-07-21' && a0.remise === false,
+      nom + ' : appel APRIL ' + appelsApril.length + ' ' + JSON.stringify(a0));
+    doit(april.length === 4 && april.some(t => /Santé Mix Proximité · Niv\. 1.*72,60/.test(t)) && !april.some(t => /80,10/.test(t)), nom + ' : offres APRIL ' + JSON.stringify(april));
+    // Simply Santé n'a pas de tableau publié : « n.c. » (non communiqué), jamais « — » (non couvert)
+    const simply = await q.$$eval('#offers article.offer', l => { const o = l.find(a => /Simply Santé/.test(a.textContent)); return o ? [...o.querySelectorAll('.pc')].map(e => e.textContent) : null; });
+    doit(simply && simply.length && simply.every(t => t === 'n.c.'), nom + ' : garanties non communiquées affichées comme non couvertes ' + JSON.stringify(simply));
+    await q.selectOption('#reg', 'TNS'); await q.waitForTimeout(1500);
+    doit(appelsApril.length === 2 && appelsApril[1] && appelsApril[1].regime === 'TNS', nom + ' : appel APRIL pour un indépendant ' + JSON.stringify(appelsApril[1]));
+    console.log(nom, '| APRIL :', april.join(' ; ').replace(/Contrôle : /g, ''), '| appels', appelsApril.length);
     await c.close();
   }
   // 9. Pages du guide sur téléphone et PC : lisibles, sans défilement de côté, bouton vers le comparateur

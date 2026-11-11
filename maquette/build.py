@@ -32,14 +32,39 @@ t = open(S + "/template.html", encoding="utf-8").read()
 moteur = open(R + "/src/moteur.js", encoding="utf-8").read()
 tarifs = json.load(open(R + "/src/tarifs_all.json", encoding="utf-8"))
 g = json.load(open(R + "/src/garanties.json", encoding="utf-8"))
-keep = ["MCCINOVA","FLEXIA","SOLENCIA","CAPEVO","CAPNR","REV","RF50","RF100","MV","LPSH","TALIS"]
+keep = ["MCCINOVA","FLEXIA","SOLENCIA","CAPEVO","CAPNR","REV","RF50","RF100","MV","LPSH","TALIS","APICIL"]
 tarifs = {k: v for k, v in tarifs.items() if k not in ("DOCSMD",)}
 gammes = g["gammes"]
 extras = {k: dict(g["extras"][k]) for k in keep if k in g["extras"]}
+# APRIL : garanties (APRIL_GAR) et rang des produits (APRIL_ORDRE_RANG) lus dans la page du comparateur de Claude, en lecture
+# seule, tant qu'ils ne sont pas dans garanties.json ; mêmes règles que sa page (fi = rang × 100 + niveau ; « n.c. » = non
+# communiqué, jamais « non couvert » ; orthodontie non remboursée comptée dans le forfait dentaire chez Only, Pro, Pro Start).
+APRIL_URL = option("--april", reglages.get("april", ""))
+_cmp = open(R + "/src/comparateur.html", encoding="utf-8").read()
+APRIL_GAR = json.loads(re.search(r"^const APRIL_GAR=(\{.*?\});\s*$", _cmp, re.M).group(1))
+APRIL_ORDRE = json.loads(re.search(r"const APRIL_ORDRE_RANG=(\[.*?\]);", _cmp, re.S).group(1))
+_noms = {p["code"][6:]: p["nom"] for c in CATALOGUE["compagnies"] if c["nom"] == "APRIL" for p in c["produits"]}
+_GA = {"label": "APRIL", "resp": False, "ins": "april", "names": {}}
+for _k in ("hospO", "hospN", "honoO", "honoN", "dent", "opt", "aud", "ch", "md"): _GA[_k] = {}
+_EA = {k: {} for k in ("imp", "orthR", "orthN", "lentA", "lentR", "optC", "pharR", "pharN", "aud", "plaf")}
+for _code, _g in APRIL_GAR.items():
+    if _code not in APRIL_ORDRE: continue
+    _r = APRIL_ORDRE.index(_code)
+    for _i, _n in enumerate(_g["niv"]):
+        _fi = str(_r * 100 + _n)
+        _GA["names"][_fi] = _noms.get(_code, _code) + " Niv. " + str(_n)
+        for _k in ("hospO", "hospN", "honoO", "honoN", "dent", "opt", "aud", "ch", "md"): _GA[_k][_fi] = _g[_k][_i]
+        for _k in ("imp", "orthR", "lentA", "lentR", "aud"): _EA[_k][_fi] = _g[_k][_i]
+        for _k in ("optC", "pharR", "pharN", "plaf"): _EA[_k][_fi] = _g[_k][_i] if _k in _g else "n.c."
+        _EA["orthN"][_fi] = "n.c." if _g["imp"][_i] == "n.c." else (_g["imp"][_i] if _code in ("OnlySante", "SantePro", "SanteProStart") else "—")
+gammes = dict(gammes, APRIL=_GA)
+extras["APRIL"] = _EA
+APRIL_DATA = {"url": "", "ordre": APRIL_ORDRE, "resp": {c: v.get("resp") is True for c, v in APRIL_GAR.items()},
+              "tns": [p["code"][6:] for c in CATALOGUE["compagnies"] if c["nom"] == "APRIL" for p in c["produits"] if p.get("tns")]}
 def js(o): return json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 out = t.replace("__MOTEUR__", moteur.replace("</", "<\\/")).replace("__TARIFS__", js(tarifs)).replace("__GAMMES__", js(gammes)).replace("__EXTRAS__", js(extras))
 logos = json.load(open(S + "/logos/logos.json"))
-out = out.replace("__CATALOGUE__", js(CATALOGUE))
+out = out.replace("__CATALOGUE__", js(CATALOGUE)).replace("__APRIL__", js(dict(APRIL_DATA, url=APRIL_URL if SITE else "")))
 out = out.replace("__LOGOS__", "".join('<span class="logo-box" data-co="%s"><img src="%s" alt="%s"></span>' % (l["nom"], l["src"], l["nom"]) for l in logos))
 out = out.replace("__SANTEO_LOGO__", open(S + "/logos/santeo.b64").read().strip())
 out = out.replace("__SANTEO_MASQUE__", open(S + "/logos/santeo-masque.b64").read().strip())

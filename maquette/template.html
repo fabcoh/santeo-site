@@ -723,6 +723,7 @@ __MOTEUR__
 <script type="application/json" id="d-gammes">__GAMMES__</script>
 <script type="application/json" id="d-extras">__EXTRAS__</script>
 <script type="application/json" id="d-catalogue">__CATALOGUE__</script>
+<script type="application/json" id="d-april">__APRIL__</script>
 <script>
 (function(){
 "use strict";
@@ -1043,6 +1044,58 @@ async function apicilCharge(prof,cle){
   if(APICIL.cle===cle){APICIL=st;upd()}   // une réponse pour un profil déjà changé est ignorée
 }
 
+/* ---------- APRIL : tarifs demandés à l'assureur par le relais de Santéo (capisante.fr/april.php) ----------
+   Tarification seulement (jamais April-On ni souscription), ouvert à santeo.net le 11/11/2026. Produits : ceux cochés dans
+   l'espace admin (catalogue « APRIL:… »), produits réservés aux indépendants seulement pour un régime TNS. Un seul appel par
+   profil complet ; garanties lues dans la page du comparateur de Claude au moment de la construction (« n.c. » = non
+   communiqué). Mêmes règles que le comparateur : code postal du chef-lieu à défaut des 5 chiffres, enfants à 10 ans,
+   produits modulables lus sur la diagonale (« Niv. 3 » = 03|03). */
+const APRIL=JSON.parse(document.getElementById("d-april").textContent);
+const APRIL_REG={SAL:"SS",TNS:"TNS",RL:"AlsaceMoselle",TNSRL:"AlsaceMoselle"};
+const APRIL_NOMS=Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits).filter(p=>p.code.startsWith("APRIL:")).map(p=>[p.code.slice(6),p.nom]));
+let APRIL_ST={cle:"",etat:"vide",res:null,famille:false}, aprilMinuteur=null;
+function aprilCP(cpv,dept){
+  if(/^\d{5}$/.test(cpv))return cpv; if(!dept)return null;
+  const s={"13":"13001","69":"69001","75":"75001","2A":"20000","2B":"20200"}[dept]; if(s)return s;
+  if(/^97\d$/.test(dept))return dept+"00"; return /^\d{2}$/.test(dept)?dept+"000":null;
+}
+function aprilProduits(reg){
+  return Object.keys(CFG.gammes).filter(k=>k.startsWith("APRIL:")&&CFG.gammes[k]).map(k=>k.slice(6))
+    .filter(c=>APRIL.ordre.includes(c)&&(!APRIL.tns.includes(c)||reg==="TNS"||reg==="TNSRL"));
+}
+function aprilNiveaux(n){
+  const k=Object.keys(n||{}).sort(), diag=k.filter(x=>x.includes("|")).filter(x=>new Set(x.split("|")).size===1);
+  return (k.some(x=>x.includes("|"))?diag:k).map(x=>({niv:parseInt(x,10),prix:n[x]})).filter(x=>x.niv>0&&typeof x.prix==="number"&&x.prix>0);
+}
+function aprilPourCalcul(cpv,dept,reg,hasCnj){
+  if(!APRIL.url) return {};
+  const produits=aprilProduits(reg), cp=aprilCP(cpv,dept), dn=isoDe($("age").value);
+  if(!produits.length||!cp||!dn) return {};
+  const assures=[{role:"AssurePrincipal",naissance:dn}];
+  if(hasCnj){const dc=isoDe(S.cnj); if(!dc) return {}; assures.push({role:"Conjoint",naissance:dc})}
+  const an=new Date().getFullYear();
+  for(let i=0;i<Math.min(S.kids,8);i++) assures.push({role:"Enfant",naissance:(an-10)+"-01-01"});
+  const profil={cp,effet:apicilEffet(),regime:APRIL_REG[reg]||"SS",assures,produits,remise:false};
+  const cle=JSON.stringify(profil);
+  if(APRIL_ST.cle!==cle){
+    APRIL_ST={cle,etat:"attente",res:null,famille:false};
+    clearTimeout(aprilMinuteur); aprilMinuteur=setTimeout(()=>aprilCharge(profil,cle),600);
+  }
+  if(APRIL_ST.etat!=="ok") return {etat:APRIL_ST.etat};
+  return {etat:"ok",famille:APRIL_ST.famille,produits:APRIL_ST.res.map(p=>({code:p.produit,idx:APRIL.ordre.indexOf(p.produit),
+    nom:APRIL_NOMS[p.produit]||p.produit,resp:APRIL.resp[p.produit]===true,niveaux:aprilNiveaux(p.niveaux)}))};
+}
+async function aprilCharge(profil,cle){
+  let st;
+  try{
+    const rp=await fetch(APRIL.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(profil)});
+    const d=await rp.json().catch(()=>null);
+    if(!rp.ok||!d||!Array.isArray(d.produits)) st={cle,etat:"erreur",res:null,famille:false};
+    else st={cle,etat:"ok",res:d.produits.filter(p=>p&&p.etat==="ok"&&APRIL.ordre.includes(p.produit)),famille:!!d.famille&&!d.liensFamille};
+  }catch(e){st={cle,etat:"erreur",res:null,famille:false}}
+  if(APRIL_ST.cle===cle){APRIL_ST=st;upd()}
+}
+
 /* ---------- Calcul ---------- */
 function compute(){
   const age=ageDeDate($("age").value);
@@ -1059,7 +1112,8 @@ function compute(){
   const SEL=Object.assign({},CFG.gammes);
   if(!Object.values(SEL).some(v=>v)) return {err:"Aucune gamme n'est affichée : cochez-en au moins une dans « Gestion des compagnies », en bas de la page."};
   const apicil=SEL.APICIL?apicilPourCalcul(cpv,dept,reg,hasCnj):{};
-  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null,apicil});
+  const april=aprilPourCalcul(cpv,dept,reg,hasCnj); SEL.APRIL=april.etat==="ok";
+  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null,apicil,april});
   const rows=r.rows.filter(x=>!x.incomplete&&x.total>0).map(x=>{
     const st={}; POSTES.forEach(p=>st[p.k]=p.st(x)); return Object.assign({},x,{st});
   });
@@ -1067,16 +1121,18 @@ function compute(){
   return {rows,fit};
 }
 const CHAMP={hosp:"hospO",hono:"honoO",dent:"dent",opt:"opt",autres:"md"};
-function fmtVal(s){if(NONE(s))return "Non couvert";if(/^incl/.test(String(s)))return "dans le forfait optique";return String(s).replace(/\s*BR$/,"").replace(/€\/s$/,"€/séance")}
+// « n.c. » = non communiqué par l'assureur (APRIL sans tableau publié) : jamais affiché « non couvert » ni « — »
+const NC=s=>s==="n.c.";
+function fmtVal(s){if(NC(s))return "Non communiqué";if(NONE(s))return "Non couvert";if(/^incl/.test(String(s)))return "dans le forfait optique";return String(s).replace(/\s*BR$/,"").replace(/€\/s$/,"€/séance")}
 function lignesEnPlus(p,x){return p.more.filter(f=>S.flt[f.id]&&f.v).map(f=>'<span class="sub"><span class="lab2">'+f.lib+'</span><b>'+fmtVal(f.v(x))+'</b></span>').join("")}
 // « Autres » n'apparaît dans les offres que si le visiteur le demande (étoiles, précision ou texte)
 function postesAffiches(){return POSTES.filter(p=>p.k!=="autres"||S.need.autres>0||p.more.some(f=>S.flt[f.id])||(S.autre.autres||"").trim())}
-function valeur(p,x){const s=x[CHAMP[p.k]]; if(NONE(s))return "—"; return String(s).replace(/\s*BR$/,"").replace(/\s*\/an$/," /an").replace(/€\/s$/,"€/séance");}
+function valeur(p,x){const s=x[CHAMP[p.k]]; if(NC(s))return "n.c."; if(NONE(s))return "—"; return String(s).replace(/\s*BR$/,"").replace(/\s*\/an$/," /an").replace(/€\/s$/,"€/séance");}
 function starsOf(n){return "★".repeat(n)+"<i>"+"★".repeat(5-n)+"</i>"}
 function starLine(n){return n?"★".repeat(n)+"<i>"+"★".repeat(5-n)+"</i>":"<i>Non couvert</i>"}
 function detailHtml(x){
-  const v=s=>NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
-  const lentilles=(a,f)=>NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
+  const v=s=>NC(s)?"Non communiqué":NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
+  const lentilles=(a,f)=>NC(a)&&NC(f)?"Non communiqué":NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
   // poste principal (en gras, même valeur que sur la carte) puis ses sous-postes
   const G=[
     ["Hospitalisation",valeur(POSTES[0],x),[["Honoraires du chirurgien (OPTAM)",v(x.hospO)],["Honoraires du chirurgien (hors OPTAM)",v(x.hospN)],["Chambre particulière",v(x.ch)]]],
@@ -1086,7 +1142,7 @@ function detailHtml(x){
     ["Autres",valeur(POSTES[4],x),[["Médecines douces",v(x.md)],["Aides auditives",v(x.aud||ex(x,"aud"))]]]
   ];
   return '<table class="gar"><colgroup><col><col class="c-niv"></colgroup><thead><tr><th scope="col">Garantie</th><th scope="col">Niveau</th></tr></thead>'+
-    G.map(g=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th><td>'+(g[1]==="—"?"Non couvert":g[1])+'</td></tr>'+
+    G.map(g=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th><td>'+(g[1]==="—"?"Non couvert":g[1]==="n.c."?"Non communiqué":g[1])+'</td></tr>'+
       g[2].map(l=>'<tr class="g-sous"><td>'+l[0]+'</td><td>'+l[1]+'</td></tr>').join("")+'</tbody>').join("")+
     '<tbody><tr class="g-poste"><th scope="row">Contrat responsable</th><td>'+(x.resp?"Oui":"Non")+'</td></tr></tbody></table>';
 }
@@ -1128,7 +1184,7 @@ function upd(){
     o.innerHTML='<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
       '<div class="o-gar" style="--n:'+cols.length+'">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="lab"><span class="short">'+p.sh+'</span><span class="full">'+p.nm+'</span></span>'+
-        '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</div>'}).join("")+'</div>'+
+        '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</div>'}).join("")+'</div>'+
       '<div class="o-actions"><button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog">(+) Détails</button><button type="button" class="btn" data-c="'+i+'">Cette offre m\'intéresse</button></div>';
     box.appendChild(o);
   });
