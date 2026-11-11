@@ -323,13 +323,18 @@ Fait le 11/11/2026 :
   des adresses de GitHub Pages ; SPF et lignes des mails inchangés. Le constat de Manus sur les mails envoyés par l'ancien
   serveur n'a pas pu se faire (pas d'accès à cette machine). Le navigateur de Fabrice gardait en mémoire l'ancien renvoi
   vers capisante.com (il disparaît en navigation privée).
+- `santeo.net` sans www : certificat créé par GitHub le 11/11 vers 12 h 31 (Paris), juste après que Fabrice a ouvert la
+  page des réglages Pages (« DNS check » relancé) ; le certificat couvre santeo.net et www.santeo.net ;
+  `https://santeo.net` renvoie vers `https://www.santeo.net/` (vérifié).
+- santeo.fr (Fabrice : « Et pour santeo.fr il faudra faire le nouveau renvoi ») : fait le 11/11 vers 18 h. Dépôt
+  `fabcoh/santeo-fr` (page de renvoi vers www.santeo.net, paramètres comme `?src=whatsapp` gardés), publié par GitHub
+  Pages, domaine `santeo.fr`, « Enforce HTTPS » coché. Zone OVH de santeo.fr relevée avant (11 lignes, gardée hors du
+  dépôt) ; changé : ligne `@` de type A vers une adresse de GitHub Pages, lignes `www` (A et TXT « 3|welcome » de la page
+  d'attente OVH) remplacées par `www` CNAME `fabcoh.github.io.` ; MX, SPF, NS et ftp inchangés. Certificat pour
+  santeo.fr et www.santeo.fr ; renvoi vérifié sur PC et téléphone. Le comparateur utilise capisante.fr, pas santeo.fr.
 Reste :
-- `santeo.net` sans www : certificat de GitHub pas encore créé à 10 h 26 (Paris) le 11/11 (`https://santeo.net` affiche
-  une alerte ; `www` et la saisie de `santeo.net` dans Chrome marchent). Plus tard, ajouter éventuellement les trois autres
-  adresses de GitHub Pages pour la ligne `@` ;
-- santeo.fr : renvoi vers www.santeo.net par un petit site GitHub (accord de Fabrice, « oui », 11/11), après la mise en
-  ligne ; santeo.fr n'a qu'une page d'attente OVH et ses lignes mail (MX, SPF) resteront en place ; le comparateur
-  utilise capisante.fr, pas santeo.fr (« je me suis trompé je crois que c'est capisante.fr qui gère le comparateur »).
+- plus tard, ajouter éventuellement les trois autres adresses de GitHub Pages pour les lignes `@` de santeo.net et
+  santeo.fr (une seule est en place pour chacun).
 
 
 Demande de Fabrice : « tu vas référencer tout ce qu'il y a à faire et on met en place tout ça pour le publier
@@ -401,6 +406,11 @@ Ensuite, un lot à la fois :
 - Compte Google Ads (capture du 11/11) : 4 anciennes campagnes de 2022, en pause, aucune annonce diffusée. Conditions de
   l'avoir de 400 € à vérifier par Fabrice (Facturation, Promotions). Accès de Claude à Google Ads : par un connecteur
   claude.ai (à brancher par Fabrice), lu seulement au démarrage d'une conversation.
+- Windsor.ai branché le 11/11 (plug-in et connecteur claude.ai, choix de Fabrice : « oui on branche Windsor.ai ») ; il
+  lit le compte Google Ads actif « santeo ». Un second compte Google Ads (« Santeo V2 ») demande un nouveau moyen de
+  paiement ; Fabrice : « mais les 400 euros étais sur l'autre adresse » (compte exact de l'avoir à préciser avec lui).
+- Environnement cloud (réglages réseau) : adresses autorisées le 11/11 avec l'accord de Fabrice : Windsor.ai (son
+  plug-in était refusé par le réseau) et santeo.fr / www.santeo.fr (vérification du renvoi).
 - Les chiffres de visites ne s'écrivent jamais dans ce dépôt public.
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
