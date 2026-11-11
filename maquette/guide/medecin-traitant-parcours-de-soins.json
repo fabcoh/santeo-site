@@ -1,0 +1,33 @@
+{
+ "slug": "medecin-traitant-parcours-de-soins",
+ "chapitre": "comprendre",
+ "lien": "Médecin traitant et parcours de soins",
+ "ordre": 16,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Médecin traitant et parcours de soins : règles 2026",
+ "description": "Choisir et déclarer son médecin traitant, accès directs, remboursement hors parcours (30 % au lieu de 70 %), enfants de moins de 16 ans.",
+ "h1": "Médecin traitant et parcours de soins : déclaration et remboursements",
+ "faq": [
+  {
+   "q": "Un spécialiste peut-il être mon médecin traitant ?",
+   "r": "Oui. Le médecin traitant peut être un généraliste ou un spécialiste, à condition qu'il accepte ce rôle. Un médecin remplaçant ne peut pas être déclaré."
+  },
+  {
+   "q": "Comment changer de médecin traitant ?",
+   "r": "Vous pouvez en changer à tout moment, sans justificatif. Le nouveau médecin fait la déclaration en ligne avec votre carte Vitale, ou vous remplissez avec lui le formulaire de déclaration. La nouvelle déclaration remplace l'ancienne."
+  },
+  {
+   "q": "Combien suis-je remboursé sans médecin traitant ?",
+   "r": "Pour un adulte, l'Assurance Maladie rembourse 30 % du tarif au lieu de 70 %. Pour une consultation à 30 €, vous recevez 7 € au lieu de 19 €, participation forfaitaire de 2 € déduite."
+  },
+  {
+   "q": "Puis-je consulter un gynécologue ou un ophtalmologue sans passer par mon médecin traitant ?",
+   "r": "Oui, si vous avez déclaré un médecin traitant. Ces consultations restent dans le parcours de soins, tout comme celles du dentiste, de la sage-femme et du psychiatre pour les moins de 26 ans."
+  },
+  {
+   "q": "Mon enfant doit-il avoir un médecin traitant ?",
+   "r": "Ce n'est pas une obligation. Avant 16 ans, la consultation est remboursée à 70 % du tarif, avec ou sans médecin traitant déclaré. Les parents peuvent toutefois en choisir un."
+  }
+ ]
+}

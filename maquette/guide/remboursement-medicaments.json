@@ -1,0 +1,33 @@
+{
+ "slug": "remboursement-medicaments",
+ "chapitre": "comprendre",
+ "lien": "Remboursement des médicaments",
+ "ordre": 14,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Remboursement des médicaments : taux, génériques, franchise",
+ "description": "Taux de 100 %, 65 %, 30 % ou 15 %, médicaments non remboursés, génériques, franchise de 1 € par boîte en 2026 et part de la mutuelle.",
+ "h1": "Remboursement des médicaments : taux, génériques, franchise et mutuelle",
+ "faq": [
+  {
+   "q": "Comment savoir à quel taux un médicament est remboursé ?",
+   "r": "Le prix et le taux de remboursement de chaque médicament figurent sur le ticket Vitale, que le pharmacien imprime au dos de votre ordonnance. Il n'y a plus de vignette de couleur sur les boîtes depuis le 1er juillet 2014."
+  },
+  {
+   "q": "Combien coûte la franchise médicale sur les médicaments en 2026 ?",
+   "r": "1 € par boîte remboursée. La franchise est plafonnée à 70 € par an et par personne depuis le 1er octobre 2026, ce plafond étant commun aux médicaments, aux actes paramédicaux et aux transports."
+  },
+  {
+   "q": "Que se passe-t-il si je refuse un médicament générique ?",
+   "r": "Sauf mention « non substituable » justifiée par votre médecin, vous avancez les frais et vous êtes remboursé sur la base du prix du générique. Le surcoût du médicament de marque reste à votre charge."
+  },
+  {
+   "q": "Ma mutuelle rembourse-t-elle les médicaments à 15 % ?",
+   "r": "Ce n'est pas obligatoire pour un contrat responsable, qui doit rembourser le ticket modérateur des médicaments à 65 % seulement. Vérifiez la ligne « pharmacie » de votre tableau de garanties."
+  },
+  {
+   "q": "L'homéopathie est-elle encore remboursée ?",
+   "r": "Non. Les médicaments homéopathiques ne sont plus remboursés par l'Assurance Maladie depuis le 1er janvier 2021. Certaines complémentaires prévoient un forfait pour ce type de dépense."
+  }
+ ]
+}
