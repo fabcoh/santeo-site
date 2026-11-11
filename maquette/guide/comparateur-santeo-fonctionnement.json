@@ -1,0 +1,33 @@
+{
+ "slug": "comparateur-santeo-fonctionnement",
+ "chapitre": "choisir",
+ "lien": "Comment marche le comparateur",
+ "ordre": 26,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Comment fonctionne le comparateur de mutuelle Santéo",
+ "description": "Comparateur Santéo : profil sans nom, besoins en étoiles, offres classées par prix, devis étudié par un courtier, tchat avec un conseiller.",
+ "h1": "Comment fonctionne le comparateur Santéo",
+ "faq": [
+  {
+   "q": "Faut-il donner son nom pour voir les tarifs ?",
+   "r": "Non. La date de naissance, le code postal et le régime suffisent. Vos coordonnées ne sont demandées que si vous voulez recevoir le devis d'une offre."
+  },
+  {
+   "q": "Que signifient les étoiles ?",
+   "r": "Elles fixent le niveau minimum que vous exigez sur chaque poste. Sans étoile, toutes les offres s'affichent ; avec des étoiles, seules celles qui atteignent vos niveaux restent."
+  },
+  {
+   "q": "Pourquoi le nom de l'assureur n'est-il pas affiché ?",
+   "r": "Le comparateur présente les offres par numéro. Le nom de l'assureur, sa fiche d'information (IPID) et le conseil de Santéo vous sont remis avec votre devis."
+  },
+  {
+   "q": "Le comparateur présente-t-il toutes les mutuelles ?",
+   "r": "Non. La comparaison porte sur les offres des assureurs partenaires de Santéo et n'est pas exhaustive. Les tarifs sont indicatifs et doivent être confirmés par un conseiller."
+  },
+  {
+   "q": "Comment un courtier est-il rémunéré ?",
+   "r": "Par des honoraires, par une commission comprise dans la cotisation, ou par une combinaison des deux : il doit vous l'indiquer avant l'adhésion. Santéo indique être rémunéré par une commission versée par l'assureur, sans frais de devis ni de conseil."
+  }
+ ]
+}
