@@ -9,7 +9,11 @@ const fs = require('fs'), os = require('os'), path = require('path');
 const S = process.argv[2], R = process.argv[3];
 const CRM = 'https://crm.exemple.invalid/devis';
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'site-'));
-const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, ...opts]); return d; };
+// Le relais API Santé est toujours simulé (jamais capisante.fr pendant un essai)
+const RELAIS_APICIL = 'https://relais.exemple.invalid/apicil.php';
+const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, '--apicil', RELAIS_APICIL, ...opts]); return d; };
+let appelsApicil = [];
+const FORMULES_APICIL = [['siApiSanteEquilibre1', 85.52], ['siApiSanteEquilibre2', 131.97], ['siApiSanteSerenite1', 106.59]];
 const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test'),
   sansTchat: construire('sanstchat', '--en-ligne', '--envoi', CRM, '--tchat', 'aucun'),
   tchat: construire('tchat', '--en-ligne', '--envoi', CRM, '--tchat', 'direct', '--tchat-crm', 'https://crm.exemple.invalid/tchat'),
@@ -21,6 +25,10 @@ const types = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.png
 async function servir(ctx, base, dir) {
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
   await ctx.route(/crm\.capisante\.fr/, r => { err('un essai a tenté de joindre le vrai CRM'); r.abort(); });   // jamais de vraie demande pendant un essai
+  await ctx.route(/\/\/capisante\.fr\//, r => { err('un essai a tenté de joindre le vrai relais'); r.abort(); });
+  await ctx.route(RELAIS_APICIL, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: { 'access-control-allow-origin': 'https://www.santeo.net', 'access-control-allow-headers': 'Content-Type', 'access-control-allow-methods': 'POST, OPTIONS' } });
+    appelsApicil.push(JSON.parse(r.request().postData() || 'null'));
+    r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'https://www.santeo.net' }, body: JSON.stringify({ Formules: FORMULES_APICIL.map(([c, t]) => ({ LibelleFormule: c, TarifFormule: String(t) })) }) }); });
   await ctx.route(base + '**', r => {
     let f = decodeURIComponent(new URL(r.request().url()).pathname.slice(new URL(base).pathname.length));
     if (f === '' || f.endsWith('/')) f += 'index.html';
@@ -222,6 +230,36 @@ async function remplir(p) {
     const consent = await q.evaluate(() => (window.dataLayer || []).map(a => Array.from(a)).filter(a => a[0] === 'consent').map(a => a[1] + ':' + a[2].analytics_storage));
     doit(consent.join(',') === 'default:denied,update:granted', nom + ' : signaux d\'accord Google ' + consent.join(','));
     console.log(nom, '| cookies : boutons', bt.map(x => x[0]).join('/'), '| Google chargé après accord :', gtm.length > 0, '| événements', evts.join(','));
+    await c.close();
+  }
+  // 10. API Santé (VERALTI) : un appel au relais par profil complet, offres ajoutées, choix suivi par son identité
+  for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {
+    appelsApicil = [];
+    const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
+    q.on('pageerror', e => err(nom + ' api santé : ' + e.message));
+    await q.goto('https://www.santeo.net/'); await q.waitForTimeout(300);
+    await q.fill('#cp', '75012'); await q.type('#age', '21071966', { delay: 30 }); await q.waitForTimeout(1500);
+    const toutes = async () => { for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(150); }
+      return q.$$eval('#offers article.offer', l => l.map((o, i) => ({ i, nom: (o.querySelector('.o-real') || {}).textContent || '', prix: (o.querySelector('.o-price') || {}).textContent || '' }))); };
+    const liste = await toutes(), api = liste.filter(o => /API SANT/i.test(o.nom));
+    doit(appelsApicil.length === 1, nom + ' : un seul appel au relais API Santé attendu (' + appelsApicil.length + ')');
+    const p0 = appelsApicil[0] || {};
+    doit(p0.codePostalAssure === '75012' && p0.situationProfessionnelle === 'SALARIE' && p0.beneficiaires && p0.beneficiaires[0].dateNaissance === '1966-07-21', nom + ' : profil envoyé ' + JSON.stringify(p0));
+    doit(api.length === 3 && api.some(o => /85,52/.test(o.prix)), nom + ' : offres API Santé affichées ' + JSON.stringify(api));
+    // Choisir une offre API Santé, puis changer d'étoiles : l'option choisie suit (ou se retire), jamais une autre offre à sa place
+    if (api.length) {
+      await q.click('[data-c="' + api[0].i + '"]'); await q.waitForTimeout(400);
+      const lire = () => q.$eval('#chosen-box', e => ({ opt: (e.querySelector('strong') || {}).textContent || '', prix: (e.querySelector('.ch-prix') || {}).textContent || '' }));
+      const avant = await lire();
+      await q.locator('#needs .stars button:visible, #needs [data-cyc]:visible').first().click(); await q.waitForTimeout(400);   // une étoile de plus : la liste change
+      const apres = await lire(), liste2 = await toutes(), n = +(apres.opt.match(/\d+/) || [0])[0];
+      const ligne = liste2[n - 1];
+      doit(!apres.opt || (ligne && /API SANT/i.test(ligne.nom) && ligne.prix.replace(/\s/g, '') === apres.prix.replace(/\s/g, '') && apres.prix === avant.prix),
+        nom + ' : l\'option choisie a changé d\'offre ' + JSON.stringify({ avant, apres, ligne }));
+    }
+    await q.fill('#cp', '75011'); await q.waitForTimeout(1200);
+    doit(appelsApicil.length === 2, nom + ' : un nouveau profil doit faire un nouvel appel (' + appelsApicil.length + ')');
+    console.log(nom, '| API Santé :', api.map(o => o.prix.trim()).join(' ; '), '| appels', appelsApicil.length);
     await c.close();
   }
   // 9. Pages du guide sur téléphone et PC : lisibles, sans défilement de côté, bouton vers le comparateur

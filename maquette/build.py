@@ -18,6 +18,8 @@ ENVOI = option("--envoi", reglages["envoi_crm"]); REPLI = option("--repli", regl
 TCHAT = option("--tchat", reglages.get("tchat", "aucun")); TCHAT_CRM = option("--tchat-crm", reglages.get("tchat_crm", ""))
 # Statistiques Google (identifiant de mesure « G-… », public) : chargées seulement après l'accord du visiteur (bandeau cookies)
 GOOGLE = option("--google", reglages.get("google_mesure", ""))
+# Relais de tarification API Santé (VERALTI) de Santéo : appelé par le site seulement (il n'accepte que santeo.net)
+APICIL = option("--apicil", reglages.get("apicil", ""))
 if GOOGLE and not re.fullmatch(r"G-[A-Z0-9]{4,20}", GOOGLE): sys.exit("identifiant de mesure Google invalide : " + GOOGLE)
 assert TCHAT in ("direct", "aucun"), TCHAT   # le tchat n'ouvre jamais WhatsApp chez le visiteur
 assert TCHAT_CRM == "" or TCHAT_CRM.startswith("https://"), "l'adresse du tchat doit commencer par https://"
@@ -41,7 +43,7 @@ out = out.replace("__MASCOTTE__", open(S + "/logos/mascotte.b64").read().strip()
 out = out.replace("__COMETE_D__", open(S + "/logos/comete-trajet.txt").read().strip())
 for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__", ENVOI if SITE else ""), ("__REPLI__", REPLI if SITE else ""),
                        ("__TCHAT_MODE__", TCHAT if SITE else "aucun"), ("__TCHAT_CRM__", TCHAT_CRM if SITE else ""),
-                       ("__GOOGLE__", GOOGLE if SITE else "")):
+                       ("__GOOGLE__", GOOGLE if SITE else ""), ("__APICIL__", APICIL if SITE else "")):
     assert out.count(repere) == 1, repere
     out = out.replace(repere, valeur.replace('"', ""))
 if SITE is None:

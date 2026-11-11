@@ -731,9 +731,9 @@ const COMPAGNIES=[
   {co:"La Mutuelle Verte",items:[["MV","Gamme courtage GCI"]]},
   {co:"Révoluo",items:[["REV","Révoluo"],["RF50","Révoluo RF50"],["RF100","Révoluo RF100"]]},
   {co:"APRIL",items:[],note:"Tarifs par le relais APRIL : pas encore dans la maquette."},
-  {co:"Apicil",items:[],note:"Tarifs par le relais Apicil : pas encore dans la maquette."},
+  {co:"Apicil",items:[["APICIL","API Santé (VERALTI)"]],note:"Tarif demandé en direct à l'assureur : il s'affiche sur le site seulement (le relais n'accepte que santeo.net)."},
   {co:"Alptis",items:[],note:"Pas de tarifs dans le comparateur de Claude."}];
-const CFG_DEPART=()=>({gammes:{CAPEVO:true,CAPNR:true,LPSH:false,TALIS:false,MCCINOVA:true,FLEXIA:true,SOLENCIA:true,MV:true,REV:true,RF50:true,RF100:true},
+const CFG_DEPART=()=>({gammes:{CAPEVO:true,CAPNR:true,LPSH:false,TALIS:false,MCCINOVA:true,FLEXIA:true,SOLENCIA:true,MV:true,REV:true,RF50:true,RF100:true,APICIL:true},
   logos:Object.fromEntries(COMPAGNIES.map(c=>[c.co,true]))});
 const CLE="santeo-maquette-gestion-v1";
 let CFG=CFG_DEPART();
@@ -986,6 +986,46 @@ document.addEventListener("keydown",e=>{
   const b=document.querySelector('[data-open="'+k+'"]'); if(b)b.focus();
 });
 
+/* ---------- API Santé (VERALTI) : tarif demandé à l'assureur par le relais de Santéo ----------
+   La page n'appelle jamais APICIL : elle interroge le relais capisante.fr/apicil.php (tarification seulement, ouvert à
+   santeo.net le 11/11/2026), qui seul détient les accès. Un appel par profil complet (date de naissance exacte et code
+   postal), jamais à chaque frappe ; la réponse redessine les offres. Même profil que le comparateur de Claude. */
+const APICIL_URL="__APICIL__";
+const APICIL_REG={SAL:["GENERAL","SALARIE"],TNS:["SSI","ACTIF"],RL:["ALSACEMOSELLE","SALARIE"],TNSRL:["ALSACEMOSELLE","ACTIF"]};
+let APICIL={cle:"",etat:"vide",tarifs:null,message:""}, apicilMinuteur=null;
+const isoDe=v=>{const m=String(v||"").trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);return m?m[3]+"-"+m[2]+"-"+m[1]:null};
+function apicilEffet(){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-01"}
+function apicilProfil(cpv,dept,reg,hasCnj){
+  const r=APICIL_REG[reg]||APICIL_REG.SAL;
+  const cp=/^\d{5}$/.test(cpv)?cpv:(/^\d{2}$/.test(dept||"")?dept+"000":null);
+  const dnA=isoDe($("age").value); if(!cp||!dnA) return null;
+  const b=[{role:"ASSUR",dateNaissance:dnA,regimeSocial:r[0]}];
+  if(hasCnj){const dnC=isoDe(S.cnj); if(!dnC) return null; b.push({role:"CONJT",dateNaissance:dnC,regimeSocial:r[0]})}
+  const an=new Date().getFullYear();   // le site ne demande pas l'âge des enfants : transmis à 10 ans, comme le comparateur
+  for(let i=0;i<Math.min(S.kids,8);i++) b.push({role:"ENFNT",dateNaissance:(an-10)+"-01-01",regimeSocial:r[0]});
+  return {codePostalAssure:cp,dateEffetContrat:apicilEffet(),situationProfessionnelle:r[1],beneficiaires:b};
+}
+function apicilPourCalcul(cpv,dept,reg,hasCnj){
+  if(!APICIL_URL) return {};
+  const prof=apicilProfil(cpv,dept,reg,hasCnj); if(!prof) return {};
+  const cle=JSON.stringify(prof);
+  if(APICIL.cle!==cle){
+    APICIL={cle,etat:"attente",tarifs:null,message:""};
+    clearTimeout(apicilMinuteur); apicilMinuteur=setTimeout(()=>apicilCharge(prof,cle),500);
+  }
+  return {profil:prof,etat:APICIL.etat,tarifs:APICIL.tarifs,message:APICIL.message,approche:false,cpExact:/^\d{5}$/.test(cpv)};
+}
+async function apicilCharge(prof,cle){
+  let st;
+  try{
+    const rp=await fetch(APICIL_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(prof)});
+    const d=await rp.json().catch(()=>null);
+    if(!rp.ok||!d||!Array.isArray(d.Formules)) st={cle,etat:"erreur",tarifs:null,message:"service indisponible"};
+    else{const t={};d.Formules.forEach(f=>{const v=parseFloat(f.TarifFormule);if(!isNaN(v))t[f.LibelleFormule]=v});st={cle,etat:"ok",tarifs:t,message:""}}
+  }catch(e){st={cle,etat:"erreur",tarifs:null,message:"service injoignable"}}
+  if(APICIL.cle===cle){APICIL=st;upd()}   // une réponse pour un profil déjà changé est ignorée
+}
+
 /* ---------- Calcul ---------- */
 function compute(){
   const age=ageDeDate($("age").value);
@@ -1001,7 +1041,8 @@ function compute(){
   if(hasCnj&&cnjAge==null) return {err:S.cnj.replace(/\D/g,"").length===8?"La date de naissance du conjoint n'existe pas : vérifiez le jour et le mois.":"Indiquez la date de naissance complète du conjoint (jour, mois, année)."};
   const SEL=Object.assign({},CFG.gammes);
   if(!Object.values(SEL).some(v=>v)) return {err:"Aucune gamme n'est affichée : cochez-en au moins une dans « Gestion des compagnies », en bas de la page."};
-  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null});
+  const apicil=SEL.APICIL?apicilPourCalcul(cpv,dept,reg,hasCnj):{};
+  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null,apicil});
   const rows=r.rows.filter(x=>!x.incomplete&&x.total>0).map(x=>{
     const st={}; POSTES.forEach(p=>st[p.k]=p.st(x)); return Object.assign({},x,{st});
   });
@@ -1052,6 +1093,10 @@ function upd(){
   $("more-offers").hidden=true;
   if(res.err){$("count").textContent=res.err;LAST=[];return}
   const list=res.fit; LAST=list;
+  // L'option choisie est suivie par son identité (gamme et formule) : si des offres arrivent ou partent (tarif API Santé,
+  // étoiles), son numéro suit ; si elle n'est plus proposée, le choix est retiré.
+  if(S.chosen==null) S.choixId=null;
+  else if(S.choixId){const j=list.findIndex(x=>x.key+"|"+x.fi===S.choixId); if(j<0){S.chosen=null;S.choixId=null;$("chosen-box").innerHTML=""} else if(j!==S.chosen){S.chosen=j;afficherChoix(j)}}
   if(!list.length){
     $("count").textContent="Aucune offre n'atteint tous vos niveaux.";
     box.innerHTML='<p class="empty">Baissez une étoile ou retirez une précision : nous avons '+res.rows.length+' offres pour votre profil. Un conseiller peut aussi chercher pour vous.</p>';
@@ -1080,12 +1125,14 @@ $("more-offers").onclick=()=>{S.shown=LAST.length;upd()};
 function besoinsPrecis(){
   const L=[]; POSTES.forEach(p=>{p.more.forEach(f=>{if(S.flt[f.id])L.push(f.lb+(f.ok?"":" (à voir avec le conseiller)"))}); const a=(S.autre[p.k]||"").trim(); if(a)L.push(p.nm+" : "+a.replace(/</g,"&lt;"))});
   return L; }
-function choose(i){
-  S.chosen=i; const x=LAST[i];
-  const bp=besoinsPrecis();
+function afficherChoix(i){
+  const x=LAST[i], bp=besoinsPrecis();
   $("chosen-box").innerHTML='<div class="ch-titre"><span class="ch-lib">Votre choix</span><strong>Option '+(i+1)+'</strong><span class="ch-prix">'+eur(x.total)+' <small>/mois</small></span></div>'+
     '<div class="ch-gar">'+postesAffiches().map(p=>'<span>'+p.nm+' <b>'+valeur(p,x)+'</b></span>').join("")+'</div>'+
     (bp.length?'<div class="ch-plus">Vos besoins précis : '+bp.join(", ")+'</div>':"");
+}
+function choose(i){
+  S.chosen=i; S.choixId=LAST[i].key+"|"+LAST[i].fi; afficherChoix(i);
   $("form-panel").hidden=false; $("done").hidden=true; $("lead").hidden=false;
   document.querySelector("#form-panel .form-intro").hidden=false; $("t-form").textContent="Recevoir mon devis";
   upd(); majWhatsApp();
