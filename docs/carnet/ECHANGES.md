@@ -288,6 +288,22 @@ Statut : À TRAITER
 
 ## Mise en ligne de www.santeo.net (demandée le 09/11/2026 pour le 10/11/2026)
 
+Fait le 11/11/2026 :
+- zone DNS de santeo.net relevée avant toute modification (28 lignes, gardée hors du dépôt : adresses de serveurs) ;
+- GitHub, réglages Pages : domaine personnalisé `www.santeo.net` ;
+- OVH : seule la ligne `www` changée (A vers l'ancien serveur supprimée, CNAME `www` vers `fabcoh.github.io.` ajouté) ;
+  aucune ligne des mails, du CRM, de GestCom, du comparateur ni `public` touchée ;
+- certificat de www.santeo.net créé par GitHub (vérifié le 11/11 à 9 h 06, valable jusqu'au 09/02/2027) ;
+- publication passée en `--en-ligne`.
+Reste :
+- `santeo.net` sans www : le SPF contient « a » (l'adresse de santeo.net est autorisée à envoyer des mails) ; constat
+  demandé à Manus par la conversation pilote (l'ancien serveur envoie-t-il des mails lui-même ?) avant de changer la ligne
+  `@` ;
+- santeo.fr : renvoi vers www.santeo.net par un petit site GitHub (accord de Fabrice, « oui », 11/11), après la mise en
+  ligne ; santeo.fr n'a qu'une page d'attente OVH et ses lignes mail (MX, SPF) resteront en place ; le comparateur
+  utilise capisante.fr, pas santeo.fr (« je me suis trompé je crois que c'est capisante.fr qui gère le comparateur »).
+
+
 Demande de Fabrice : « tu vas référencer tout ce qu'il y a à faire et on met en place tout ça pour le publier
 demain ». But : « publier un site et recevoir des demandes de devis, commencer à référencer le site, commencer à te
 mettre en place des achats de mots-clés », et avoir « une référence pour mes clients qui viennent de WhatsApp ».

@@ -1,6 +1,7 @@
-# Site de test sur GitHub Pages : reconstruit la page à chaque fusion sur main, et chaque jour
+# Site www.santeo.net sur GitHub Pages : reconstruit la page à chaque fusion sur main, et chaque jour
 # pour reprendre les tarifs à jour du comparateur de Claude (dépôt public fabcoh/santeo-tarifs, lecture seule).
-# La page est cachée aux moteurs de recherche (noindex) et porte un bandeau « version de test ».
+# Version en ligne depuis le 11/11/2026 : visible par les moteurs de recherche, sans bandeau de test
+# (adresse www.santeo.net réglée dans les réglages Pages du dépôt ; certificat de GitHub).
 name: Site de test
 
 on:
@@ -32,7 +33,7 @@ jobs:
           path: santeo-tarifs
           sparse-checkout: src
       - name: Construire la page
-        run: python3 -I maquette/build.py maquette santeo-tarifs --site _site
+        run: python3 -I maquette/build.py maquette santeo-tarifs --site _site --en-ligne
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
