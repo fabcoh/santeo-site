@@ -81,6 +81,9 @@ async function remplir(p) {
   doit(guide.length >= 6, 'guide : au moins 6 articles (' + guide.length + ')');
   doit(/<a href="guide\/">Guide de la mutuelle<\/a>/.test(idx), 'accueil : lien « Guide de la mutuelle » absent du pied de page');
   for (const a of guide) doit(idx.includes('<a href="guide/' + a.slug + '/">'), 'accueil : pas de lien vers l\'article ' + a.slug);
+  { const chap = JSON.parse(fs.readFileSync(S + '/chapitres.json', 'utf8')).chapitres.map(c => c.id), som = fs.readFileSync(d + '/guide/index.html', 'utf8');
+    for (const a of guide) doit(chap.includes(a.chapitre), a.slug + ' : chapitre absent ou inconnu (' + a.chapitre + ')');
+    for (const c of chap) if (guide.some(a => a.chapitre === c)) doit(som.includes('<section class="chapitre" id="' + c + '">'), 'sommaire du guide : chapitre absent ' + c); }
   doit((idx.match(/<h1[ >]/g) || []).length === 1, 'accueil : un seul titre h1 (' + (idx.match(/<h1[ >]/g) || []).length + ')');
   { const m = idx.match(/<meta name="description" content="([^"]*)"/); doit(m && m[1].length <= 155, 'accueil : description pour Google trop longue ou absente'); }
   { const l = (idx.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/g) || []).reduce((s, x) => s + x.length, 0);
