@@ -416,17 +416,33 @@ Ensuite, un lot à la fois :
   à jour ; la demande de comparatif envoyée (`generate_lead`) et le premier message du tchat (`tchat_premier_message`)
   sont comptés, sans leur contenu. Tant que `google_mesure` est vide dans `maquette/reglages-site.json`, rien ne
   change sur le site.
-- Attendu de Fabrice : l'identifiant de mesure « G-… » (public, pas un secret) de la propriété Google Analytics de
-  www.santeo.net, créée avec le compte Google de Google Ads.
-- Compte Google Ads (capture du 11/11) : 4 anciennes campagnes de 2022, en pause, aucune annonce diffusée. Conditions de
-  l'avoir de 400 € à vérifier par Fabrice (Facturation, Promotions). Accès de Claude à Google Ads : par un connecteur
-  claude.ai (à brancher par Fabrice), lu seulement au démarrage d'une conversation.
+- Identifiant de mesure (11/11) : la propriété Google Analytics existait déjà (« http://www.santeo.net – GA4 », compte
+  Analytics « www.santeo.fr », même compte Google que le compte Google Ads « santeo ») ; identifiant `G-WMWFVBYLE0` mis
+  dans `maquette/reglages-site.json` (demande de fusion « mesure-google-analytics »). Essais avant envoi : bandeau visible
+  sur téléphone et PC, rien de Google avant l'accord, balise chargée après « Accepter », rien après « Refuser ».
+- Compte Google Ads « santeo », état des lieux du 11/11 (lu par Windsor.ai) : actif ; 4 anciennes campagnes en veille,
+  sans dépense depuis au moins 2 ans et inutilisables (groupes d'annonces supprimés ou annonces absentes, une campagne
+  sans rapport avec Santéo) ; aucun suivi des conversions ; page Promotions vue par Fabrice : aucune offre, aucun avoir ;
+  dernier paiement en 2013 : carte à remplacer par Fabrice avant toute dépense. Anciennes annonces refusées quand elles
+  citaient des assureurs : ne jamais citer de nom d'assureur dans une annonce.
+- Compte « Santeo V2 » (captures du 11/11) : désactivé par Google depuis le 28/02/2020, paiement refusé ; ses 4 campagnes
+  ont été mises en veille par Fabrice le 11/11 (l'une était encore active et aurait dépensé dès la carte acceptée).
+  Sa page Promotions n'a pas été vue : l'avoir de 400 € y est peut-être (voir la phrase de Fabrice ci-dessous), mais les
+  offres de Google sont en général réservées aux nouveaux annonceurs, ce que Santéo n'est plus (non vérifié).
 - Windsor.ai branché le 11/11 (plug-in et connecteur claude.ai, choix de Fabrice : « oui on branche Windsor.ai ») ; il
   lit le compte Google Ads actif « santeo ». Un second compte Google Ads (« Santeo V2 ») demande un nouveau moyen de
   paiement ; Fabrice : « mais les 400 euros étais sur l'autre adresse » (compte exact de l'avoir à préciser avec lui).
 - Environnement cloud (réglages réseau) : adresses autorisées le 11/11 avec l'accord de Fabrice : Windsor.ai (son
   plug-in était refusé par le réseau) et santeo.fr / www.santeo.fr (vérification du renvoi).
-- Les chiffres de visites ne s'écrivent jamais dans ce dépôt public.
+- Décision de Fabrice (11/11) sur le prix des clics « mutuelle » : « C'est trop cher pour moi. » Nouvelle cible :
+  « ce qui nous intéresse, c'est d'attirer les jeunes 20, 25 ans, 30 ans ». Ordre retenu (« Ok je te fais confiance ? ») :
+  1. la mesure, gratuite : Google Analytics (ce lot), puis lien Analytics ↔ Google Ads, puis Search Console (vérifiée
+     par un fichier ou une balise dans le site, sans toucher à OVH) ;
+  2. des articles du guide pour les jeunes : étudiants, apprentis et alternants, jeunes sans emploi, fin de la mutuelle
+     des parents, premier emploi (dispense de la mutuelle d'entreprise) ; textes « Mon idée » validés par Fabrice ;
+  3. un petit test payant sur les mots-clés jeunes les moins chers, avec un prix maximum par clic, budget à fixer avec
+     Fabrice (moins de 400 € par mois), seulement après la carte remplacée et la mesure en place.
+- Les chiffres de visites, de recherches Google et de prix des mots-clés ne s'écrivent jamais dans ce dépôt public.
 
 ## Reste à faire selon Fabrice (11/11/2026, ses mots)
 
