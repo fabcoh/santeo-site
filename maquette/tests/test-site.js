@@ -56,6 +56,26 @@ async function remplir(p) {
   try { const j = JSON.parse(idx.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]); doit(j['@type'] === 'InsuranceAgency', 'fiche Google : type'); }
   catch (e) { err('fiche Google illisible : ' + e.message); }
   doit(/Sitemap: https:\/\/www\.santeo\.net\/sitemap\.xml/.test(fs.readFileSync(d + '/robots.txt', 'utf8')), 'robots.txt en ligne');
+  // Guide de la mutuelle : une page par article, liste, plan du site, données pour Google
+  const guide = fs.readdirSync(S + '/guide').filter(f => f.endsWith('.json')).map(f => JSON.parse(fs.readFileSync(S + '/guide/' + f, 'utf8')));
+  doit(guide.length >= 6, 'guide : au moins 6 articles (' + guide.length + ')');
+  doit(/<a href="guide\/">Guide de la mutuelle<\/a>/.test(idx), 'accueil : lien « Guide de la mutuelle » absent du pied de page');
+  const plan = fs.readFileSync(d + '/sitemap.xml', 'utf8');
+  doit(plan.includes('https://www.santeo.net/guide/</loc>'), 'plan du site : page du guide absente');
+  for (const a of guide) {
+    const f = path.join(d, 'guide', a.slug, 'index.html');
+    if (!fs.existsSync(f)) { err('guide : page manquante ' + a.slug); continue; }
+    const h = fs.readFileSync(f, 'utf8');
+    doit((h.match(/<h1>/g) || []).length === 1, a.slug + ' : un seul titre h1');
+    doit(h.includes('<link rel="canonical" href="https://www.santeo.net/guide/' + a.slug + '/">'), a.slug + ' : adresse canonique');
+    doit(/<meta name="robots" content="index, follow">/.test(h) && !/__[A-Z][A-Z_]*__/.test(h), a.slug + ' : robots ou repère non remplacé');
+    doit(a.titre_page.length <= 60 && a.description.length <= 160, a.slug + ' : titre ou description trop longs pour Google');
+    doit(plan.includes('https://www.santeo.net/guide/' + a.slug + '/</loc>'), a.slug + ' : absent du plan du site');
+    doit(!/fcohen@|santeo\.net\/guide/.test(a.slug) && !/(april|avenir|mcci|alptis|apicil|swiss ?life|harmonie|mgen)/i.test(fs.readFileSync(S + '/guide/' + a.slug + '.html', 'utf8')), a.slug + ' : nom d\'assureur dans un article');
+    try { const j = JSON.parse(h.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]); const types = j['@graph'].map(x => x['@type']);
+      doit(types.includes('Article') && types.includes('BreadcrumbList') && types.includes('FAQPage'), a.slug + ' : données Google ' + types); }
+    catch (e) { err(a.slug + ' : données Google illisibles ' + e.message); }
+  }
   const t = fs.readFileSync(sites.test + '/index.html', 'utf8');
   doit(/noindex, nofollow/.test(t) && /bandeau-test" role/.test(t) && /Disallow: \//.test(fs.readFileSync(sites.test + '/robots.txt', 'utf8')), 'site de test : doit rester caché, avec bandeau');
 
@@ -202,6 +222,22 @@ async function remplir(p) {
     const consent = await q.evaluate(() => (window.dataLayer || []).map(a => Array.from(a)).filter(a => a[0] === 'consent').map(a => a[1] + ':' + a[2].analytics_storage));
     doit(consent.join(',') === 'default:denied,update:granted', nom + ' : signaux d\'accord Google ' + consent.join(','));
     console.log(nom, '| cookies : boutons', bt.map(x => x[0]).join('/'), '| Google chargé après accord :', gtm.length > 0, '| événements', evts.join(','));
+    await c.close();
+  }
+  // 9. Pages du guide sur téléphone et PC : lisibles, sans défilement de côté, bouton vers le comparateur
+  for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {
+    const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
+    q.on('pageerror', e => err(nom + ' guide : ' + e.message));
+    await q.goto('https://www.santeo.net/guide/'); await q.waitForTimeout(300);
+    const n = await q.$$eval('.liste a', l => l.length);
+    doit(n >= 6, nom + ' : la page du guide doit lister les articles (' + n + ')');
+    await q.click('.liste a'); await q.waitForTimeout(300);
+    const info = await q.evaluate(() => ({ url: location.pathname, hs: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+      cta: [...document.querySelectorAll('a.btn')].map(a => a.getAttribute('href')), bandeau: !!document.getElementById('cookies') && !document.getElementById('cookies').hidden }));
+    doit(/^\/guide\/[a-z0-9-]+\/$/.test(info.url) && !info.hs && info.cta.every(h => h === '../../') && !info.bandeau, nom + ' : article ' + JSON.stringify(info));
+    await q.click('.cta a.btn'); await q.waitForTimeout(400);
+    doit(q.url() === 'https://www.santeo.net/' && await q.isVisible('#vue-comparateur'), nom + ' : le bouton de l\'article doit mener au comparateur (' + q.url() + ')');
+    console.log(nom, '| guide :', n, 'articles, article ouvert', info.url);
     await c.close();
   }
   await b.close(); fs.rmSync(tmp, { recursive: true, force: true });

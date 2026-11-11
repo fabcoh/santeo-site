@@ -1,0 +1,31 @@
+{
+ "slug": "contrat-non-responsable",
+ "ordre": 3,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Contrat non responsable : différences avec le responsable",
+ "description": "Contrat responsable ou non : remboursements encadrés, 100 % Santé, dépassements d'honoraires, taxe, et pour qui le non responsable a un intérêt.",
+ "h1": "Contrat responsable ou non responsable : quelles différences ?",
+ "faq": [
+  {
+   "q": "Un contrat non responsable est-il interdit ?",
+   "r": "Non. Il est autorisé, mais il ne respecte pas le cahier des charges du contrat responsable. Il est donc plus taxé (20,27 % au lieu de 13,27 %) et n'ouvre pas droit aux avantages sociaux des contrats d'entreprise."
+  },
+  {
+   "q": "Qu'est-ce que l'OPTAM ?",
+   "r": "C'est un engagement pris par certains médecins de secteur 2 de modérer leurs dépassements d'honoraires. En échange, l'Assurance maladie rembourse leurs actes sur une base plus élevée."
+  },
+  {
+   "q": "Un contrat responsable rembourse-t-il les dépassements d'honoraires ?",
+   "r": "Oui, s'il le prévoit. Mais pour un médecin qui n'adhère pas à l'OPTAM, le remboursement du dépassement est plafonné à 100 % du tarif de la Sécurité sociale."
+  },
+  {
+   "q": "Pourquoi la participation forfaitaire de 2 € n'est-elle pas remboursée ?",
+   "r": "Parce que la loi interdit aux contrats responsables de la rembourser, comme les franchises médicales. Elle reste à la charge des adultes, sauf cas d'exonération."
+  },
+  {
+   "q": "Ai-je droit au 100 % Santé avec un contrat non responsable ?",
+   "r": "Avec un contrat responsable ou la Complémentaire santé solidaire, ces équipements sont sans reste à charge. Avec un contrat non responsable, cela dépend de ses garanties."
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "slug": "mutuelle-entreprise-obligatoire",
+ "ordre": 4,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Mutuelle d'entreprise obligatoire : règles et dispenses",
+ "description": "Mutuelle d'entreprise obligatoire depuis 2016 : part de l'employeur, panier minimum, dispenses, portabilité, retraités, indépendants, fonctionnaires.",
+ "h1": "Mutuelle d'entreprise obligatoire : ce que prévoit la loi",
+ "faq": [
+  {
+   "q": "Mon employeur est-il obligé de me proposer une mutuelle ?",
+   "r": "Oui, si vous êtes salarié du secteur privé. Depuis le 1er janvier 2016, tout employeur privé doit proposer une complémentaire santé collective à ses salariés et en payer au moins 50 %."
+  },
+  {
+   "q": "Puis-je refuser la mutuelle de mon entreprise ?",
+   "r": "Seulement dans les cas de dispense prévus, par exemple si vous bénéficiez de la complémentaire santé solidaire ou si vous êtes déjà couvert par le contrat collectif obligatoire de votre conjoint. La demande se fait par écrit, avec un justificatif."
+  },
+  {
+   "q": "Combien de temps puis-je garder ma mutuelle après un licenciement ?",
+   "r": "Avec la portabilité, vous la gardez gratuitement pendant votre indemnisation chômage, dans la limite de la durée de votre dernier contrat et de 12 mois au maximum. Elle ne s'applique pas en cas de faute lourde."
+  },
+  {
+   "q": "Que devient ma mutuelle d'entreprise à la retraite ?",
+   "r": "Elle prend fin, mais la loi Évin vous permet de garder les mêmes garanties à titre individuel. Vous payez alors toute la cotisation, avec un tarif encadré pendant 3 ans."
+  },
+  {
+   "q": "Un travailleur indépendant doit-il avoir une mutuelle ?",
+   "r": "Non, aucune obligation ne s'applique à sa propre couverture. Il peut souscrire une complémentaire individuelle. S'il emploie des salariés, il doit en revanche leur proposer une mutuelle d'entreprise."
+  }
+ ]
+}

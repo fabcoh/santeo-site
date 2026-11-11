@@ -444,6 +444,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (prefers-reduced-motion: no-preference){.tchat-fenetre:not([hidden]){animation:tchat-ouvre .18s ease-out}}
 @keyframes tchat-ouvre{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media print{.tchat{display:none}}
+/* debut-css-cookies */
 /* ---------- Bandeau cookies : statistiques et annonces Google, seulement avec l'accord du visiteur ----------
    « Refuser » et « Accepter » ont exactement la même apparence (règle de la CNIL). */
 .cookies{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--surface);color:var(--fg);border-top:2px solid var(--brand-1);box-shadow:0 -8px 28px rgba(5,30,50,.22);padding:.85rem max(16px,env(safe-area-inset-right,0px)) max(.85rem,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -458,6 +459,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 .lien-cookies{border:0;background:none;padding:0;font:inherit;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline}
 .lien-cookies[hidden]{display:none}
 @media print{.cookies{display:none}}
+/* fin-css-cookies */
 </style>
 
 <div class="wrap">
@@ -592,7 +594,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
     <p class="small" style="margin-top:.5rem">Aucune étoile = poste non couvert au-delà de la Sécurité sociale. Médecines douces données par séance sans nombre de séances : hypothèse de 4 séances par an, à vérifier. Seuls les documents contractuels de chaque assureur font foi.</p>
   </details>
   <dialog class="det-pop" id="det-pop" aria-labelledby="det-titre"></dialog>
-  <footer class="pied"><a href="#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
+  <footer class="pied"><a href="guide/">Guide de la mutuelle</a> · <a href="#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
   </div>
   <main id="vue-mentions" class="mentions" hidden>
     <p><a class="retour" href="#comparateur">← Retour au comparateur</a></p>
@@ -687,6 +689,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
   </main>
 </div>
 
+<!-- debut-html-cookies -->
 <!-- Bandeau cookies : affiché seulement si des statistiques Google sont réglées (maquette/reglages-site.json, « google_mesure ») -->
 <div class="cookies" id="cookies" role="region" aria-label="Choix des cookies" hidden>
   <div class="cookies-dedans">
@@ -694,6 +697,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
     <div class="cookies-choix"><button type="button" id="cookies-non">Refuser</button><button type="button" id="cookies-oui">Accepter</button></div>
   </div>
 </div>
+<!-- fin-html-cookies -->
 
 <!-- Tchat avec Antony : la question du visiteur part sur WhatsApp (ligne 01 53 19 86 46), avec ce qu'il a déjà saisi -->
 <div class="tchat" id="tchat">
@@ -737,6 +741,7 @@ try{const s=JSON.parse(localStorage.getItem(CLE)||"null"); if(s&&s.gammes&&s.log
 function garder(){try{localStorage.setItem(CLE,JSON.stringify(CFG))}catch(e){}}
 const ZONES=Moteur.zones(D);
 const $=id=>document.getElementById(id);
+/* debut-js-cookies */
 /* ---------- Bandeau cookies et statistiques Google ----------
    Rien de Google n'est chargé sans l'accord du visiteur (règles de la CNIL) ; « Refuser » aussi simple qu'« Accepter » ;
    choix gardé 6 mois ; lien « Cookies » en bas de page pour changer d'avis. Identifiant de mesure : reglages-site.json.
@@ -776,6 +781,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   window.addEventListener("resize",hauteur);
   if(choix==="oui")charger(); else if(!choix){bandeau.hidden=false;hauteur()}
 });
+/* fin-js-cookies */
 const eur=v=>v.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
 
 /* ---------- Étoiles (Mon idée) ---------- */
