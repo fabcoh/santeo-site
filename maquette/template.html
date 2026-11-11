@@ -395,13 +395,13 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (max-width:599px){.tchat-voile.ouvert{display:block}}
 /* Sur téléphone, le tchat ouvert prend tout l'écran (Fabrice, 10/11/2026 : « Surtout depuis un portable ») */
 @media (max-width:599px){
-  .tchat.ouvert{inset:0;right:0;bottom:0}
+  .tchat.ouvert{inset:0;right:0;bottom:0;z-index:80}
   .tchat.ouvert .tchat-fenetre{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;max-height:none;border:0;border-radius:0;box-shadow:none}
   .tchat.ouvert .tchat-tete{padding-top:max(.65rem,env(safe-area-inset-top,0px))}
   .tchat.ouvert .tchat-saisie{padding-bottom:max(.7rem,env(safe-area-inset-bottom,0px))}
   .tchat.ouvert .tchat-pied{display:none}
 }
-.tchat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
+.tchat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(max(16px,env(safe-area-inset-bottom,0px)) + var(--bandeau-h,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
 .tchat>*{pointer-events:auto}
 .tchat[hidden]{display:none}
 .tchat-bouton{position:relative}
@@ -444,6 +444,20 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (prefers-reduced-motion: no-preference){.tchat-fenetre:not([hidden]){animation:tchat-ouvre .18s ease-out}}
 @keyframes tchat-ouvre{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media print{.tchat{display:none}}
+/* ---------- Bandeau cookies : statistiques et annonces Google, seulement avec l'accord du visiteur ----------
+   « Refuser » et « Accepter » ont exactement la même apparence (règle de la CNIL). */
+.cookies{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--surface);color:var(--fg);border-top:2px solid var(--brand-1);box-shadow:0 -8px 28px rgba(5,30,50,.22);padding:.85rem max(16px,env(safe-area-inset-right,0px)) max(.85rem,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cookies[hidden]{display:none}
+.cookies-dedans{max-width:1100px;margin:0 auto;display:flex;gap:.8rem 1.2rem;align-items:center;flex-wrap:wrap}
+.cookies p{margin:0;flex:1 1 420px;font-size:.88rem;line-height:1.45}
+.cookies p a{color:var(--accent);font-weight:700}
+.cookies-choix{display:flex;gap:.6rem;flex:0 0 auto}
+.cookies-choix button{min-width:8.5rem;border:2px solid #0e5883;border-radius:999px;padding:.55rem 1.1rem;font:inherit;font-weight:700;cursor:pointer;background:#0e5883;color:#fff}   /* même bleu foncé en clair et en sombre : texte blanc lisible */
+.cookies-choix button:focus-visible,.lien-cookies:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:599px){.cookies-choix{width:100%}.cookies-choix button{flex:1;min-width:0}.cookies p{font-size:.84rem}}
+.lien-cookies{border:0;background:none;padding:0;font:inherit;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline}
+.lien-cookies[hidden]{display:none}
+@media print{.cookies{display:none}}
 </style>
 
 <div class="wrap">
@@ -578,7 +592,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
     <p class="small" style="margin-top:.5rem">Aucune étoile = poste non couvert au-delà de la Sécurité sociale. Médecines douces données par séance sans nombre de séances : hypothèse de 4 séances par an, à vérifier. Seuls les documents contractuels de chaque assureur font foi.</p>
   </details>
   <dialog class="det-pop" id="det-pop" aria-labelledby="det-titre"></dialog>
-  <footer class="pied"><a href="#mentions-legales">Mentions légales</a> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
+  <footer class="pied"><a href="#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
   </div>
   <main id="vue-mentions" class="mentions" hidden>
     <p><a class="retour" href="#comparateur">← Retour au comparateur</a></p>
@@ -656,7 +670,9 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 
     <section>
       <h2>Cookies</h2>
-      <p>Le site n'utilise que les cookies nécessaires à son fonctionnement et, le cas échéant, une mesure d'audience respectant les conditions d'exemption de la CNIL. Tout autre traceur ne sera déposé qu'avec votre accord, que vous pourrez refuser aussi simplement que l'accepter.</p>
+      <p>Sans votre accord, le site ne dépose aucun cookie de mesure d'audience ni de publicité. Il garde seulement dans votre navigateur ce qui sert à son fonctionnement : votre conversation avec un conseiller, les réglages du comparateur et votre choix sur les cookies.</p>
+      <p>Avec votre accord, des cookies de Google (Google Analytics et Google Ads, édités par Google Ireland Limited) mesurent la fréquentation du site et l'efficacité de nos annonces : pages vues, provenance de la visite, demandes de devis et messages envoyés depuis le site (sans leur contenu). Google peut traiter ces données hors de l'Union européenne, dans le cadre reconnu par la Commission européenne (Data Privacy Framework). Ces cookies sont conservés 13 mois au plus.</p>
+      <p>Votre choix, accepté ou refusé, est gardé 6 mois. Vous pouvez le changer à tout moment par le lien « Cookies » en bas de page, aussi simplement que vous l'avez fait la première fois.</p>
     </section>
 
     <section>
@@ -669,6 +685,14 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
       <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Toute reproduction, totale ou partielle, est interdite sans l'autorisation écrite du directeur de la publication. Les marques et logos des assureurs partenaires appartiennent à leurs propriétaires respectifs.</p>
     </section>
   </main>
+</div>
+
+<!-- Bandeau cookies : affiché seulement si des statistiques Google sont réglées (maquette/reglages-site.json, « google_mesure ») -->
+<div class="cookies" id="cookies" role="region" aria-label="Choix des cookies" hidden>
+  <div class="cookies-dedans">
+    <p>Avec votre accord, nous utilisons des cookies de Google pour mesurer la fréquentation du site et l'efficacité de nos annonces. Vous pourrez changer d'avis à tout moment par le lien « Cookies » en bas de page. <a href="#mentions-legales">En savoir plus</a></p>
+    <div class="cookies-choix"><button type="button" id="cookies-non">Refuser</button><button type="button" id="cookies-oui">Accepter</button></div>
+  </div>
 </div>
 
 <!-- Tchat avec Antony : la question du visiteur part sur WhatsApp (ligne 01 53 19 86 46), avec ce qu'il a déjà saisi -->
@@ -713,6 +737,45 @@ try{const s=JSON.parse(localStorage.getItem(CLE)||"null"); if(s&&s.gammes&&s.log
 function garder(){try{localStorage.setItem(CLE,JSON.stringify(CFG))}catch(e){}}
 const ZONES=Moteur.zones(D);
 const $=id=>document.getElementById(id);
+/* ---------- Bandeau cookies et statistiques Google ----------
+   Rien de Google n'est chargé sans l'accord du visiteur (règles de la CNIL) ; « Refuser » aussi simple qu'« Accepter » ;
+   choix gardé 6 mois ; lien « Cookies » en bas de page pour changer d'avis. Identifiant de mesure : reglages-site.json.
+   window.mesure(nom) compte un événement (demande envoyée, tchat) ; sans accord, il ne fait rien. */
+const GOOGLE="__GOOGLE__";
+window.mesure=function(){};
+document.addEventListener("DOMContentLoaded",()=>{
+  const bandeau=$("cookies"), lien=$("cookies-lien");
+  if(!GOOGLE||!bandeau||!lien)return;
+  const CLE_C="santeo-cookies", DUREE=182*864e5, TOUT=v=>({ad_storage:v,analytics_storage:v,ad_user_data:v,ad_personalization:v});
+  let choix=null; try{const c=JSON.parse(localStorage.getItem(CLE_C)||"null");if(c&&(c.choix==="oui"||c.choix==="non")&&Date.now()-c.date<DUREE)choix=c.choix}catch(e){}
+  lien.hidden=false;
+  let charge=false;
+  function charger(){
+    if(!charge){
+      charge=true; window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments)};
+      gtag("consent","default",TOUT("denied")); gtag("consent","update",TOUT("granted"));
+      gtag("js",new Date()); gtag("config",GOOGLE);
+      const sc=document.createElement("script"); sc.async=true; sc.src="https://www.googletagmanager.com/gtag/js?id="+encodeURIComponent(GOOGLE); document.head.appendChild(sc);
+    } else gtag("consent","update",TOUT("granted"));
+    window.mesure=(nom,params)=>{try{gtag("event",nom,params||{})}catch(e){}};
+  }
+  function effacer(){
+    const domaines=["",location.hostname,"."+location.hostname.replace(/^www\./,"")];
+    document.cookie.split(";").map(c=>c.split("=")[0].trim()).filter(n=>/^(_ga|_gid|_gcl|_gac)/.test(n))
+      .forEach(n=>domaines.forEach(d=>{document.cookie=n+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"+(d?"; domain="+d:"")}));
+  }
+  const hauteur=()=>document.documentElement.style.setProperty("--bandeau-h",bandeau.hidden?"0px":bandeau.offsetHeight+"px");
+  function decider(c){
+    try{localStorage.setItem(CLE_C,JSON.stringify({choix:c,date:Date.now()}))}catch(e){}
+    bandeau.hidden=true; hauteur();
+    if(c==="oui")charger();
+    else{if(charge)gtag("consent","update",TOUT("denied")); window.mesure=function(){}; effacer()}
+  }
+  $("cookies-oui").onclick=()=>decider("oui"); $("cookies-non").onclick=()=>decider("non");
+  lien.onclick=()=>{bandeau.hidden=false;hauteur();$("cookies-non").focus({preventScroll:true})};
+  window.addEventListener("resize",hauteur);
+  if(choix==="oui")charger(); else if(!choix){bandeau.hidden=false;hauteur()}
+});
 const eur=v=>v.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
 
 /* ---------- Étoiles (Mon idée) ---------- */
@@ -1099,6 +1162,7 @@ function envoyer(){
     .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error("refus");if(typeof j.erreur==="string")e.raison=j.erreur.slice(0,200);throw e}
       b.disabled=false;b.textContent=lib;
       if(window.tchatDemandeEnvoyee)window.tchatDemandeEnvoyee(d,j.id);
+      window.mesure("generate_lead",{provenance:provenance()});   // compté par Google seulement si le visiteur a accepté les cookies
       const waQ=waLien("Bonjour, je viens de demander un devis sur le site Santéo"+(d.offre?" (option "+d.offre.numero+")":"")+".");
       fini('<p class="merci-titre">✓ Merci '+html(d.prenom)+', votre demande est bien arrivée.</p><ul class="merci-suite">'+
         '<li><b>Votre devis</b> : un conseiller Santéo l\'étudie et vous l\'envoie par e-mail à <b>'+html(d.email)+'</b>.</li>'+
@@ -1227,7 +1291,8 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       contexte:{age:c.age,code_postal:c.cp,regime:c.age!=null?c.reg:"",offre:c.offre?{numero:c.offre.numero,cotisation_mensuelle:Math.round(c.offre.prix*100)/100,gamme:c.offre.gamme,formule:c.offre.formule}:null},
       identite:identite&&(identite.fiche||identite.telephone)?identite:null,
       pseudo:pseudoConnu(),provenance:provenance(),page:location.href.split("#")[0],site_web:"",test:ESSAI})})
-    .then(j=>{etat.conversation=j.conversation||etat.conversation;if(j.message)m.id=String(j.message);m.statut="ok"})
+    .then(j=>{if(!etat.conversation&&j.conversation)window.mesure("tchat_premier_message");
+      etat.conversation=j.conversation||etat.conversation;if(j.message)m.id=String(j.message);m.statut="ok"})
     .catch(()=>{m.statut="echec"})
     .then(()=>{garderT();if(!fen.hidden)afficher();suivreBientot()});
   }

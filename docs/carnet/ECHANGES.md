@@ -386,6 +386,23 @@ Ensuite, un lot à la fois :
 14. APRIL et API Santé (en attente de « comparateur claude »).
 15. Gestion des compagnies réservée à Santéo.
 
+## Statistiques et Google Ads (décidé le 11/11/2026)
+
+- Fabrice : « on peux avoir les statisatique et les personnes en ligne actuellement sur le site ? », puis « j'ai un avoir
+  de 400€ pour faire du google ad », puis « oui on fait ce tes ». Choix : statistiques Google (Google Analytics), reliées
+  à son compte Google Ads, plutôt que Plausible (proposé d'abord, sans cookie mais payant).
+- Fait (demande de fusion « bandeau-cookies ») : bandeau cookies, « Refuser » et « Accepter » identiques ; rien de Google
+  chargé avant l'accord ; choix gardé 6 mois ; lien « Cookies » en bas de page ; mentions légales, section Cookies, mise
+  à jour ; la demande de comparatif envoyée (`generate_lead`) et le premier message du tchat (`tchat_premier_message`)
+  sont comptés, sans leur contenu. Tant que `google_mesure` est vide dans `maquette/reglages-site.json`, rien ne
+  change sur le site.
+- Attendu de Fabrice : l'identifiant de mesure « G-… » (public, pas un secret) de la propriété Google Analytics de
+  www.santeo.net, créée avec le compte Google de Google Ads.
+- Compte Google Ads (capture du 11/11) : 4 anciennes campagnes de 2022, en pause, aucune annonce diffusée. Conditions de
+  l'avoir de 400 € à vérifier par Fabrice (Facturation, Promotions). Accès de Claude à Google Ads : par un connecteur
+  claude.ai (à brancher par Fabrice), lu seulement au démarrage d'une conversation.
+- Les chiffres de visites ne s'écrivent jamais dans ce dépôt public.
+
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
 1. Mettre la source de la maquette dans ce dépôt : dossier `maquette/` (demande de fusion du 08/11/2026).
