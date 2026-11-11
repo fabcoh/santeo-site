@@ -533,6 +533,10 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Correction (11/11, après publication de « accueil-leger »)** : sur les articles, les polices chargées sans blocage
+  faisaient bouger le texte à leur arrivée (décalage mesuré en ligne 0,11 à 0,14, au-dessus du seuil de 0,1 de Google ;
+  0 avant). Les articles reviennent au chargement d'avant (ils s'affichent en moins d'une seconde) ; l'accueil garde le
+  chargement sans blocage (décalage 0,06, contenu principal affiché en 1,9 s au lieu de 2,7 s sur téléphone lent simulé).
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
