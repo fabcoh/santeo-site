@@ -26,6 +26,9 @@ Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/20
   (30 jours), puis défauts du catalogue ; le site n'est jamais vide. Tant que le CRM ne sert pas l'adresse, rien ne
   change. `/admin` affiche « bientôt » tant que l'URL n'est pas connue. Dans la maquette, la gestion reste locale.
 - Le chemin `/admin` est public (Fabrice l'a demandé) : il ne mène qu'à la page de connexion du CRM.
+- Fait par la pilote (PR #528 du CRM, publiée le 11/11) : page de réglages du CRM (connexion obligatoire) ; premiers
+  réglages enregistrés le 11/11 à 19 h 49 (Paris), lus et appliqués par le site (vérifié). `/admin` renvoie vers elle
+  (`admin_crm` de `maquette/reglages-site.json`).
 
 ### 11/11/2026 — de Claude site à la conversation pilote — tchat : prénom ou pseudo au début (contrat)
 Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/2026 ; À TRAITER par elle (CRM WhatsApp)
