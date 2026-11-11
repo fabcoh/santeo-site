@@ -479,8 +479,15 @@ mieux référencer le site »
   ajoutées aux autres. Vérifié le 11/11 par un vrai calcul (profil fictif, 60 ans, 75012 : 11 formules). Dans la maquette
   (page privée), pas de tarif API Santé : le relais n'accepte que santeo.net. Au passage, l'option choisie est suivie par
   son identité : une offre qui arrive ou un changement d'étoiles ne fait plus envoyer une autre offre que celle choisie.
-- **APRIL** : lot suivant ; ses garanties sont dans la page du comparateur (`APRIL_GAR`), pas dans `garanties.json`, et il
-  faut choisir avec Fabrice les produits APRIL affichés (le comparateur en coche deux par défaut : Santé Mix et Simply).
+- **APRIL** branché (demande de fusion « april ») : le site appelle `capisante.fr/april.php` une fois par profil complet,
+  tarification seulement ; produits = ceux cochés dans l'espace admin (par défaut Santé Mix Proximité et Simply Santé,
+  comme le comparateur ; produits « indépendants » seulement pour un régime TNS) ; garanties lues à la construction dans
+  la page du comparateur (`APRIL_GAR`, `APRIL_ORDRE_RANG`), en lecture seule, tant qu'elles ne sont pas dans
+  `garanties.json` ; produits modulables lus sur la diagonale (« Niv. 3 » = 03|03). « n.c. » (garanties non publiées,
+  Simply Santé) s'affiche « n.c. » / « Non communiqué », jamais « — » (non couvert). Au passage : garanties détaillées
+  d'API Santé (pharmacie, implants, lentilles…) ajoutées, elles manquaient dans le détail.
+- Point à surveiller : chaque calcul APRIL renvoie un numéro de projet (« x-projectUuid ») ; APRIL enregistre peut-être
+  un dossier par calcul (non vérifié).
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 

@@ -6,5 +6,6 @@
   "google_mesure": "G-WMWFVBYLE0",
   "apicil": "https://capisante.fr/apicil.php",
   "reglages_crm": "https://crm.capisante.fr/api/site/reglages",
-  "admin_crm": ""
+  "admin_crm": "",
+  "april": "https://capisante.fr/april.php"
 }
