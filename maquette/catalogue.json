@@ -1,0 +1,192 @@
+{
+ "compagnies": [
+  {
+   "nom": "Avenir Mutuelle",
+   "produits": [
+    {
+     "code": "CAPEVO",
+     "nom": "Cap Évolution",
+     "defaut": true
+    },
+    {
+     "code": "CAPNR",
+     "nom": "Cap NR",
+     "defaut": true
+    },
+    {
+     "code": "LPSH",
+     "nom": "LPS Hospi (hospitalisation seule)",
+     "defaut": false
+    },
+    {
+     "code": "TALIS",
+     "nom": "Talis (surcomplémentaire)",
+     "defaut": false
+    }
+   ]
+  },
+  {
+   "nom": "MCCI",
+   "produits": [
+    {
+     "code": "MCCINOVA",
+     "nom": "Nova (non responsable)",
+     "defaut": true
+    },
+    {
+     "code": "FLEXIA",
+     "nom": "Flexia",
+     "defaut": true
+    },
+    {
+     "code": "SOLENCIA",
+     "nom": "Solencia (62 ans et plus)",
+     "defaut": true
+    }
+   ]
+  },
+  {
+   "nom": "La Mutuelle Verte",
+   "produits": [
+    {
+     "code": "MV",
+     "nom": "Gamme courtage GCI",
+     "defaut": true
+    }
+   ]
+  },
+  {
+   "nom": "Révoluo",
+   "produits": [
+    {
+     "code": "REV",
+     "nom": "Révoluo",
+     "defaut": true
+    },
+    {
+     "code": "RF50",
+     "nom": "Révoluo RF50",
+     "defaut": true
+    },
+    {
+     "code": "RF100",
+     "nom": "Révoluo RF100",
+     "defaut": true
+    }
+   ]
+  },
+  {
+   "nom": "APRIL",
+   "note": "Tarifs par le relais APRIL : branchement sur le site au prochain lot.",
+   "produits": [
+    {
+     "code": "APRIL:SanteMix",
+     "nom": "Santé Mix Proximité",
+     "defaut": true,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SimplySante",
+     "nom": "Simply Santé",
+     "defaut": true,
+     "tns": false
+    },
+    {
+     "code": "APRIL:FlexiSante",
+     "nom": "Flexi Santé",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:OnlySante",
+     "nom": "Only Santé",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SanteTranquil",
+     "nom": "Tranquillité Santé",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SanteZen",
+     "nom": "Santé Zen",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SantePeps",
+     "nom": "Santé Peps",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SanteOptimale",
+     "nom": "Santé Optimale",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SanteVita",
+     "nom": "Vita Santé",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SanteGan",
+     "nom": "Senior GAN",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SanteProtect",
+     "nom": "Santé Protect",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SanteCapSerenite",
+     "nom": "Cap Sérénité",
+     "defaut": false,
+     "tns": false
+    },
+    {
+     "code": "APRIL:SantePro",
+     "nom": "Santé Pro (indépendants)",
+     "defaut": false,
+     "tns": true
+    },
+    {
+     "code": "APRIL:SanteProStart",
+     "nom": "Santé Pro Start (indépendants)",
+     "defaut": false,
+     "tns": true
+    },
+    {
+     "code": "APRIL:SanteProPrivilege",
+     "nom": "Santé Pro Privilège (indépendants)",
+     "defaut": false,
+     "tns": true
+    }
+   ]
+  },
+  {
+   "nom": "Apicil",
+   "note": "Tarif demandé en direct à l'assureur : il s'affiche sur le site seulement (le relais n'accepte que santeo.net).",
+   "produits": [
+    {
+     "code": "APICIL",
+     "nom": "API Santé (VERALTI)",
+     "defaut": true
+    }
+   ]
+  },
+  {
+   "nom": "Alptis",
+   "note": "Pas de tarifs dans le comparateur de Claude.",
+   "produits": []
+  }
+ ],
+ "tchat_defaut": true
+}

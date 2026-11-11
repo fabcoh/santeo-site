@@ -11,7 +11,10 @@ const CRM = 'https://crm.exemple.invalid/devis';
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'site-'));
 // Le relais API Santé est toujours simulé (jamais capisante.fr pendant un essai)
 const RELAIS_APICIL = 'https://relais.exemple.invalid/apicil.php';
-const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, '--apicil', RELAIS_APICIL, ...opts]); return d; };
+// Réglages de l'espace admin (CRM) : toujours simulés aussi
+const RELAIS_REGLAGES = 'https://relais.exemple.invalid/reglages';
+let reglagesReponse = { status: 200, corps: { ok: true, produits: {}, logos: {} } };
+const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, '--apicil', RELAIS_APICIL, '--reglages', RELAIS_REGLAGES, ...opts]); return d; };
 let appelsApicil = [];
 const FORMULES_APICIL = [['siApiSanteEquilibre1', 85.52], ['siApiSanteEquilibre2', 131.97], ['siApiSanteSerenite1', 106.59]];
 const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test'),
@@ -26,6 +29,7 @@ async function servir(ctx, base, dir) {
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
   await ctx.route(/crm\.capisante\.fr/, r => { err('un essai a tenté de joindre le vrai CRM'); r.abort(); });   // jamais de vraie demande pendant un essai
   await ctx.route(/\/\/capisante\.fr\//, r => { err('un essai a tenté de joindre le vrai relais'); r.abort(); });
+  await ctx.route(RELAIS_REGLAGES, r => r.fulfill({ status: reglagesReponse.status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(reglagesReponse.corps) }));
   await ctx.route(RELAIS_APICIL, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: { 'access-control-allow-origin': 'https://www.santeo.net', 'access-control-allow-headers': 'Content-Type', 'access-control-allow-methods': 'POST, OPTIONS' } });
     appelsApicil.push(JSON.parse(r.request().postData() || 'null'));
     r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'https://www.santeo.net' }, body: JSON.stringify({ Formules: FORMULES_APICIL.map(([c, t]) => ({ LibelleFormule: c, TarifFormule: String(t) })) }) }); });
@@ -261,6 +265,34 @@ async function remplir(p) {
     doit(appelsApicil.length === 2, nom + ' : un nouveau profil doit faire un nouvel appel (' + appelsApicil.length + ')');
     console.log(nom, '| API Santé :', api.map(o => o.prix.trim()).join(' ; '), '| appels', appelsApicil.length);
     await c.close();
+  }
+  // 11. Espace admin : réglages lus dans le CRM (produits, logos, tchat), derniers réglages gardés si le CRM ne répond pas
+  { const cat = JSON.parse(fs.readFileSync(sites.tchat + '/catalogue.json', 'utf8'));
+    const codes = cat.compagnies.flatMap(c => c.produits.map(p => p.code));
+    doit(codes.includes('MCCINOVA') && codes.includes('APICIL') && codes.includes('APRIL:SanteMix') && cat.version, 'catalogue.json : codes ou version manquants');
+    doit(/noindex/.test(fs.readFileSync(sites.tchat + '/admin/index.html', 'utf8')), 'admin : page absente ou indexable'); }
+  for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {
+    const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.tchat); const q = await c.newPage();
+    q.on('pageerror', e => err(nom + ' réglages : ' + e.message));
+    const etat = async () => { await q.fill('#cp', '75012'); await q.fill('#age', '21/07/1966'); await q.waitForTimeout(1300);
+      for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(120); }
+      return q.evaluate(() => ({ mcci: [...document.querySelectorAll('#offers .o-real')].filter(e => /MCCINOVA|FLEXIA|SOLENCIA/.test(e.textContent)).length,
+        offres: document.querySelectorAll('#offers article.offer').length, logoMcci: !document.querySelector('.logo-box[data-co="MCCI"]').hidden,
+        tchat: !document.getElementById('tchat').hidden })); };
+    reglagesReponse = { status: 200, corps: { ok: true, produits: { MCCINOVA: false, FLEXIA: false, SOLENCIA: false }, logos: { MCCI: false }, tchat: false } };
+    await q.goto('https://www.santeo.net/'); const e1 = await etat();
+    doit(e1.mcci === 0 && e1.offres > 0 && !e1.logoMcci && !e1.tchat, nom + ' : réglages de l\'admin non appliqués ' + JSON.stringify(e1));
+    reglagesReponse = { status: 503, corps: { ok: false } };
+    await q.reload(); const e2 = await etat();
+    doit(e2.mcci === 0 && !e2.logoMcci && !e2.tchat, nom + ' : CRM muet, les derniers réglages doivent rester ' + JSON.stringify(e2));
+    await c.close();
+    const c2 = await b.newContext(opt); await servir(c2, 'https://www.santeo.net/', sites.tchat); const q2 = await c2.newPage();
+    await q2.goto('https://www.santeo.net/'); await q2.fill('#cp', '75012'); await q2.fill('#age', '21/07/1966'); await q2.waitForTimeout(1300);
+    const e3 = await q2.evaluate(() => ({ offres: document.querySelectorAll('#offers article.offer').length, logoMcci: !document.querySelector('.logo-box[data-co="MCCI"]').hidden, tchat: !document.getElementById('tchat').hidden }));
+    doit(e3.offres > 0 && e3.logoMcci && e3.tchat, nom + ' : CRM muet et aucun réglage connu : réglages par défaut attendus ' + JSON.stringify(e3));
+    console.log(nom, '| espace admin : réglages appliqués', JSON.stringify(e1), '| CRM muet', JSON.stringify(e2), '| défaut', JSON.stringify(e3));
+    await c2.close();
+    reglagesReponse = { status: 200, corps: { ok: true, produits: {}, logos: {} } };
   }
   // 9. Pages du guide sur téléphone et PC : lisibles, sans défilement de côté, bouton vers le comparateur
   for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {

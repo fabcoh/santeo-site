@@ -719,25 +719,33 @@ __MOTEUR__
 <script type="application/json" id="d-tarifs">__TARIFS__</script>
 <script type="application/json" id="d-gammes">__GAMMES__</script>
 <script type="application/json" id="d-extras">__EXTRAS__</script>
+<script type="application/json" id="d-catalogue">__CATALOGUE__</script>
 <script>
 (function(){
 "use strict";
 const D=JSON.parse(document.getElementById("d-tarifs").textContent);
 const G=JSON.parse(document.getElementById("d-gammes").textContent);
 const EX=JSON.parse(document.getElementById("d-extras").textContent);
-const COMPAGNIES=[
-  {co:"Avenir Mutuelle",items:[["CAPEVO","Cap Évolution"],["CAPNR","Cap NR"],["LPSH","LPS Hospi (hospitalisation seule)"],["TALIS","Talis (surcomplémentaire)"]]},
-  {co:"MCCI",items:[["MCCINOVA","Nova (non responsable)"],["FLEXIA","Flexia"],["SOLENCIA","Solencia (62 ans et plus)"]]},
-  {co:"La Mutuelle Verte",items:[["MV","Gamme courtage GCI"]]},
-  {co:"Révoluo",items:[["REV","Révoluo"],["RF50","Révoluo RF50"],["RF100","Révoluo RF100"]]},
-  {co:"APRIL",items:[],note:"Tarifs par le relais APRIL : pas encore dans la maquette."},
-  {co:"Apicil",items:[["APICIL","API Santé (VERALTI)"]],note:"Tarif demandé en direct à l'assureur : il s'affiche sur le site seulement (le relais n'accepte que santeo.net)."},
-  {co:"Alptis",items:[],note:"Pas de tarifs dans le comparateur de Claude."}];
-const CFG_DEPART=()=>({gammes:{CAPEVO:true,CAPNR:true,LPSH:false,TALIS:false,MCCINOVA:true,FLEXIA:true,SOLENCIA:true,MV:true,REV:true,RF50:true,RF100:true,APICIL:true},
+/* Catalogue des compagnies et produits (maquette/catalogue.json, publié aussi en /catalogue.json pour l'espace admin du CRM).
+   Sur le site, les réglages viennent de l'espace admin (CRM, « produits », « logos », « tchat ») ; à défaut, des derniers
+   réglages connus, puis des réglages par défaut du catalogue : le site n'est jamais vide. Dans la maquette, la « Gestion des
+   compagnies » reste locale (cet appareil seulement). */
+const CATALOGUE=JSON.parse(document.getElementById("d-catalogue").textContent);
+const COMPAGNIES=CATALOGUE.compagnies.map(c=>({co:c.nom,items:c.produits.map(p=>[p.code,p.nom]),note:c.note||""}));
+const CFG_DEPART=()=>({gammes:Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits.map(p=>[p.code,!!p.defaut]))),
   logos:Object.fromEntries(COMPAGNIES.map(c=>[c.co,true]))});
-const CLE="santeo-maquette-gestion-v1";
-let CFG=CFG_DEPART();
-try{const s=JSON.parse(localStorage.getItem(CLE)||"null"); if(s&&s.gammes&&s.logos){Object.assign(CFG.gammes,s.gammes);Object.assign(CFG.logos,s.logos);}}catch(e){}
+const CLE="santeo-maquette-gestion-v1", MODE_SITE="__MODE__"==="site";
+let CFG=CFG_DEPART(), REGLAGE_TCHAT=CATALOGUE.tchat_defaut!==false;
+function appliquerReglages(r){
+  if(!r||typeof r!=="object")return false;
+  const p=r.produits||{}, l=r.logos||{};
+  Object.keys(CFG.gammes).forEach(k=>{if(typeof p[k]==="boolean")CFG.gammes[k]=p[k]});
+  Object.keys(CFG.logos).forEach(k=>{if(typeof l[k]==="boolean")CFG.logos[k]=l[k]});
+  if(typeof r.tchat==="boolean")REGLAGE_TCHAT=r.tchat;
+  return true;
+}
+if(MODE_SITE){ try{const r=JSON.parse(localStorage.getItem("santeo-reglages")||"null"); if(r&&r.recu&&Date.now()-r.recu<30*864e5)appliquerReglages(r.reglages)}catch(e){} }
+else{ try{const s=JSON.parse(localStorage.getItem(CLE)||"null"); if(s&&s.gammes&&s.logos){Object.assign(CFG.gammes,s.gammes);Object.assign(CFG.logos,s.logos);}}catch(e){} }
 function garder(){try{localStorage.setItem(CLE,JSON.stringify(CFG))}catch(e){}}
 const ZONES=Moteur.zones(D);
 const $=id=>document.getElementById(id);
@@ -1276,6 +1284,9 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   const zone=$("tchat"), bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte");
   if(!bouton)return;
   if(TCHAT_MODE!=="direct"||!TCHAT_CRM){zone.hidden=true;return}
+  // Espace admin : « tchat » en marche ou à l'arrêt (réglage du CRM, appliqué dès qu'il arrive)
+  window.tchatReglage=on=>{zone.hidden=!on; if(!on){$("tchat-fenetre").hidden=true;$("tchat-voile").classList.remove("ouvert");zone.classList.remove("ouvert")}};
+  if(!REGLAGE_TCHAT)zone.hidden=true;
   // Avatar : l'oiseau de l'en-tête, repris tel quel (sans le copier une seconde fois dans la page) ; sinon la lettre « A »
   const oiseau=document.querySelector("img.mascotte");
   document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau&&oiseau.src)i.src=oiseau.src;else i.replaceWith("A")});
@@ -1391,6 +1402,17 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 /* ---------- Démarrage ---------- */
 ["age","cp","reg"].forEach(id=>{const el=$(id);const maj=()=>{if(el.dataset.vu===el.value)return;el.dataset.vu=el.value;S.shown=5;S.chosen=null;upd()};el.addEventListener("input",maj);el.addEventListener("change",maj)});
 renderNeeds(); renderAdmin(); appliquerLogos(); upd(); majWhatsApp(); route();
+/* Réglages de l'espace admin (CRM) : lus à chaque visite ; délai court ; à défaut, ceux déjà appliqués restent. */
+const REGLAGES_URL="__REGLAGES__";
+if(MODE_SITE&&REGLAGES_URL){
+  const ctrl=window.AbortController?new AbortController():null, minuteur=setTimeout(()=>{if(ctrl)ctrl.abort()},4000);
+  fetch(REGLAGES_URL,{cache:"no-cache",signal:ctrl?ctrl.signal:undefined}).then(r=>r.ok?r.json():null).then(r=>{
+    clearTimeout(minuteur);
+    if(!r||r.ok!==true||!appliquerReglages(r))return;
+    try{localStorage.setItem("santeo-reglages",JSON.stringify({recu:Date.now(),reglages:{produits:r.produits,logos:r.logos,tchat:r.tchat}}))}catch(e){}
+    S.shown=Math.max(S.shown,5); renderAdmin(); appliquerLogos(); upd(); if(window.tchatReglage)window.tchatReglage(REGLAGE_TCHAT);
+  }).catch(()=>{});
+}
 /* ---- Vague autour des logos partenaires : même comète, en transparence, juste après celle du logo ---- */
 (function(){
   const svg=document.querySelector(".vague-logos"); if(!svg)return;
