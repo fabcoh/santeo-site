@@ -14,7 +14,8 @@ const RELAIS_APICIL = 'https://relais.exemple.invalid/apicil.php';
 // Réglages de l'espace admin (CRM) : toujours simulés aussi
 const RELAIS_REGLAGES = 'https://relais.exemple.invalid/reglages';
 let reglagesReponse = { status: 200, corps: { ok: true, produits: {}, logos: {} } };
-const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, '--apicil', RELAIS_APICIL, '--reglages', RELAIS_REGLAGES, ...opts]); return d; };
+// Sans « --google », les sites d'essai sont construits sans statistiques Google, quel que soit reglages-site.json
+const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, '--apicil', RELAIS_APICIL, '--reglages', RELAIS_REGLAGES, ...(opts.includes('--google') ? [] : ['--google', '']), ...opts]); return d; };
 let appelsApicil = [];
 const FORMULES_APICIL = [['siApiSanteEquilibre1', 85.52], ['siApiSanteEquilibre2', 131.97], ['siApiSanteSerenite1', 106.59]];
 const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test'),
