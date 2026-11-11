@@ -30,6 +30,8 @@ et chaque jour, pour reprendre les tarifs à jour du comparateur.
 |---|---|
 | `template.html` | la page (mise en page, textes, comportement) avec des repères `__…__` remplacés à la construction |
 | `build.py` | assemble la page : moteur, tarifs, garanties, logos, masque, mascotte, trajet de la lumière ; en mode site, ajoute l'entête pour Google et WhatsApp, `mentions-legales/`, `404.html`, `robots.txt`, `sitemap.xml` |
+| `guide/` | articles du « Guide de la mutuelle » : `<slug>.html` (contenu, balises simples) et `<slug>.json` (titre et description pour Google, questions fréquentes, ordre, date de mise à jour) ; la construction en fait `/guide/` et `/guide/<slug>/` |
+| `article.html` | modèle des pages du guide (même charte, PC et téléphone ; le bandeau cookies est repris du comparateur) |
 | `reglages-site.json` | adresse du CRM qui reçoit les demandes (`envoi_crm`) et repli éventuel (`repli` : vide ou `whatsapp`) ; tchat (`tchat`, `tchat_crm`) ; identifiant des statistiques Google (`google_mesure`, « G-… », public) : vide = ni bandeau cookies ni Google |
 | `images-site/` | image d'aperçu de partage (`partage.jpg`, 1200 × 630) et icônes de l'onglet, refaites par `outils/partage.py` |
 | `logos/logos.json` | les 7 logos des assureurs partenaires, déjà détourés |

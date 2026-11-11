@@ -1,0 +1,31 @@
+{
+ "slug": "complementaire-sante-solidaire-acs",
+ "ordre": 6,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "ACS aide mutuelle : la Complémentaire santé solidaire",
+ "description": "L'ACS, aide à la mutuelle, est remplacée depuis 2019 par la Complémentaire santé solidaire (C2S) : conditions, participation, garanties et demande.",
+ "h1": "ACS, l'aide à la mutuelle : remplacée par la Complémentaire santé solidaire",
+ "faq": [
+  {
+   "q": "L'ACS existe-t-elle encore ?",
+   "r": "Non. Depuis le 1er novembre 2019, l'ACS est remplacée par la Complémentaire santé solidaire, qui a aussi remplacé la CMU-C."
+  },
+  {
+   "q": "La Complémentaire santé solidaire est-elle gratuite ?",
+   "r": "Elle est gratuite si les ressources de votre foyer sont sous le plafond. Au-dessus, et jusqu'à ce plafond augmenté de 35 %, elle coûte de 8 € à 30 € par mois et par personne, selon l'âge."
+  },
+  {
+   "q": "Comment demander la Complémentaire santé solidaire ?",
+   "r": "En ligne depuis votre compte ameli, ou avec le formulaire cerfa n° 12504 envoyé à votre caisse d'assurance maladie."
+  },
+  {
+   "q": "Un médecin peut-il me facturer un dépassement d'honoraires ?",
+   "r": "Non, sauf exigence particulière de votre part, par exemple un rendez-vous en dehors des horaires habituels du cabinet."
+  },
+  {
+   "q": "Faut-il renouveler la C2S chaque année ?",
+   "r": "Oui, en général : la demande se fait entre 4 et 2 mois avant la fin des droits. Le renouvellement est automatique pour les allocataires du RSA, et sous conditions pour ceux de l'ASPA ou de l'ASI."
+  }
+ ]
+}

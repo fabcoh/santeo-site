@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="__ROBOTS__">
+<title>__TITRE__</title>
+<meta name="description" content="__DESCRIPTION__">
+<link rel="canonical" href="__CANONIQUE__">
+<meta name="theme-color" content="#0a7aa5">
+<link rel="icon" type="image/png" sizes="48x48" href="__RACINE__icone-48.png">
+<link rel="apple-touch-icon" href="__RACINE__icone-180.png">
+<meta property="og:type" content="__OG_TYPE__">
+<meta property="og:site_name" content="Santéo">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="__TITRE__">
+<meta property="og:description" content="__DESCRIPTION__">
+<meta property="og:url" content="__CANONIQUE__">
+<meta property="og:image" content="__ADRESSE__partage.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">__JSONLD__</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap">
+<style>
+/* Pages du guide (articles) : même charte que le comparateur, une colonne de lecture, PC et téléphone. */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --fg:#0f2430; --muted:#526b77; --line:#d3e2e8;
+  --accent:#0a7aa5; --accent-fg:#ffffff; --accent-soft:#e0f2f9; --warn-soft:#fdf1d8; --warn:#7a5200;
+  --brand-1:#0e5883; --brand-2:#07a4c7;
+  --f-display:"Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-body:"Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0c161b; --surface:#13212a; --fg:#e3eef2; --muted:#9db3bd; --line:#27404c;
+  --accent:#4cc3ee; --accent-fg:#06202b; --accent-soft:#143341; --warn-soft:#33290f; --warn:#f0c870;
+  --brand-1:#5fb8e6; --brand-2:#3fd6e8; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0c161b; --surface:#13212a; --fg:#e3eef2; --muted:#9db3bd; --line:#27404c;
+  --accent:#4cc3ee; --accent-fg:#06202b; --accent-soft:#143341; --warn-soft:#33290f; --warn:#f0c870;
+  --brand-1:#5fb8e6; --brand-2:#3fd6e8; color-scheme:dark }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:46rem;margin:0 auto}
+a{color:var(--accent)}
+.tete{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-bottom:.8rem;border-bottom:1px solid var(--line)}
+.tete .logo img{display:block;height:52px;width:auto;border-radius:8px;background:#fff}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-fg);font-weight:700;text-decoration:none;border-radius:999px;padding:.55rem 1.1rem;font-size:.95rem}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fil{font-size:.85rem;color:var(--muted);margin:.9rem 0 .4rem}
+.fil a{color:var(--muted)}
+h1,h2,h3{font-family:var(--f-display);line-height:1.25;color:var(--brand-1);text-wrap:balance}
+h1{font-size:2rem;font-weight:800;margin:.4rem 0 .8rem}
+h2{font-size:1.35rem;font-weight:800;margin:2rem 0 .6rem}
+h3{font-size:1.1rem;margin:1.4rem 0 .4rem}
+p,li{max-width:70ch}
+.chapo{font-size:1.1rem;color:var(--fg);border-left:4px solid var(--accent);padding:.2rem 0 .2rem .9rem;margin:0 0 1.2rem}
+.tableau{overflow-x:auto;margin:1rem 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:30rem}
+th,td{padding:.5rem .65rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:700}
+tr:last-child td{border-bottom:0}
+.faq details{border:1px solid var(--line);border-radius:10px;padding:.6rem .9rem;margin:.55rem 0;background:var(--surface)}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.5rem 0 0}
+.sources{font-size:.88rem;color:var(--muted)}
+.sources h2{font-size:1.05rem}
+.maj{font-size:.85rem;color:var(--muted);margin-top:1.6rem}
+.cta{margin:2rem 0;padding:1.1rem 1.2rem;border-radius:14px;background:var(--accent-soft);border:1px solid var(--line)}
+.cta p{margin:0 0 .7rem;font-weight:600}
+.liste{list-style:none;padding:0;margin:0;display:grid;gap:.7rem}
+.liste a{display:block;padding:.85rem 1rem;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--fg);background:var(--surface)}
+.liste a strong{display:block;color:var(--brand-1);font-family:var(--f-display);font-size:1.05rem;margin-bottom:.15rem}
+.liste a span{font-size:.92rem;color:var(--muted)}
+.liste a:hover strong{text-decoration:underline}
+.pied{font-size:.8rem;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:.8rem;margin-top:2.4rem}
+.pied a{color:var(--accent);font-weight:700}
+@media (max-width:599px){body{font-size:16px}h1{font-size:1.6rem}h2{font-size:1.2rem}.tete .logo img{height:44px}.btn{padding:.5rem .9rem;font-size:.9rem}}
+__COOKIES_CSS__
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="tete"><a class="logo" href="__RACINE__" aria-label="Santéo, accueil du comparateur"><img src="__RACINE__images/Logo_santeo_pt.png" alt="Santéo" width="166" height="68"></a><a class="btn" href="__RACINE__">Comparer les mutuelles</a></header>
+  <nav class="fil" aria-label="Fil d'Ariane">__FIL__</nav>
+  <main>
+__CONTENU__
+  </main>
+  <footer class="pied"><a href="__RACINE__">Comparateur</a> · <a href="__RACINE__guide/">Guide de la mutuelle</a> · <a href="__RACINE__#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
+</div>
+__COOKIES_HTML__
+<script>
+const $=id=>document.getElementById(id);
+__COOKIES_JS__
+</script>
+</body>
+</html>

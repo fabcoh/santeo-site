@@ -7,7 +7,7 @@
 # Site de test : caché aux moteurs de recherche, avec un bandeau « version de test ». En ligne : visible, sans bandeau.
 # L'adresse du CRM qui reçoit les demandes et le repli éventuel sont dans maquette/reglages-site.json
 # (--envoi <adresse> et --repli <mode> les remplacent, pour les essais).
-import json, os, re, shutil, sys, datetime
+import glob, json, os, re, shutil, sys, datetime
 S, R = sys.argv[1], sys.argv[2]
 def option(nom, defaut=None): return sys.argv[sys.argv.index(nom) + 1] if nom in sys.argv else defaut
 SITE = option("--site")
@@ -45,6 +45,7 @@ for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__
     assert out.count(repere) == 1, repere
     out = out.replace(repere, valeur.replace('"', ""))
 if SITE is None:
+    out = out.replace('<a href="guide/">Guide de la mutuelle</a> · ', '')   # la maquette (page seule) n'a pas de guide
     open(S + "/comparateur-santeo.html", "w", encoding="utf-8").write(out)
     print("taille", len(out.encode()), "octets")
 else:
@@ -103,8 +104,73 @@ else:
     ecrire("mentions-legales/index.html", renvoi(ADRESSE + "#mentions-legales", "Mentions légales | Santéo",
                                                  "Les mentions légales de Santéo sont sur la page d'accueil.", "noindex, follow"))
     ecrire("404.html", renvoi(ADRESSE, "Santéo", "Cette page n'existe plus : le comparateur Santéo est sur la page d'accueil.", "noindex, follow"))
+    # ---------- Guide de la mutuelle : articles (maquette/guide/<slug>.html + <slug>.json) -> /guide/ et /guide/<slug>/
+    def bloc(debut, fin):
+        m = re.search(re.escape(debut) + r"(.*?)" + re.escape(fin), t, re.S)
+        assert m, debut
+        return m.group(1)
+    art_t = open(S + "/article.html", encoding="utf-8").read()
+    ck_css = bloc("/* debut-css-cookies */", "/* fin-css-cookies */")
+    ck_html = bloc("<!-- debut-html-cookies -->", "<!-- fin-html-cookies -->")
+    ck_js = bloc("/* debut-js-cookies */", "/* fin-js-cookies */").replace("__GOOGLE__", GOOGLE)
+    articles = []
+    for f in sorted(glob.glob(S + "/guide/*.json")):
+        a = json.load(open(f, encoding="utf-8"))
+        a["contenu"] = open(f[:-5] + ".html", encoding="utf-8").read().strip()
+        articles.append(a)
+    articles.sort(key=lambda a: (a.get("ordre", 99), a["slug"]))
+    AUJ = datetime.date.today().isoformat()
+    MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
+    def date_fr(iso): a, m, j = iso.split("-"); return "%d %s %s" % (int(j), MOIS[int(m) - 1], a)
+    editeur = {"@type": "Organization", "name": "Santéo (CAPI FINANCE)", "url": ADRESSE, "logo": {"@type": "ImageObject", "url": ADRESSE + "icone-180.png"}}
+    CTA = ('<aside class="cta"><p>Comparez les mutuelles santé en quelques secondes : votre date de naissance et votre code postal suffisent.</p>'
+           '<a class="btn" href="__RACINE__">Comparer les mutuelles</a></aside>')
+    def page_guide(racine, url, titre, desc, fil, contenu, ld, og):
+        h = art_t
+        for k, v in (("__COOKIES_CSS__", ck_css), ("__COOKIES_HTML__", ck_html.replace('href="#mentions-legales"', 'href="' + racine + '#mentions-legales"')),
+                     ("__COOKIES_JS__", ck_js), ("__CONTENU__", contenu), ("__FIL__", fil), ("__JSONLD__", js(ld)),
+                     ("__ROBOTS__", "index, follow" if EN_LIGNE else "noindex, nofollow"), ("__TITRE__", att(titre)),
+                     ("__DESCRIPTION__", att(desc)), ("__CANONIQUE__", url), ("__OG_TYPE__", og), ("__ADRESSE__", ADRESSE)):
+            h = h.replace(k, v)
+        h = h.replace("__RACINE__", racine)
+        assert not re.search(r"__[A-Z][A-Z_]*__", h), re.findall(r"__[A-Z][A-Z_]*__", h)
+        return h
+    for a in articles:
+        url = ADRESSE + "guide/" + a["slug"] + "/"
+        maj = a.get("maj", AUJ)
+        corps = re.sub(r"(<table.*?</table>)", r'<div class="tableau">\1</div>', a["contenu"], flags=re.S)
+        autres = "".join('<li><a href="../%s/"><strong>%s</strong><span>%s</span></a></li>' % (b["slug"], b["h1"], b["description"])
+                         for b in articles if b is not a)
+        contenu = ('<article>\n%s\n<p class="maj">Mis à jour le %s · Santéo (CAPI FINANCE), courtier en assurance santé depuis 1992. '
+                   "Ces informations sont générales : seuls les textes officiels et les documents de votre contrat font foi.</p>\n</article>\n"
+                   % (corps, date_fr(maj))) + CTA + ('\n<section><h2>À lire aussi</h2><ul class="liste">%s</ul></section>' % autres if autres else "")
+        ld = {"@context": "https://schema.org", "@graph": [
+            {"@type": "Article", "headline": a["h1"], "description": a["description"], "inLanguage": "fr-FR",
+             "datePublished": a.get("publie", maj), "dateModified": maj, "mainEntityOfPage": url, "author": editeur, "publisher": editeur},
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Accueil", "item": ADRESSE},
+                {"@type": "ListItem", "position": 2, "name": "Guide de la mutuelle", "item": ADRESSE + "guide/"},
+                {"@type": "ListItem", "position": 3, "name": a["h1"], "item": url}]}]
+            + ([{"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q["q"], "acceptedAnswer": {"@type": "Answer", "text": q["r"]}}
+                                                    for q in a["faq"]]}] if a.get("faq") else [])}
+        fil = '<a href="../../">Accueil</a> › <a href="../">Guide de la mutuelle</a> › <span>%s</span>' % a["h1"]
+        os.makedirs(os.path.join(SITE, "guide", a["slug"]), exist_ok=True)
+        ecrire("guide/%s/index.html" % a["slug"], page_guide("../../", url, a["titre_page"], a["description"], fil, contenu, ld, "article"))
+    if articles:
+        liste = "".join('<li><a href="%s/"><strong>%s</strong><span>%s</span></a></li>' % (a["slug"], a["h1"], a["description"]) for a in articles)
+        g_titre = "Guide de la mutuelle santé : comprendre et choisir | Santéo"
+        g_desc = "Contrat responsable, Complémentaire santé solidaire, surcomplémentaire, remboursements : les explications simples de Santéo, courtier depuis 1992."
+        contenu = ('<h1>Guide de la mutuelle santé</h1>\n<p class="chapo">Des explications simples pour comprendre votre complémentaire santé et '
+                   'choisir sans vous tromper, rédigées par Santéo, courtier en assurance santé depuis 1992.</p>\n<ul class="liste">%s</ul>\n' % liste) + CTA
+        ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Guide de la mutuelle santé", "url": ADRESSE + "guide/",
+              "inLanguage": "fr-FR", "publisher": editeur,
+              "hasPart": [{"@type": "Article", "headline": a["h1"], "url": ADRESSE + "guide/" + a["slug"] + "/"} for a in articles]}
+        ecrire("guide/index.html", page_guide("../", ADRESSE + "guide/", g_titre, g_desc,
+                                              '<a href="../">Accueil</a> › <span>Guide de la mutuelle</span>', contenu, ld, "website"))
     ecrire("robots.txt", ("User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % ADRESSE) if EN_LIGNE else "User-agent: *\nDisallow: /\n")
+    pages = [(ADRESSE, AUJ)] + ([(ADRESSE + "guide/", max(a.get("maj", AUJ) for a in articles))] if articles else []) \
+            + [(ADRESSE + "guide/" + a["slug"] + "/", a.get("maj", AUJ)) for a in articles]
     ecrire("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-           '  <url><loc>%s</loc><lastmod>%s</lastmod></url>\n</urlset>\n' % (ADRESSE, datetime.date.today().isoformat()))
+           + "".join('  <url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % p for p in pages) + '</urlset>\n')
     print("site", "EN LIGNE" if EN_LIGNE else "de test", ":", SITE, len(page.encode()), "octets ;",
           "envoi vers le CRM" if ENVOI else ("repli " + REPLI if REPLI else "aucun envoi"))

@@ -413,6 +413,30 @@ Ensuite, un lot à la fois :
   plug-in était refusé par le réseau) et santeo.fr / www.santeo.fr (vérification du renvoi).
 - Les chiffres de visites ne s'écrivent jamais dans ce dépôt public.
 
+## Reste à faire selon Fabrice (11/11/2026, ses mots)
+
+« ajouter les garantie april et varalti qui ne sont pas encore sur le site / google sur des mot clefs pas chere /
+référencement naturel / avec un agent tu pourrais documenter mieux le site avec des articles a créer et les explications /
+thèmes / contrat non responsable / ACS aide à la mutuelle / surcomplémentaire santé / Mutuelle de groupe ou obligatoire /
+Exemple de remboursement / Comprendre la mutuelle et le principe des remboursement / On peut ajouter plein d'article pour
+mieux référencer le site »
+
+- **Guide de la mutuelle** (demande de fusion « guide-articles ») : 6 articles, un par thème, rédigés par deux agents
+  puis relus par Claude (textes : Mon idée). Pages `/guide/` et `/guide/<slug>/`, plan du site, données pour Google
+  (article, fil d'Ariane, questions fréquentes), lien dans le pied de page de l'accueil. L'ACS n'existe plus depuis le
+  01/11/2019 : l'article le dit dès le titre et explique la Complémentaire santé solidaire.
+- Chiffres vérifiés sur Service-Public (lecture directe) et, pour ameli et Légifrance qui refusent les lectures
+  automatiques, par recherche : C2S (plafonds et participations), franchises et participation forfaitaire (plafonds de
+  70 € par an), consultation à 30 €, base de 23 € en secteur 2 hors OPTAM, forfait journalier de 23 € (17 € en
+  psychiatrie) depuis le 01/03/2026, couronne 100 % Santé à 515 € et base de 120 €.
+- **À remettre à jour chaque année** : plafonds de la C2S (1er avril), forfait journalier, tarifs des consultations,
+  plafonds du 100 % Santé, franchises.
+- Mots-clés visés et points douteux de chaque article : gardés hors de ce dépôt public (stratégie de référencement et
+  d'annonces).
+- APRIL et API Santé : relais ouverts à santeo.net et www.santeo.net le 11/11 (tarification seulement, versions
+  2026-11-11, d'après « comparateur claude ») ; branchement sur le site = lot suivant. Leurs garanties ne sont pas
+  encore dans `garanties.json`.
+
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
 1. Mettre la source de la maquette dans ce dépôt : dossier `maquette/` (demande de fusion du 08/11/2026).
