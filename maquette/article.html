@@ -21,9 +21,9 @@
 <script type="application/ld+json">__JSONLD__</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- polices chargées sans bloquer l'affichage du texte (référencement : vitesse sur téléphone) -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap"></noscript>
+<!-- polices chargées avant l'affichage : sans cela le texte des articles bouge quand elles arrivent (décalage mesuré 0,11 à 0,14,
+     au-dessus du seuil de 0,1 de Google), et les articles s'affichent déjà en moins d'une seconde -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap">
 <style>
 /* Pages du guide (articles) : même charte que le comparateur, une colonne de lecture, PC et téléphone. */
 :root{
