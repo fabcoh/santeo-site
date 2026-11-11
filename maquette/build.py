@@ -294,7 +294,10 @@ else:
         g_titre = "Guide de la mutuelle santé : comprendre et choisir | Santéo"
         g_desc = "Contrat responsable, Complémentaire santé solidaire, surcomplémentaire, remboursements : les explications simples de Santéo, courtier depuis 1992."
         contenu = ('<h1>Guide de la mutuelle santé</h1>\n<p class="chapo">Des explications simples pour comprendre votre complémentaire santé et '
-                   'choisir sans vous tromper, rédigées par Santéo, courtier en assurance santé depuis 1992.</p>\n%s' % liste) + CTA
+                   'choisir sans vous tromper, rédigées par Santéo, courtier en assurance santé depuis 1992.</p>\n%s%s' % (
+                       '<nav class="chapitres" aria-label="Chapitres du guide"><ul>%s</ul></nav>\n' % "".join(
+                           '<li><a href="#%s">%s</a></li>' % (c["id"], c["titre"]) for c in CHAPITRES if any(a["chapitre"] == c["id"] for a in articles)),
+                       liste)) + CTA
         ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Guide de la mutuelle santé", "url": ADRESSE + "guide/",
               "inLanguage": "fr-FR", "publisher": editeur,
               "hasPart": [{"@type": "Article", "headline": a["h1"], "url": ADRESSE + "guide/" + a["slug"] + "/"} for a in articles]}

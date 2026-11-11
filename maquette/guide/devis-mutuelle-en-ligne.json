@@ -1,0 +1,33 @@
+{
+ "slug": "devis-mutuelle-en-ligne",
+ "chapitre": "choisir",
+ "lien": "Devis de mutuelle en ligne",
+ "ordre": 12,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Devis mutuelle en ligne : intérêt, limites, rôle du courtier",
+ "description": "Devis de mutuelle en ligne : ce qu'il permet, ce qu'il faut vérifier en plus, documents à recevoir et devoir de conseil du courtier depuis 2018.",
+ "h1": "Devis de mutuelle en ligne : ce qu'il permet, ses limites et le rôle du courtier",
+ "faq": [
+  {
+   "q": "Un devis de mutuelle en ligne m'engage-t-il ?",
+   "r": "Non. Un devis donne un prix et des garanties. C'est la signature du contrat ou du bulletin d'adhésion qui vous engage."
+  },
+  {
+   "q": "Puis-je annuler une mutuelle souscrite sur Internet ?",
+   "r": "En principe oui : pour un contrat conclu à distance, vous disposez d'un délai de 14 jours pour renoncer, prévu par le Code des assurances et le Code de la mutualité."
+  },
+  {
+   "q": "Qu'est-ce que le devoir de conseil du courtier ?",
+   "r": "Avant la signature, il doit écrire vos exigences et vos besoins, vous informer de façon objective, proposer un contrat cohérent avec ces besoins et expliquer pourquoi il le conseille."
+  },
+  {
+   "q": "Comment savoir si un courtier est autorisé à exercer ?",
+   "r": "Un intermédiaire d'assurance doit être immatriculé au registre de l'ORIAS et vous donner ce numéro avant la signature. Vous pouvez le vérifier sur le registre de l'ORIAS."
+  },
+  {
+   "q": "Comment le courtier est-il payé ?",
+   "r": "Par une commission comprise dans la cotisation, par des honoraires ou par une combinaison des deux. Il doit vous indiquer la nature de sa rémunération avant la signature."
+  }
+ ]
+}
