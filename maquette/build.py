@@ -7,7 +7,7 @@
 # Site de test : caché aux moteurs de recherche, avec un bandeau « version de test ». En ligne : visible, sans bandeau.
 # L'adresse du CRM qui reçoit les demandes et le repli éventuel sont dans maquette/reglages-site.json
 # (--envoi <adresse> et --repli <mode> les remplacent, pour les essais).
-import json, os, shutil, sys, datetime
+import json, os, re, shutil, sys, datetime
 S, R = sys.argv[1], sys.argv[2]
 def option(nom, defaut=None): return sys.argv[sys.argv.index(nom) + 1] if nom in sys.argv else defaut
 SITE = option("--site")
@@ -16,6 +16,9 @@ ADRESSE = "https://www.santeo.net/" if EN_LIGNE else "https://fabcoh.github.io/s
 reglages = json.load(open(S + "/reglages-site.json", encoding="utf-8"))
 ENVOI = option("--envoi", reglages["envoi_crm"]); REPLI = option("--repli", reglages["repli"])
 TCHAT = option("--tchat", reglages.get("tchat", "aucun")); TCHAT_CRM = option("--tchat-crm", reglages.get("tchat_crm", ""))
+# Statistiques Google (identifiant de mesure « G-… », public) : chargées seulement après l'accord du visiteur (bandeau cookies)
+GOOGLE = option("--google", reglages.get("google_mesure", ""))
+if GOOGLE and not re.fullmatch(r"G-[A-Z0-9]{4,20}", GOOGLE): sys.exit("identifiant de mesure Google invalide : " + GOOGLE)
 assert TCHAT in ("direct", "aucun"), TCHAT   # le tchat n'ouvre jamais WhatsApp chez le visiteur
 assert TCHAT_CRM == "" or TCHAT_CRM.startswith("https://"), "l'adresse du tchat doit commencer par https://"
 assert ENVOI == "" or ENVOI.startswith("https://"), "l'adresse du CRM doit commencer par https://"
@@ -37,7 +40,8 @@ out = out.replace("__SANTEO_MASQUE__", open(S + "/logos/santeo-masque.b64").read
 out = out.replace("__MASCOTTE__", open(S + "/logos/mascotte.b64").read().strip())
 out = out.replace("__COMETE_D__", open(S + "/logos/comete-trajet.txt").read().strip())
 for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__", ENVOI if SITE else ""), ("__REPLI__", REPLI if SITE else ""),
-                       ("__TCHAT_MODE__", TCHAT if SITE else "aucun"), ("__TCHAT_CRM__", TCHAT_CRM if SITE else "")):
+                       ("__TCHAT_MODE__", TCHAT if SITE else "aucun"), ("__TCHAT_CRM__", TCHAT_CRM if SITE else ""),
+                       ("__GOOGLE__", GOOGLE if SITE else "")):
     assert out.count(repere) == 1, repere
     out = out.replace(repere, valeur.replace('"', ""))
 if SITE is None:

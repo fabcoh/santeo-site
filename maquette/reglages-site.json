@@ -2,5 +2,6 @@
   "envoi_crm": "https://crm.capisante.fr/api/site/demande",
   "repli": "",
   "tchat": "direct",
-  "tchat_crm": "https://crm.capisante.fr/api/site/tchat"
+  "tchat_crm": "https://crm.capisante.fr/api/site/tchat",
+  "google_mesure": ""
 }

@@ -12,7 +12,8 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'site-'));
 const construire = (nom, ...opts) => { const d = path.join(tmp, nom); execFileSync('python3', ['-I', S + '/build.py', S, R, '--site', d, ...opts]); return d; };
 const sites = { crm: construire('crm', '--en-ligne', '--envoi', CRM), repli: construire('repli', '--en-ligne', '--envoi', '', '--repli', 'whatsapp'), test: construire('test'),
   sansTchat: construire('sanstchat', '--en-ligne', '--envoi', CRM, '--tchat', 'aucun'),
-  tchat: construire('tchat', '--en-ligne', '--envoi', CRM, '--tchat', 'direct', '--tchat-crm', 'https://crm.exemple.invalid/tchat') };
+  tchat: construire('tchat', '--en-ligne', '--envoi', CRM, '--tchat', 'direct', '--tchat-crm', 'https://crm.exemple.invalid/tchat'),
+  google: construire('google', '--en-ligne', '--envoi', CRM, '--google', 'G-ESSAI123') };
 const errs = [], err = m => errs.push(m);
 const types = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.txt': 'text/plain', '.xml': 'application/xml' };
 
@@ -165,6 +166,43 @@ async function remplir(p) {
     doit(envoiC && envoiC.texte === 'Bonjour' && envoiC.identite && envoiC.identite.fiche === '42' && !/merci d'indiquer/.test((await p.textContent('#tchat-fil')) || ''),
       nom + ' : tchat : un visiteur déjà connu ne doit pas recevoir la question du pseudo (' + JSON.stringify(envoiC) + ')');
     await ctx.close();
+  }
+  // 8. Bandeau cookies (statistiques Google) : rien de Google avant l'accord, « Refuser » aussi simple qu'« Accepter »
+  for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {
+    const gtm = [];
+    const nouveau = async () => { const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.google);
+      await c.route(CRM, r => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'https://www.santeo.net' }, body: '{"ok":true,"id":"777"}' }));
+      await c.route(/googletagmanager\.com|google-analytics\.com|doubleclick\.net|googleadservices\.com/, r => { gtm.push(r.request().url()); r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }); });
+      return c; };
+    // Sans réglage : pas de bandeau, pas de lien « Cookies »
+    { const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage(); await q.goto('https://www.santeo.net/'); await q.waitForTimeout(300);
+      doit(!(await q.isVisible('#cookies')) && !(await q.isVisible('#cookies-lien')), nom + ' : sans statistiques Google, ni bandeau ni lien « Cookies »'); await c.close(); }
+    // Refuser
+    let c = await nouveau(); let q = await c.newPage(); q.on('pageerror', e => err(nom + ' cookies : ' + e.message));
+    await q.goto('https://www.santeo.net/'); await q.waitForTimeout(400);
+    const bt = await q.$$eval('.cookies-choix button', l => l.map(x => [x.textContent, getComputedStyle(x).backgroundColor, getComputedStyle(x).fontSize, x.offsetWidth]));
+    doit(await q.isVisible('#cookies') && gtm.length === 0, nom + ' : bandeau visible et rien de Google avant le choix (' + gtm.join(' ') + ')');
+    doit(bt.length === 2 && bt[0][0] === 'Refuser' && bt[1][0] === 'Accepter' && bt[0][1] === bt[1][1] && bt[0][2] === bt[1][2] && Math.abs(bt[0][3] - bt[1][3]) <= 2, nom + ' : « Refuser » et « Accepter » doivent se ressembler ' + JSON.stringify(bt));
+    const tchatBas = await q.$eval('#tchat', x => x.getBoundingClientRect().bottom), bandeauHaut = await q.$eval('#cookies', x => x.getBoundingClientRect().top);
+    doit(tchatBas <= bandeauHaut + 1, nom + ' : la bulle du tchat ne doit pas être cachée par le bandeau (' + tchatBas + ' > ' + bandeauHaut + ')');
+    await q.click('#cookies-non'); await q.waitForTimeout(300);
+    doit(!(await q.isVisible('#cookies')) && gtm.length === 0, nom + ' : après « Refuser », bandeau caché et rien de Google');
+    await q.reload(); await q.waitForTimeout(400);
+    doit(!(await q.isVisible('#cookies')) && gtm.length === 0 && await q.isVisible('#cookies-lien'), nom + ' : le refus doit être gardé, avec le lien « Cookies » en bas de page');
+    await q.click('#cookies-lien'); await q.waitForTimeout(200);
+    doit(await q.isVisible('#cookies'), nom + ' : le lien « Cookies » doit rouvrir le bandeau');
+    await c.close();
+    // Accepter, puis une demande envoyée est comptée
+    c = await nouveau(); q = await c.newPage(); q.on('pageerror', e => err(nom + ' cookies : ' + e.message));
+    await q.goto('https://www.santeo.net/'); await q.waitForTimeout(300); await q.click('#cookies-oui'); await q.waitForTimeout(400);
+    doit(gtm.some(u => /gtag\/js\?id=G-ESSAI123/.test(u)), nom + ' : après « Accepter », la balise Google doit se charger (' + gtm.join(' ') + ')');
+    await remplir(q); await q.check('#c-accord').catch(() => {}); await q.click('#send'); await q.waitForTimeout(700);
+    const evts = await q.evaluate(() => (window.dataLayer || []).map(a => Array.from(a)).filter(a => a[0] === 'event').map(a => a[1]));
+    doit(evts.includes('generate_lead'), nom + ' : la demande envoyée doit être comptée (événements : ' + evts.join(',') + ')');
+    const consent = await q.evaluate(() => (window.dataLayer || []).map(a => Array.from(a)).filter(a => a[0] === 'consent').map(a => a[1] + ':' + a[2].analytics_storage));
+    doit(consent.join(',') === 'default:denied,update:granted', nom + ' : signaux d\'accord Google ' + consent.join(','));
+    console.log(nom, '| cookies : boutons', bt.map(x => x[0]).join('/'), '| Google chargé après accord :', gtm.length > 0, '| événements', evts.join(','));
+    await c.close();
   }
   await b.close(); fs.rmSync(tmp, { recursive: true, force: true });
   console.log('ERREURS:', errs.length ? errs.join(' | ') : 'aucune');
