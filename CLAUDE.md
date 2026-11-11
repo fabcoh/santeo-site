@@ -76,7 +76,8 @@ Les adresses e-mail @santeo.net dépendent du même nom de domaine.
 - Moteur et tarifs : `fabcoh/santeo-tarifs`, fichiers `src/moteur.js`, `src/tarifs_all.json`,
   `src/garanties.json` (lecture seule ; conversation « comparateur claude »).
 - Hébergement prévu : GitHub Pages, à l'adresse santeo.net.
-- Site de test : publié par `.github/workflows/site-de-test.yml` (page `--site`, cachée à Google). Le jour du passage
-  sur santeo.net, une fois le certificat actif, ajouter `--en-ligne` à la commande de construction du workflow (visible
-  par Google, sans bandeau). Adresse du CRM qui reçoit les demandes : `maquette/reglages-site.json`.
+- Site en ligne : https://www.santeo.net, publié par `.github/workflows/site-de-test.yml` (construction `--site
+  --en-ligne` : visible par Google, sans bandeau) depuis le 11/11/2026. Seule la ligne DNS `www` (CNAME vers
+  `fabcoh.github.io.`) a été changée chez OVH ; `santeo.net` sans www reste sur l'ancien serveur tant que la question du
+  SPF (« a ») n'est pas réglée. Adresses du CRM (demandes, tchat) : `maquette/reglages-site.json`.
 - Ne jamais désactiver la vérification des certificats (TLS) pour contourner un blocage.
