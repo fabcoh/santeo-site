@@ -83,8 +83,10 @@ if SITE is None:
 else:
     # Textes pour Google et pour l'aperçu de partage (WhatsApp, réseaux) : Mon idée, à valider par Fabrice
     TITRE = "Comparateur mutuelle santé | Santéo, courtier depuis 1992"
-    DESCRIPTION = ("Comparez les mutuelles santé en quelques secondes : votre date de naissance et votre code postal "
-                   "suffisent. Tarifs de nos assureurs partenaires et conseil gratuit d'un courtier depuis 1992.")
+    # (155 caractères au plus : Google coupe au-delà)
+    DESCRIPTION = ("Comparez les mutuelles santé en quelques secondes avec votre date de naissance et votre code postal. "
+                   "Conseil gratuit d'un courtier depuis 1992.")
+    assert len(DESCRIPTION) <= 155, len(DESCRIPTION)
     def att(t): return t.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
     fiche = {"@context": "https://schema.org", "@type": "InsuranceAgency", "name": "Santéo", "legalName": "CAPI FINANCE",
              "url": ADRESSE, "logo": ADRESSE + "icone-180.png", "image": ADRESSE + "partage.jpg",
@@ -117,6 +119,13 @@ else:
         bandeau = '<div class="wrap">\n  <p class="bandeau-test" role="note">Version de test du nouveau site Santéo.</p>'
         assert out.count('<div class="wrap">') == 1
         out = out.replace('<div class="wrap">', bandeau, 1)
+    # Liens vers chaque article du guide en bas de l'accueil : Google les trouve depuis la page principale du site
+    guide_liens = sorted((json.load(open(f, encoding="utf-8")) for f in glob.glob(S + "/guide/*.json")), key=lambda a: (a.get("ordre", 99), a["slug"]))
+    if guide_liens:
+        nav = ('<nav class="guide-liens" aria-label="Guide de la mutuelle"><p class="gl-titre"><a href="guide/">Guide de la mutuelle</a></p><ul>'
+               + "".join('<li><a href="guide/%s/">%s</a></li>' % (a["slug"], att(a["lien"])) for a in guide_liens) + "</ul></nav>\n  ")
+        assert out.count('<footer class="pied">') == 1
+        out = out.replace('<footer class="pied">', nav + '<footer class="pied">', 1)
     page = tete + out + "\n</html>\n"
     os.makedirs(os.path.join(SITE, "mentions-legales"), exist_ok=True)
     def ecrire(nom, texte): open(os.path.join(SITE, nom), "w", encoding="utf-8").write(texte)
