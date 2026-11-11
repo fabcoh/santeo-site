@@ -80,6 +80,11 @@ async function remplir(p) {
   const guide = fs.readdirSync(S + '/guide').filter(f => f.endsWith('.json')).map(f => JSON.parse(fs.readFileSync(S + '/guide/' + f, 'utf8')));
   doit(guide.length >= 6, 'guide : au moins 6 articles (' + guide.length + ')');
   doit(/<a href="guide\/">Guide de la mutuelle<\/a>/.test(idx), 'accueil : lien « Guide de la mutuelle » absent du pied de page');
+  for (const a of guide) doit(idx.includes('<a href="guide/' + a.slug + '/">'), 'accueil : pas de lien vers l\'article ' + a.slug);
+  doit((idx.match(/<h1[ >]/g) || []).length === 1, 'accueil : un seul titre h1 (' + (idx.match(/<h1[ >]/g) || []).length + ')');
+  { const m = idx.match(/<meta name="description" content="([^"]*)"/); doit(m && m[1].length <= 155, 'accueil : description pour Google trop longue ou absente'); }
+  { const l = (idx.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/g) || []).reduce((s, x) => s + x.length, 0);
+    doit(l < 120 * 1024, 'accueil : images intégrées trop lourdes (' + Math.round(l / 1024) + ' Ko)'); }
   const plan = fs.readFileSync(d + '/sitemap.xml', 'utf8');
   doit(plan.includes('https://www.santeo.net/guide/</loc>'), 'plan du site : page du guide absente');
   for (const a of guide) {

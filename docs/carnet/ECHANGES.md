@@ -517,6 +517,18 @@ mieux référencer le site »
   page la plus proche du nouveau site (article du guide, guide, ou comparateur ; choix : Mon idée). La construction écrit
   à chaque ancienne adresse une page de renvoi immédiat avec l'adresse officielle de la destination, et s'arrête si la
   destination n'existe pas. `/mentions-legales` avait déjà son renvoi. Les chiffres de l'export restent hors du dépôt.
+- **Décision de Fabrice (11/11, ses mots)** : « Je vais te demander ce qu'il reste à faire pour ma première question qui
+  était d'augmenter les chances de référencement. À chaque fois, je vais devoir te demander, alors qu'est-ce qu'il reste à
+  faire? Ou tu peux passer à la suite? Est-ce que tu peux essayer d'enchaîner ». Pour le référencement, Claude enchaîne
+  les lots de code sans redemander ; Fabrice fusionne. Reste dans l'ordre : accueil allégé et petits défauts (fait dans
+  « accueil-leger »), polices sans blocage (même lot), liens entre articles dans le texte, puis Search Console (accès à
+  demander à Fabrice ou à son fils).
+- **Accueil allégé** (demande de fusion « accueil-leger ») : logos des compagnies en WebP de 72 px de haut (dans la page :
+  310 Ko -> 56 Ko ; rendu identique à l'œil, PC et téléphone) ; description pour Google de 143 caractères (Mon idée) ;
+  « Mentions légales » devient un sous-titre (un seul titre h1 sur l'accueil) ; liens vers les 11 articles du guide en bas
+  de l'accueil (champ `lien` de chaque article, texte court : Mon idée) ; polices Google chargées sans bloquer l'affichage
+  (accueil et articles). Tests : liens vers chaque article, un seul h1, description de 155 caractères au plus, images
+  intégrées de moins de 120 Ko.
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
