@@ -295,6 +295,18 @@ async function remplir(p) {
     await c2.close();
     reglagesReponse = { status: 200, corps: { ok: true, produits: {}, logos: {} } };
   }
+  // 12. Vue de contrôle : noms des compagnies visibles seulement avec ?controle=1
+  for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {
+    const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
+    q.on('pageerror', e => err(nom + ' contrôle : ' + e.message));
+    const noms = async u => { await q.goto(u); await q.fill('#cp', '75012'); await q.fill('#age', '21/07/1966'); await q.waitForTimeout(1300);
+      return q.$$eval('#offers .o-real', l => l.filter(e => e.offsetParent).map(e => e.textContent)); };
+    const ordinaire = await noms('https://www.santeo.net/'), controle = await noms('https://www.santeo.net/?controle=1');
+    doit(ordinaire.length === 0, nom + ' : un visiteur ordinaire ne doit pas voir les noms (' + ordinaire.length + ')');
+    doit(controle.length >= 5 && controle.every(t => /^Contrôle : /.test(t)), nom + ' : vue de contrôle sans les noms ' + JSON.stringify(controle.slice(0, 2)));
+    console.log(nom, '| vue de contrôle :', controle.slice(0, 2).join(' ; '));
+    await c.close();
+  }
   // 9. Pages du guide sur téléphone et PC : lisibles, sans défilement de côté, bouton vers le comparateur
   for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {
     const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
