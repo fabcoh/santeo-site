@@ -167,10 +167,89 @@ else:
         h = h.replace("__RACINE__", racine)
         assert not re.search(r"__[A-Z][A-Z_]*__", h), re.findall(r"__[A-Z][A-Z_]*__", h)
         return h
+    # Schéma des dents (article des prothèses) : le repère <div class="schema-dents"></div> de l'article est remplacé par un
+    # dessin en SVG construit à partir de "schema_dents" de son JSON (panier de chaque couronne selon la dent et le matériau).
+    GROUPES = [("incisives", "incisives"), ("canines", "canines"), ("premieres_premolaires", "premières prémolaires"),
+               ("deuxiemes_premolaires", "deuxièmes prémolaires"), ("molaires", "molaires")]
+    # (groupe, forme, largeur, petite étiquette, écart avec la dent suivante : plus large entre deux groupes pour que les noms ne se chevauchent pas)
+    DENTS = [("incisives", "inc", 28, "", 6), ("incisives", "inc", 24, "", 15), ("canines", "can", 26, "", 18),
+             ("premieres_premolaires", "pm", 26, "1re", 6), ("deuxiemes_premolaires", "pm", 26, "2e", 15),
+             ("molaires", "mol", 32, "", 6), ("molaires", "mol", 30, "", 6), ("molaires", "mol", 28, "", 0)]
+    LARGEUR = 304
+    PANIERS = [("d100", "100 % Santé", "prix plafonné, entièrement remboursé par la Sécurité sociale et un contrat responsable"),
+               ("dmai", "Tarifs maîtrisés", "prix plafonné, un reste à charge est possible selon votre contrat"),
+               ("dlib", "Tarifs libres", "prix fixé librement par le dentiste")]
+    def panier(v):
+        v = v.lower()
+        k = "d100" if "100" in v else "dmai" if ("maîtris" in v or "modér" in v) else "dlib" if "libre" in v else None
+        assert k, "schéma des dents : panier inconnu " + v
+        return k
+    def dent(x, w, h, typ):
+        # couronne vue de face : collet en haut (contre la gencive), bord qui mord en bas
+        P = lambda fx, fy: "%.1f,%.1f" % (x + fx * w, 6 + fy * h)
+        cote = "M%s L%s Q%s %s " % (P(.15, 0), P(.85, 0), P(1, .2), P(1, .55))
+        fin = " Q%s %s Z" % (P(0, .2), P(.15, 0))
+        if typ == "inc":
+            bas = "L%s Q%s %s L%s Q%s %s L%s" % (P(1, .9), P(1, 1), P(.86, 1), P(.14, 1), P(0, 1), P(0, .9), P(0, .55))
+        elif typ == "can":
+            bas = "L%s Q%s %s Q%s %s L%s" % (P(1, .72), P(.75, .88), P(.5, 1), P(.25, .88), P(0, .72), P(0, .55))
+        elif typ == "pm":
+            bas = "L%s Q%s %s Q%s %s Q%s %s Q%s %s L%s" % (P(1, .75), P(.92, 1), P(.74, 1), P(.6, 1), P(.5, .9), P(.4, 1), P(.26, 1),
+                                                         P(.08, 1), P(0, .75), P(0, .55))
+        else:
+            bas = "L%s Q%s %s Q%s %s Q%s %s Q%s %s Q%s %s Q%s %s L%s" % (P(1, .78), P(1, 1), P(.83, 1), P(.7, 1), P(.66, .92), P(.6, 1), P(.5, 1),
+                                                                       P(.4, 1), P(.34, .92), P(.3, 1), P(.17, 1), P(0, 1), P(0, .78), P(0, .55))
+        return cote + bas + fin
+    def rangee(h, classes, etiquettes):
+        x, out, pos = 6.0, [], []
+        out.append('<rect class="sd-gencive" x="0" y="0" width="%d" height="11" rx="5.5"/>' % LARGEUR)
+        for i, (g, typ, w, sous, ecart) in enumerate(DENTS):
+            out.append('<path class="%s" d="%s"/>' % (classes[i], dent(x, w, h, typ)))
+            pos.append((x, w, g, sous))
+            x += w + ecart
+        if etiquettes:
+            y = h + 22
+            for (x0, w, g, sous) in pos:
+                if sous: out.append('<text class="sd-sous" x="%.1f" y="%.1f">%s</text>' % (x0 + w / 2, y - 7, sous))
+            for g, nom in (("incisives", "Incisives"), ("canines", "Canine"), ("pm", "Prémolaires"), ("molaires", "Molaires")):
+                l = [(x0, w) for (x0, w, gg, s) in pos if gg == g or (g == "pm" and gg.endswith("premolaires"))]
+                a0, a1 = l[0][0], l[-1][0] + l[-1][1]
+                yy = y
+                out.append('<path class="sd-trait" d="M%.1f,%.1f V%.1f H%.1f V%.1f"/>' % (a0 + 2, yy - 4, yy, a1 - 2, yy - 4))
+                out.append('<text class="sd-nom" x="%.1f" y="%.1f">%s</text>' % ((a0 + a1) / 2, yy + 13, nom))
+        return "".join(out), (h + 50 if etiquettes else h + 10)
+    def schema_dents(sd):
+        assert not sd.get("a_confirmer"), "schéma des dents : des valeurs restent à confirmer " + str(sd.get("a_confirmer"))
+        assert [g for g, _ in GROUPES] == sd["groupes"], "schéma des dents : groupes " + str(sd["groupes"])
+        dessin, hh = rangee(44, ["sd-dent"] * len(DENTS), True)
+        h = ['<figure class="schema-dents">',
+             '<figcaption>Couronnes : le panier selon la dent et le matériau</figcaption>',
+             '<p class="sd-aide">Une moitié de mâchoire vue de face, du milieu de la bouche (à gauche) vers le fond (à droite). '
+             'Les autres moitiés suivent la même règle.</p>',
+             '<svg class="sd-svg" viewBox="0 0 %d %d" role="img" aria-label="Les dents, du milieu de la bouche vers le fond : deux incisives, '
+             'une canine, deux prémolaires (la première, puis la deuxième) et trois molaires.">%s</svg>' % (LARGEUR, hh, dessin),
+             '<ul class="sd-legende">' + "".join('<li><i class="%s" aria-hidden="true"></i><span><strong>%s</strong> : %s</span></li>' % p for p in PANIERS) + '</ul>']
+        for mat, val in sd["materiaux"].items():
+            assert set(val) == set(sd["groupes"]), "schéma des dents : " + mat
+            cl = [panier(val[d[0]]) for d in DENTS]
+            par = []
+            for k, nom, _ in PANIERS:
+                gs = [lib for g, lib in GROUPES if panier(val[g]) == k]
+                if gs: par.append("%s : %s" % (nom, gs[0] if len(gs) == 1 else ", ".join(gs[:-1]) + " et " + gs[-1]))
+            texte = ". ".join(par) + "."
+            dessin, hh = rangee(34, cl, False)
+            h.append('<div class="sd-mat"><p class="sd-mat-nom">%s</p><svg class="sd-svg" viewBox="0 0 %d %d" role="img" aria-label="%s">%s</svg>'
+                     '<p class="sd-mat-txt">%s</p></div>' % (mat[:1].upper() + mat[1:], LARGEUR, hh, att(mat + " : " + texte), dessin, texte))
+        h.append('</figure>')
+        return "\n".join(h)
+    REPERE_DENTS = '<div class="schema-dents"></div>'
     for a in articles:
         url = ADRESSE + "guide/" + a["slug"] + "/"
         maj = a.get("maj", AUJ)
         corps = re.sub(r"(<table.*?</table>)", r'<div class="tableau">\1</div>', a["contenu"], flags=re.S)
+        if REPERE_DENTS in corps or a.get("schema_dents"):
+            assert a.get("schema_dents") and corps.count(REPERE_DENTS) == 1, a["slug"] + " : schéma des dents (repère et données)"
+            corps = corps.replace(REPERE_DENTS, schema_dents(a["schema_dents"]))
         autres = "".join('<li><a href="../%s/"><strong>%s</strong><span>%s</span></a></li>' % (b["slug"], b["h1"], b["description"])
                          for b in articles if b is not a)
         contenu = ('<article>\n%s\n<p class="maj">Mis à jour le %s · Santéo (CAPI FINANCE), courtier en assurance santé depuis 1992. '

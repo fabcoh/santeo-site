@@ -76,6 +76,32 @@ tr:last-child td{border-bottom:0}
 .liste a:hover strong{text-decoration:underline}
 .pied{font-size:.8rem;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:.8rem;margin-top:2.4rem}
 .pied a{color:var(--accent);font-weight:700}
+/* Schéma des dents (article des prothèses dentaires) */
+:root{--g:#f3d3d8;--d-fond:#ffffff;--d-trait:#7d939d;--p100:#cbeed8;--p100-t:#1d7a45;--pmai:#fde2ae;--pmai-t:#9a6100;--plib:#e2e8eb;--plib-t:#5f737d}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g:#4a2a31;--d-fond:#1b2c35;--d-trait:#9db3bd;--p100:#1c4a30;--p100-t:#6fd49b;--pmai:#4d3910;--pmai-t:#f0c870;--plib:#2a3a42;--plib-t:#b4c6ce} }
+:root[data-theme="dark"]{--g:#4a2a31;--d-fond:#1b2c35;--d-trait:#9db3bd;--p100:#1c4a30;--p100-t:#6fd49b;--pmai:#4d3910;--pmai-t:#f0c870;--plib:#2a3a42;--plib-t:#b4c6ce}
+.schema-dents{margin:1.4rem 0;padding:1rem 1rem .4rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.schema-dents figcaption{font-family:var(--f-display);font-weight:800;color:var(--brand-1);font-size:1.1rem;margin-bottom:.3rem}
+.sd-aide{font-size:.9rem;color:var(--muted);margin:0 0 .5rem}
+.sd-svg{display:block;width:100%;max-width:34rem;height:auto;margin:0 auto}
+.sd-svg text{font-family:var(--f-body);text-anchor:middle;fill:var(--fg)}
+.sd-nom{font-size:11.5px;font-weight:700}
+.sd-sous{font-size:10px;fill:var(--muted)!important}
+.sd-gencive{fill:var(--g)}
+.sd-trait{fill:none;stroke:var(--d-trait);stroke-width:1}
+.sd-dent{fill:var(--d-fond);stroke:var(--d-trait);stroke-width:1.2}
+.d100{fill:var(--p100);stroke:var(--p100-t);stroke-width:1.4}
+.dmai{fill:var(--pmai);stroke:var(--pmai-t);stroke-width:1.4}
+.dlib{fill:var(--plib);stroke:var(--plib-t);stroke-width:1.4}
+.sd-legende{list-style:none;padding:0;margin:.6rem 0 .8rem;display:grid;gap:.35rem;font-size:.92rem}
+.sd-legende li{display:grid;grid-template-columns:.95rem 1fr;gap:.55rem;align-items:start}
+.sd-legende i{flex:none;width:.95rem;height:.95rem;border-radius:4px;border:1.5px solid;margin-top:.25rem}
+.sd-legende i.d100{background:var(--p100);border-color:var(--p100-t)}
+.sd-legende i.dmai{background:var(--pmai);border-color:var(--pmai-t)}
+.sd-legende i.dlib{background:var(--plib);border-color:var(--plib-t)}
+.sd-mat{border-top:1px solid var(--line);padding:.7rem 0 .2rem}
+.sd-mat-nom{font-weight:700;margin:0 0 .3rem}
+.sd-mat-txt{font-size:.9rem;color:var(--muted);margin:.35rem 0 .3rem}
 @media (max-width:599px){body{font-size:16px}h1{font-size:1.6rem}h2{font-size:1.2rem}.tete .logo img{height:44px}.btn{padding:.5rem .9rem;font-size:.9rem}}
 __COOKIES_CSS__
 </style>
