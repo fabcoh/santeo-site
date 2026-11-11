@@ -529,6 +529,10 @@ mieux référencer le site »
   de l'accueil (champ `lien` de chaque article, texte court : Mon idée) ; polices Google chargées sans bloquer l'affichage
   (accueil et articles). Tests : liens vers chaque article, un seul h1, description de 155 caractères au plus, images
   intégrées de moins de 120 Ko.
+- **Liens entre articles** (demande de fusion « liens-articles », suite du référencement enchaînée à la demande de
+  Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
+  pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
+  jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
