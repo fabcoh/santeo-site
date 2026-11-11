@@ -1,0 +1,70 @@
+{
+ "slug": "protheses-dentaires-remboursement",
+ "ordre": 9,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Prothèses dentaires : remboursement et paniers 2026",
+ "description": "Couronne, bridge, inlay-core, dentier : base de remboursement, prix plafonnés 2026, panier selon la dent et le matériau, exemples chiffrés.",
+ "h1": "Prothèses dentaires : remboursement, prix plafonnés et panier selon la dent",
+ "faq": [
+  {
+   "q": "Combien rembourse la Sécurité sociale pour une couronne ?",
+   "r": "72 €, soit 60 % d'une base de remboursement de 120 €, quels que soient le panier et le prix facturé (90 % en Alsace-Moselle)."
+  },
+  {
+   "q": "Une couronne sur une molaire peut-elle être remboursée à 100 % ?",
+   "r": "Oui, avec un contrat responsable et un dentiste conventionné : la couronne métallique et, depuis le 1er janvier 2026, la couronne en zircone sur molaire font partie du panier 100 % Santé."
+  },
+  {
+   "q": "Le dentiste peut-il facturer plus que le prix plafonné ?",
+   "r": "En principe non, pour un dentiste conventionné, dans les paniers 100 % Santé et à tarifs maîtrisés. Seul le panier à tarifs libres laisse le prix au choix du dentiste."
+  },
+  {
+   "q": "Que signifie une garantie dentaire à 300 % ?",
+   "r": "En général, elle rembourse au total, Sécurité sociale incluse, jusqu'à trois fois la base de remboursement : 360 € pour une couronne dont la base est de 120 €."
+  },
+  {
+   "q": "Le dentiste doit-il me proposer une solution 100 % Santé ?",
+   "r": "Oui. Son devis doit indiquer une solution sans reste à charge ou à reste à charge maîtrisé lorsqu'elle existe. Vous restez libre de votre choix."
+  }
+ ],
+ "schema_dents": {
+  "groupes": [
+   "incisives",
+   "canines",
+   "premieres_premolaires",
+   "deuxiemes_premolaires",
+   "molaires"
+  ],
+  "materiaux": {
+   "céramo-métallique": {
+    "incisives": "100 % Santé",
+    "canines": "100 % Santé",
+    "premieres_premolaires": "100 % Santé",
+    "deuxiemes_premolaires": "tarifs maîtrisés",
+    "molaires": "tarifs libres"
+   },
+   "céramique monolithique zircone": {
+    "incisives": "100 % Santé",
+    "canines": "100 % Santé",
+    "premieres_premolaires": "100 % Santé",
+    "deuxiemes_premolaires": "100 % Santé",
+    "molaires": "100 % Santé"
+   },
+   "céramique monolithique hors zircone": {
+    "incisives": "100 % Santé",
+    "canines": "100 % Santé",
+    "premieres_premolaires": "100 % Santé",
+    "deuxiemes_premolaires": "tarifs maîtrisés",
+    "molaires": "tarifs maîtrisés"
+   },
+   "métallique": {
+    "incisives": "100 % Santé",
+    "canines": "100 % Santé",
+    "premieres_premolaires": "100 % Santé",
+    "deuxiemes_premolaires": "100 % Santé",
+    "molaires": "100 % Santé"
+   }
+  }
+ }
+}

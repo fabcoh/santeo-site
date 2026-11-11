@@ -1,0 +1,31 @@
+{
+ "slug": "medecins-optam-non-optam",
+ "ordre": 11,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Médecin OPTAM ou non OPTAM : différence de remboursement",
+ "description": "OPTAM, OPTAM-ACO, secteur 2 : base de remboursement, plafond du contrat responsable, exemple chiffré et comment savoir si un médecin est adhérent.",
+ "h1": "Médecin OPTAM ou non OPTAM : quelle différence pour vos remboursements ?",
+ "faq": [
+  {
+   "q": "Que veut dire OPTAM ?",
+   "r": "Option de pratique tarifaire maîtrisée. C'est l'engagement d'un médecin de secteur 2 à modérer ses dépassements d'honoraires, en échange d'un remboursement plus élevé pour ses patients."
+  },
+  {
+   "q": "Quelle est la différence entre OPTAM-CO et OPTAM-ACO ?",
+   "r": "L'OPTAM-ACO a remplacé l'OPTAM-CO le 1er janvier 2025. Elle concerne toujours les chirurgiens et les gynécologues-obstétriciens, et elle est ouverte aussi aux anesthésistes-réanimateurs."
+  },
+  {
+   "q": "Suis-je mieux remboursé chez un médecin OPTAM ?",
+   "r": "À prix égal, oui. La Sécurité sociale rembourse sur une base plus élevée, et un contrat responsable peut rembourser davantage le dépassement."
+  },
+  {
+   "q": "Ma mutuelle rembourse-t-elle les dépassements d'un médecin non OPTAM ?",
+   "r": "Cela dépend de votre contrat. Un contrat responsable peut les rembourser, mais au plus à 100 % de la base, et avec au moins 20 points de moins que chez un médecin adhérent."
+  },
+  {
+   "q": "Comment savoir si mon médecin est OPTAM ?",
+   "r": "Consultez l'annuaire santé d'ameli. Il indique si le médecin pratique des dépassements maîtrisés (OPTAM) ou des honoraires libres."
+  }
+ ]
+}

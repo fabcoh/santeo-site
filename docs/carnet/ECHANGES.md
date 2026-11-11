@@ -491,6 +491,21 @@ mieux référencer le site »
   d'API Santé (pharmacie, implants, lentilles…) ajoutées, elles manquaient dans le détail.
 - Point à surveiller : chaque calcul APRIL renvoie un numéro de projet (« x-projectUuid ») ; APRIL enregistre peut-être
   un dossier par calcul (non vérifié).
+- **5 articles de plus** (demande de Fabrice du 11/11, ses mots : « résiliation infra annuelle RIA / les différents tarifs
+  de convention / Les medecins signataire des convention ceux qui sont OPTAM ou NON OPTAM / LE 100% santé avec les
+  différentes réforme / Prothèeses dentaires remboursé avec les tarifs de convention et kes shéma des dnets pour
+  expqiuer ») : demande de fusion « guide-articles-2 », 11 articles en tout. Rédigés par deux agents, relus par Claude
+  (textes : Mon idée). Retiré à la relecture, faute de preuve : l'étape dentaire du 1er janvier 2022 (annoncée en 2019,
+  réalisation non vérifiée) et une définition du contrat responsable qui était celle du contrat « solidaire ».
+- **Schéma des dents** (article des prothèses) : dessiné à la construction à partir de `schema_dents` du JSON de
+  l'article (panier de chaque couronne selon la dent et le matériau), avec le même contenu en texte. La construction
+  s'arrête si `a_confirmer` n'est pas vide. Paniers en vigueur depuis le 1er janvier 2026 : la couronne en zircone sur
+  molaire est passée des tarifs maîtrisés au 100 % Santé (plafond 453,20 €).
+- Chiffres de ces 5 articles : Service-Public et securite-sociale.fr lus directement ; ameli et Légifrance par recherche
+  seulement (ils refusent les lectures automatiques). Plafonds dentaires 2026 relevés de 3 % (515 €, 566,50 €,
+  453,20 €, 298,70 €, inlay-core 150 €). L'exemple du spécialiste à 65 € (base de 31,50 €) est celui du Haut Conseil pour
+  l'avenir de l'assurance maladie (octobre 2025), cité comme tel. **À remettre à jour chaque année** : plafonds dentaires
+  et tarifs des consultations. Le contrôle « nom d'assureur dans un article » laisse passer le nom de ce Haut Conseil.
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 
