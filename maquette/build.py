@@ -127,12 +127,13 @@ else:
     os.makedirs(os.path.join(SITE, "images"), exist_ok=True)
     shutil.copyfile(S + "/images-site/logo-mail.png", os.path.join(SITE, "images", "Logo_santeo_pt.png"))
     # Petites pages de renvoi : /mentions-legales (citée dans les devis du comparateur) et toute ancienne adresse (404)
-    def renvoi(cible, titre, texte, robots):
+    def renvoi(cible, titre, texte, robots, canonique=False):
+        # canonique : l'adresse de destination est aussi donnée à Google comme adresse officielle (anciennes pages déplacées)
         return ('<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-                '<meta name="robots" content="%s">\n<title>%s</title>\n<link rel="icon" type="image/png" href="%sicone-48.png">\n'
+                '<meta name="robots" content="%s">\n<title>%s</title>\n<link rel="icon" type="image/png" href="%sicone-48.png">\n%s'
                 '<meta http-equiv="refresh" content="0; url=%s">\n<script>location.replace("%s")</script>\n</head>\n'
                 '<body style="font-family:system-ui,sans-serif;margin:2rem;color:#0f2430;background:#fff">\n<p>%s <a href="%s">Continuer</a></p>\n</body>\n</html>\n'
-                % (robots, titre, ADRESSE, cible, cible, texte, cible))
+                % (robots, titre, ADRESSE, '<link rel="canonical" href="%s">\n' % cible if canonique else "", cible, cible, texte, cible))
     ecrire("mentions-legales/index.html", renvoi(ADRESSE + "#mentions-legales", "Mentions légales | Santéo",
                                                  "Les mentions légales de Santéo sont sur la page d'accueil.", "noindex, follow"))
     ecrire("404.html", renvoi(ADRESSE, "Santéo", "Cette page n'existe plus : le comparateur Santéo est sur la page d'accueil.", "noindex, follow"))
@@ -286,6 +287,17 @@ else:
             '<meta name="robots" content="noindex, nofollow">\n<title>Espace admin | Santéo</title>\n</head>\n'
             '<body style="font-family:system-ui,sans-serif;margin:2rem;color:#0f2430;background:#fff">\n'
             '<p>L\'espace admin de Santéo sera bientôt ouvert ici. <a href="../">Retour au comparateur</a></p>\n</body>\n</html>\n'))
+    # Anciennes adresses de l'ancien site que Google connaît (maquette/renvois.json) : une petite page de renvoi immédiat à la
+    # même adresse, vers la page la plus proche du nouveau site, pour que Google y reporte la place gagnée au lieu d'une erreur 404.
+    slugs = {a["slug"] for a in articles}
+    for ancienne, cible in json.load(open(S + "/renvois.json", encoding="utf-8"))["renvois"].items():
+        assert re.fullmatch(r"/(actu|question|devis)/[a-z0-9-]*", ancienne), "renvoi : ancienne adresse " + ancienne
+        m = re.fullmatch(r"/(guide/(?:([a-z0-9-]+)/)?)?", cible)
+        assert m and (not m.group(2) or m.group(2) in slugs), "renvoi : page cible absente " + cible
+        fichier = ancienne[1:] + ("index.html" if ancienne.endswith("/") else ".html")
+        os.makedirs(os.path.dirname(os.path.join(SITE, fichier)), exist_ok=True)
+        ecrire(fichier, renvoi(ADRESSE + cible[1:], "Page déplacée | Santéo", "Cette page a été déplacée.",
+                               "index, follow" if EN_LIGNE else "noindex, nofollow", canonique=True))
     ecrire("robots.txt", ("User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % ADRESSE) if EN_LIGNE else "User-agent: *\nDisallow: /\n")
     pages = [(ADRESSE, AUJ)] + ([(ADRESSE + "guide/", max(a.get("maj", AUJ) for a in articles))] if articles else []) \
             + [(ADRESSE + "guide/" + a["slug"] + "/", a.get("maj", AUJ)) for a in articles]

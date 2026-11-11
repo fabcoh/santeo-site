@@ -506,6 +506,17 @@ mieux référencer le site »
   453,20 €, 298,70 €, inlay-core 150 €). L'exemple du spécialiste à 65 € (base de 31,50 €) est celui du Haut Conseil pour
   l'avenir de l'assurance maladie (octobre 2025), cité comme tel. **À remettre à jour chaque année** : plafonds dentaires
   et tarifs des consultations. Le contrôle « nom d'assureur dans un article » laisse passer le nom de ce Haut Conseil.
+- **Référencement naturel, vérification du 11/11** (demande de Fabrice : « Tu peux vérifier que le code permet un bon
+  référencement naturel ») : bases en place (adresse officielle, plan du site, robots, données pour Google, texte lisible
+  sans JavaScript, téléphone). Trois points trouvés, dans l'ordre : 1) les anciennes pages de l'ancien site connues de
+  Google tombaient en erreur 404 ; 2) l'accueil est lourd sur téléphone (logos des compagnies intégrés dans la page) ;
+  3) petits défauts de l'accueil (description trop longue, deux titres h1, pas de liens vers les articles). Fabrice :
+  « Oui » pour commencer par le point 1.
+- **Renvois des anciennes adresses** (demande de fusion « anciennes-adresses ») : `maquette/renvois.json` liste les
+  anciennes adresses (`/actu/…`, `/question/…`, `/devis/…`, relevées dans l'export de la Search Console du 08/11) et la
+  page la plus proche du nouveau site (article du guide, guide, ou comparateur ; choix : Mon idée). La construction écrit
+  à chaque ancienne adresse une page de renvoi immédiat avec l'adresse officielle de la destination, et s'arrête si la
+  destination n'existe pas. `/mentions-legales` avait déjà son renvoi. Les chiffres de l'export restent hors du dépôt.
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 

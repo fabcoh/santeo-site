@@ -98,6 +98,18 @@ async function remplir(p) {
       doit(types.includes('Article') && types.includes('BreadcrumbList') && types.includes('FAQPage'), a.slug + ' : données Google ' + types); }
     catch (e) { err(a.slug + ' : données Google illisibles ' + e.message); }
   }
+  // Anciennes adresses de l'ancien site connues de Google : une page de renvoi immédiat vers une page qui existe
+  const renvois = JSON.parse(fs.readFileSync(S + '/renvois.json', 'utf8')).renvois;
+  doit(Object.keys(renvois).length >= 40, 'renvois : au moins 40 anciennes adresses (' + Object.keys(renvois).length + ')');
+  for (const [ancienne, cible] of Object.entries(renvois)) {
+    const f = path.join(d, ancienne.slice(1) + (ancienne.endsWith('/') ? 'index.html' : '.html'));
+    if (!fs.existsSync(f)) { err('renvoi absent : ' + ancienne); continue; }
+    const h = fs.readFileSync(f, 'utf8'), u = 'https://www.santeo.net' + cible;
+    doit(h.includes('<link rel="canonical" href="' + u + '">') && h.includes('content="0; url=' + u + '"') && h.includes('location.replace("' + u + '")')
+      && h.includes('content="index, follow"'), 'renvoi incomplet : ' + ancienne);
+    doit(fs.existsSync(path.join(d, cible.slice(1), 'index.html')), 'renvoi vers une page absente : ' + ancienne + ' -> ' + cible);
+    doit(!plan.includes(ancienne), 'renvoi présent dans le plan du site : ' + ancienne);
+  }
   const t = fs.readFileSync(sites.test + '/index.html', 'utf8');
   doit(/noindex, nofollow/.test(t) && /bandeau-test" role/.test(t) && /Disallow: \//.test(fs.readFileSync(sites.test + '/robots.txt', 'utf8')), 'site de test : doit rester caché, avec bandeau');
 
