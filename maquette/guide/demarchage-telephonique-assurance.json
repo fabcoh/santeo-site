@@ -1,0 +1,33 @@
+{
+ "slug": "demarchage-telephonique-assurance",
+ "chapitre": "changer",
+ "lien": "Démarchage téléphonique et assurance",
+ "ordre": 13,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Démarchage téléphonique en assurance santé : vos droits",
+ "description": "Depuis le 11 août 2026, pas d'appel commercial sans votre accord préalable. Horaires, règles propres à l'assurance, recours et fin de Bloctel.",
+ "h1": "Démarchage téléphonique en assurance santé : vos droits",
+ "faq": [
+  {
+   "q": "Bloctel existe-t-il encore ?",
+   "r": "Non. Le service Bloctel a cessé d'exister le 11 août 2026. L'inscription n'est plus nécessaire : sans votre accord préalable, un professionnel ne peut en principe plus vous démarcher par téléphone."
+  },
+  {
+   "q": "J'ai demandé un devis en ligne : peut-on m'appeler ?",
+   "r": "Oui, si le formulaire vous a clairement demandé votre accord pour être appelé, en précisant qui vous appellerait et pour quels produits, et si vous l'avez donné par un geste clair. Les jours et heures autorisés s'appliquent, et vous pouvez retirer votre accord à tout moment."
+  },
+  {
+   "q": "Combien de temps mon accord est-il valable ?",
+   "r": "Un an au maximum à partir du jour où vous l'avez donné, et le professionnel peut prévoir moins. Il ne peut pas être renouvelé automatiquement."
+  },
+  {
+   "q": "Peut-on me faire signer un contrat d'assurance pendant l'appel ?",
+   "r": "Non. En assurance, la vente ne peut pas se faire lors du premier appel, et un délai de 24 heures est prévu avant la signature."
+  },
+  {
+   "q": "Comment faire cesser les appels d'un professionnel ?",
+   "r": "Retirez votre accord, même oralement pendant l'appel : il doit alors cesser de vous démarcher. Si les appels continuent, signalez-les sur Signal Conso."
+  }
+ ]
+}
