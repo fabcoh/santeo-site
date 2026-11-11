@@ -20,6 +20,9 @@ TCHAT = option("--tchat", reglages.get("tchat", "aucun")); TCHAT_CRM = option("-
 GOOGLE = option("--google", reglages.get("google_mesure", ""))
 # Relais de tarification API Santé (VERALTI) de Santéo : appelé par le site seulement (il n'accepte que santeo.net)
 APICIL = option("--apicil", reglages.get("apicil", ""))
+# Espace admin : réglages lus dans le CRM (« reglages_crm ») et adresse de la page de réglages du CRM (« admin_crm »)
+REGLAGES = option("--reglages", reglages.get("reglages_crm", "")); ADMIN = option("--admin", reglages.get("admin_crm", ""))
+CATALOGUE = json.load(open(S + "/catalogue.json", encoding="utf-8"))
 if GOOGLE and not re.fullmatch(r"G-[A-Z0-9]{4,20}", GOOGLE): sys.exit("identifiant de mesure Google invalide : " + GOOGLE)
 assert TCHAT in ("direct", "aucun"), TCHAT   # le tchat n'ouvre jamais WhatsApp chez le visiteur
 assert TCHAT_CRM == "" or TCHAT_CRM.startswith("https://"), "l'adresse du tchat doit commencer par https://"
@@ -36,6 +39,7 @@ extras = {k: dict(g["extras"][k]) for k in keep if k in g["extras"]}
 def js(o): return json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 out = t.replace("__MOTEUR__", moteur.replace("</", "<\\/")).replace("__TARIFS__", js(tarifs)).replace("__GAMMES__", js(gammes)).replace("__EXTRAS__", js(extras))
 logos = json.load(open(S + "/logos/logos.json"))
+out = out.replace("__CATALOGUE__", js(CATALOGUE))
 out = out.replace("__LOGOS__", "".join('<span class="logo-box" data-co="%s"><img src="%s" alt="%s"></span>' % (l["nom"], l["src"], l["nom"]) for l in logos))
 out = out.replace("__SANTEO_LOGO__", open(S + "/logos/santeo.b64").read().strip())
 out = out.replace("__SANTEO_MASQUE__", open(S + "/logos/santeo-masque.b64").read().strip())
@@ -43,8 +47,9 @@ out = out.replace("__MASCOTTE__", open(S + "/logos/mascotte.b64").read().strip()
 out = out.replace("__COMETE_D__", open(S + "/logos/comete-trajet.txt").read().strip())
 for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__", ENVOI if SITE else ""), ("__REPLI__", REPLI if SITE else ""),
                        ("__TCHAT_MODE__", TCHAT if SITE else "aucun"), ("__TCHAT_CRM__", TCHAT_CRM if SITE else ""),
-                       ("__GOOGLE__", GOOGLE if SITE else ""), ("__APICIL__", APICIL if SITE else "")):
-    assert out.count(repere) == 1, repere
+                       ("__GOOGLE__", GOOGLE if SITE else ""), ("__APICIL__", APICIL if SITE else ""),
+                       ("__REGLAGES__", REGLAGES if SITE else "")):
+    assert out.count(repere) == (2 if repere == "__MODE__" else 1), repere
     out = out.replace(repere, valeur.replace('"', ""))
 if SITE is None:
     out = out.replace('<a href="guide/">Guide de la mutuelle</a> · ', '')   # la maquette (page seule) n'a pas de guide
@@ -169,6 +174,14 @@ else:
               "hasPart": [{"@type": "Article", "headline": a["h1"], "url": ADRESSE + "guide/" + a["slug"] + "/"} for a in articles]}
         ecrire("guide/index.html", page_guide("../", ADRESSE + "guide/", g_titre, g_desc,
                                               '<a href="../">Accueil</a> › <span>Guide de la mutuelle</span>', contenu, ld, "website"))
+    # Catalogue des produits, lu par l'espace admin du CRM ; /admin renvoie vers la page de réglages du CRM (connexion du CRM)
+    ecrire("catalogue.json", json.dumps(dict(CATALOGUE, version=AUJ), ensure_ascii=False, indent=1))
+    os.makedirs(os.path.join(SITE, "admin"), exist_ok=True)
+    ecrire("admin/index.html", renvoi(ADMIN, "Espace admin | Santéo", "Espace admin de Santéo :", "noindex, nofollow") if ADMIN else
+           ('<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            '<meta name="robots" content="noindex, nofollow">\n<title>Espace admin | Santéo</title>\n</head>\n'
+            '<body style="font-family:system-ui,sans-serif;margin:2rem;color:#0f2430;background:#fff">\n'
+            '<p>L\'espace admin de Santéo sera bientôt ouvert ici. <a href="../">Retour au comparateur</a></p>\n</body>\n</html>\n'))
     ecrire("robots.txt", ("User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % ADRESSE) if EN_LIGNE else "User-agent: *\nDisallow: /\n")
     pages = [(ADRESSE, AUJ)] + ([(ADRESSE + "guide/", max(a.get("maj", AUJ) for a in articles))] if articles else []) \
             + [(ADRESSE + "guide/" + a["slug"] + "/", a.get("maj", AUJ)) for a in articles]

@@ -12,6 +12,21 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 11/11/2026 — de Claude site à la conversation pilote — espace admin du site (réglages dans le CRM)
+Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/2026 vers 19 h 30 ; À TRAITER par elle
+- Fabrice : « je veux pouvoir gérer sans toi automatqiuemeny », puis « fait un espace admin sur santéo pour gerer certaine
+  fonctions » ; proposition de Claude (www.santeo.net/admin ouvre une page de réglages du CRM, protégée par la connexion du
+  CRM ; première version : produits affichés, logos, tchat) ; Fabrice : « oui très bien ».
+- Contrat : le site publie `/catalogue.json` (compagnies, produits avec leur code et leur réglage par défaut, produits
+  APRIL compris, `tchat_defaut`). Le CRM sert `GET /api/site/reglages` (public, `Access-Control-Allow-Origin: *`,
+  cache 60 s au plus) : `{"ok": true, "modifieLe", "produits": {code: booléen}, "logos": {compagnie: booléen}, "tchat":
+  booléen}` ; clé absente = défaut du catalogue. Écriture depuis la page de réglages du CRM seulement (membre connecté,
+  historique, migration additive, aucun champ libre). URL de la page à donner à Claude site pour le renvoi de `/admin`.
+- Côté site (demande de fusion « espace-admin ») : lecture à chaque visite (délai court), puis derniers réglages connus
+  (30 jours), puis défauts du catalogue ; le site n'est jamais vide. Tant que le CRM ne sert pas l'adresse, rien ne
+  change. `/admin` affiche « bientôt » tant que l'URL n'est pas connue. Dans la maquette, la gestion reste locale.
+- Le chemin `/admin` est public (Fabrice l'a demandé) : il ne mène qu'à la page de connexion du CRM.
+
 ### 11/11/2026 — de Claude site à la conversation pilote — tchat : prénom ou pseudo au début (contrat)
 Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/2026 ; À TRAITER par elle (CRM WhatsApp)
 - Fabrice, sur la façon de reconnaître les visiteurs du tchat (adresse IP déconseillée par Claude : partagée par
