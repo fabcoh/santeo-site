@@ -1150,7 +1150,10 @@ window.addEventListener("hashchange",route);
      affichées ici. Le visiteur n'ouvre jamais WhatsApp (Fabrice, 10/11/2026 : « je veux pas que le client ouvre
      WhatsApp […] Le but, c'est de rester dans le chat ») ;
    - « aucun » : pas de tchat (tant que le relais du CRM n'est pas en service).
-   Fenêtre sans texte (Fabrice, 10/11/2026 : « retirer tout les textes jsute un chat et un bouton envoyer »). */
+   Fenêtre sans texte (Fabrice, 10/11/2026 : « retirer tout les textes jsute un chat et un bouton envoyer »).
+   Prénom ou pseudo au début (Fabrice, 11/11/2026 : « il écrit bonjour / envoyer pour envoyer merci d'idiquer votre prénom
+   ou votre psuedo ») : le premier message attend ici le pseudo, puis part avec lui ; le CRM ajoute « 2 », « 3 »… pour
+   Antony si le pseudo est déjà pris (« elle pense avoir son pseudo et nous a ajoute juste un 2 après »). */
 const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 (function(){
   const zone=$("tchat"), bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte");
@@ -1181,16 +1184,16 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 
   /* --- La conversation reste ici ; Antony répond depuis son WhatsApp, par le CRM --- */
   const CLE="santeo-tchat", ARRET_SUIVI=30*60*1000, ESSAI=/[?&]test=1(&|$)/.test(location.search);
-  let etat={conversation:null,messages:[],dernier:null,activite:0}, minuterie=null, nonLus=0;
-  try{const e=JSON.parse(localStorage.getItem(CLE)||"null");if(e&&e.conversation&&Date.now()-(e.activite||0)<7*864e5)etat=Object.assign(etat,e)}catch(err){}
+  let etat={conversation:null,messages:[],dernier:null,activite:0,pseudo:null,attendPseudo:false}, minuterie=null, nonLus=0;
+  try{const e=JSON.parse(localStorage.getItem(CLE)||"null");if(e&&(e.conversation||e.attendPseudo||e.pseudo)&&Date.now()-(e.activite||0)<7*864e5)etat=Object.assign(etat,e)}catch(err){}
   const garderT=()=>{try{localStorage.setItem(CLE,JSON.stringify(etat))}catch(err){}};
   const pastille=$("tchat-pastille");
   function majPastille(){pastille.hidden=!nonLus;pastille.textContent=nonLus>9?"9+":String(nonLus)}
   function afficher(){
     fil.innerHTML="";
     etat.messages.forEach(m=>{
-      const b=bulle(m.texte,m.de==="antony"?"lui":"moi");
-      if(m.de==="visiteur"&&m.statut==="envoi")b.classList.add("en-cours");
+      const b=bulle(m.texte,m.de==="antony"||m.de==="site"?"lui":"moi");
+      if(m.de==="visiteur"&&(m.statut==="envoi"||m.statut==="attente"))b.classList.add("en-cours");
       if(m.de==="visiteur"&&m.statut==="echec"){
         const r=document.createElement("button");r.type="button";r.className="tchat-reessayer";r.textContent="Non envoyé. Réessayer";
         r.onclick=()=>{etat.messages=etat.messages.filter(x=>x!==m);envoyer(m.texte)};b.after(r);
@@ -1202,20 +1205,50 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   invite.onclick=ouvrir;
   const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error(j.erreur||rep.status);e.status=rep.status;throw e}return j}));
   // Conversation inconnue du CRM (404) : on repart d'une conversation neuve au prochain message
-  const oublier=()=>{etat={conversation:null,messages:[],dernier:null,activite:0};garderT();if(!fen.hidden)afficher()};
-  function envoyer(t){
-    const c=contexte(), m={id:"local-"+Date.now(),de:"visiteur",texte:t,date:new Date().toISOString(),statut:"envoi"};
-    etat.messages.push(m); etat.activite=Date.now(); afficher();
+  const oublier=()=>{etat={conversation:null,messages:[],dernier:null,activite:0,pseudo:etat.pseudo,attendPseudo:false};garderT();modeSaisie();if(!fen.hidden)afficher()};
+  // Prénom ou pseudo : demandé au premier message, sauf si le visiteur est déjà connu (demande de comparatif envoyée)
+  const QUESTION_PSEUDO="Pour envoyer, merci d'indiquer votre prénom ou votre pseudo.";
+  const etiquette=document.querySelector('label[for="tchat-texte"]'), PH_MESSAGE=texte.placeholder, ET_MESSAGE=etiquette?etiquette.textContent:"";
+  const pseudoConnu=()=>etat.pseudo||(identite&&identite.prenom)||null;
+  const visiteurConnu=()=>Boolean(pseudoConnu()||(identite&&identite.fiche));
+  function modeSaisie(){
+    const p=etat.attendPseudo;
+    texte.placeholder=p?"Votre prénom ou pseudo":PH_MESSAGE; texte.maxLength=p?30:600; texte.rows=p?1:2;
+    if(etiquette)etiquette.textContent=p?"Votre prénom ou pseudo":ET_MESSAGE;
+  }
+  modeSaisie();
+  let numLocal=0;
+  // `garde` : un message resté en attente du pseudo, envoyé à sa place dans le fil
+  function envoyer(t,garde){
+    const c=contexte(), m=garde||{id:"local-"+Date.now()+"-"+(++numLocal),de:"visiteur",texte:t,date:new Date().toISOString()};
+    m.statut="envoi"; if(!garde)etat.messages.push(m); etat.activite=Date.now(); afficher();
     appel(TCHAT_CRM,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
       conversation:etat.conversation,texte:t,
       contexte:{age:c.age,code_postal:c.cp,regime:c.age!=null?c.reg:"",offre:c.offre?{numero:c.offre.numero,cotisation_mensuelle:Math.round(c.offre.prix*100)/100,gamme:c.offre.gamme,formule:c.offre.formule}:null},
       identite:identite&&(identite.fiche||identite.telephone)?identite:null,
-      provenance:provenance(),page:location.href.split("#")[0],site_web:"",test:ESSAI})})
+      pseudo:pseudoConnu(),provenance:provenance(),page:location.href.split("#")[0],site_web:"",test:ESSAI})})
     .then(j=>{etat.conversation=j.conversation||etat.conversation;if(j.message)m.id=String(j.message);m.statut="ok"})
     .catch(()=>{m.statut="echec"})
     .then(()=>{garderT();if(!fen.hidden)afficher();suivreBientot()});
   }
-  $("tchat-saisie").addEventListener("submit",e=>{e.preventDefault();const t=texte.value.trim();if(!t){texte.focus();return}texte.value="";envoyer(t)});
+  $("tchat-saisie").addEventListener("submit",e=>{
+    e.preventDefault();const t=texte.value.trim();if(!t){texte.focus();return}texte.value="";
+    if(etat.attendPseudo){
+      // La réponse à la question devient le pseudo ; les messages gardés partent alors avec lui
+      etat.pseudo=t.replace(/\s+/g," ").slice(0,30); etat.attendPseudo=false; modeSaisie();
+      const gardes=etat.messages.filter(m=>m.statut==="attente");
+      etat.messages.push({id:"local-pseudo",de:"pseudo",texte:etat.pseudo,date:new Date().toISOString()});
+      if(gardes.length)gardes.forEach(m=>envoyer(m.texte,m));else{garderT();afficher()}
+      return;
+    }
+    if(!etat.conversation&&!visiteurConnu()){
+      etat.messages.push({id:"local-"+Date.now()+"-"+(++numLocal),de:"visiteur",texte:t,date:new Date().toISOString(),statut:"attente"});
+      etat.messages.push({id:"local-question",de:"site",texte:QUESTION_PSEUDO,date:new Date().toISOString()});
+      etat.attendPseudo=true; etat.activite=Date.now(); garderT(); modeSaisie(); afficher(); texte.focus({preventScroll:true});
+      return;
+    }
+    envoyer(t);
+  });
   // Entrée envoie le message ; Maj + Entrée passe à la ligne (Fabrice, 10/11/2026 : « on dois pouvoir faire entrée pour envoyer un message depuis le clavier »)
   texte.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();$("tchat-saisie").requestSubmit()}});
   // Réponses d'Antony : toutes les 4 secondes fenêtre ouverte, toutes les 30 secondes fermée, arrêt après 30 minutes sans activité
