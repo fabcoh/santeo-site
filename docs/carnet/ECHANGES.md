@@ -444,6 +444,14 @@ Ensuite, un lot à la fois :
      Fabrice (moins de 400 € par mois), seulement après la carte remplacée et la mesure en place.
 - Les chiffres de visites, de recherches Google et de prix des mots-clés ne s'écrivent jamais dans ce dépôt public.
 
+## Vue de contrôle (11/11/2026)
+
+- Fabrice : « je voudrais avoir une version avec les compagnies affiché pour bien controler », puis « POURQUOI JE NE VOIS
+  PAS DANS LA MAQUETTE » (prix APRIL et API Santé : leurs relais n'acceptent que santeo.net, la maquette tourne sur
+  claude.ai), puis « OK » à la vue de contrôle.
+- www.santeo.net/?controle=1 : sous chaque offre, « Contrôle : gamme · formule », avec les vrais tarifs ; bandeau « Vue de
+  contrôle » en haut. Un visiteur ordinaire ne voit rien de changé (les noms sont déjà dans le code de la page).
+
 ## Reste à faire selon Fabrice (11/11/2026, ses mots)
 
 « ajouter les garantie april et varalti qui ne sont pas encore sur le site / google sur des mot clefs pas chere /

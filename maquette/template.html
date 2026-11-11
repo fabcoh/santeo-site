@@ -444,6 +444,9 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (prefers-reduced-motion: no-preference){.tchat-fenetre:not([hidden]){animation:tchat-ouvre .18s ease-out}}
 @keyframes tchat-ouvre{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media print{.tchat{display:none}}
+html.controle .o-real{display:block!important;color:#7a5200;background:#fdf1d8;border-radius:6px;padding:.1rem .4rem;font-weight:700}
+html.controle body::before{content:"Vue de contrôle : compagnie et formule affichées sous chaque offre";display:block;max-width:62rem;margin:0 auto .8rem;
+  background:#fdf1d8;color:#7a5200;border:1px dashed #7a5200;border-radius:8px;padding:.45rem .8rem;font-size:.88rem;text-align:center}
 /* debut-css-cookies */
 /* ---------- Bandeau cookies : statistiques et annonces Google, seulement avec l'accord du visiteur ----------
    « Refuser » et « Accepter » ont exactement la même apparence (règle de la CNIL). */
@@ -735,6 +738,12 @@ const COMPAGNIES=CATALOGUE.compagnies.map(c=>({co:c.nom,items:c.produits.map(p=>
 const CFG_DEPART=()=>({gammes:Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits.map(p=>[p.code,!!p.defaut]))),
   logos:Object.fromEntries(COMPAGNIES.map(c=>[c.co,true]))});
 const CLE="santeo-maquette-gestion-v1", MODE_SITE="__MODE__"==="site";
+/* Vue de contrôle (Fabrice, 11/11/2026 : « je voudrais avoir une version avec les compagnies affiché pour bien controler »,
+   puis « OK ») : www.santeo.net/?controle=1 affiche sous chaque offre la compagnie et la formule, avec les vrais tarifs
+   (APRIL et API Santé compris). Les visiteurs ordinaires ne voient rien de changé ; ces noms sont déjà dans le code de la page. */
+const CONTROLE=MODE_SITE&&/[?&]controle=1(&|$)/.test(location.search);
+const REEL=CONTROLE?"Contrôle : ":"Maquette : ";
+if(CONTROLE)document.documentElement.classList.add("controle");
 let CFG=CFG_DEPART(), REGLAGE_TCHAT=CATALOGUE.tchat_defaut!==false;
 function appliquerReglages(r){
   if(!r||typeof r!=="object")return false;
@@ -1084,7 +1093,7 @@ function detailHtml(x){
 function ouvrirDetail(i){
   const x=LAST[i], d=$("det-pop"); if(!x)return;
   d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">Option '+(i+1)+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
-    '<div class="o-real" title="Visible seulement dans la maquette">Maquette : '+x.gamme+' · '+x.formule+'</div></div>'+
+    '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
     '<button type="button" class="np-x dp-x" aria-label="Fermer">×</button></div>'+
     '<div class="dp-corps">'+detailHtml(x)+'</div>'+
     '<div class="dp-pied"><button type="button" class="ghost dp-fermer">Fermer</button><button type="button" class="btn dp-choisir">Cette offre m\'intéresse</button></div>';
@@ -1117,7 +1126,7 @@ function upd(){
     o.setAttribute("aria-label","Option "+(i+1));
     const cols=postesAffiches();
     o.innerHTML='<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+
-      '<div class="o-real" title="Visible seulement dans la maquette">Maquette : '+x.gamme+' · '+x.formule+'</div></div>'+
+      '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
       '<div class="o-gar" style="--n:'+cols.length+'">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="lab"><span class="short">'+p.sh+'</span><span class="full">'+p.nm+'</span></span>'+
         '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</div>'}).join("")+'</div>'+
       '<div class="o-actions"><button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog">(+) Détails</button><button type="button" class="btn" data-c="'+i+'">Cette offre m\'intéresse</button></div>';
