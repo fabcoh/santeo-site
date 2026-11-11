@@ -434,8 +434,14 @@ mieux référencer le site »
 - Mots-clés visés et points douteux de chaque article : gardés hors de ce dépôt public (stratégie de référencement et
   d'annonces).
 - APRIL et API Santé : relais ouverts à santeo.net et www.santeo.net le 11/11 (tarification seulement, versions
-  2026-11-11, d'après « comparateur claude ») ; branchement sur le site = lot suivant. Leurs garanties ne sont pas
-  encore dans `garanties.json`.
+  2026-11-11, d'après « comparateur claude »). Fabrice : « et april et varalti ne sont pas dispo au niveau des tarifs ? ».
+- **API Santé (VERALTI)** branché (demande de fusion « api-sante ») : le site appelle `capisante.fr/apicil.php` une fois
+  par profil complet (date de naissance exacte, code postal), garanties lues dans `garanties.json` (gamme APICIL), offres
+  ajoutées aux autres. Vérifié le 11/11 par un vrai calcul (profil fictif, 60 ans, 75012 : 11 formules). Dans la maquette
+  (page privée), pas de tarif API Santé : le relais n'accepte que santeo.net. Au passage, l'option choisie est suivie par
+  son identité : une offre qui arrive ou un changement d'étoiles ne fait plus envoyer une autre offre que celle choisie.
+- **APRIL** : lot suivant ; ses garanties sont dans la page du comparateur (`APRIL_GAR`), pas dans `garanties.json`, et il
+  faut choisir avec Fabrice les produits APRIL affichés (le comparateur en coche deux par défaut : Santé Mix et Simply).
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 

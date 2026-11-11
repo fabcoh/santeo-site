@@ -3,5 +3,6 @@
   "repli": "",
   "tchat": "direct",
   "tchat_crm": "https://crm.capisante.fr/api/site/tchat",
-  "google_mesure": ""
+  "google_mesure": "",
+  "apicil": "https://capisante.fr/apicil.php"
 }
