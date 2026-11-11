@@ -1,0 +1,31 @@
+{
+ "slug": "tarifs-de-convention",
+ "ordre": 10,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Tarifs de convention : secteur 1, secteur 2 et remboursement",
+ "description": "Tarif de convention, base de remboursement, secteur 1, secteur 2 avec ou sans OPTAM, non conventionné : ce que vous payez et ce qui est remboursé.",
+ "h1": "Tarifs de convention : secteur 1, secteur 2 et médecins non conventionnés",
+ "faq": [
+  {
+   "q": "Qu'est-ce qu'un tarif de convention ?",
+   "r": "C'est le prix d'une consultation ou d'un acte fixé par la convention entre les médecins et l'Assurance Maladie. Il sert le plus souvent de base au calcul du remboursement."
+  },
+  {
+   "q": "Combien coûte une consultation chez un généraliste de secteur 1 ?",
+   "r": "30 €. L'Assurance Maladie en rembourse 70 %, soit 21 €, moins la participation forfaitaire de 2 € : vous recevez 19 €."
+  },
+  {
+   "q": "Quelle est la différence entre secteur 1 et secteur 2 ?",
+   "r": "En secteur 1, le médecin applique le tarif de convention, sauf exceptions. En secteur 2, il peut pratiquer des dépassements d'honoraires, que l'Assurance Maladie ne rembourse pas."
+  },
+  {
+   "q": "Suis-je remboursé chez un médecin non conventionné ?",
+   "r": "Très peu. Le remboursement est calculé sur un tarif d'autorité : moins de 1 € pour une consultation chez un généraliste."
+  },
+  {
+   "q": "Comment savoir dans quel secteur exerce un médecin ?",
+   "r": "Consultez l'annuaire santé d'ameli. Il indique si le médecin est conventionné et s'il pratique des honoraires maîtrisés (OPTAM) ou libres."
+  }
+ ]
+}

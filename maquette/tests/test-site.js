@@ -91,7 +91,7 @@ async function remplir(p) {
     doit(/<meta name="robots" content="index, follow">/.test(h) && !/__[A-Z][A-Z_]*__/.test(h), a.slug + ' : robots ou repère non remplacé');
     doit(a.titre_page.length <= 60 && a.description.length <= 160, a.slug + ' : titre ou description trop longs pour Google');
     doit(plan.includes('https://www.santeo.net/guide/' + a.slug + '/</loc>'), a.slug + ' : absent du plan du site');
-    doit(!/fcohen@|santeo\.net\/guide/.test(a.slug) && !/(april|avenir|mcci|alptis|apicil|swiss ?life|harmonie|mgen)/i.test(fs.readFileSync(S + '/guide/' + a.slug + '.html', 'utf8')), a.slug + ' : nom d\'assureur dans un article');
+    doit(!/fcohen@|santeo\.net\/guide/.test(a.slug) && !/(april|avenir(?! de l'assurance maladie)|mcci|alptis|apicil|swiss ?life|harmonie|mgen)/i.test(fs.readFileSync(S + '/guide/' + a.slug + '.html', 'utf8')), a.slug + ' : nom d\'assureur dans un article');
     if (a.schema_dents) doit(h.includes('<figure class="schema-dents">') && !h.includes('<div class="schema-dents"></div>')
       && (h.match(/class="sd-mat"/g) || []).length === Object.keys(a.schema_dents.materiaux).length, a.slug + ' : schéma des dents absent ou incomplet');
     try { const j = JSON.parse(h.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]); const types = j['@graph'].map(x => x['@type']);
