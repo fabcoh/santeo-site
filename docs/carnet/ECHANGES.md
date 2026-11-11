@@ -12,6 +12,30 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 11/11/2026 — de Claude site à la conversation pilote — tchat : prénom ou pseudo au début (contrat)
+Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/2026 ; À TRAITER par elle (CRM WhatsApp)
+- Fabrice, sur la façon de reconnaître les visiteurs du tchat (adresse IP déconseillée par Claude : partagée par
+  plusieurs personnes, changeante, donnée personnelle) : « au premier envoi on peu demander à la personne d'indiquer son
+  prénom ou son pseudo ? », puis « je pense qu'il faut le faire au début c'est plus logique / si un pseudo est déjà pris
+  on le prend en ajoutant 2 pour antony et moi / exemple / rose / rose2 elle pense avoir son pseudo et nous a ajoute
+  juste un 2 après et un 3 ..; », puis « il écrit / bonjour / envoyer pour envoyer merci d'idiquer votre prénom ou votre
+  psuedo ». L'idée des noms de planètes (« mars neptune jupiter ») est remplacée par le pseudo.
+- Côté site (demande de fusion « tchat-pseudo ») : le premier message reste sur le site ; le tchat répond *Pour envoyer,
+  merci d'indiquer votre prénom ou votre pseudo.* ; ce que le visiteur tape ensuite (30 caractères au plus) devient son
+  pseudo, puis le premier message part. Pas de question si le visiteur a déjà envoyé sa demande de comparatif (fiche
+  connue) : son prénom sert de pseudo.
+- Contrat : chaque `POST /api/site/tchat` porte désormais `"pseudo": "Rose"` (chaîne de 1 à 30 caractères, ou `null`
+  pour un visiteur connu par sa fiche sans prénom et pour les conversations ouvertes avant ce changement). Aujourd'hui le
+  CRM ignore ce champ : rien ne casse si le site est publié avant le CRM.
+- À faire côté CRM WhatsApp : garder le pseudo sur la conversation à sa création ; s'il est déjà pris par une autre
+  conversation du tchat (comparaison sans majuscules, accents ni espaces), lui ajouter le plus petit numéro libre, collé :
+  « Rose2 », « Rose3 » ; l'afficher à Antony et à la 86 36 dans l'en-tête, en gardant le numéro pour les réponses par
+  citation : « 💬 Site santeo.net #12 · Rose2 ». Le numéro ajouté n'est jamais renvoyé au site : le visiteur garde
+  « Rose ». Portée de la comparaison (toutes les conversations, ou les récentes seulement) : au choix de la pilote.
+- Avant, le même matin : le tchat marchait en essai mais plus en réel (« le chat ne fonctionne pas… il fonctionnait
+  parfaitement quand il était en test ») ; les messages partaient vers Antony d'une autre ligne que la 86 36. Réparé par
+  la pilote (fabcoh/WhatsApp_Solution, demande de fusion 523, sa réparation R-196), publié à 10 h 25 ; Fabrice : « c'est ok ».
+
 ### 10/11/2026 — de Claude site à la conversation pilote — fiche du CRM Santéo : suivi par CAPI, statut AUCUN
 Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 vers 9 h 15 (pour « CRM Santeo »)
 - Fabrice, avec une fiche réelle du CRM Santéo en modèle (rien n'en est recopié ici) : « Attribué a capi ... tu dois
@@ -295,10 +319,14 @@ Fait le 11/11/2026 :
   aucune ligne des mails, du CRM, de GestCom, du comparateur ni `public` touchée ;
 - certificat de www.santeo.net créé par GitHub (vérifié le 11/11 à 9 h 06, valable jusqu'au 09/02/2027) ;
 - publication passée en `--en-ligne`.
+- `santeo.net` sans www : Fabrice a remplacé dans OVH, le 11/11 vers 9 h, la ligne `@` de type A (ancien serveur) par une
+  des adresses de GitHub Pages ; SPF et lignes des mails inchangés. Le constat de Manus sur les mails envoyés par l'ancien
+  serveur n'a pas pu se faire (pas d'accès à cette machine). Le navigateur de Fabrice gardait en mémoire l'ancien renvoi
+  vers capisante.com (il disparaît en navigation privée).
 Reste :
-- `santeo.net` sans www : le SPF contient « a » (l'adresse de santeo.net est autorisée à envoyer des mails) ; constat
-  demandé à Manus par la conversation pilote (l'ancien serveur envoie-t-il des mails lui-même ?) avant de changer la ligne
-  `@` ;
+- `santeo.net` sans www : certificat de GitHub pas encore créé à 10 h 26 (Paris) le 11/11 (`https://santeo.net` affiche
+  une alerte ; `www` et la saisie de `santeo.net` dans Chrome marchent). Plus tard, ajouter éventuellement les trois autres
+  adresses de GitHub Pages pour la ligne `@` ;
 - santeo.fr : renvoi vers www.santeo.net par un petit site GitHub (accord de Fabrice, « oui », 11/11), après la mise en
   ligne ; santeo.fr n'a qu'une page d'attente OVH et ses lignes mail (MX, SPF) resteront en place ; le comparateur
   utilise capisante.fr, pas santeo.fr (« je me suis trompé je crois que c'est capisante.fr qui gère le comparateur »).

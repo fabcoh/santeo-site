@@ -118,11 +118,11 @@ async function remplir(p) {
     await ctx.close();
     // 6. Tchat « direct » : le message part au CRM (simulé), la réponse d'Antony s'affiche ici, la conversation reste après rechargement
     ctx = await b.newContext(opt); await servir(ctx, 'https://www.santeo.net/', sites.tchat);
-    let envoiT = null, lectures = 0, waOuvert = false;
+    let envoiT = null, lectures = 0, waOuvert = false; const envoisT = [];
     await ctx.route(/wa\.me|whatsapp\.com/, r => { waOuvert = true; r.abort(); });
     await ctx.route('https://crm.exemple.invalid/tchat**', r => {
       const req = r.request(), cors = { 'access-control-allow-origin': 'https://www.santeo.net' };
-      if (req.method() === 'POST') { envoiT = JSON.parse(req.postData()); return r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: '{"ok":true,"conversation":"c-123","message":"m1"}' }); }
+      if (req.method() === 'POST') { envoiT = JSON.parse(req.postData()); envoisT.push(envoiT); return r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: '{"ok":true,"conversation":"c-123","message":"m1"}' }); }
       lectures++;
       const msgs = lectures === 1 ? [{ id: 'm1', de: 'visiteur', texte: 'Les lunettes ?' }, { id: 'm2', de: 'antony', texte: 'Bonjour, oui : 200 € tous les deux ans.' }] : [];
       r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify({ ok: true, messages: msgs }) });
@@ -133,13 +133,37 @@ async function remplir(p) {
     await p.click('#tchat-invite'); const ligne = 'vous répond ici';
     doit(await p.isVisible('#tchat-fenetre') && !(await p.isVisible('#tchat-invite')), nom + ' : la bulle doit ouvrir le tchat et se cacher');
     doit((await p.textContent('.tchat-envoyer')) === 'Envoyer' && ((await p.textContent('#tchat-fil')) || '').trim() === '', nom + ' : tchat direct : bouton « Envoyer » et fenêtre vide au départ');
-    await p.fill('#tchat-texte', 'Les lunettes ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(5200);   // Entrée envoie
+    await p.fill('#tchat-texte', 'Les lunettes ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);   // Entrée envoie
+    // Premier message : il attend le prénom ou pseudo (Fabrice, 11/11/2026), rien ne part encore
+    const filQ = (await p.textContent('#tchat-fil')) || '';
+    doit(envoisT.length === 0 && /Pour envoyer, merci d'indiquer votre prénom ou votre pseudo\./.test(filQ) && /Les lunettes \?/.test(filQ)
+      && (await p.getAttribute('#tchat-texte', 'placeholder')) === 'Votre prénom ou pseudo', nom + ' : tchat : la question du pseudo doit venir avant tout envoi (' + filQ + ')');
+    await p.fill('#tchat-texte', '  Rose  '); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(5200);
     const filD = (await p.textContent('#tchat-fil')) || '';
-    doit(/vous répond ici/.test(ligne) && envoiT && envoiT.texte === 'Les lunettes ?' && envoiT.conversation === null && envoiT.site_web === '' && 'contexte' in envoiT
+    doit(/vous répond ici/.test(ligne) && envoisT.length === 1 && envoiT.texte === 'Les lunettes ?' && envoiT.pseudo === 'Rose' && envoiT.conversation === null && envoiT.site_web === '' && 'contexte' in envoiT
       && /200 € tous les deux ans/.test(filD) && !waOuvert, nom + ' : tchat direct (' + ligne + ' | ' + JSON.stringify(envoiT) + ' | ' + filD.slice(-80) + ')');
+    doit((await p.getAttribute('#tchat-texte', 'placeholder')) === 'Votre message', nom + ' : tchat : après le pseudo, la zone redevient « Votre message »');
+    await p.fill('#tchat-texte', 'Et le dentaire ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
+    doit(envoisT.length === 2 && envoiT.texte === 'Et le dentaire ?' && envoiT.conversation === 'c-123' && envoiT.pseudo === 'Rose', nom + ' : tchat : 2e message sans nouvelle question, même conversation, même pseudo (' + JSON.stringify(envoiT) + ')');
     await p.reload(); await p.waitForTimeout(300); await p.click('#tchat-bouton');
-    doit(/200 € tous les deux ans/.test((await p.textContent('#tchat-fil')) || ''), nom + ' : la conversation du tchat ne reste pas après rechargement');
-    console.log(nom, '| tchat direct : envoi', envoiT && envoiT.texte, '| lectures', lectures);
+    const filR = (await p.textContent('#tchat-fil')) || '';
+    doit(/200 € tous les deux ans/.test(filR) && (filR.match(/merci d'indiquer/g) || []).length === 1, nom + ' : la conversation du tchat ne reste pas après rechargement');
+    console.log(nom, '| tchat direct : envois', envoisT.map(e => e.texte + ' / ' + e.pseudo).join(' ; '), '| lectures', lectures);
+    await ctx.close();
+    // 7. Visiteur déjà connu (demande de comparatif envoyée) : pas de question, le message part tout de suite avec sa fiche
+    ctx = await b.newContext(opt); await servir(ctx, 'https://www.santeo.net/', sites.tchat);
+    await ctx.addInitScript(() => { try { localStorage.setItem('santeo-fiche', JSON.stringify({ fiche: '42' })); } catch (e) {} });
+    let envoiC = null;
+    await ctx.route('https://crm.exemple.invalid/tchat**', r => {
+      const req = r.request(), cors = { 'access-control-allow-origin': 'https://www.santeo.net' };
+      if (req.method() === 'POST') envoiC = JSON.parse(req.postData());
+      r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: req.method() === 'POST' ? '{"ok":true,"conversation":"c-9","message":"m9"}' : '{"ok":true,"messages":[]}' });
+    });
+    p = await ctx.newPage(); p.on('pageerror', e => err(nom + ' tchat connu : ' + e.message));
+    await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300); await p.click('#tchat-invite');
+    await p.fill('#tchat-texte', 'Bonjour'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
+    doit(envoiC && envoiC.texte === 'Bonjour' && envoiC.identite && envoiC.identite.fiche === '42' && !/merci d'indiquer/.test((await p.textContent('#tchat-fil')) || ''),
+      nom + ' : tchat : un visiteur déjà connu ne doit pas recevoir la question du pseudo (' + JSON.stringify(envoiC) + ')');
     await ctx.close();
   }
   await b.close(); fs.rmSync(tmp, { recursive: true, force: true });
