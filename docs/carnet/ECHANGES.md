@@ -545,6 +545,22 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Articles pour les jeunes (12/11, demande de la conversation « Audit compte Google Ads »)** : Fabrice, ses mots
+  transmis par cette conversation : « On commence le référencement naturelle » et « ce qui nous intéresse, c'est d'attirer
+  les jeunes 20, 25 ans, 30 ans ». Fait (demande de fusion « articles-jeunes ») : nouveau chapitre « Jeunes et premier
+  emploi » (titre et présentation : Mon idée), avec 4 articles : mutuelle jeune (20-30 ans), mutuelle étudiante (avec
+  « Ce qui a changé pour les étudiants » : fin de la sécurité sociale étudiante, 2018-2019), dispense de mutuelle
+  d'entreprise (CDD, apprenti, exemple de lettre écrit par Santéo), mutuelle chômeur ou jeune sans emploi. Rédaction par
+  deux agents, relue par Claude (textes : Mon idée). L'ancienne adresse /devis/junior renvoie maintenant vers l'article
+  mutuelle jeune ; l'article sur la mutuelle d'entreprise obligatoire renvoie vers celui sur la dispense.
+  Vérifié par Claude sur les pages officielles : plafonds de la Complémentaire santé solidaire pour une personne seule en
+  métropole (10 421 € gratuite, 14 069 € payante, au 1er avril 2026), 8 € par mois à 29 ans ou moins, revenus d'activité
+  comptés à 70 % au chômage indemnisé, C2S payante proposée d'office avec l'allocation du contrat d'engagement jeune
+  (1er juillet 2026), demande seul après 25 ans, fin du statut d'ayant droit l'année des 18 ans, régime gardé en entrant
+  dans le supérieur. Points restés incertains, écrits prudemment : les pages officielles sur les dispenses datent de mai
+  2024 ; aucune page ne dit en ces mots que la mutuelle n'est pas obligatoire pour un étudiant ; l'âge limite sur la
+  mutuelle des parents dépend de leur contrat (déjà écrit dans l'article famille).
+  **À remettre à jour chaque année** en plus : plafonds et participation de la Complémentaire santé solidaire.
 - **Ciel de l'en-tête (Fabrice, 12/11, ses mots, avec une capture)** : « continu le ciel sur toute la partie pour
   harmoniser en estempant vers le titre ». Fait (demande de fusion « ciel-entete ») : bande de ciel en haut de la page, de
   la couleur du ciel de la photo, qui s'estompe vers le titre (à gauche) et vers le bas ; bords haut et gauche de la photo

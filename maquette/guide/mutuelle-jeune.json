@@ -1,0 +1,33 @@
+{
+ "slug": "mutuelle-jeune",
+ "chapitre": "jeunes",
+ "lien": "Mutuelle jeune (20-30 ans)",
+ "ordre": 26,
+ "publie": "2026-11-12",
+ "maj": "2026-11-12",
+ "titre_page": "Mutuelle jeune adulte : bien se couvrir de 20 à 30 ans",
+ "description": "Mutuelle jeune de 20 à 30 ans : étudiant, CDD ou apprenti, mutuelle d'entreprise, sans emploi, C2S, et comment garder l'essentiel sans payer trop.",
+ "h1": "Mutuelle jeune : quelle complémentaire santé entre 20 et 30 ans ?",
+ "faq": [
+  {
+   "q": "Une mutuelle est-elle obligatoire pour un jeune ?",
+   "r": "Pas à titre individuel. Mais si vous êtes salarié dans le secteur privé, l'adhésion à la mutuelle de votre entreprise est en principe obligatoire, sauf cas de dispense."
+  },
+  {
+   "q": "Combien coûte une mutuelle pour les jeunes ?",
+   "r": "Il n'y a pas de prix unique : le tarif dépend notamment des garanties choisies, de votre âge, de votre statut et de votre lieu d'habitation. Comparez les offres à garanties égales, à partir de vos propres soins."
+  },
+  {
+   "q": "Quelle mutuelle pour un jeune adulte qui quitte celle de ses parents ?",
+   "r": "Un contrat individuel, celui de votre employeur si vous êtes salarié, ou la Complémentaire santé solidaire si vos ressources sont modestes. Faites commencer le nouveau contrat dès la fin de l'ancien."
+  },
+  {
+   "q": "J'ai plus de 25 ans : puis-je demander la C2S seul ?",
+   "r": "Oui. Si vous avez plus de 25 ans, étudiant ou non, vous faites la demande de Complémentaire santé solidaire en votre nom, de manière autonome."
+  },
+  {
+   "q": "Je suis en CDD : dois-je prendre la mutuelle de l'entreprise ?",
+   "r": "En principe oui, quelle que soit votre ancienneté. Selon la durée du CDD et ce que prévoit l'entreprise, vous pouvez parfois demander à en être dispensé."
+  }
+ ]
+}
