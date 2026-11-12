@@ -132,10 +132,11 @@ tr:last-child td{border-bottom:0}
 .s-aide{font-size:.85rem;color:var(--muted);margin:-.4rem 0 .6rem}
 .s-schema{margin:.6rem 0 1.4rem;padding:.9rem 1rem .5rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
 .s-schema figcaption{font-weight:700;margin-bottom:.4rem}
-.s-svg{display:block;width:100%;height:auto}
-.s-svg text{font-family:var(--f-body);font-size:12px;font-weight:700;text-anchor:middle;fill:#fff}
-.s-svg .s-br-t{fill:var(--muted);font-weight:600;font-size:11px}
-.s-br{stroke:var(--fg);stroke-width:1.2;stroke-dasharray:3 2}
+.s-barre{position:relative;display:flex;gap:2px;height:2.8rem;margin:.3rem 0 .4rem}
+.s-barre.s-avec-base{margin-bottom:1.7rem}
+.s-barre span{display:flex;align-items:center;justify-content:center;min-width:3px;border-radius:4px;color:#fff;font-weight:700;font-size:.92rem;white-space:nowrap;overflow:hidden}
+.s-br{position:absolute;top:100%;height:.45rem;width:0;border-left:2px solid var(--fg);font-style:normal}
+.s-br b{position:absolute;top:100%;left:0;margin-top:.15rem;font-size:.8rem;font-weight:600;color:var(--muted);white-space:nowrap}
 .s-p-secu{fill:var(--s-secu);background:var(--s-secu)}.s-p-mut{fill:var(--s-mut);background:var(--s-mut)}.s-p-rac{fill:var(--s-rac);background:var(--s-rac)}
 .s-leg{list-style:none;padding:0;margin:.5rem 0 .3rem;display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;font-size:.92rem}
 .s-leg i{display:inline-block;width:.85rem;height:.85rem;border-radius:3px;margin-right:.35rem;vertical-align:-.1rem}

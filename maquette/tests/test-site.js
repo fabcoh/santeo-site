@@ -390,8 +390,18 @@ async function remplir(p) {
     const tot = (a, m) => SC.calculer(a, m).lignes.map(l => l.total).join(' ');
     // généraliste secteur 1 : 30 € réglés, base 30 €, 70 %, participation de 2 € -> 19 € Sécu ; 28 € remboursés à tous les niveaux
     doit(SC.calculer({ br: 30, taux: .7, retenue: 2, garantie: 'pct' }, 30).secu === 19 && tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct' }, 30) === '28 28 28 28 28 28 28', 'simulateur : généraliste');
-    // médecin non OPTAM : jamais plus de 200 % de la base au total (contrat responsable)
-    doit(tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: false }, 100) === '28 37 43 58 58 58 58', 'simulateur : plafond non OPTAM ' + tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: false }, 100));
+    // médecin non OPTAM : 20 points de moins que chez un OPTAM, jamais plus de 200 % de la base au total (contrat responsable)
+    doit(tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: false }, 100) === '28 31 37 52 58 58 58', 'simulateur : plafond non OPTAM ' + tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: false }, 100));
+    // exemple officiel (HCAAM, octobre 2025) : spécialiste à 65 €, garantie 200 % : il reste 4 € chez un OPTAM (base 31,50 €), 25,60 € chez un non OPTAM (base 23 €)
+    const reste200 = (br, optam) => SC.calculer({ br, taux: .7, retenue: 2, garantie: 'pct', optam }, 65).lignes.find(l => l.niveau === 200).reste;
+    doit(reste200(31.5, true) === 4 && reste200(23, false) === 25.6, 'simulateur : exemple HCAAM ' + reste200(31.5, true) + ' / ' + reste200(23, false));
+    // médicament à 65 % de 20 € (exemple Service-Public) : 12 € Sécu, 7 € mutuelle, 1 € de franchise à payer
+    const med = SC.calculer({ br_egal_prix: true, taux: .65, retenue: 1, garantie: 'pct' }, 20);
+    doit(med.secu === 12 && med.lignes[0].mutuelle === 7 && med.lignes[0].reste === 1, 'simulateur : médicament ' + JSON.stringify(med.lignes[0]));
+    // lunettes 100 % Santé : total jusqu'au prix limite, part Sécu non détaillée
+    doit(tot({ garantie: '100s', secu_non_detaillee: true, plafond: 115 }, 115) === '115' && SC.calculer({ garantie: '100s', secu_non_detaillee: true, plafond: 115 }, 115).secu === null, 'simulateur : lunettes 100 % Santé');
+    // forfait en euros plafonné (contrat responsable)
+    doit(tot({ br: 0, taux: 0, garantie: 'eur', forfaits: [300, 500], plafond: 420 }, 600) === '300 420', 'simulateur : plafond en euros');
     doit(tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100) === '28 37 43 58 73 88 98', 'simulateur : OPTAM ' + tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100));
     doit(tot({ br: 0, taux: 0, garantie: 'eur', forfaits: [50, 100] }, 60) === '50 60', 'simulateur : forfait en euros');
     doit(tot({ br: 100, taux: .6, garantie: '100s', plafond: 500 }, 500) === '500' && tot({ br: 100, taux: .6, garantie: '100s', plafond: 500 }, 600) === '500', 'simulateur : 100 % Santé');
@@ -417,10 +427,10 @@ async function remplir(p) {
       await q.goto('https://www.santeo.net/simulateur-remboursement/'); await q.waitForTimeout(300);
       const lire = () => q.evaluate(() => ({ rub: document.getElementById('s-rub').options.length, actes: document.getElementById('s-acte').options.length,
         secu: document.getElementById('s-secu').textContent, lignes: document.querySelectorAll('#s-table tbody tr').length,
-        choisi: (document.querySelector('#s-table tr.s-choisi td') || {}).textContent, barres: document.querySelectorAll('#s-svg rect').length,
+        choisi: (document.querySelector('#s-table tr.s-choisi td') || {}).textContent, barres: document.querySelectorAll('#s-barre span').length,
         hs: document.documentElement.scrollWidth > document.documentElement.clientWidth }));
       const r0 = await lire();
-      doit(r0.rub === SIM.rubriques.length && r0.actes === SIM.rubriques[0].actes.length && /€$/.test(r0.secu) && r0.lignes >= 1 && r0.barres >= 1 && !r0.hs, nom + ' simulateur : ' + JSON.stringify(r0));
+      doit(r0.rub === SIM.rubriques.length && r0.actes === SIM.rubriques[0].actes.length && /\u00a0€$/.test(r0.secu) && r0.lignes >= 1 && r0.barres >= 1 && !r0.hs, nom + ' simulateur : ' + JSON.stringify(r0));
       // chaque type d'acte et chaque sous-rubrique s'affichent sans erreur ni défilement de côté
       for (let i = 0; i < SIM.rubriques.length; i++) {
         await q.selectOption('#s-rub', String(i));

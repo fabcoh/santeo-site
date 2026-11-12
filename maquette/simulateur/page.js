@@ -4,7 +4,7 @@
   var D = JSON.parse(document.getElementById("s-data").textContent);
   var $ = function (id) { return document.getElementById(id); };
   var rub = $("s-rub"), acte = $("s-acte"), mt = $("s-montant"), choix = null;
-  function eur(x) { return x.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €"; }
+  function eur(x) { return x.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "\u00a0€"; }
   function pct(t) { return Math.round(t * 100) + " %"; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   D.rubriques.forEach(function (r, i) { rub.add(new Option(r.nom, i)); });
@@ -19,17 +19,19 @@
   function info(a) {
     var t = [];
     if (a.code) t.push("Code : " + esc(a.code));
-    if (a.br) t.push("Base de remboursement : " + eur(a.br) + " ; remboursée à " + pct(a.taux) + " par la Sécurité sociale");
-    else t.push("Non remboursé par la Sécurité sociale");
+    if (a.br_egal_prix) t.push("Remboursé à " + pct(a.taux) + " du prix par la Sécurité sociale");
+    else if (a.br) t.push("Base de remboursement : " + eur(a.br) + " ; remboursée à " + pct(a.taux) + " par la Sécurité sociale");
+    else if (!a.secu_non_detaillee) t.push("Non remboursé par la Sécurité sociale");
     if (a.retenue) t.push(esc(a.retenue_lib || "Retenue") + " : " + eur(a.retenue) + ", jamais remboursée par un contrat responsable");
     if (a.plafond != null) t.push("Prix limite : " + eur(a.plafond));
     if (a.note) t.push(esc(a.note));
+    if (a.exemple) t.push("Le montant affiché est un exemple : remplacez-le par le vôtre");
     return t.join(". ") + ".";
   }
   function calculer() {
     var a = courant(), r = SimuCalcul.calculer(a, mt.value);
     $("s-info").innerHTML = info(a);
-    $("s-secu").textContent = eur(r.secu);
+    $("s-secu").textContent = r.secu == null ? "comprise dans le total ci-dessous" : eur(r.secu);
     var tb = $("s-table").tBodies[0]; tb.innerHTML = "";
     if (choix == null || !r.lignes.some(function (l) { return l.niveau === choix; }))
       choix = (r.lignes.filter(function (l) { return l.niveau === (a.garantie === "eur" ? 100 : 200); })[0] || r.lignes[0]).niveau;
@@ -45,20 +47,21 @@
     schema(r, r.lignes.filter(function (l) { return l.niveau === choix; })[0], a);
   }
   function schema(r, l, a) {
-    var W = 320, H = 44, total = r.montant || 1, x = 0, svg = [];
-    var parts = [["s-p-secu", r.secu, "Sécurité sociale"], ["s-p-mut", l.mutuelle, "Mutuelle"], ["s-p-rac", l.reste, "Reste à payer"]];
+    // barre en HTML (pas en SVG) : le texte garde sa taille sur PC comme sur téléphone
+    var total = r.montant || 1, h = [];
+    var parts = r.secu == null ? [["s-p-mut", l.total, "Sécurité sociale + mutuelle"], ["s-p-rac", l.reste, "Reste à payer"]]
+      : [["s-p-secu", r.secu, "Sécurité sociale"], ["s-p-mut", l.mutuelle, "Mutuelle"], ["s-p-rac", l.reste, "Reste à payer"]];
     parts.forEach(function (p) {
-      var w = W * p[1] / total; if (w <= 0) return;
-      svg.push('<rect class="' + p[0] + '" x="' + x.toFixed(1) + '" y="8" width="' + w.toFixed(1) + '" height="' + H + '" rx="3"/>');
-      if (w > 46) svg.push('<text x="' + (x + w / 2).toFixed(1) + '" y="' + (8 + H / 2 + 4) + '">' + eur(p[1]).replace(",00", "") + '</text>');
-      x += w;
+      if (p[1] <= 0) return;
+      var part = p[1] / total;
+      h.push('<span class="' + p[0] + '" style="flex:' + part.toFixed(4) + ' 1 0">' + (part >= .16 ? eur(p[1]).replace(",00", "") : "") + "</span>");
     });
-    if (r.br > 0 && r.br < total) {
-      var bx = (W * r.br / total).toFixed(1);
-      svg.push('<path class="s-br" d="M' + bx + ',2 V' + (H + 14) + '"/><text class="s-br-t" x="' + bx + '" y="' + (H + 27) + '">base ' + eur(r.br).replace(",00", "") + '</text>');
-    }
-    $("s-svg").innerHTML = svg.join("");
-    $("s-svg").setAttribute("aria-label", "Sur " + eur(r.montant) + " réglés : Sécurité sociale " + eur(r.secu) + ", mutuelle " + eur(l.mutuelle) + ", reste à payer " + eur(l.reste) + ".");
+    if (r.br > 0 && r.br < total)
+    { var pos = 100 * r.br / total, dec = pos < 15 ? "0" : pos > 85 ? "-100%" : "-50%";   // l'étiquette ne sort pas du cadre
+      h.push('<i class="s-br" style="left:' + pos.toFixed(2) + '%"><b style="transform:translateX(' + dec + ')">base ' + eur(r.br).replace(",00", "") + "</b></i>"); }
+    var barre = $("s-barre"); barre.innerHTML = h.join("");
+    barre.classList.toggle("s-avec-base", r.br > 0 && r.br < total);
+    barre.setAttribute("aria-label", "Sur " + eur(r.montant) + " réglés : " + parts.map(function (p) { return p[2] + " " + eur(p[1]); }).join(", ") + ".");
     $("s-leg").innerHTML = parts.map(function (p) { return '<li><i class="' + p[0] + '"></i>' + p[2] + " : <strong>" + eur(p[1]) + "</strong></li>"; }).join("");
     $("s-cap").textContent = "Sur " + eur(r.montant) + " réglés, avec une garantie " + (l.niveau ? l.libelle.toLowerCase().replace("forfait", "forfait de") : "responsable");
   }

@@ -305,7 +305,8 @@ else:
     # calcul.js : le calcul (aussi testé dans Node) ; page.js : l'interface ; explication.html : le texte pour les internautes.
     SIM = json.load(open(S + "/simulateur/actes.json", encoding="utf-8"))
     SRC_SIM = SIM["sources"]
-    CHAMPS_SIM = ("nom", "code", "br", "taux", "retenue", "retenue_lib", "prix", "garantie", "optam", "plafond", "forfaits", "note")
+    CHAMPS_SIM = ("nom", "code", "br", "taux", "retenue", "retenue_lib", "prix", "garantie", "optam", "plafond", "forfaits", "note",
+                  "br_egal_prix", "secu_non_detaillee", "exemple")
     for r in SIM["rubriques"]:
         assert r["nom"] and r["actes"], "simulateur : rubrique vide"
         for a in r["actes"]:

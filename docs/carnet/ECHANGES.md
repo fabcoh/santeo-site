@@ -545,6 +545,25 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Simulateur de remboursement (Fabrice, 12/11, ses mots)** : « Crée le simulateur hyper performant et il faut récupérer
+  les données et codification pour mettre en olace l'outil avec les vrais chiffres / Idem simple / Type d'acte 》 ici tu
+  ajoutes les sous rubriques / Montants regle / Remboursement secu / Remboursement secu et mutuelle / 100% = … 400%= / Tu
+  peux adaptées si tu as un Remboursement en € ». Fait (demande de fusion « simulateur-remboursement ») : page
+  /simulateur-remboursement/ (PC et téléphone), 7 types d'acte et 32 sous-rubriques ; montant réglé modifiable ;
+  remboursement Sécurité sociale, puis Sécurité sociale + mutuelle et reste à payer à 100, 130, 150, 200, 250, 300 et
+  400 % de la base, ou en forfaits en euros (chambre particulière, lunettes hors 100 % Santé, lentilles, aides auditives
+  de classe II, psychologue non conventionné, ostéopathe) ; schéma Sécurité sociale / mutuelle / reste à payer ; texte
+  d'explication pour les internautes (Mon idée). Règles appliquées : participation forfaitaire et franchises jamais
+  remboursées par un contrat responsable ; médecin non OPTAM : 20 points de moins que chez un OPTAM, 200 % au plus
+  (instruction de la Direction de la sécurité sociale du 29/05/2019) ; 100 % Santé jusqu'au prix limite. Contrôlé sur
+  l'exemple officiel du HCAAM (spécialiste à 65 €, garantie 200 % : 4 € de reste chez un OPTAM, 25,60 € chez un non
+  OPTAM) et sur ceux de Service-Public (généraliste, médicament). Données : `maquette/simulateur/actes.json`, chaque acte
+  avec ses sources ; montants d'exemple signalés comme tels.
+  Pas encore dedans, faute de source officielle lisible : codes des actes (fichier CCAM d'ameli.fr, qui refuse les
+  lectures automatiques ; la page de data.gouv.fr envoyée par Fabrice est bloquée par le réseau de la session, et
+  l'ajout de data.gouv.fr au réseau a été refusé), analyses, radiologie, kinésithérapie, psychiatre (55 € ou 57 €
+  selon la source), implants, transports. **À remettre à jour chaque année** : bases, prix limites, participation et
+  franchises.
 - **Un article par jour (Fabrice, 12/11, ses mots)** : « Il faut régulièrement mettre a jour le site avec les actualités et
   informations les recherches médicales et autres sujets intéressant pour la mutuelle sante / La dépendance les dispositifs
   mon psy ... / Tu dois écrire chaque jour un article que tu va s ajouter l'histoire de mieux référence le dite et aussi le

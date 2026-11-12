@@ -1,0 +1,542 @@
+{
+ "_explication": "Données du simulateur de remboursement (Fabrice, 12/11/2026). br : base de remboursement ; taux : part de la Sécurité sociale ; retenue : participation forfaitaire ou franchise (jamais remboursée par un contrat responsable) ; prix : montant affiché au départ (exemple: true = montant d'exemple, à remplacer par le visiteur) ; garantie : pct (en % de la base), eur (forfaits en euros), 100s (100 % Santé), integral ; plafond : prix limite ou plafond du contrat responsable. Chaque valeur vient des sources citées (pages officielles téléchargées et relues le 12/11/2026). À remettre à jour chaque année.",
+ "maj": "2026-11-12",
+ "sources": {
+  "F1069": {
+   "titre": "Service-Public : Remboursement d'une consultation médicale",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1069",
+   "date": "vérifié le 22/12/2024"
+  },
+  "F165": {
+   "titre": "Service-Public : Ticket modérateur, forfait et franchises",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F165",
+   "date": "vérifié le 01/10/2026"
+  },
+  "F20314": {
+   "titre": "Service-Public : Couverture maladie complémentaire (mutuelle)",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F20314",
+   "date": "vérifié le 01/10/2026"
+  },
+  "F17042": {
+   "titre": "Service-Public : Quels sont les tarifs d'un médecin ?",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17042",
+   "date": "vérifié le 22/12/2024"
+  },
+  "F10874": {
+   "titre": "Service-Public : Consultation médicale d'un enfant de moins de 16 ans",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10874",
+   "date": "vérifié le 22/10/2026"
+  },
+  "F21760": {
+   "titre": "Service-Public : Remboursement des médicaments",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F21760",
+   "date": "vérifié le 01/10/2026"
+  },
+  "F200": {
+   "titre": "Service-Public : Hospitalisation et prise en charge par l'Assurance maladie",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F200",
+   "date": "vérifié le 01/03/2026"
+  },
+  "F33956": {
+   "titre": "Service-Public : Remboursement des soins dentaires",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F33956",
+   "date": "vérifié le 30/01/2026"
+  },
+  "F33950": {
+   "titre": "Service-Public : Lunettes et lentilles",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F33950",
+   "date": "vérifié le 13/03/2026"
+  },
+  "F34781": {
+   "titre": "Service-Public : Remboursement des prothèses auditives",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34781",
+   "date": "vérifié le 24/08/2026"
+  },
+  "F34917": {
+   "titre": "Service-Public : Consultation d'un psychologue ou d'un psychiatre",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34917",
+   "date": "vérifié le 03/07/2026"
+  },
+  "AMELI_PROTH": {
+   "titre": "Assurance maladie : Prothèses dentaires et 100 % Santé dentaire",
+   "url": "https://www.ameli.fr/assure/remboursements/rembourse/soins-protheses-dentaires-optique-audition/consultations-soins-protheses-dentaires/protheses-dentaires",
+   "date": "consultée par recherche le 12/11/2026"
+  },
+  "AMELI_TARIFS_DENT": {
+   "titre": "Assurance maladie : Tarifs conventionnels des chirurgiens-dentistes",
+   "url": "https://www.ameli.fr/chirurgien-dentiste/exercice-liberal/facturation-remuneration/tarifs-conventionnels/tarifs",
+   "date": "consultée par recherche le 12/11/2026"
+  },
+  "DSS2019": {
+   "titre": "Instruction de la Direction de la sécurité sociale sur les contrats responsables (29/05/2019)",
+   "url": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/medias/DSS/2019/100%25%20sante-%20instruction%20DSS.pdf",
+   "date": "29/05/2019"
+  },
+  "HCAAM2025": {
+   "titre": "HCAAM : Reste à charge et dépassements d'honoraires (annexe 4)",
+   "url": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/HCAAM/2025/Annexe%204%20RAC%20Rapport%20Hcaam.pdf",
+   "date": "octobre 2025"
+  }
+ },
+ "rubriques": [
+  {
+   "nom": "Consultation de médecin",
+   "actes": [
+    {
+     "nom": "Généraliste, secteur 1 (médecin traitant)",
+     "prix": 30,
+     "garantie": "pct",
+     "sources": [
+      "F1069",
+      "F165",
+      "F20314"
+     ],
+     "br": 30,
+     "taux": 0.7,
+     "retenue": 2,
+     "retenue_lib": "Participation forfaitaire"
+    },
+    {
+     "nom": "Généraliste, secteur 2 adhérent OPTAM",
+     "prix": 40,
+     "garantie": "pct",
+     "sources": [
+      "F1069",
+      "F17042",
+      "F165"
+     ],
+     "br": 30,
+     "taux": 0.7,
+     "optam": true,
+     "retenue": 2,
+     "retenue_lib": "Participation forfaitaire",
+     "exemple": true
+    },
+    {
+     "nom": "Généraliste, secteur 2 non adhérent OPTAM",
+     "prix": 40,
+     "garantie": "pct",
+     "sources": [
+      "F17042",
+      "F165",
+      "DSS2019"
+     ],
+     "br": 23,
+     "taux": 0.7,
+     "optam": false,
+     "retenue": 2,
+     "retenue_lib": "Participation forfaitaire",
+     "exemple": true
+    },
+    {
+     "nom": "Spécialiste, secteur 1 (orienté par le médecin traitant)",
+     "prix": 31.5,
+     "garantie": "pct",
+     "sources": [
+      "F1069",
+      "HCAAM2025",
+      "F165"
+     ],
+     "br": 31.5,
+     "taux": 0.7,
+     "retenue": 2,
+     "retenue_lib": "Participation forfaitaire"
+    },
+    {
+     "nom": "Spécialiste, secteur 2 adhérent OPTAM (orienté par le médecin traitant)",
+     "prix": 65,
+     "garantie": "pct",
+     "sources": [
+      "F1069",
+      "HCAAM2025",
+      "F165"
+     ],
+     "br": 31.5,
+     "taux": 0.7,
+     "optam": true,
+     "retenue": 2,
+     "retenue_lib": "Participation forfaitaire",
+     "exemple": true
+    },
+    {
+     "nom": "Spécialiste, secteur 2 non adhérent OPTAM (orienté par le médecin traitant)",
+     "prix": 65,
+     "garantie": "pct",
+     "sources": [
+      "F1069",
+      "HCAAM2025",
+      "DSS2019"
+     ],
+     "br": 23,
+     "taux": 0.7,
+     "optam": false,
+     "retenue": 2,
+     "retenue_lib": "Participation forfaitaire",
+     "exemple": true
+    },
+    {
+     "nom": "Généraliste, enfant de 6 à 16 ans (secteur 1 ou OPTAM)",
+     "prix": 30,
+     "garantie": "pct",
+     "sources": [
+      "F10874"
+     ],
+     "br": 30,
+     "taux": 0.7,
+     "note": "Pas de participation forfaitaire avant 18 ans"
+    },
+    {
+     "nom": "Pédiatre, enfant de 2 à 6 ans (secteur 1 ou OPTAM)",
+     "prix": 35,
+     "garantie": "pct",
+     "sources": [
+      "F10874"
+     ],
+     "br": 35,
+     "taux": 0.7,
+     "note": "Pas de participation forfaitaire avant 18 ans"
+    }
+   ]
+  },
+  {
+   "nom": "Pharmacie",
+   "actes": [
+    {
+     "nom": "Médicament remboursé à 65 %",
+     "prix": 20,
+     "garantie": "pct",
+     "sources": [
+      "F21760",
+      "F20314"
+     ],
+     "br_egal_prix": true,
+     "taux": 0.65,
+     "retenue": 1,
+     "retenue_lib": "Franchise (par boîte)",
+     "note": "Prix d'une boîte : exemple de Service-Public"
+    },
+    {
+     "nom": "Médicament remboursé à 30 %",
+     "prix": 20,
+     "garantie": "pct",
+     "sources": [
+      "F21760"
+     ],
+     "br_egal_prix": true,
+     "taux": 0.3,
+     "retenue": 1,
+     "retenue_lib": "Franchise (par boîte)",
+     "note": "Un contrat responsable n'est pas obligé de rembourser le reste",
+     "exemple": true
+    },
+    {
+     "nom": "Médicament remboursé à 15 %",
+     "prix": 20,
+     "garantie": "pct",
+     "sources": [
+      "F21760"
+     ],
+     "br_egal_prix": true,
+     "taux": 0.15,
+     "retenue": 1,
+     "retenue_lib": "Franchise (par boîte)",
+     "note": "Un contrat responsable n'est pas obligé de rembourser le reste",
+     "exemple": true
+    }
+   ]
+  },
+  {
+   "nom": "Hospitalisation",
+   "actes": [
+    {
+     "nom": "Forfait journalier (par jour, hôpital ou clinique)",
+     "prix": 23,
+     "garantie": "integral",
+     "sources": [
+      "F200",
+      "F20314"
+     ],
+     "note": "Pris en charge en entier par un contrat responsable, sans limite de durée"
+    },
+    {
+     "nom": "Passage aux urgences sans hospitalisation",
+     "prix": 23,
+     "garantie": "integral",
+     "sources": [
+      "F165"
+     ],
+     "note": "Forfait patient urgences, remboursé en entier par la complémentaire"
+    },
+    {
+     "nom": "Chambre particulière (par nuit)",
+     "prix": 80,
+     "garantie": "eur",
+     "sources": [
+      "F200"
+     ],
+     "forfaits": [
+      30,
+      50,
+      70,
+      100
+     ],
+     "note": "Non remboursée par la Sécurité sociale",
+     "exemple": true
+    }
+   ]
+  },
+  {
+   "nom": "Dentaire",
+   "actes": [
+    {
+     "nom": "Consultation chez le dentiste",
+     "prix": 23,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "br": 23,
+     "taux": 0.6
+    },
+    {
+     "nom": "Détartrage",
+     "prix": 28.92,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "br": 28.92,
+     "taux": 0.6
+    },
+    {
+     "nom": "Soin d'une carie, une face (plus de 26 ans)",
+     "prix": 30.74,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "br": 30.74,
+     "taux": 0.6
+    },
+    {
+     "nom": "Dévitalisation d'une incisive ou canine (plus de 26 ans)",
+     "prix": 41.6,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "br": 41.6,
+     "taux": 0.6
+    },
+    {
+     "nom": "Couronne céramo-métallique, incisive, canine ou 1re prémolaire (100 % Santé)",
+     "prix": 515,
+     "garantie": "100s",
+     "sources": [
+      "F33956",
+      "AMELI_PROTH"
+     ],
+     "br": 120,
+     "taux": 0.6,
+     "plafond": 515
+    },
+    {
+     "nom": "Couronne zircone sur molaire (100 % Santé)",
+     "prix": 453.2,
+     "garantie": "100s",
+     "sources": [
+      "F33956",
+      "AMELI_TARIFS_DENT"
+     ],
+     "br": 120,
+     "taux": 0.6,
+     "plafond": 453.2
+    },
+    {
+     "nom": "Couronne céramo-métallique, 2e prémolaire (tarif maîtrisé)",
+     "prix": 566.5,
+     "garantie": "pct",
+     "sources": [
+      "F33956",
+      "AMELI_PROTH"
+     ],
+     "br": 120,
+     "taux": 0.6,
+     "note": "Prix limite : 566,50 €"
+    },
+    {
+     "nom": "Couronne céramo-métallique, molaire (tarif libre)",
+     "prix": 600,
+     "garantie": "pct",
+     "sources": [
+      "F33956",
+      "AMELI_PROTH"
+     ],
+     "br": 120,
+     "taux": 0.6,
+     "exemple": true
+    },
+    {
+     "nom": "Orthodontie, un semestre (traitement commencé avant 16 ans)",
+     "prix": 700,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "br": 193.5,
+     "taux": 1,
+     "note": "Remboursée à 100 % de la base par la Sécurité sociale",
+     "exemple": true
+    }
+   ]
+  },
+  {
+   "nom": "Optique",
+   "actes": [
+    {
+     "nom": "Lunettes 100 % Santé, verres simples (monture et 2 verres)",
+     "prix": 115,
+     "garantie": "100s",
+     "sources": [
+      "F20314",
+      "F33950"
+     ],
+     "secu_non_detaillee": true,
+     "plafond": 115,
+     "note": "Prix limite : 30 € la monture et 42,50 € par verre ; Sécurité sociale (60 % de la base) et mutuelle remboursent ensemble tout le prix"
+    },
+    {
+     "nom": "Lunettes 100 % Santé, verres progressifs (monture et 2 verres)",
+     "prix": 210,
+     "garantie": "100s",
+     "sources": [
+      "F20314",
+      "F33950"
+     ],
+     "secu_non_detaillee": true,
+     "plafond": 210,
+     "note": "Prix limite : 30 € la monture et 90 € par verre ; Sécurité sociale (60 % de la base) et mutuelle remboursent ensemble tout le prix"
+    },
+    {
+     "nom": "Lunettes hors 100 % Santé, verres simples (monture et 2 verres)",
+     "prix": 400,
+     "garantie": "eur",
+     "sources": [
+      "F33950",
+      "DSS2019"
+     ],
+     "forfaits": [
+      100,
+      150,
+      200,
+      300,
+      420
+     ],
+     "plafond": 420,
+     "note": "La Sécurité sociale ne rembourse que quelques centimes, non comptés ici ; un contrat responsable rembourse au plus 420 € pour cet équipement, dont 100 € pour la monture",
+     "exemple": true
+    },
+    {
+     "nom": "Lentilles non remboursées par la Sécurité sociale (par an)",
+     "prix": 200,
+     "garantie": "eur",
+     "sources": [
+      "F33950"
+     ],
+     "forfaits": [
+      50,
+      100,
+      150,
+      200
+     ],
+     "exemple": true
+    }
+   ]
+  },
+  {
+   "nom": "Audition",
+   "actes": [
+    {
+     "nom": "Aide auditive 100 % Santé, 20 ans et plus (par oreille)",
+     "prix": 950,
+     "garantie": "100s",
+     "sources": [
+      "F34781",
+      "F20314"
+     ],
+     "br": 400,
+     "taux": 0.6,
+     "plafond": 950
+    },
+    {
+     "nom": "Aide auditive hors 100 % Santé, 20 ans et plus (par oreille)",
+     "prix": 1500,
+     "garantie": "eur",
+     "sources": [
+      "F34781",
+      "DSS2019"
+     ],
+     "br": 400,
+     "taux": 0.6,
+     "forfaits": [
+      200,
+      400,
+      700,
+      1000
+     ],
+     "plafond": 1700,
+     "note": "Un contrat responsable rembourse au plus 1 700 € par aide auditive, Sécurité sociale comprise",
+     "exemple": true
+    }
+   ]
+  },
+  {
+   "nom": "Psychologue et médecines douces",
+   "actes": [
+    {
+     "nom": "Séance Mon soutien psy (psychologue conventionné)",
+     "prix": 50,
+     "garantie": "pct",
+     "sources": [
+      "F34917"
+     ],
+     "br": 50,
+     "taux": 0.6,
+     "note": "Séance à 50 €, sans dépassement, 12 par an au plus"
+    },
+    {
+     "nom": "Psychologue non conventionné (par séance)",
+     "prix": 60,
+     "garantie": "eur",
+     "sources": [
+      "F34917"
+     ],
+     "forfaits": [
+      20,
+      30,
+      40,
+      60
+     ],
+     "note": "Non remboursé par la Sécurité sociale",
+     "exemple": true
+    },
+    {
+     "nom": "Ostéopathe (par séance)",
+     "prix": 60,
+     "garantie": "eur",
+     "sources": [
+      "F20314"
+     ],
+     "forfaits": [
+      20,
+      30,
+      40,
+      60
+     ],
+     "note": "Non remboursé par la Sécurité sociale ; certains contrats le prennent en charge",
+     "exemple": true
+    }
+   ]
+  }
+ ]
+}
