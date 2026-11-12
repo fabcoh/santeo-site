@@ -545,6 +545,11 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Photo du couple (Fabrice, 12/11, ses mots, avec la photo et une maquette)** : « tu vas ajouter cette photo au site sans
+  changer le site tu intégres que la partie du couple avec l'oiseu ». Fait (demande de fusion « photo-couple ») : photo
+  recadrée (têtes et épaules), bords gauche et bas fondus en transparence, en haut à droite de l'en-tête sous l'oiseau déjà
+  en place ; rien d'autre ne bouge. Fichier à part sur le site (`images/couple.webp`, 27 Ko), intégré dans la maquette.
+  Sur les petits téléphones (moins de 360 px de large), le logo cache une partie de la photo.
 - **Carte d'offre (Fabrice, 12/11, avec une capture d'une offre sur PC ; ses mots)** : « il faudrait que cette offre
   m'intéresse soit placée plutôt au milieu, tu vois, ou vers la droite, dans le coin droit […] détail et cette offre
   m'intéresserait placée sur la même ligne […] que la ligne ne garde pas cet aspect ce carré. Ça s'agrandit au fur et à
