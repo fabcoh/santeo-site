@@ -64,6 +64,8 @@ table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:30rem}
 th,td{padding:.5rem .65rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{background:var(--accent-soft);font-weight:700}
 tr:last-child td{border-bottom:0}
+/* Téléphone : les tableaux de 2 ou 3 colonnes tiennent dans l'écran, sans défilement de côté (les plus larges défilent encore dans leur cadre) */
+@media (max-width:540px){table{min-width:0;font-size:.86rem}th,td{padding:.45rem .5rem}}
 .faq details{border:1px solid var(--line);border-radius:10px;padding:.6rem .9rem;margin:.55rem 0;background:var(--surface)}
 .faq summary{cursor:pointer;font-weight:700}
 .faq details p{margin:.5rem 0 0}

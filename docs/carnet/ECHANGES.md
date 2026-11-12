@@ -545,6 +545,22 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Un article par jour (Fabrice, 12/11, ses mots)** : « Il faut régulièrement mettre a jour le site avec les actualités et
+  informations les recherches médicales et autres sujets intéressant pour la mutuelle sante / La dépendance les dispositifs
+  mon psy ... / Tu dois écrire chaque jour un article que tu va s ajouter l'histoire de mieux référence le dite et aussi le
+  déclare auprès des ia chat gpt et toi ». Premier article (demande de fusion « article-mon-soutien-psy ») : Mon soutien
+  psy, rangé dans « Comprendre les remboursements » (texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur
+  Service-Public (F34917, A17461) : 12 séances par an, dès 3 ans, 50 € la séance sans dépassement, 60 % remboursés par
+  l'Assurance maladie, 40 % pour un contrat responsable, accès sans passer par le médecin, tiers payant dans certains cas,
+  tiers payant pour tous prévu par la loi de financement pour 2026 (décret attendu). Corrigé à la relecture : la date des
+  changements de 2024-2025 (Service-Public les rattache au décret du 13 mai 2025, l'Assurance maladie au 15 juin 2024 :
+  les deux textes sont cités sans trancher), le centre médico-psychologique (Service-Public ne parle que du psychiatre),
+  une source non lue retirée. Sujet suivant prévu : la dépendance.
+  Téléphone : les tableaux des articles n'imposent plus une largeur de 480 px ; à 390 px de large, 44 tableaux sur 47
+  tiennent dans l'écran (avant : aucun), les plus larges défilent encore dans leur cadre.
+  Déclarer le site aux IA : aucun formulaire n'existe chez ChatGPT ni chez Claude ; le fichier `robots.txt` laisse déjà
+  lire tout le site à tous les robots. Pistes (Mon idée) : inscrire le site sur Bing (la recherche de ChatGPT s'appuie en
+  partie sur Bing : meilleure explication, non vérifiée) et prévenir Bing à chaque nouvel article.
 - **Articles pour les jeunes (12/11, demande de la conversation « Audit compte Google Ads »)** : Fabrice, ses mots
   transmis par cette conversation : « On commence le référencement naturelle » et « ce qui nous intéresse, c'est d'attirer
   les jeunes 20, 25 ans, 30 ans ». Fait (demande de fusion « articles-jeunes ») : nouveau chapitre « Jeunes et premier
