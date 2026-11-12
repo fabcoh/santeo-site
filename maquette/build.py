@@ -300,6 +300,48 @@ else:
               "hasPart": [{"@type": "Article", "headline": a["h1"], "url": ADRESSE + "guide/" + a["slug"] + "/"} for a in articles]}
         ecrire("guide/index.html", page_guide("../", ADRESSE + "guide/", g_titre, g_desc,
                                               '<a href="../">Accueil</a> › <span>Guide de la mutuelle</span>', contenu, ld, "website"))
+    # ---------- Simulateur de remboursement (Fabrice, 12/11/2026) : maquette/simulateur/ -> /simulateur-remboursement/
+    # actes.json : rubriques, actes (base, taux, retenue, prix courant, type de garantie) et sources officielles datées ;
+    # calcul.js : le calcul (aussi testé dans Node) ; page.js : l'interface ; explication.html : le texte pour les internautes.
+    SIM = json.load(open(S + "/simulateur/actes.json", encoding="utf-8"))
+    SRC_SIM = SIM["sources"]
+    CHAMPS_SIM = ("nom", "code", "br", "taux", "retenue", "retenue_lib", "prix", "garantie", "optam", "plafond", "forfaits", "note")
+    for r in SIM["rubriques"]:
+        assert r["nom"] and r["actes"], "simulateur : rubrique vide"
+        for a in r["actes"]:
+            assert a["garantie"] in ("pct", "eur", "100s", "integral"), "simulateur : garantie " + a["nom"]
+            assert isinstance(a["prix"], (int, float)) and a["prix"] > 0, "simulateur : prix " + a["nom"]
+            assert a.get("br", 0) >= 0 and 0 <= a.get("taux", 0) <= 1, "simulateur : base ou taux " + a["nom"]
+            assert a["sources"] and all(s in SRC_SIM for s in a["sources"]), "simulateur : source " + a["nom"]
+            assert not a.get("a_confirmer"), "simulateur : valeur à confirmer " + a["nom"]
+    donnees = {"rubriques": [{"nom": r["nom"], "actes": [{k: v for k, v in a.items() if k in CHAMPS_SIM} for a in r["actes"]]}
+                             for r in SIM["rubriques"]]}
+    sim_url = ADRESSE + "simulateur-remboursement/"
+    expl = re.sub(r"(<table.*?</table>)", r'<div class="tableau">\1</div>', open(S + "/simulateur/explication.html", encoding="utf-8").read(), flags=re.S)
+    utilisees = [k for k in SRC_SIM if any(k in a["sources"] for r in SIM["rubriques"] for a in r["actes"])]
+    sources_html = ('<section class="sources"><h2>Sources</h2><ul>%s</ul></section>' % "".join(
+        '<li><a href="%s" target="_blank" rel="noopener">%s</a> (%s)</li>' % (SRC_SIM[k]["url"], SRC_SIM[k]["titre"], SRC_SIM[k]["date"]) for k in utilisees))
+    corps = (open(S + "/simulateur/page.html", encoding="utf-8").read()
+             .replace("__EXPLICATION__", expl + "\n" + sources_html)
+             .replace("__DONNEES__", js(donnees))
+             .replace("__CALCUL__", open(S + "/simulateur/calcul.js", encoding="utf-8").read())
+             .replace("__PAGEJS__", open(S + "/simulateur/page.js", encoding="utf-8").read()))
+    contenu = ('<article>\n%s\n<p class="maj">Bases et taux à jour le %s · Santéo (CAPI FINANCE), courtier en assurance santé depuis 1992. '
+               "Simulation indicative : seuls votre tableau de garanties et les décomptes de vos remboursements font foi.</p>\n</article>\n"
+               % (corps, date_fr(SIM["maj"]))) + CTA
+    sim_titre = "Simulateur de remboursement mutuelle et Sécu | Santéo"
+    sim_desc = "Calculez le remboursement de la Sécurité sociale et de votre mutuelle, de 100 % à 400 %, pour une consultation, des lunettes, une couronne…"
+    assert len(sim_titre) <= 60 and len(sim_desc) <= 155
+    ld = {"@context": "https://schema.org", "@graph": [
+        {"@type": "WebApplication", "name": "Simulateur de remboursement Sécurité sociale et mutuelle", "url": sim_url, "inLanguage": "fr-FR",
+         "applicationCategory": "FinanceApplication", "operatingSystem": "Tous", "isAccessibleForFree": True, "publisher": editeur,
+         "description": sim_desc},
+        {"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Accueil", "item": ADRESSE},
+            {"@type": "ListItem", "position": 2, "name": "Simulateur de remboursement", "item": sim_url}]}]}
+    os.makedirs(os.path.join(SITE, "simulateur-remboursement"), exist_ok=True)
+    ecrire("simulateur-remboursement/index.html", page_guide("../", sim_url, sim_titre, sim_desc,
+                                                            '<a href="../">Accueil</a> › <span>Simulateur de remboursement</span>', contenu, ld, "website"))
     # Catalogue des produits, lu par l'espace admin du CRM ; /admin renvoie vers la page de réglages du CRM (connexion du CRM)
     ecrire("catalogue.json", json.dumps(dict(CATALOGUE, version=AUJ), ensure_ascii=False, indent=1))
     os.makedirs(os.path.join(SITE, "admin"), exist_ok=True)
@@ -321,7 +363,7 @@ else:
                                "index, follow" if EN_LIGNE else "noindex, nofollow", canonique=True))
     ecrire("robots.txt", ("User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % ADRESSE) if EN_LIGNE else "User-agent: *\nDisallow: /\n")
     pages = [(ADRESSE, AUJ)] + ([(ADRESSE + "guide/", max(a.get("maj", AUJ) for a in articles))] if articles else []) \
-            + [(ADRESSE + "guide/" + a["slug"] + "/", a.get("maj", AUJ)) for a in articles]
+            + [(ADRESSE + "guide/" + a["slug"] + "/", a.get("maj", AUJ)) for a in articles] + [(sim_url, SIM["maj"])]
     ecrire("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            + "".join('  <url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % p for p in pages) + '</urlset>\n')
     print("site", "EN LIGNE" if EN_LIGNE else "de test", ":", SITE, len(page.encode()), "octets ;",

@@ -113,6 +113,33 @@ tr:last-child td{border-bottom:0}
 .sd-mat{border-top:1px solid var(--line);padding:.7rem 0 .2rem}
 .sd-mat-nom{font-weight:700;margin:0 0 .3rem}
 .sd-mat-txt{font-size:.9rem;color:var(--muted);margin:.35rem 0 .3rem}
+/* Simulateur de remboursement (page /simulateur-remboursement/) */
+:root{--s-secu:#0a7aa5;--s-mut:#2e9e62;--s-rac:#e08a1e}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--s-secu:#4cc3ee;--s-mut:#5cc98b;--s-rac:#f0a64a} }
+:root[data-theme="dark"]{--s-secu:#4cc3ee;--s-mut:#5cc98b;--s-rac:#f0a64a}
+.simu{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:.6rem .9rem;align-items:center;margin:1.2rem 0;padding:1rem 1.1rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.simu label{font-weight:700}
+.simu select,.simu input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:.5rem .6rem;width:100%;min-width:0}
+.s-euro{display:flex;align-items:center;gap:.4rem;font-weight:700}
+.s-euro input{max-width:9rem}
+.s-info{grid-column:1 / -1;margin:.2rem 0 0;font-size:.88rem;color:var(--muted)}
+.s-secu{font-size:1.15rem;margin:1.2rem 0 .2rem}
+.s-secu strong{color:var(--s-secu);font-size:1.3rem}
+#s-table tbody tr{cursor:pointer}
+#s-table tbody tr:hover td{background:var(--accent-soft)}
+#s-table tr.s-choisi td{background:var(--accent-soft);font-weight:700}
+#s-table td:nth-child(n+2),#s-table th:nth-child(n+2){text-align:right;white-space:nowrap}
+.s-aide{font-size:.85rem;color:var(--muted);margin:-.4rem 0 .6rem}
+.s-schema{margin:.6rem 0 1.4rem;padding:.9rem 1rem .5rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.s-schema figcaption{font-weight:700;margin-bottom:.4rem}
+.s-svg{display:block;width:100%;height:auto}
+.s-svg text{font-family:var(--f-body);font-size:12px;font-weight:700;text-anchor:middle;fill:#fff}
+.s-svg .s-br-t{fill:var(--muted);font-weight:600;font-size:11px}
+.s-br{stroke:var(--fg);stroke-width:1.2;stroke-dasharray:3 2}
+.s-p-secu{fill:var(--s-secu);background:var(--s-secu)}.s-p-mut{fill:var(--s-mut);background:var(--s-mut)}.s-p-rac{fill:var(--s-rac);background:var(--s-rac)}
+.s-leg{list-style:none;padding:0;margin:.5rem 0 .3rem;display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;font-size:.92rem}
+.s-leg i{display:inline-block;width:.85rem;height:.85rem;border-radius:3px;margin-right:.35rem;vertical-align:-.1rem}
+@media (max-width:599px){.simu{grid-template-columns:1fr;gap:.35rem}.simu label{margin-top:.35rem}}
 @media (max-width:599px){body{font-size:16px}h1{font-size:1.6rem}h2{font-size:1.2rem}.tete .logo img{height:44px}.btn{padding:.5rem .9rem;font-size:.9rem}}
 __COOKIES_CSS__
 </style>
@@ -124,7 +151,7 @@ __COOKIES_CSS__
   <main>
 __CONTENU__
   </main>
-  <footer class="pied"><a href="__RACINE__">Comparateur</a> · <a href="__RACINE__guide/">Guide de la mutuelle</a> · <a href="__RACINE__#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
+  <footer class="pied"><a href="__RACINE__">Comparateur</a> · <a href="__RACINE__guide/">Guide de la mutuelle</a> · <a href="__RACINE__simulateur-remboursement/">Simulateur de remboursement</a> · <a href="__RACINE__#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
 </div>
 __COOKIES_HTML__
 <script>

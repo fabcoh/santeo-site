@@ -383,6 +383,62 @@ async function remplir(p) {
     }
     await c.close();
   }
+  // Simulateur de remboursement (/simulateur-remboursement/) : calcul vérifié sur des cas faits à la main, puis la page sur PC et téléphone
+  {
+    const SC = require(path.join(S, 'simulateur', 'calcul.js'));
+    const SIM = JSON.parse(fs.readFileSync(path.join(S, 'simulateur', 'actes.json'), 'utf8'));
+    const tot = (a, m) => SC.calculer(a, m).lignes.map(l => l.total).join(' ');
+    // généraliste secteur 1 : 30 € réglés, base 30 €, 70 %, participation de 2 € -> 19 € Sécu ; 28 € remboursés à tous les niveaux
+    doit(SC.calculer({ br: 30, taux: .7, retenue: 2, garantie: 'pct' }, 30).secu === 19 && tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct' }, 30) === '28 28 28 28 28 28 28', 'simulateur : généraliste');
+    // médecin non OPTAM : jamais plus de 200 % de la base au total (contrat responsable)
+    doit(tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: false }, 100) === '28 37 43 58 58 58 58', 'simulateur : plafond non OPTAM ' + tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: false }, 100));
+    doit(tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100) === '28 37 43 58 73 88 98', 'simulateur : OPTAM ' + tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100));
+    doit(tot({ br: 0, taux: 0, garantie: 'eur', forfaits: [50, 100] }, 60) === '50 60', 'simulateur : forfait en euros');
+    doit(tot({ br: 100, taux: .6, garantie: '100s', plafond: 500 }, 500) === '500' && tot({ br: 100, taux: .6, garantie: '100s', plafond: 500 }, 600) === '500', 'simulateur : 100 % Santé');
+    let nActes = 0;
+    for (const r of SIM.rubriques) for (const a of r.actes) {
+      nActes++;
+      for (const m of [a.prix, a.prix / 2, a.prix * 3, 0.5]) {
+        const res = SC.calculer(a, m); let avant = -1;
+        for (const l of res.lignes) {
+          doit(l.total <= res.montant + 1e-9 && l.reste >= -1e-9 && Math.abs(l.total + l.reste - res.montant) < 0.011 && l.total >= avant - 1e-9,
+            'simulateur : ' + a.nom + ' à ' + m + ' € ' + JSON.stringify(l));
+          avant = l.total;
+        }
+      }
+    }
+    doit(nActes >= 20, 'simulateur : au moins 20 actes (' + nActes + ')');
+    const d = sites.crm;
+    doit(fs.readFileSync(d + '/sitemap.xml', 'utf8').includes('https://www.santeo.net/simulateur-remboursement/'), 'simulateur : plan du site');
+    doit(fs.readFileSync(d + '/index.html', 'utf8').includes('href="simulateur-remboursement/"'), "simulateur : lien en bas de l'accueil");
+    for (const [nom, opts] of [['pc', { viewport: { width: 1280, height: 900 } }], ['tel', devices['iPhone 13']]]) {
+      const c = await b.newContext(opts); await servir(c, 'https://www.santeo.net/', d);
+      const q = await c.newPage(); q.on('pageerror', e => err(nom + ' simulateur : ' + e.message));
+      await q.goto('https://www.santeo.net/simulateur-remboursement/'); await q.waitForTimeout(300);
+      const lire = () => q.evaluate(() => ({ rub: document.getElementById('s-rub').options.length, actes: document.getElementById('s-acte').options.length,
+        secu: document.getElementById('s-secu').textContent, lignes: document.querySelectorAll('#s-table tbody tr').length,
+        choisi: (document.querySelector('#s-table tr.s-choisi td') || {}).textContent, barres: document.querySelectorAll('#s-svg rect').length,
+        hs: document.documentElement.scrollWidth > document.documentElement.clientWidth }));
+      const r0 = await lire();
+      doit(r0.rub === SIM.rubriques.length && r0.actes === SIM.rubriques[0].actes.length && /€$/.test(r0.secu) && r0.lignes >= 1 && r0.barres >= 1 && !r0.hs, nom + ' simulateur : ' + JSON.stringify(r0));
+      // chaque type d'acte et chaque sous-rubrique s'affichent sans erreur ni défilement de côté
+      for (let i = 0; i < SIM.rubriques.length; i++) {
+        await q.selectOption('#s-rub', String(i));
+        for (let j = 0; j < SIM.rubriques[i].actes.length; j++) {
+          await q.selectOption('#s-acte', String(j));
+          const r = await lire(), a = SIM.rubriques[i].actes[j];
+          const attendu = a.garantie === 'pct' ? 7 : a.garantie === 'eur' ? (a.forfaits || SC.NIVEAUX_EUR).length : 1;
+          doit(r.lignes === attendu && r.barres >= 1 && !r.hs, nom + ' simulateur : ' + a.nom + ' ' + JSON.stringify(r));
+        }
+      }
+      // le montant saisi et la ligne touchée changent le résultat et le schéma
+      await q.selectOption('#s-rub', '0'); await q.selectOption('#s-acte', '0');
+      await q.fill('#s-montant', '1000'); await q.click('#s-table tbody tr:first-child'); const r2 = await lire();
+      doit(r2.choisi === (SC.calculer(SIM.rubriques[0].actes[0], 1000).lignes[0].libelle), nom + ' simulateur : ligne touchée ' + JSON.stringify(r2));
+      console.log(nom, '| simulateur :', SIM.rubriques.length, "types d'acte,", nActes, 'actes');
+      await c.close();
+    }
+  }
   await b.close(); fs.rmSync(tmp, { recursive: true, force: true });
   console.log('ERREURS:', errs.length ? errs.join(' | ') : 'aucune');
 })();
