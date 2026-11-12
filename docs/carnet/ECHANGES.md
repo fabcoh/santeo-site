@@ -545,6 +545,10 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Décision de Fabrice (12/11, ses mots, avec une capture du bas de l'accueil sur téléphone)** : « Je ne veux pas tout
+  ses titres / Tu fois les intégrer dans guide de la mutuelle ». Le bas de l'accueil ne montre plus les titres des
+  articles : il garde seulement le lien « Guide de la mutuelle » du pied de page ; les titres restent dans le sommaire du
+  guide (par chapitre). Annule la partie « liens vers les 11 articles en bas de l'accueil » du lot « accueil-leger ».
 - **Reprise des anciennes pages** (demande de fusion « anciennes-pages », Fabrice, ses mots : « Tu reprennes ces pages, tu
   les corriges, tu les améliores et tu les mets dans les bons chapitres ou tu crées des chapitres différents. […] Tu peux
   faire de la progressivité sur les anciennes en disant ce qu'il y avait avant et ce qu'il y a maintenant ») : les 34

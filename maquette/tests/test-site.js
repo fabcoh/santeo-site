@@ -80,7 +80,7 @@ async function remplir(p) {
   const guide = fs.readdirSync(S + '/guide').filter(f => f.endsWith('.json')).map(f => JSON.parse(fs.readFileSync(S + '/guide/' + f, 'utf8')));
   doit(guide.length >= 6, 'guide : au moins 6 articles (' + guide.length + ')');
   doit(/<a href="guide\/">Guide de la mutuelle<\/a>/.test(idx), 'accueil : lien « Guide de la mutuelle » absent du pied de page');
-  for (const a of guide) doit(idx.includes('<a href="guide/' + a.slug + '/">'), 'accueil : pas de lien vers l\'article ' + a.slug);
+  doit(!/guide-liens|<a href="guide\/[a-z0-9-]+\/">/.test(idx), 'accueil : les titres des articles ne doivent pas être sur l\'accueil (ils sont dans le guide)');
   { const chap = JSON.parse(fs.readFileSync(S + '/chapitres.json', 'utf8')).chapitres.map(c => c.id), som = fs.readFileSync(d + '/guide/index.html', 'utf8');
     for (const a of guide) doit(chap.includes(a.chapitre), a.slug + ' : chapitre absent ou inconnu (' + a.chapitre + ')');
     for (const c of chap) if (guide.some(a => a.chapitre === c)) doit(som.includes('<section class="chapitre" id="' + c + '">'), 'sommaire du guide : chapitre absent ' + c); }

@@ -119,18 +119,12 @@ else:
         bandeau = '<div class="wrap">\n  <p class="bandeau-test" role="note">Version de test du nouveau site Santéo.</p>'
         assert out.count('<div class="wrap">') == 1
         out = out.replace('<div class="wrap">', bandeau, 1)
-    # Liens vers chaque article du guide en bas de l'accueil : Google les trouve depuis la page principale du site
-    guide_liens = sorted((json.load(open(f, encoding="utf-8")) for f in glob.glob(S + "/guide/*.json")), key=lambda a: (a.get("ordre", 99), a["slug"]))
+    # Bas de l'accueil : seulement le lien « Guide de la mutuelle » du pied de page ; les titres des articles sont dans le guide
+    # (Fabrice, 12/11/2026 : « Je ne veux pas tout ses titres. Tu dois les intégrer dans guide de la mutuelle »)
+    guide_liens = [json.load(open(f, encoding="utf-8")) for f in glob.glob(S + "/guide/*.json")]
     CHAPITRES = json.load(open(S + "/chapitres.json", encoding="utf-8"))["chapitres"]
     for a in guide_liens:
         assert a.get("chapitre") in {c["id"] for c in CHAPITRES}, a["slug"] + " : chapitre absent ou inconnu"
-    if guide_liens:
-        nav = ('<nav class="guide-liens" aria-label="Guide de la mutuelle"><p class="gl-titre"><a href="guide/">Guide de la mutuelle</a></p><ul>'
-               + "".join('<li><span class="gl-chap">%s :</span> %s</li>' % (att(c["titre"]), " · ".join(
-                   '<a href="guide/%s/">%s</a>' % (a["slug"], att(a["lien"])) for a in guide_liens if a["chapitre"] == c["id"]))
-                   for c in CHAPITRES if any(a["chapitre"] == c["id"] for a in guide_liens)) + "</ul></nav>\n  ")
-        assert out.count('<footer class="pied">') == 1
-        out = out.replace('<footer class="pied">', nav + '<footer class="pied">', 1)
     page = tete + out + "\n</html>\n"
     os.makedirs(os.path.join(SITE, "mentions-legales"), exist_ok=True)
     def ecrire(nom, texte): open(os.path.join(SITE, nom), "w", encoding="utf-8").write(texte)
