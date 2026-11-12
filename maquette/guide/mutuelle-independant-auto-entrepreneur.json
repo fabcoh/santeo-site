@@ -1,0 +1,33 @@
+{
+ "slug": "mutuelle-independant-auto-entrepreneur",
+ "chapitre": "situation",
+ "lien": "Mutuelle des indépendants",
+ "ordre": 20,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Mutuelle indépendant et micro-entrepreneur : Madelin, RSI",
+ "description": "Indépendant ou micro-entrepreneur : fin du RSI, complémentaire santé, contrat Madelin déductible au réel, pas de déduction en micro, prévoyance.",
+ "h1": "Mutuelle des indépendants et micro-entrepreneurs : ce qu'il faut savoir",
+ "faq": [
+  {
+   "q": "Un micro-entrepreneur peut-il déduire sa mutuelle de ses impôts ?",
+   "r": "Non. Au régime micro, un abattement forfaitaire tient lieu de toutes les charges : aucune cotisation de complémentaire santé ou de prévoyance ne peut être déduite en plus."
+  },
+  {
+   "q": "Qu'est-ce qu'un contrat Madelin santé ?",
+   "r": "C'est un contrat d'assurance de groupe, souscrit par une association, qui permet à un indépendant imposé au réel en BIC ou en BNC de déduire ses cotisations de son bénéfice, dans un plafond. Ses garanties santé doivent respecter les règles du contrat responsable."
+  },
+  {
+   "q": "Qui rembourse mes soins depuis la fin du RSI ?",
+   "r": "La caisse d'assurance maladie de votre lieu de résidence, qui relève du régime général. Vos cotisations sociales sont calculées et prélevées par l'Urssaf."
+  },
+  {
+   "q": "Un indépendant est-il obligé d'avoir une mutuelle ?",
+   "r": "Non, aucune obligation ne s'applique à sa propre couverture. S'il emploie des salariés, il doit en revanche leur proposer une mutuelle d'entreprise."
+  },
+  {
+   "q": "Ma mutuelle paie-t-elle mes arrêts de travail ?",
+   "r": "Non. Une complémentaire santé rembourse des frais de santé. Pour compléter vos revenus pendant un arrêt, il faut un contrat de prévoyance, en plus des indemnités journalières du régime obligatoire."
+  }
+ ]
+}

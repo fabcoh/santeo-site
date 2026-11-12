@@ -1,0 +1,29 @@
+{
+ "slug": "prix-mutuelle-hausse",
+ "chapitre": "choisir",
+ "lien": "Pourquoi le prix des mutuelles augmente",
+ "ordre": 16,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Prix des mutuelles : pourquoi la cotisation augmente",
+ "description": "Hausse des mutuelles : dépenses de santé, taxes, contribution de 2026, transferts de la Sécurité sociale, âge, et ce que vous pouvez faire.",
+ "h1": "Pourquoi le prix des mutuelles augmente-t-il chaque année ?",
+ "faq": [
+  {
+   "q": "Ma mutuelle peut-elle augmenter sa cotisation chaque année ?",
+   "r": "Le contrat est renouvelé chaque année et l'avis d'échéance indique la nouvelle cotisation. Si elle ne vous convient pas, vous pouvez résilier à l'échéance, ou à tout moment après un an de contrat."
+  },
+  {
+   "q": "Le gel des cotisations de 2026 s'applique-t-il ?",
+   "r": "La loi de financement pour 2026 interdisait d'augmenter les cotisations par rapport à 2025. Le Conseil constitutionnel a jugé cette interdiction contraire à la Constitution le 23 octobre 2026."
+  },
+  {
+   "q": "Quelle taxe est comprise dans ma cotisation ?",
+   "r": "La taxe de solidarité additionnelle : 13,27 % pour un contrat responsable et solidaire, 20,27 % sinon. Pour 2026 s'ajoute une contribution exceptionnelle de 2,05 % à la charge des organismes."
+  },
+  {
+   "q": "Pourquoi ma cotisation augmente-t-elle avec l'âge ?",
+   "r": "Pour un contrat individuel, l'organisme peut fixer la cotisation selon l'âge, car les dépenses de santé augmentent en moyenne avec l'âge. Il ne peut pas la fixer selon votre état de santé dans un contrat solidaire."
+  }
+ ]
+}

@@ -12,6 +12,18 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 11/11/2026 — de Claude site à la conversation pilote — démarchage téléphonique : règles depuis le 11/08/2026
+Statut : POUR INFORMATION (trouvé en écrivant l'article du guide sur le démarchage ; rien n'est demandé)
+Quoi : selon Service-Public (fiche F33267, vérifiée le 12/08/2026), depuis le 11 août 2026 un professionnel ne peut plus
+démarcher par téléphone sans l'accord préalable de la personne (loi du 30 juin 2025, article 13 ; décret du 23 juillet
+2026). L'accord est valable 1 an au plus, sa preuve se garde 3 ans ; Bloctel n'existe plus. En assurance, en plus : accord
+pour poursuivre l'appel, pas de vente au premier appel, 24 h avant la signature, appels enregistrés et gardés 2 ans ; les
+plateformes ne peuvent plus appeler depuis un 06 ou un 07. Le formulaire du site recueille déjà un accord (case non cochée,
+3 mois, jours et heures). Les fiches venues d'autres sources (comparateurs, partenaires) sont l'affaire du CRM : à faire
+regarder par la pilote si elle le juge utile ; ce n'est pas un avis juridique.
+Pourquoi : les rappels d'Antony après une demande de devis entrent dans ce cadre.
+Vérification attendue : aucune.
+
 ### 11/11/2026 — de Claude site à la conversation pilote — espace admin du site (réglages dans le CRM)
 Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/2026 vers 19 h 30 ; À TRAITER par elle
 - Fabrice : « je veux pouvoir gérer sans toi automatqiuemeny », puis « fait un espace admin sur santéo pour gerer certaine
@@ -533,6 +545,27 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Décision de Fabrice (12/11, ses mots, avec une capture du bas de l'accueil sur téléphone)** : « Je ne veux pas tout
+  ses titres / Tu fois les intégrer dans guide de la mutuelle ». Le bas de l'accueil ne montre plus les titres des
+  articles : il garde seulement le lien « Guide de la mutuelle » du pied de page ; les titres restent dans le sommaire du
+  guide (par chapitre). Annule la partie « liens vers les 11 articles en bas de l'accueil » du lot « accueil-leger ».
+- **Reprise des anciennes pages** (demande de fusion « anciennes-pages », Fabrice, ses mots : « Tu reprennes ces pages, tu
+  les corriges, tu les améliores et tu les mets dans les bons chapitres ou tu crées des chapitres différents. […] Tu peux
+  faire de la progressivité sur les anciennes en disant ce qu'il y avait avant et ce qu'il y a maintenant ») : les 34
+  anciennes pages (29 actualités 2010-2023, 5 questions), retrouvées dans le dépôt privé `santeo-net` (lecture seule) et
+  montrées à Fabrice dans une page privée, sont reprises en 14 nouveaux articles et 7 parties « avant / maintenant »
+  ajoutées aux articles existants : 25 articles en tout. Rédaction par quatre agents, relue par Claude (textes : Mon idée).
+  Guide rangé en six chapitres (`maquette/chapitres.json`, champ `chapitre` de chaque article) : sommaire par chapitre avec
+  un menu en tête, fil d'Ariane avec le chapitre, « À lire aussi » du même chapitre, bas de l'accueil groupé par chapitre.
+  Chaque ancienne adresse renvoie maintenant vers sa nouvelle version (`maquette/renvois.json`) ; seules les annonces de
+  produits de 2011-2012, la grippe H1N1, la FAQ et les pages de rubrique restent vers l'accueil ou le guide. Pas d'article
+  pour les jeunes : prévu par la conversation Google Ads (l'ancienne adresse /devis/junior pourra y renvoyer).
+  Vérifié en plus par Claude : forfait de 32 € sur les actes lourds (1er avril 2026), forfait journalier de 23 €, plafonds
+  des franchises à 70 € (1er octobre 2026), règles du démarchage (11 août 2026), gel des cotisations 2026 censuré par le
+  Conseil constitutionnel (décision QPC du 23 octobre 2026), contribution de 2,05 % en 2026. Corrigé à la relecture :
+  avis d'échéance « moins de 15 jours avant l'échéance » (texte officiel), date de la consultation à 26,50 €, service de
+  relecture de Santéo décrit au conditionnel remplacé par ce que le site permet vraiment (tchat, devis).
+  **À remettre à jour chaque année** en plus : forfaits hospitaliers, franchises, taxe et contribution des complémentaires.
 - **Correction (11/11, après publication de « accueil-leger »)** : sur les articles, les polices chargées sans blocage
   faisaient bouger le texte à leur arrivée (décalage mesuré en ligne 0,11 à 0,14, au-dessus du seuil de 0,1 de Google ;
   0 avant). Les articles reviennent au chargement d'avant (ils s'affichent en moins d'une seconde) ; l'accueil garde le

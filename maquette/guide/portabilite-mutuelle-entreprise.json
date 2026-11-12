@@ -1,0 +1,33 @@
+{
+ "slug": "portabilite-mutuelle-entreprise",
+ "chapitre": "entreprise",
+ "lien": "Portabilité de la mutuelle d'entreprise",
+ "ordre": 23,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Portabilité de la mutuelle d'entreprise : durée et démarches",
+ "description": "Garder gratuitement la mutuelle de son entreprise après la fin du contrat : conditions, durée de 12 mois au plus, démarches et suite.",
+ "h1": "Portabilité de la mutuelle d'entreprise : la garder après votre départ",
+ "faq": [
+  {
+   "q": "La portabilité est-elle automatique ?",
+   "r": "Elle commence dès la fin de votre contrat si vous remplissez les conditions. Vous devez toutefois justifier auprès de l'organisme assureur de votre indemnisation par l'assurance chômage. Votre employeur, lui, signale le maintien des garanties dans votre certificat de travail."
+  },
+  {
+   "q": "Ai-je droit à la portabilité après une démission ?",
+   "r": "Seulement si la démission est considérée comme légitime et vous ouvre droit à l'assurance chômage. Une démission qui n'ouvre pas droit à l'indemnisation ne permet pas la portabilité."
+  },
+  {
+   "q": "Combien coûte la portabilité ?",
+   "r": "Rien. Le maintien est gratuit pour l'ancien salarié pendant toute sa durée, qui est de 12 mois au maximum."
+  },
+  {
+   "q": "Que se passe-t-il si je retrouve un emploi ?",
+   "r": "La portabilité prend fin lorsque vos allocations chômage s'arrêtent. Prévenez l'organisme assureur. Si votre nouvel employeur est une entreprise privée, il doit vous proposer sa propre complémentaire santé."
+  },
+  {
+   "q": "Que se passe-t-il à la fin de la portabilité ?",
+   "r": "L'organisme assureur doit vous proposer, au plus tard 2 mois après, de garder les mêmes garanties santé à titre individuel et payant. Vous avez 6 mois pour en faire la demande. Vous pouvez aussi choisir un autre contrat."
+  }
+ ]
+}

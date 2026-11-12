@@ -1,0 +1,33 @@
+{
+ "slug": "bien-choisir-sa-mutuelle",
+ "chapitre": "choisir",
+ "lien": "Bien choisir sa mutuelle",
+ "ordre": 10,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Bien choisir sa mutuelle santé : la méthode pas à pas",
+ "description": "Choisir sa mutuelle : partir de ses besoins, lire un tableau de garanties, délais de carence, questionnaire de santé, comparer à garanties égales.",
+ "h1": "Bien choisir sa mutuelle santé : la méthode, étape par étape",
+ "faq": [
+  {
+   "q": "Faut-il choisir la formule la plus élevée ?",
+   "r": "Pas forcément. Une formule plus élevée coûte plus cher, et la complémentaire ne rembourse jamais plus que la dépense. Choisissez le niveau qui correspond à vos soins habituels et prévus."
+  },
+  {
+   "q": "Que veut dire une garantie à 200 % BR ?",
+   "r": "Le remboursement total, Sécurité sociale comprise en général, peut atteindre deux fois la base de remboursement. Vérifiez sur le tableau si la part de la Sécurité sociale est incluse."
+  },
+  {
+   "q": "Une mutuelle peut-elle me poser des questions sur ma santé ?",
+   "r": "Pour un contrat individuel, une mutuelle n'a pas le droit de recueillir d'informations médicales. Un autre organisme peut le faire, mais son contrat n'est alors pas solidaire et il est plus taxé."
+  },
+  {
+   "q": "Une femme paie-t-elle sa complémentaire plus cher qu'un homme ?",
+   "r": "Non. Pour les contrats conclus depuis le 21 décembre 2012, le Code des assurances interdit de calculer les cotisations ou les prestations selon le sexe. Le Code de la mutualité pose un principe comparable pour les mutuelles."
+  },
+  {
+   "q": "Puis-je changer de contrat si mes besoins évoluent ?",
+   "r": "Oui. Un contrat individuel peut être résilié à tout moment après un an, sans frais. Le changement de niveau de garanties au sein du même contrat dépend, lui, des conditions générales."
+  }
+ ]
+}

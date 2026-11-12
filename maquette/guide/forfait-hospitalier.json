@@ -1,0 +1,33 @@
+{
+ "slug": "forfait-hospitalier",
+ "chapitre": "comprendre",
+ "lien": "Le forfait hospitalier",
+ "ordre": 7,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Forfait hospitalier 2026 : montant, exonérations, mutuelle",
+ "description": "Forfait journalier de 23 € (17 € en psychiatrie) depuis mars 2026 : qui en est dispensé, remboursement par la mutuelle, forfait de 32 €, urgences.",
+ "h1": "Forfait hospitalier : montant 2026, exonérations et remboursement",
+ "faq": [
+  {
+   "q": "Combien coûte le forfait hospitalier en 2026 ?",
+   "r": "Depuis le 1er mars 2026, 23 € par jour à l'hôpital ou en clinique, et 17 € par jour dans un service psychiatrique. Il est dû pour chaque journée, y compris le jour de sortie."
+  },
+  {
+   "q": "La mutuelle rembourse-t-elle le forfait hospitalier ?",
+   "r": "Un contrat responsable doit le rembourser à 100 %, sans limitation de durée, quand il est facturé par un établissement de santé. Un contrat non responsable le rembourse selon ses garanties."
+  },
+  {
+   "q": "Qui est dispensé du forfait hospitalier ?",
+   "r": "Notamment les bénéficiaires de la Complémentaire santé solidaire ou de l'aide médicale de l'État, les femmes hospitalisées pendant les 4 derniers mois de grossesse, les victimes d'un accident du travail et les assurés du régime d'Alsace-Moselle."
+  },
+  {
+   "q": "Le forfait hospitalier est-il dû en affection de longue durée ?",
+   "r": "Oui. Une affection de longue durée ne dispense pas du forfait journalier, même si les soins liés à la maladie sont pris en charge à 100 %. Votre complémentaire peut le rembourser."
+  },
+  {
+   "q": "Combien coûte un passage aux urgences sans hospitalisation ?",
+   "r": "Un forfait patient urgences de 23 € depuis le 1er mars 2026, réduit à 9,96 € dans certains cas. Selon Service-Public, la complémentaire santé le rembourse intégralement."
+  }
+ ]
+}

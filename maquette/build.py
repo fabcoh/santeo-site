@@ -119,13 +119,12 @@ else:
         bandeau = '<div class="wrap">\n  <p class="bandeau-test" role="note">Version de test du nouveau site Santéo.</p>'
         assert out.count('<div class="wrap">') == 1
         out = out.replace('<div class="wrap">', bandeau, 1)
-    # Liens vers chaque article du guide en bas de l'accueil : Google les trouve depuis la page principale du site
-    guide_liens = sorted((json.load(open(f, encoding="utf-8")) for f in glob.glob(S + "/guide/*.json")), key=lambda a: (a.get("ordre", 99), a["slug"]))
-    if guide_liens:
-        nav = ('<nav class="guide-liens" aria-label="Guide de la mutuelle"><p class="gl-titre"><a href="guide/">Guide de la mutuelle</a></p><ul>'
-               + "".join('<li><a href="guide/%s/">%s</a></li>' % (a["slug"], att(a["lien"])) for a in guide_liens) + "</ul></nav>\n  ")
-        assert out.count('<footer class="pied">') == 1
-        out = out.replace('<footer class="pied">', nav + '<footer class="pied">', 1)
+    # Bas de l'accueil : seulement le lien « Guide de la mutuelle » du pied de page ; les titres des articles sont dans le guide
+    # (Fabrice, 12/11/2026 : « Je ne veux pas tout ses titres. Tu dois les intégrer dans guide de la mutuelle »)
+    guide_liens = [json.load(open(f, encoding="utf-8")) for f in glob.glob(S + "/guide/*.json")]
+    CHAPITRES = json.load(open(S + "/chapitres.json", encoding="utf-8"))["chapitres"]
+    for a in guide_liens:
+        assert a.get("chapitre") in {c["id"] for c in CHAPITRES}, a["slug"] + " : chapitre absent ou inconnu"
     page = tete + out + "\n</html>\n"
     os.makedirs(os.path.join(SITE, "mentions-legales"), exist_ok=True)
     def ecrire(nom, texte): open(os.path.join(SITE, nom), "w", encoding="utf-8").write(texte)
@@ -260,8 +259,10 @@ else:
         if REPERE_DENTS in corps or a.get("schema_dents"):
             assert a.get("schema_dents") and corps.count(REPERE_DENTS) == 1, a["slug"] + " : schéma des dents (repère et données)"
             corps = corps.replace(REPERE_DENTS, schema_dents(a["schema_dents"]))
+        meme = [b for b in articles if b is not a and b["chapitre"] == a["chapitre"]]
+        ailleurs = [b for b in articles if b is not a and b["chapitre"] != a["chapitre"]]
         autres = "".join('<li><a href="../%s/"><strong>%s</strong><span>%s</span></a></li>' % (b["slug"], b["h1"], b["description"])
-                         for b in articles if b is not a)
+                         for b in (meme + ailleurs[:max(0, 4 - len(meme))]))
         contenu = ('<article>\n%s\n<p class="maj">Mis à jour le %s · Santéo (CAPI FINANCE), courtier en assurance santé depuis 1992. '
                    "Ces informations sont générales : seuls les textes officiels et les documents de votre contrat font foi.</p>\n</article>\n"
                    % (corps, date_fr(maj))) + CTA + ('\n<section><h2>À lire aussi</h2><ul class="liste">%s</ul></section>' % autres if autres else "")
@@ -274,15 +275,23 @@ else:
                 {"@type": "ListItem", "position": 3, "name": a["h1"], "item": url}]}]
             + ([{"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q["q"], "acceptedAnswer": {"@type": "Answer", "text": q["r"]}}
                                                     for q in a["faq"]]}] if a.get("faq") else [])}
-        fil = '<a href="../../">Accueil</a> › <a href="../">Guide de la mutuelle</a> › <span>%s</span>' % a["h1"]
+        chap = next(c for c in CHAPITRES if c["id"] == a["chapitre"])
+        fil = ('<a href="../../">Accueil</a> › <a href="../">Guide de la mutuelle</a> › <a href="../#%s">%s</a> › <span>%s</span>'
+               % (chap["id"], chap["titre"], a["h1"]))
         os.makedirs(os.path.join(SITE, "guide", a["slug"]), exist_ok=True)
         ecrire("guide/%s/index.html" % a["slug"], page_guide("../../", url, a["titre_page"], a["description"], fil, contenu, ld, "article"))
     if articles:
-        liste = "".join('<li><a href="%s/"><strong>%s</strong><span>%s</span></a></li>' % (a["slug"], a["h1"], a["description"]) for a in articles)
+        liste = "".join('<section class="chapitre" id="%s"><h2>%s</h2><p class="intro-chap">%s</p><ul class="liste">%s</ul></section>\n' % (
+            c["id"], c["titre"], c["intro"], "".join('<li><a href="%s/"><strong>%s</strong><span>%s</span></a></li>' % (a["slug"], a["h1"], a["description"])
+                                                   for a in articles if a["chapitre"] == c["id"]))
+                        for c in CHAPITRES if any(a["chapitre"] == c["id"] for a in articles))
         g_titre = "Guide de la mutuelle santé : comprendre et choisir | Santéo"
         g_desc = "Contrat responsable, Complémentaire santé solidaire, surcomplémentaire, remboursements : les explications simples de Santéo, courtier depuis 1992."
         contenu = ('<h1>Guide de la mutuelle santé</h1>\n<p class="chapo">Des explications simples pour comprendre votre complémentaire santé et '
-                   'choisir sans vous tromper, rédigées par Santéo, courtier en assurance santé depuis 1992.</p>\n<ul class="liste">%s</ul>\n' % liste) + CTA
+                   'choisir sans vous tromper, rédigées par Santéo, courtier en assurance santé depuis 1992.</p>\n%s%s' % (
+                       '<nav class="chapitres" aria-label="Chapitres du guide"><ul>%s</ul></nav>\n' % "".join(
+                           '<li><a href="#%s">%s</a></li>' % (c["id"], c["titre"]) for c in CHAPITRES if any(a["chapitre"] == c["id"] for a in articles)),
+                       liste)) + CTA
         ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Guide de la mutuelle santé", "url": ADRESSE + "guide/",
               "inLanguage": "fr-FR", "publisher": editeur,
               "hasPart": [{"@type": "Article", "headline": a["h1"], "url": ADRESSE + "guide/" + a["slug"] + "/"} for a in articles]}

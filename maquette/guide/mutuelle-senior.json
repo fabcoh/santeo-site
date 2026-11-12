@@ -1,0 +1,33 @@
+{
+ "slug": "mutuelle-senior",
+ "chapitre": "situation",
+ "lien": "Mutuelle senior et retraite",
+ "ordre": 18,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Mutuelle senior : loi Évin, retraite et garanties utiles",
+ "description": "Mutuelle à la retraite : maintien loi Évin et tarif encadré 3 ans, optique, dentaire, audition, hospitalisation, contrat individuel et C2S.",
+ "h1": "Mutuelle senior : bien se couvrir à la retraite",
+ "faq": [
+  {
+   "q": "Puis-je garder ma mutuelle d'entreprise à la retraite ?",
+   "r": "Oui, grâce à la loi Évin. L'organisme vous fait une proposition au plus tard 2 mois après la fin de votre contrat de travail, et vous devez la demander dans les 6 mois. Vous payez alors toute la cotisation."
+  },
+  {
+   "q": "Combien coûte le maintien de la mutuelle avec la loi Évin ?",
+   "r": "La 1re année, le tarif est égal au tarif global des salariés actifs. Il peut ensuite le dépasser de 25 % au plus la 2e année et de 50 % au plus la 3e année, puis il devient libre."
+  },
+  {
+   "q": "Mon état de santé peut-il augmenter le prix de ma mutuelle ?",
+   "r": "Pas avec un contrat responsable et solidaire : l'organisme ne peut ni vous demander de questionnaire de santé ni fixer le tarif selon votre état de santé. Le tarif peut en revanche dépendre de votre âge."
+  },
+  {
+   "q": "Les aides auditives sont-elles remboursées en totalité ?",
+   "r": "Celles de classe 1, du panier 100 % Santé, peuvent l'être sans reste à charge avec un contrat responsable. Pour celles de classe 2, une partie peut rester à votre charge selon votre contrat."
+  },
+  {
+   "q": "Quelle aide si ma retraite est modeste ?",
+   "r": "La Complémentaire santé solidaire, gratuite ou payante selon vos ressources. Dans sa version payante, elle coûte 25 € par mois de 60 à 69 ans et 30 € par mois à partir de 70 ans."
+  }
+ ]
+}
