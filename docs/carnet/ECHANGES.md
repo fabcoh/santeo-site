@@ -545,6 +545,13 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Carte d'offre (Fabrice, 12/11, avec une capture d'une offre sur PC ; ses mots)** : « il faudrait que cette offre
+  m'intéresse soit placée plutôt au milieu, tu vois, ou vers la droite, dans le coin droit […] détail et cette offre
+  m'intéresserait placée sur la même ligne […] que la ligne ne garde pas cet aspect ce carré. Ça s'agrandit au fur et à
+  mesure qu'il coche sur des options ». Fait (demande de fusion « carte-offre ») : les deux boutons sur une ligne, en bas à
+  droite ; nom et prix à gauche, garanties à droite ; repère de contrôle à gauche de la ligne des boutons ; sur PC, une option
+  cochée ajoute une seule ligne (« Verres complexes 200 € »). Hauteur sur PC : 122 px au lieu de 188 au départ ; téléphone
+  inchangé, sauf les boutons alignés à droite.
 - **Décision de Fabrice (12/11, ses mots, avec une capture du bas de l'accueil sur téléphone)** : « Je ne veux pas tout
   ses titres / Tu fois les intégrer dans guide de la mutuelle ». Le bas de l'accueil ne montre plus les titres des
   articles : il garde seulement le lien « Guide de la mutuelle » du pied de page ; les titres restent dans le sommaire du

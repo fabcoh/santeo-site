@@ -267,7 +267,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .offer{background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:.8rem 1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem}
 .o-left{display:grid;grid-template-columns:1fr auto;gap:.15rem .6rem;align-items:baseline;min-width:0}
 .o-name{font-family:var(--f-display);font-weight:700;font-size:1.1rem}
-.o-real{grid-column:1 / -1;justify-self:start;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
+.o-real{margin-right:auto;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
 .o-price{font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .o-price small{font-weight:400;font-size:.8rem;color:var(--muted)}
 .o-gar{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:.3rem .5rem;align-items:start}
@@ -277,8 +277,11 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-col .pc{font-weight:700;font-size:.9rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .o-col .sub{display:flex;flex-direction:column;margin-top:.25rem;font-size:.72rem;color:var(--muted)}
 .o-col .sub b{color:var(--fg);font-size:.84rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-.o-actions{display:flex;flex-wrap:wrap;gap:.4rem}
-.o-actions button{font-size:.8rem;padding:.3rem .65rem}
+/* Carte d'offre (Fabrice, 12/11/2026) : « Détails » et « Cette offre m'intéresse » sur la même ligne, en bas à droite ;
+   la carte reste basse et ne grandit que quand le visiteur coche des options (lignes en plus sous les garanties). */
+.o-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.4rem .6rem}
+.o-btns{display:flex;flex-wrap:nowrap;gap:.4rem}
+.o-actions button{font-size:.8rem;padding:.3rem .65rem;white-space:nowrap}
 .det-pop{border:0;border-radius:16px;padding:0;width:min(36rem,calc(100vw - 2rem));max-height:min(88vh,48rem);background:var(--surface);color:var(--fg);box-shadow:0 24px 60px rgba(8,30,45,.35);overflow:hidden}
 .det-pop[open]{display:flex;flex-direction:column;animation:pop-in .16s ease-out}
 .det-pop::backdrop{background:rgba(8,30,45,.45)}
@@ -307,16 +310,16 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .chosen{background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
 .empty{padding:1rem;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
 @media (min-width:700px){
-  .offer{grid-template-columns:13rem minmax(0,1fr);column-gap:1.2rem}
+  .offer{grid-template-columns:9.5rem minmax(0,1fr);column-gap:1.2rem;row-gap:.45rem;padding:.7rem 1rem .65rem}
   .o-left{grid-column:1;grid-row:1;grid-template-columns:1fr;align-content:start}
   .o-left .o-price{text-align:left}
-  .o-actions{grid-column:1;grid-row:2;align-self:end}
-  .o-gar{grid-column:2;grid-row:1 / span 2;border-left:1px solid var(--line);padding-left:1.1rem}
+  .o-gar{grid-column:2;grid-row:1;border-left:1px solid var(--line);padding-left:1.1rem}
+  .o-actions{grid-column:1 / -1;grid-row:2}
   .o-col .lab{font-size:.85rem;color:var(--fg);font-weight:600}
   .o-col .lab .full{display:inline}
   .o-col .lab .short{display:none}
   .o-col .pc{font-size:1rem}
-  .o-col .sub{font-size:.8rem}
+  .o-col .sub{font-size:.8rem;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:0 .35rem;margin-top:.15rem}  /* « Verres complexes 200 € » sur une ligne : la carte grandit moins vite */
   .o-col .sub b{font-size:.92rem}
 }
 }
@@ -1184,11 +1187,11 @@ function upd(){
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
     o.setAttribute("aria-label","Option "+(i+1));
     const cols=postesAffiches();
-    o.innerHTML='<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+
-      '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
+    o.innerHTML='<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div></div>'+
       '<div class="o-gar" style="--n:'+cols.length+'">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="lab"><span class="short">'+p.sh+'</span><span class="full">'+p.nm+'</span></span>'+
         '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</div>'}).join("")+'</div>'+
-      '<div class="o-actions"><button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog">(+) Détails</button><button type="button" class="btn" data-c="'+i+'">Cette offre m\'intéresse</button></div>';
+      '<div class="o-actions"><div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
+      '<span class="o-btns"><button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog">(+) Détails</button><button type="button" class="btn" data-c="'+i+'">Cette offre m\'intéresse</button></span></div>';
     box.appendChild(o);
   });
   box.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>ouvrirDetail(+b.dataset.d));
