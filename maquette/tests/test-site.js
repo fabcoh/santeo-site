@@ -81,6 +81,7 @@ async function remplir(p) {
   doit(guide.length >= 6, 'guide : au moins 6 articles (' + guide.length + ')');
   doit(/<a href="guide\/">Guide de la mutuelle<\/a>/.test(idx), 'accueil : lien « Guide de la mutuelle » absent du pied de page');
   doit(!/guide-liens|<a href="guide\/[a-z0-9-]+\/">/.test(idx), 'accueil : les titres des articles ne doivent pas être sur l\'accueil (ils sont dans le guide)');
+  doit(idx.includes('<img class="couple" src="images/couple.webp"') && fs.existsSync(d + '/images/couple.webp'), 'accueil : photo du couple absente (en-tête)');
   { const chap = JSON.parse(fs.readFileSync(S + '/chapitres.json', 'utf8')).chapitres.map(c => c.id), som = fs.readFileSync(d + '/guide/index.html', 'utf8');
     for (const a of guide) doit(chap.includes(a.chapitre), a.slug + ' : chapitre absent ou inconnu (' + a.chapitre + ')');
     for (const c of chap) if (guide.some(a => a.chapitre === c)) doit(som.includes('<section class="chapitre" id="' + c + '">'), 'sommaire du guide : chapitre absent ' + c); }

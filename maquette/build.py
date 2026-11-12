@@ -7,7 +7,7 @@
 # Site de test : caché aux moteurs de recherche, avec un bandeau « version de test ». En ligne : visible, sans bandeau.
 # L'adresse du CRM qui reçoit les demandes et le repli éventuel sont dans maquette/reglages-site.json
 # (--envoi <adresse> et --repli <mode> les remplacent, pour les essais).
-import glob, json, os, re, shutil, sys, datetime
+import base64, glob, json, os, re, shutil, sys, datetime
 S, R = sys.argv[1], sys.argv[2]
 def option(nom, defaut=None): return sys.argv[sys.argv.index(nom) + 1] if nom in sys.argv else defaut
 SITE = option("--site")
@@ -69,6 +69,8 @@ out = out.replace("__LOGOS__", "".join('<span class="logo-box" data-co="%s"><img
 out = out.replace("__SANTEO_LOGO__", open(S + "/logos/santeo.b64").read().strip())
 out = out.replace("__SANTEO_MASQUE__", open(S + "/logos/santeo-masque.b64").read().strip())
 out = out.replace("__MASCOTTE__", open(S + "/logos/mascotte.b64").read().strip())
+# Photo du couple en haut à droite, sous l'oiseau (Fabrice, 12/11/2026) : fichier à part sur le site, intégrée dans la maquette (page seule)
+out = out.replace("__COUPLE__", "images/couple.webp" if SITE else "data:image/webp;base64," + base64.b64encode(open(S + "/images-site/couple.webp", "rb").read()).decode())
 out = out.replace("__COMETE_D__", open(S + "/logos/comete-trajet.txt").read().strip())
 for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__", ENVOI if SITE else ""), ("__REPLI__", REPLI if SITE else ""),
                        ("__TCHAT_MODE__", TCHAT if SITE else "aucun"), ("__TCHAT_CRM__", TCHAT_CRM if SITE else ""),
@@ -134,6 +136,7 @@ else:
     # cette adresse est gardée (logo Santéo actuel, fond blanc, aux proportions de l'emplacement du mail : 166 x 68).
     os.makedirs(os.path.join(SITE, "images"), exist_ok=True)
     shutil.copyfile(S + "/images-site/logo-mail.png", os.path.join(SITE, "images", "Logo_santeo_pt.png"))
+    shutil.copyfile(S + "/images-site/couple.webp", os.path.join(SITE, "images", "couple.webp"))
     # Petites pages de renvoi : /mentions-legales (citée dans les devis du comparateur) et toute ancienne adresse (404)
     def renvoi(cible, titre, texte, robots, canonique=False):
         # canonique : l'adresse de destination est aussi donnée à Google comme adresse officielle (anciennes pages déplacées)
