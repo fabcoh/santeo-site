@@ -1,0 +1,33 @@
+{
+ "slug": "dispense-mutuelle-entreprise",
+ "chapitre": "jeunes",
+ "lien": "Dispense de mutuelle d'entreprise",
+ "ordre": 28,
+ "publie": "2026-11-12",
+ "maj": "2026-11-12",
+ "titre_page": "Dispense mutuelle obligatoire : CDD, apprenti, modèle",
+ "description": "Dispense de mutuelle d'entreprise : cas de dispense en CDD, pour un apprenti ou un alternant, demande écrite, modèle et ce que l'on perd.",
+ "h1": "Dispense de mutuelle d'entreprise : CDD, apprenti, premier emploi",
+ "faq": [
+  {
+   "q": "Mutuelle obligatoire en CDD : peut-on la refuser ?",
+   "r": "Oui, dans certains cas. En CDD de moins de 3 mois, avec une mutuelle individuelle responsable, la dispense est de droit et donne droit au versement santé. En CDD de moins de 12 mois, elle est possible sans autre mutuelle si l'acte de l'entreprise le prévoit."
+  },
+  {
+   "q": "Un apprenti doit-il prendre la mutuelle de l'entreprise ?",
+   "r": "En principe oui, comme les autres salariés. Il peut demander une dispense s'il est déjà couvert, par exemple par la mutuelle d'entreprise d'un parent, s'il bénéficie de la Complémentaire santé solidaire, ou dans les cas prévus par l'acte de l'entreprise."
+  },
+  {
+   "q": "Je suis encore sur la mutuelle de mes parents : puis-je demander une dispense ?",
+   "r": "Oui, si c'est la mutuelle d'entreprise obligatoire de l'un de vos parents et qu'elle vous couvre comme ayant droit. Joignez une attestation à votre demande écrite. Pour un contrat individuel de vos parents, renseignez-vous auprès de votre employeur."
+  },
+  {
+   "q": "Faut-il un justificatif pour une dispense de mutuelle ?",
+   "r": "Oui, en général : attestation de l'autre mutuelle, contrat individuel avec sa date d'échéance ou attestation de Complémentaire santé solidaire. Certains cas prévus par l'acte de l'entreprise, comme le CDD de moins de 12 mois, n'exigent pas d'autre couverture."
+  },
+  {
+   "q": "Mon employeur peut-il refuser ma dispense ?",
+   "r": "Pas si vous êtes dans un cas prévu par la loi ou par l'acte de l'entreprise : Service-Public précise que l'employeur est alors tenu de l'accepter."
+  }
+ ]
+}

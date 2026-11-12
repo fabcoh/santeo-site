@@ -1,0 +1,33 @@
+{
+ "slug": "mutuelle-etudiant",
+ "chapitre": "jeunes",
+ "lien": "Mutuelle étudiante",
+ "ordre": 27,
+ "publie": "2026-11-12",
+ "maj": "2026-11-12",
+ "titre_page": "Mutuelle étudiante : obligatoire ou pas, prix et aides",
+ "description": "Mutuelle étudiante : pas obligatoire, fin de la sécurité sociale étudiante en 2019, mutuelle des parents, C2S et ce qui fait varier le prix.",
+ "h1": "Mutuelle étudiante : est-elle obligatoire et combien coûte-t-elle ?",
+ "faq": [
+  {
+   "q": "La mutuelle étudiante est-elle obligatoire ?",
+   "r": "Non. Un étudiant sans emploi n'est pas obligé d'avoir une complémentaire santé. Si vous êtes salarié, l'adhésion à la mutuelle de votre entreprise est en principe obligatoire, sauf dispense."
+  },
+  {
+   "q": "Quel est le prix d'une mutuelle étudiante ?",
+   "r": "Il n'y a pas de tarif unique : le prix dépend notamment des garanties, de votre âge et de votre lieu d'habitation. Comparez à garanties égales. La C2S avec participation, si vous y avez droit, coûte 8 € par mois jusqu'à 29 ans."
+  },
+  {
+   "q": "Jusqu'à quel âge puis-je rester sur la mutuelle de mes parents ?",
+   "r": "C'est le contrat de vos parents qui le fixe, avec ses conditions, par exemple la poursuite d'études. Demandez la notice et la date exacte de fin de votre couverture."
+  },
+  {
+   "q": "Un étudiant boursier a-t-il droit à une mutuelle gratuite ?",
+   "r": "La bourse ne donne pas d'accès automatique à la C2S. Celle-ci est gratuite si les ressources de votre foyer sont sous un plafond. Si vous percevez l'allocation spécifique annuelle du Crous, vous la demandez seul, en votre nom."
+  },
+  {
+   "q": "Faut-il encore payer la sécurité sociale étudiante ?",
+   "r": "Non. La cotisation a été supprimée à la rentrée 2018, et le régime étudiant a disparu le 31 août 2019. Tous les étudiants relèvent du régime obligatoire d'Assurance maladie."
+  }
+ ]
+}
