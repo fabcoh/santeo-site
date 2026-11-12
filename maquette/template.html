@@ -400,6 +400,14 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 
 /* ---------- Tchat avec Antony (bulle en bas à droite, PC et téléphone) ---------- */
 :root{--tchat-fond:#eef4f8}
+/* Ciel de l'en-tête (Fabrice, 12/11/2026 : « continu le ciel sur toute la partie pour harmoniser en estompant vers le titre ») :
+   bande de ciel en haut de la page, de la couleur du ciel de la photo, qui s'estompe vers le titre (à gauche) et vers le bas. */
+:root{--ciel:#d6ecfa;--ciel-clair:#eef7fd}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ciel:#15384a;--ciel-clair:#102833}}
+:root[data-theme="dark"]{--ciel:#15384a;--ciel-clair:#102833}
+body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg) 100%) top / 100% var(--ciel-h,230px) no-repeat,
+  linear-gradient(to right,var(--bg) 0,var(--bg) 12%,var(--ciel-clair) 38%,var(--ciel) 70%,var(--ciel) 100%) top / 100% var(--ciel-h,230px) no-repeat,var(--bg)}
+@media (max-width:699px){body{--ciel-h:150px}}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--tchat-fond:#0b1a22}}
 :root[data-theme="dark"]{--tchat-fond:#0b1a22}
 .tchat-voile{position:fixed;inset:0;background:rgba(5,20,30,.5);display:none}

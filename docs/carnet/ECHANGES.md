@@ -545,6 +545,10 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Ciel de l'en-tête (Fabrice, 12/11, ses mots, avec une capture)** : « continu le ciel sur toute la partie pour
+  harmoniser en estempant vers le titre ». Fait (demande de fusion « ciel-entete ») : bande de ciel en haut de la page, de
+  la couleur du ciel de la photo, qui s'estompe vers le titre (à gauche) et vers le bas ; bords haut et gauche de la photo
+  plus fondus. Thème sombre : bande bleu nuit.
 - **Photo du couple (Fabrice, 12/11, ses mots, avec la photo et une maquette)** : « tu vas ajouter cette photo au site sans
   changer le site tu intégres que la partie du couple avec l'oiseu ». Fait (demande de fusion « photo-couple ») : photo
   recadrée (têtes et épaules), bords gauche et bas fondus en transparence, en haut à droite de l'en-tête sous l'oiseau déjà
