@@ -7,6 +7,10 @@ et les demandes de devis arrivent directement dans le CRM Santéo. Le comparateu
 Avant tout travail, lire le carnet `docs/carnet/ECHANGES.md` : décisions prises, points ouverts,
 demandes aux autres conversations.
 
+Puis lire le **bureau commun** de toutes les conversations Claude de Santéo, le dépôt privé `fabcoh/santeo-bureau`
+(`REGLES.md`, `ANNUAIRE.md`, `PLAN.md`, `FILE-MANUS.md`, `COMPETENCES.md`) : ses règles s'appliquent depuis le 12/11/2026
+et passent avant la section « Les autres conversations » ci-dessous quand elles diffèrent.
+
 ## Les règles de Fabrice (Vos mots, reprises de sa passation)
 
 1. **Une seule question par message**, en français simple, sans jargon. Jamais une liste de choix ou
@@ -38,10 +42,12 @@ Tout le monde peut le lire, concurrents compris. Donc, en plus des règles 4 et 
 
 ## Les autres conversations
 
-- Fabrice ne parle qu'à la **conversation pilote** (« CRM WhatsApp — relais »). S'il parle directement
-  à cette conversation, on lui répond normalement, une question à la fois.
-- **Cette conversation n'écrit jamais à Manus**, même avec l'outil ou la clé. Une demande pour Manus
-  s'écrit dans le carnet, au format :
+- **Depuis le 12/11/2026 (bureau commun)** : Fabrice écrit à n'importe quelle conversation. Si le sujet est à une
+  autre (voir `ANNUAIRE.md` de `fabcoh/santeo-bureau`), on lui transmet soi-même par `send_message` et on répond à
+  Fabrice « Transmis à … ». Les demandes pour Manus se déposent dans `FILE-MANUS.md` du bureau (gabarit du fichier),
+  puis on prévient la conversation qui envoie à Manus. Chaque livraison vérifiée s'écrit dans `PLAN.md`.
+- **Cette conversation n'écrit jamais à Manus**, même avec l'outil ou la clé. Avant le 12/11/2026, une demande pour
+  Manus s'écrivait dans le carnet, au format :
 
   ```
   ### JJ/MM/AAAA — de Claude site à la conversation pilote — demande pour Manus
