@@ -66,7 +66,9 @@ out = t.replace("__MOTEUR__", moteur.replace("</", "<\\/")).replace("__TARIFS__"
 logos = json.load(open(S + "/logos/logos.json"))
 out = out.replace("__CATALOGUE__", js(CATALOGUE)).replace("__APRIL__", js(dict(APRIL_DATA, url=APRIL_URL if SITE else "")))
 out = out.replace("__LOGOS__", "".join('<span class="logo-box" data-co="%s"><img src="%s" alt="%s"></span>' % (l["nom"], l["src"], l["nom"]) for l in logos))
-out = out.replace("__SANTEO_LOGO__", open(S + "/logos/santeo.b64").read().strip())
+# Logo Santéo (sans fond blanc depuis le 13/11/2026) : fichier à part sur le site (mis en cache, page plus légère), intégré dans la maquette
+LOGO_B64 = open(S + "/logos/santeo.b64").read().strip()
+out = out.replace("__SANTEO_LOGO__", "images/santeo-logo.webp" if SITE else LOGO_B64)
 out = out.replace("__SANTEO_MASQUE__", open(S + "/logos/santeo-masque.b64").read().strip())
 mascotte = json.load(open(S + "/logos/mascotte.json"))     # calques de la mascotte animée et points d'articulation
 for cle in ("corps", "aile_g", "aile_d", "etoile", "pivot_g", "pivot_d", "pivot_etoile"):
@@ -141,6 +143,8 @@ else:
     os.makedirs(os.path.join(SITE, "images"), exist_ok=True)
     shutil.copyfile(S + "/images-site/logo-mail.png", os.path.join(SITE, "images", "Logo_santeo_pt.png"))
     shutil.copyfile(S + "/images-site/couple.webp", os.path.join(SITE, "images", "couple.webp"))
+    assert LOGO_B64.startswith("data:image/webp;base64,"), "logo : WebP attendu"
+    open(os.path.join(SITE, "images", "santeo-logo.webp"), "wb").write(base64.b64decode(LOGO_B64.split(",", 1)[1]))
     # Petites pages de renvoi : /mentions-legales (citée dans les devis du comparateur) et toute ancienne adresse (404)
     def renvoi(cible, titre, texte, robots, canonique=False):
         # canonique : l'adresse de destination est aussi donnée à Google comme adresse officielle (anciennes pages déplacées)

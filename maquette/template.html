@@ -82,7 +82,10 @@ header.top>*:not(.couple){position:relative;z-index:1}
 @keyframes m-aile-g{from{transform:rotate(5deg)}to{transform:rotate(-24deg) scale(.95)}}
 @keyframes m-aile-d{from{transform:rotate(-6deg)}to{transform:rotate(20deg) scale(.95)}}
 @keyframes m-etoile{from{transform:scale(.5) rotate(-25deg);opacity:.3}to{transform:scale(1.2) rotate(20deg);opacity:1}}
-.brand-logo{display:block;height:64px;width:auto;max-width:100%;background:var(--logo-bg);border-radius:10px;align-self:flex-start}
+/* Logo sans fond blanc, fondu dans le ciel (Fabrice, 13/11/2026) ; en thème sombre, il garde son cadre blanc pour rester lisible */
+.brand-logo{display:block;height:64px;width:auto;max-width:100%;background:transparent;border-radius:10px;align-self:flex-start}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand-logo{background:var(--logo-bg)}}
+:root[data-theme="dark"] .brand-logo{background:var(--logo-bg)}
 @media (min-width:700px){.brand-logo{height:84px}}
 /* Comète lumineuse qui parcourt la courbe du logo (passe derrière les lettres) */
 .brand-wrap{position:relative;display:block;align-self:flex-start;line-height:0;max-width:100%}
@@ -423,7 +426,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ciel:#15384a;--ciel-clair:#102833}}
 :root[data-theme="dark"]{--ciel:#15384a;--ciel-clair:#102833}
 body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg) 100%) top / 100% var(--ciel-h,230px) no-repeat,
-  linear-gradient(to right,var(--bg) 0,var(--bg) 12%,var(--ciel-clair) 38%,var(--ciel) 70%,var(--ciel) 100%) top / 100% var(--ciel-h,230px) no-repeat,var(--bg)}
+  linear-gradient(to right,var(--ciel-clair) 0,var(--ciel-clair) 8%,var(--ciel) 72%,var(--ciel) 100%) top / 100% var(--ciel-h,230px) no-repeat,var(--bg)}
 @media (max-width:699px){body{--ciel-h:150px}}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--tchat-fond:#0b1a22}}
 :root[data-theme="dark"]{--tchat-fond:#0b1a22}
