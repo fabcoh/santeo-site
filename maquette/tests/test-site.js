@@ -401,6 +401,9 @@ async function remplir(p) {
       doit(h.includes('id="tchat"') && h.includes('href="https://wa.me/' + num), f + ' : tchat ou WhatsApp absent');
     }
     doit(n >= 30 && fs.existsSync(d + '/images/oiseau.webp'), 'guide : ' + n + ' articles vérifiés, avatar ' + fs.existsSync(d + '/images/oiseau.webp'));
+    // Comparateur -> simulateur, et simulateur -> tarificateur (Fabrice, 13/11/2026)
+    doit(/<p class="lien-simu">[^<]*<a href="simulateur-remboursement\/">Accéder au simulateur de remboursement Sécu<\/a>/.test(fs.readFileSync(d + '/index.html', 'utf8')), 'accueil : accès au simulateur absent');
+    doit(/<aside class="s-acces">.*?<a class="btn" href="\.\.\/">Accéder au tarificateur<\/a>/s.test(fs.readFileSync(d + '/simulateur-remboursement/index.html', 'utf8')), 'simulateur : accès au tarificateur absent');
   }
   // Simulateur de remboursement (/simulateur-remboursement/) : calcul vérifié sur des cas faits à la main, puis la page sur PC et téléphone
   {

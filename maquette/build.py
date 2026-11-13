@@ -86,6 +86,7 @@ for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__
     out = out.replace(repere, valeur.replace('"', ""))
 if SITE is None:
     out = out.replace('<a href="guide/">Guide de la mutuelle</a> · ', '')   # la maquette (page seule) n'a pas de guide
+    out = out.replace('<a href="simulateur-remboursement/">', '<a href="https://www.santeo.net/simulateur-remboursement/">')   # ni de simulateur
     open(S + "/comparateur-santeo.html", "w", encoding="utf-8").write(out)
     print("taille", len(out.encode()), "octets")
 else:
