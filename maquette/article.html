@@ -142,7 +142,18 @@ tr:last-child td{border-bottom:0}
 .s-leg i{display:inline-block;width:.85rem;height:.85rem;border-radius:3px;margin-right:.35rem;vertical-align:-.1rem}
 @media (max-width:599px){.simu{grid-template-columns:1fr;gap:.35rem}.simu label{margin-top:.35rem}}
 @media (max-width:599px){body{font-size:16px}h1{font-size:1.6rem}h2{font-size:1.2rem}.tete .logo img{height:44px}.btn{padding:.5rem .9rem;font-size:.9rem}}
+/* Encart vers le comparateur et boutons WhatsApp (Fabrice, 13/11/2026, idée d'Antony) */
+.encart-tarif{margin:1.6rem 0;padding:1rem 1.1rem;border-radius:14px;background:var(--accent-soft);border:1px solid var(--line)}
+.encart-tarif p{margin:0 0 .7rem}
+.s-acces{margin:1rem 0 1.6rem;padding:1rem 1.1rem;border-radius:14px;background:var(--accent-soft);border:1px solid var(--line)}
+.s-acces p{margin:0 0 .7rem}
+.cta-btns{display:flex;flex-wrap:wrap;gap:.5rem .7rem;align-items:center;margin:0}
+.btn-wa{display:inline-flex;align-items:center;gap:.45rem;background:#128c4a;color:#fff;font-weight:700;text-decoration:none;border-radius:999px;padding:.55rem 1.1rem;font-size:.95rem}
+.btn-wa:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn-wa .wa-ico{width:1.15rem;height:1.15rem;flex:none}
+@media (max-width:599px){.btn-wa{padding:.5rem .9rem;font-size:.9rem}}
 __COOKIES_CSS__
+__TCHAT_CSS__
 </style>
 </head>
 <body>
@@ -155,9 +166,11 @@ __CONTENU__
   <footer class="pied"><a href="__RACINE__">Comparateur</a> · <a href="__RACINE__guide/">Guide de la mutuelle</a> · <a href="__RACINE__simulateur-remboursement/">Simulateur de remboursement</a> · <a href="__RACINE__#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
 </div>
 __COOKIES_HTML__
+__TCHAT_HTML__
 <script>
 const $=id=>document.getElementById(id);
 __COOKIES_JS__
+__TCHAT_JS__
 </script>
 </body>
 </html>

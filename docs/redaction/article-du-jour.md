@@ -39,6 +39,10 @@ Ce fichier est la procédure. Il ne dépend d'aucune conversation : une conversa
 - **Longueur** : 900 à 1 400 mots hors tableaux et sources ; 4 à 7 sections ; 4 à 6 questions fréquentes. Une section
   « Ce qui a changé » seulement si une règle a vraiment changé.
 - **Liens** : 2 à 4 liens vers des articles du guide (`../<slug>/`), jamais dans un titre, la FAQ ou les sources.
+- **Vers le comparateur et Antony** (Fabrice, 13/11/2026, idée d'Antony) : dans le texte, au moins une phrase avec un lien vers
+  le comparateur (`<a href="../../">…</a>`, par exemple « pour connaître le prix de votre mutuelle, comparez les offres »),
+  et de temps en temps une invitation à poser sa question à Antony. La construction ajoute d'elle-même, sur chaque article,
+  un encart « Combien coûterait votre mutuelle ? » (comparateur et WhatsApp), le bouton WhatsApp en bas de page et le tchat.
 - **Dépôt public** : aucun chiffre de visites ni de recherches, aucun nom, numéro ou adresse de client.
 
 ## Format

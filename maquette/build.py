@@ -7,7 +7,7 @@
 # Site de test : caché aux moteurs de recherche, avec un bandeau « version de test ». En ligne : visible, sans bandeau.
 # L'adresse du CRM qui reçoit les demandes et le repli éventuel sont dans maquette/reglages-site.json
 # (--envoi <adresse> et --repli <mode> les remplacent, pour les essais).
-import base64, glob, json, os, re, shutil, sys, datetime
+import base64, glob, json, os, re, shutil, sys, datetime, urllib.parse
 S, R = sys.argv[1], sys.argv[2]
 def option(nom, defaut=None): return sys.argv[sys.argv.index(nom) + 1] if nom in sys.argv else defaut
 SITE = option("--site")
@@ -86,6 +86,7 @@ for repere, valeur in (("__MODE__", "site" if SITE else "maquette"), ("__ENVOI__
     out = out.replace(repere, valeur.replace('"', ""))
 if SITE is None:
     out = out.replace('<a href="guide/">Guide de la mutuelle</a> · ', '')   # la maquette (page seule) n'a pas de guide
+    out = out.replace('<a href="simulateur-remboursement/">', '<a href="https://www.santeo.net/simulateur-remboursement/">')   # ni de simulateur
     open(S + "/comparateur-santeo.html", "w", encoding="utf-8").write(out)
     print("taille", len(out.encode()), "octets")
 else:
@@ -143,6 +144,7 @@ else:
     os.makedirs(os.path.join(SITE, "images"), exist_ok=True)
     shutil.copyfile(S + "/images-site/logo-mail.png", os.path.join(SITE, "images", "Logo_santeo_pt.png"))
     shutil.copyfile(S + "/images-site/couple.webp", os.path.join(SITE, "images", "couple.webp"))
+    shutil.copyfile(S + "/images-site/oiseau.webp", os.path.join(SITE, "images", "oiseau.webp"))   # avatar d'Antony (pages du guide)
     assert LOGO_B64.startswith("data:image/webp;base64,"), "logo : WebP attendu"
     open(os.path.join(SITE, "images", "santeo-logo.webp"), "wb").write(base64.b64decode(LOGO_B64.split(",", 1)[1]))
     # Petites pages de renvoi : /mentions-legales (citée dans les devis du comparateur) et toute ancienne adresse (404)
@@ -165,6 +167,22 @@ else:
     ck_css = bloc("/* debut-css-cookies */", "/* fin-css-cookies */")
     ck_html = bloc("<!-- debut-html-cookies -->", "<!-- fin-html-cookies -->")
     ck_js = bloc("/* debut-js-cookies */", "/* fin-js-cookies */").replace("__GOOGLE__", GOOGLE)
+    # Tchat d'Antony et WhatsApp sur chaque page du guide (Fabrice, 13/11/2026, idée d'Antony : « dans chaque article […] une
+    # phrase qui va le ramener sur le comparateur et une icône WhatsApp […] sur chaque blog, tu as un chat ») : mêmes blocs que
+    # l'accueil ; sans comparateur sur la page, le tchat n'envoie pas d'âge ni d'offre, et l'avatar est l'oiseau en une image.
+    tc_css = bloc("/* debut-css-tchat */", "/* fin-css-tchat */")
+    tc_html = bloc("<!-- debut-html-tchat -->", "<!-- fin-html-tchat -->")
+    tc_js = bloc("/* debut-js-tchat */", "/* fin-js-tchat */").replace("__TCHAT_MODE__", TCHAT.replace('"', "")).replace("__TCHAT_CRM__", TCHAT_CRM.replace('"', ""))
+    tchat_js = ('(function(){\nconst TCHAT_REGLAGES="' + REGLAGES.replace('"', "") + '";\n'
+                'let REGLAGE_TCHAT=' + ("true" if CATALOGUE.get("tchat_defaut", True) is not False else "false") + ';\n'
+                'try{const r=JSON.parse(localStorage.getItem("santeo-reglages")||"null");if(r&&r.recu&&Date.now()-r.recu<30*864e5&&r.reglages&&typeof r.reglages.tchat==="boolean")REGLAGE_TCHAT=r.reglages.tchat}catch(e){}\n'
+                'const provenance=()=>"Site Santéo – Guide";\nwindow.AVATAR_OISEAU="__RACINE__images/oiseau.webp";\n'
+                + tc_js +
+                'if(TCHAT_REGLAGES)fetch(TCHAT_REGLAGES,{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(r=>{if(r&&r.ok===true&&typeof r.tchat==="boolean"&&window.tchatReglage)window.tchatReglage(r.tchat)}).catch(()=>{});\n})();')
+    WA_NUMERO = re.search(r'const WA_NUMERO="(\d+)"', t).group(1)
+    WA_ICO = re.search(r'<svg class="wa-ico".*?</svg>', t, re.S).group(0)
+    def wa(sujet):
+        return "https://wa.me/%s?text=%s" % (WA_NUMERO, urllib.parse.quote("Bonjour Antony, j'ai une question (page « %s » de santeo.net) : " % sujet))
     articles = []
     for f in sorted(glob.glob(S + "/guide/*.json")):
         a = json.load(open(f, encoding="utf-8"))
@@ -175,12 +193,22 @@ else:
     MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
     def date_fr(iso): a, m, j = iso.split("-"); return "%d %s %s" % (int(j), MOIS[int(m) - 1], a)
     editeur = {"@type": "Organization", "name": "Santéo (CAPI FINANCE)", "url": ADRESSE, "logo": {"@type": "ImageObject", "url": ADRESSE + "icone-180.png"}}
-    CTA = ('<aside class="cta"><p>Comparez les mutuelles santé en quelques secondes : votre date de naissance et votre code postal suffisent.</p>'
-           '<a class="btn" href="__RACINE__">Comparer les mutuelles</a></aside>')
+    def cta(sujet):
+        return ('<aside class="cta"><p>Comparez les mutuelles santé en quelques secondes : votre date de naissance et votre code postal suffisent.</p>'
+                '<p class="cta-btns"><a class="btn" href="__RACINE__">Comparer les mutuelles</a> <a class="btn-wa" href="%s" target="_blank" rel="noopener">%s'
+                '<span>Poser une question sur WhatsApp</span></a></p></aside>' % (att(wa(sujet)), WA_ICO))
+    def encart(sujet):
+        # Phrase vers le comparateur, au milieu de chaque article (texte : Mon idée)
+        return ('<aside class="encart-tarif"><p><strong>Combien coûterait votre mutuelle ?</strong> <a href="__RACINE__">Comparez les offres en '
+                'quelques secondes</a> : votre date de naissance et votre code postal suffisent. Une question sur ce sujet ? Antony vous répond '
+                '<a href="%s" target="_blank" rel="noopener">sur WhatsApp</a> ou dans le tchat, en bas à droite de la page.</p>'
+                '<p class="cta-btns"><a class="btn" href="__RACINE__">Tarifer ma mutuelle</a> <a class="btn-wa" href="%s" target="_blank" rel="noopener">%s'
+                '<span>WhatsApp</span></a></p></aside>' % (att(wa(sujet)), att(wa(sujet)), WA_ICO))
     def page_guide(racine, url, titre, desc, fil, contenu, ld, og):
         h = art_t
         for k, v in (("__COOKIES_CSS__", ck_css), ("__COOKIES_HTML__", ck_html.replace('href="#mentions-legales"', 'href="' + racine + '#mentions-legales"')),
-                     ("__COOKIES_JS__", ck_js), ("__CONTENU__", contenu), ("__FIL__", fil), ("__JSONLD__", js(ld)),
+                     ("__COOKIES_JS__", ck_js), ("__TCHAT_CSS__", tc_css), ("__TCHAT_HTML__", tc_html), ("__TCHAT_JS__", tchat_js),
+                     ("__CONTENU__", contenu), ("__FIL__", fil), ("__JSONLD__", js(ld)),
                      ("__ROBOTS__", "index, follow" if EN_LIGNE else "noindex, nofollow"), ("__TITRE__", att(titre)),
                      ("__DESCRIPTION__", att(desc)), ("__CANONIQUE__", url), ("__OG_TYPE__", og), ("__ADRESSE__", ADRESSE)):
             h = h.replace(k, v)
@@ -267,6 +295,12 @@ else:
         url = ADRESSE + "guide/" + a["slug"] + "/"
         maj = a.get("maj", AUJ)
         corps = re.sub(r"(<table.*?</table>)", r'<div class="tableau">\1</div>', a["contenu"], flags=re.S)
+        # Encart vers le comparateur et WhatsApp : avant la 3e section (ou, à défaut, avant les questions fréquentes)
+        avant_faq = corps.split('<section class="faq">')[0]
+        pos = [m.start() for m in re.finditer(r"<h2>", avant_faq)]
+        ici = pos[2] if len(pos) >= 3 else (len(avant_faq) if '<section class="faq">' in corps else None)
+        assert ici is not None, a["slug"] + " : place de l'encart"
+        corps = corps[:ici] + encart(a["h1"]) + "\n" + corps[ici:]
         if REPERE_DENTS in corps or a.get("schema_dents"):
             assert a.get("schema_dents") and corps.count(REPERE_DENTS) == 1, a["slug"] + " : schéma des dents (repère et données)"
             corps = corps.replace(REPERE_DENTS, schema_dents(a["schema_dents"]))
@@ -276,7 +310,7 @@ else:
                          for b in (meme + ailleurs[:max(0, 4 - len(meme))]))
         contenu = ('<article>\n%s\n<p class="maj">Mis à jour le %s · Santéo (CAPI FINANCE), courtier en assurance santé depuis 1992. '
                    "Ces informations sont générales : seuls les textes officiels et les documents de votre contrat font foi.</p>\n</article>\n"
-                   % (corps, date_fr(maj))) + CTA + ('\n<section><h2>À lire aussi</h2><ul class="liste">%s</ul></section>' % autres if autres else "")
+                   % (corps, date_fr(maj))) + cta(a["h1"]) + ('\n<section><h2>À lire aussi</h2><ul class="liste">%s</ul></section>' % autres if autres else "")
         ld = {"@context": "https://schema.org", "@graph": [
             {"@type": "Article", "headline": a["h1"], "description": a["description"], "inLanguage": "fr-FR",
              "datePublished": a.get("publie", maj), "dateModified": maj, "mainEntityOfPage": url, "author": editeur, "publisher": editeur},
@@ -302,7 +336,7 @@ else:
                    'choisir sans vous tromper, rédigées par Santéo, courtier en assurance santé depuis 1992.</p>\n%s%s' % (
                        '<nav class="chapitres" aria-label="Chapitres du guide"><ul>%s</ul></nav>\n' % "".join(
                            '<li><a href="#%s">%s</a></li>' % (c["id"], c["titre"]) for c in CHAPITRES if any(a["chapitre"] == c["id"] for a in articles)),
-                       liste)) + CTA
+                       liste)) + cta("Guide de la mutuelle")
         ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "Guide de la mutuelle santé", "url": ADRESSE + "guide/",
               "inLanguage": "fr-FR", "publisher": editeur,
               "hasPart": [{"@type": "Article", "headline": a["h1"], "url": ADRESSE + "guide/" + a["slug"] + "/"} for a in articles]}
@@ -338,7 +372,7 @@ else:
              .replace("__PAGEJS__", open(S + "/simulateur/page.js", encoding="utf-8").read()))
     contenu = ('<article>\n%s\n<p class="maj">Bases et taux à jour le %s · Santéo (CAPI FINANCE), courtier en assurance santé depuis 1992. '
                "Simulation indicative : seuls votre tableau de garanties et les décomptes de vos remboursements font foi.</p>\n</article>\n"
-               % (corps, date_fr(SIM["maj"]))) + CTA
+               % (corps, date_fr(SIM["maj"]))) + cta("Simulateur de remboursement")
     sim_titre = "Simulateur de remboursement mutuelle et Sécu | Santéo"
     sim_desc = "Calculez le remboursement de la Sécurité sociale et de votre mutuelle, de 100 % à 400 %, pour une consultation, des lunettes, une couronne…"
     assert len(sim_titre) <= 60 and len(sim_desc) <= 155

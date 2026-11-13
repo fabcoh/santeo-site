@@ -384,6 +384,27 @@ async function remplir(p) {
     }
     await c.close();
   }
+  // Pages du guide (Fabrice, 13/11/2026, idée d'Antony) : dans chaque article, une phrase et un bouton vers le comparateur, un bouton
+  // WhatsApp vers Antony (ligne Santéo, message déjà écrit) ; sur chaque page du guide et le simulateur, le tchat d'Antony.
+  {
+    const d = sites.crm, num = (fs.readFileSync(path.join(S, 'template.html'), 'utf8').match(/const WA_NUMERO="(\d+)"/) || [])[1];
+    const pages = fs.readdirSync(d + '/guide').filter(f => fs.existsSync(d + '/guide/' + f + '/index.html')).map(f => 'guide/' + f + '/index.html');
+    let n = 0;
+    for (const f of pages) {
+      const h = fs.readFileSync(d + '/' + f, 'utf8'); n++;
+      doit(/<aside class="encart-tarif">.*?<a href="\.\.\/\.\.\/">.*?<\/aside>/s.test(h), f + ' : encart vers le comparateur absent');
+      doit(h.includes('href="https://wa.me/' + num + '?text=Bonjour%20Antony'), f + ' : lien WhatsApp vers Antony absent');
+      doit(h.includes('id="tchat"') && h.includes('images/oiseau.webp'), f + ' : tchat absent');
+    }
+    for (const f of ['guide/index.html', 'simulateur-remboursement/index.html']) {
+      const h = fs.readFileSync(d + '/' + f, 'utf8');
+      doit(h.includes('id="tchat"') && h.includes('href="https://wa.me/' + num), f + ' : tchat ou WhatsApp absent');
+    }
+    doit(n >= 30 && fs.existsSync(d + '/images/oiseau.webp'), 'guide : ' + n + ' articles vérifiés, avatar ' + fs.existsSync(d + '/images/oiseau.webp'));
+    // Comparateur -> simulateur, et simulateur -> tarificateur (Fabrice, 13/11/2026)
+    doit(/<p class="lien-simu">[^<]*<a href="simulateur-remboursement\/">Accéder au simulateur de remboursement Sécu<\/a>/.test(fs.readFileSync(d + '/index.html', 'utf8')), 'accueil : accès au simulateur absent');
+    doit(/<aside class="s-acces">.*?<a class="btn" href="\.\.\/">Accéder au tarificateur<\/a>/s.test(fs.readFileSync(d + '/simulateur-remboursement/index.html', 'utf8')), 'simulateur : accès au tarificateur absent');
+  }
   // Simulateur de remboursement (/simulateur-remboursement/) : calcul vérifié sur des cas faits à la main, puis la page sur PC et téléphone
   {
     const SC = require(path.join(S, 'simulateur', 'calcul.js'));
