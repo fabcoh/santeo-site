@@ -400,6 +400,9 @@ async function remplir(p) {
     doit(med.secu === 12 && med.lignes[0].mutuelle === 7 && med.lignes[0].reste === 1, 'simulateur : médicament ' + JSON.stringify(med.lignes[0]));
     // lunettes 100 % Santé : total jusqu'au prix limite, part Sécu non détaillée
     doit(tot({ garantie: '100s', secu_non_detaillee: true, plafond: 115 }, 115) === '115' && SC.calculer({ garantie: '100s', secu_non_detaillee: true, plafond: 115 }, 115).secu === null, 'simulateur : lunettes 100 % Santé');
+    // orthodontie adulte (Fabrice, 13/11 : « jusqu'à 200% 193.50€ X 2 par semestre ») : Sécu 0 €, % d'une base de 193,50 €
+    const orth = SC.calculer({ base_ref: 193.5, garantie: 'pct' }, 700);
+    doit(orth.secu === 0 && orth.lignes.map(l => l.total).join(' ') === '193.5 251.55 290.25 387 483.75 580.5 700', 'simulateur : orthodontie adulte ' + orth.lignes.map(l => l.total).join(' '));
     // forfait en euros plafonné (contrat responsable)
     doit(tot({ br: 0, taux: 0, garantie: 'eur', forfaits: [300, 500], plafond: 420 }, 600) === '300 420', 'simulateur : plafond en euros');
     doit(tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100) === '28 37 43 58 73 88 98', 'simulateur : OPTAM ' + tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100));

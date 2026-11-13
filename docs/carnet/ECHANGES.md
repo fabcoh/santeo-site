@@ -545,6 +545,17 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Simulateur, dentaire (Fabrice, 13/11, ses mots, avec une capture)** : « ajoute les implants dentaire meme si l'implants
+  en lui meme n'est pas rembousé certaines partie comme la couronne et autres sont remboursés […] Orthonditie adulte n'est
+  pas remboursé mais certaines mutuelle peuvent prendre en charge comme révoluo REV6 RENFORT 100 qui va remboursé jusqu'à
+  200% 193.50€ X 2 par semestre / endodontie et parondontie idém.. ». Fait (demande de fusion « simulateur-dentaire ») :
+  implant en deux lignes (pose de l'implant : forfaits en euros ; couronne posée sur l'implant : base de 107,50 € à 60 %,
+  code HBLD418, source : forum des assurés de l'Assurance maladie, par recherche, à vérifier sur le devis) ; orthodontie
+  adulte : 0 € de Sécurité sociale, pourcentages de 100 à 400 % d'une base de 193,50 € par semestre (base d'un semestre
+  d'enfant, Service-Public F33956 ; base utilisée par certains contrats : Vos mots) ; soins des gencives non remboursés :
+  forfaits (remboursés seulement dans certains cas d'ALD, comme le diabète : Assurance maladie, par recherche) ;
+  dévitalisation d'une prémolaire et d'une molaire (1 à 26 ans, F33956). L'endodontie (dévitalisation) est remboursée
+  par la Sécurité sociale (60 %, F33956) ; pour les plus de 26 ans, Service-Public ne donne que l'incisive et la canine.
 - **Simulateur de remboursement (Fabrice, 12/11, ses mots)** : « Crée le simulateur hyper performant et il faut récupérer
   les données et codification pour mettre en olace l'outil avec les vrais chiffres / Idem simple / Type d'acte 》 ici tu
   ajoutes les sous rubriques / Montants regle / Remboursement secu / Remboursement secu et mutuelle / 100% = … 400%= / Tu

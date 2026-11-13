@@ -22,6 +22,7 @@
     if (a.br_egal_prix) t.push("Remboursé à " + pct(a.taux) + " du prix par la Sécurité sociale");
     else if (a.br) t.push("Base de remboursement : " + eur(a.br) + " ; remboursée à " + pct(a.taux) + " par la Sécurité sociale");
     else if (!a.secu_non_detaillee) t.push("Non remboursé par la Sécurité sociale");
+    if (a.base_ref) t.push("Pourcentages calculés sur une base de " + eur(a.base_ref) + ", utilisée par certains contrats");
     if (a.retenue) t.push(esc(a.retenue_lib || "Retenue") + " : " + eur(a.retenue) + ", jamais remboursée par un contrat responsable");
     if (a.plafond != null) t.push("Prix limite : " + eur(a.plafond));
     if (a.note) t.push(esc(a.note));
