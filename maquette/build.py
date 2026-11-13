@@ -306,7 +306,7 @@ else:
     SIM = json.load(open(S + "/simulateur/actes.json", encoding="utf-8"))
     SRC_SIM = SIM["sources"]
     CHAMPS_SIM = ("nom", "code", "br", "taux", "retenue", "retenue_lib", "prix", "garantie", "optam", "plafond", "forfaits", "note",
-                  "br_egal_prix", "secu_non_detaillee", "exemple")
+                  "br_egal_prix", "secu_non_detaillee", "exemple", "base_ref")
     for r in SIM["rubriques"]:
         assert r["nom"] and r["actes"], "simulateur : rubrique vide"
         for a in r["actes"]:
@@ -315,6 +315,7 @@ else:
             assert a.get("br", 0) >= 0 and 0 <= a.get("taux", 0) <= 1, "simulateur : base ou taux " + a["nom"]
             assert a["sources"] and all(s in SRC_SIM for s in a["sources"]), "simulateur : source " + a["nom"]
             assert not a.get("a_confirmer"), "simulateur : valeur à confirmer " + a["nom"]
+            assert a["garantie"] != "pct" or a.get("br") or a.get("br_egal_prix") or a.get("base_ref"), "simulateur : base manquante " + a["nom"]
     donnees = {"rubriques": [{"nom": r["nom"], "actes": [{k: v for k, v in a.items() if k in CHAMPS_SIM} for a in r["actes"]]}
                              for r in SIM["rubriques"]]}
     sim_url = ADRESSE + "simulateur-remboursement/"

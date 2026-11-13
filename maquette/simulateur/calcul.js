@@ -13,6 +13,8 @@
 //   plus un forfait de F euros, sans dépasser le montant réglé ; « plafond » : total maximal permis à un contrat responsable
 //   (ex. lunettes hors 100 % Santé, aides auditives de classe II).
 // - Base égale au prix (br_egal_prix, ex. médicaments) : la base de remboursement est le prix réglé.
+// - Base de référence (base_ref) : pour un acte que la Sécurité sociale ne rembourse pas, certains contrats remboursent un
+//   pourcentage d'une base « reconstituée » (ex. orthodontie adulte : 193,50 € par semestre) ; la Sécurité sociale verse 0 €.
 // - Part de la Sécurité sociale non détaillée (secu_non_detaillee, ex. lunettes 100 % Santé dont la base n'est pas
 //   confirmée) : seul le total Sécurité sociale + mutuelle est calculé ; « secu » vaut alors null.
 // - 100 % Santé (« 100s ») : la Sécurité sociale et un contrat responsable remboursent jusqu'au prix limite (plafond) ;
@@ -43,7 +45,7 @@
     if (g === "pct") {
       NIVEAUX_PCT.forEach(function (x) {
         var xe = acte.optam === false ? Math.max(100, Math.min(x - 20, 200)) : x;
-        ligne(x + "\u00a0%", xe / 100 * br, x);
+        ligne(x + "\u00a0%", xe / 100 * (acte.base_ref || br), x);
       });
     } else if (g === "eur") {
       (acte.forfaits || NIVEAUX_EUR).forEach(function (f) { ligne("Forfait " + f + "\u00a0€", br + f, f); });   // ticket modérateur + forfait

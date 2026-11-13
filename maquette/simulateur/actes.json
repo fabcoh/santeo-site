@@ -76,6 +76,16 @@
    "titre": "HCAAM : Reste à charge et dépassements d'honoraires (annexe 4)",
    "url": "https://www.securite-sociale.fr/files/live/sites/SSFR/files/HCAAM/2025/Annexe%204%20RAC%20Rapport%20Hcaam.pdf",
    "date": "octobre 2025"
+  },
+  "FORUM_IMPLANT": {
+   "titre": "Forum des assurés de l'Assurance maladie : remboursement d'une couronne sur implant",
+   "url": "https://forum-assures.ameli.fr/questions/1434147-remboursement-couronne-implant",
+   "date": "consulté par recherche le 13/11/2026"
+  },
+  "AMELI_PARO": {
+   "titre": "Assurance maladie : Consultation et traitement de la gingivite et de la parodontite",
+   "url": "https://www.ameli.fr/assure/sante/themes/maladie-gencives/consultation-traitement-gingivite-parodontite",
+   "date": "consulté par recherche le 13/11/2026"
   }
  },
  "rubriques": [
@@ -329,6 +339,42 @@
      "taux": 0.6
     },
     {
+     "nom": "Dévitalisation d'une prémolaire (1 à 26 ans)",
+     "prix": 82.47,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "br": 82.47,
+     "taux": 0.6
+    },
+    {
+     "nom": "Dévitalisation d'une molaire (1 à 26 ans)",
+     "prix": 135.2,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "br": 135.2,
+     "taux": 0.6
+    },
+    {
+     "nom": "Soins des gencives (parodontie) non remboursés",
+     "prix": 400,
+     "garantie": "eur",
+     "sources": [
+      "AMELI_PARO"
+     ],
+     "forfaits": [
+      100,
+      150,
+      250,
+      350
+     ],
+     "note": "Remboursés par la Sécurité sociale seulement dans certains cas d'affection de longue durée, comme le diabète ; sinon, certains contrats donnent un forfait par an",
+     "exemple": true
+    },
+    {
      "nom": "Couronne céramo-métallique, incisive, canine ou 1re prémolaire (100 % Santé)",
      "prix": 515,
      "garantie": "100s",
@@ -386,6 +432,45 @@
      "br": 193.5,
      "taux": 1,
      "note": "Remboursée à 100 % de la base par la Sécurité sociale",
+     "exemple": true
+    },
+    {
+     "nom": "Implant : pose de l'implant",
+     "prix": 1000,
+     "garantie": "eur",
+     "sources": [
+      "FORUM_IMPLANT"
+     ],
+     "forfaits": [
+      100,
+      200,
+      300,
+      500
+     ],
+     "note": "L'implant n'est pas remboursé par la Sécurité sociale ; certains contrats donnent un forfait par implant ou par an",
+     "exemple": true
+    },
+    {
+     "nom": "Implant : couronne posée sur l'implant",
+     "prix": 800,
+     "garantie": "pct",
+     "sources": [
+      "FORUM_IMPLANT"
+     ],
+     "br": 107.5,
+     "taux": 0.6,
+     "note": "Remboursée sur une base de 107,50 € (code HBLD418) : vérifiez le code et la base sur le devis de votre dentiste",
+     "exemple": true
+    },
+    {
+     "nom": "Orthodontie adulte, un semestre (non remboursée par la Sécurité sociale)",
+     "prix": 700,
+     "garantie": "pct",
+     "sources": [
+      "F33956"
+     ],
+     "base_ref": 193.5,
+     "note": "Après 16 ans, la Sécurité sociale ne rembourse plus l'orthodontie, sauf un semestre avant une opération des mâchoires. 193,50 € est la base d'un semestre de traitement d'enfant ; d'autres contrats donnent un forfait par an",
      "exemple": true
     }
    ]
