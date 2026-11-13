@@ -318,6 +318,10 @@ Statut : À TRAITER
   sous cette forme mais avec un Votre accord (souligné) et cela affiche l'enselble du texte »).
 - En-tête : lumière animée sur le logo Santéo ; mascotte en petit en haut à droite ; *Contactez-nous sur : WhatsApp*
   masqué pour le moment (« TU LE MASQUE POUR LE MOMENT »).
+- En-tête (09/11/2026) : la mascotte est animée (« Tu peux animer l'oiseau du site ? ») : elle flotte, bat des ailes et
+  son étoile scintille, en continu ; immobile si l'appareil demande moins d'animations. Vitesses choisies par Claude
+  (Mon idée), à valider par Fabrice. Au passage, le trou transparent dans le visage de la mascotte en mode sombre est
+  corrigé.
 
 ## Points ouverts (posés directement à Fabrice par cette conversation, la pilote n'a pas à les poser)
 
@@ -545,6 +549,16 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Oiseau animé et en-tête sans coupure (Fabrice, 13/11, ses mots)** : « oui remets l'oiseau animé à jour mais ralenti
+  de moitie son rythme », puis, avec une capture : « tu peux retirer le fond blanc du logo de santéo pour le fondre dans
+  la couleur bleuté et mieux harmoniser les séparations car la on voit vraiment les coupure » et « plus en va vers la
+  gauche et plus c'esr bleuté claire ». Fait (demande de fusion n° 6, « mascotte-animee », mise à jour sur main) :
+  oiseau animé (vol 6,4 s, ailes 0,68 s, étoile 3,2 s : deux fois plus lent que la version du 09/11), au-dessus de la
+  photo du couple ; avatar du tchat refait avec les calques de l'oiseau. Logo Santéo sans fond blanc (le blanc devient
+  transparent, `maquette/outils/logo_transparent.py`), publié en fichier à part (`images/santeo-logo.webp`) ; en thème
+  sombre, il garde son cadre blanc. Ciel : bleu clair à gauche, bleu du ciel à droite, sans bande blanche. Photo du
+  couple refaite (`maquette/outils/couple.py`) : bords fondus des quatre côtés, plus larges à gauche ; la version du
+  12/11 était fondue à droite au lieu de gauche, d'où la coupure visible côté titre.
 - **Article du jour, 13/11 : la dépendance** (demande de fusion « article-dependance », chapitre « Selon votre
   situation » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public (pages lues le 13/11) :
   APA dès 60 ans en GIR 1 à 4, plafonds mensuels 2 080,33 € / 1 682,30 € / 1 215,99 € / 811,52 €, participation nulle

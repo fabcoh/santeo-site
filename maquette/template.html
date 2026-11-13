@@ -61,11 +61,31 @@ header.top{display:flex;flex-direction:column;gap:.35rem;position:relative;flex:
 @media (min-width:700px){.couple{height:150px;right:42px;top:-4px}}
 @media (max-width:359px){.couple{height:56px;right:24px}}
 header.top>*:not(.couple){position:relative;z-index:1}
-/* Mascotte, en petit en haut à droite */
-.mascotte{position:absolute!important;top:0;right:0;width:58px;height:auto;pointer-events:none;user-select:none;z-index:2!important}
+/* Mascotte animée, en petit en haut à droite. Quatre calques de même taille, empilés : aile droite, corps, aile gauche, étoile.
+   Elle flotte, bat des ailes et son étoile scintille ; immobile si la personne a demandé moins d'animations.
+   Rythme ralenti de moitié (Fabrice, 13/11/2026 : « ralenti de moitie son rythme »). */
+.mascotte{position:absolute!important;top:0;right:0;display:block;width:58px;pointer-events:none;user-select:none;z-index:2!important}
 @media (min-width:700px){.mascotte{width:76px}}
 @media (max-width:359px){.mascotte{width:46px}}
-.brand-logo{display:block;height:64px;width:auto;max-width:100%;background:var(--logo-bg);border-radius:10px;align-self:flex-start}
+.mascotte img{position:absolute;left:0;top:0;display:block;width:100%;height:100%}
+.mascotte .m-corps{position:relative;height:auto}
+.m-aile-g{transform-origin:__MASCOTTE_PIVOT_G__}
+.m-aile-d{transform-origin:__MASCOTTE_PIVOT_D__}
+.m-etoile{transform-origin:__MASCOTTE_PIVOT_ETOILE__}
+@media (prefers-reduced-motion: no-preference){
+  .mascotte{animation:m-vol 6.4s ease-in-out infinite alternate}
+  .m-aile-g{animation:m-aile-g .68s ease-in-out infinite alternate}
+  .m-aile-d{animation:m-aile-d .68s ease-in-out infinite alternate}
+  .m-etoile{animation:m-etoile 3.2s ease-in-out infinite alternate}
+}
+@keyframes m-vol{from{transform:translateY(4%) rotate(-2deg)}to{transform:translateY(-5%) rotate(2deg)}}
+@keyframes m-aile-g{from{transform:rotate(5deg)}to{transform:rotate(-24deg) scale(.95)}}
+@keyframes m-aile-d{from{transform:rotate(-6deg)}to{transform:rotate(20deg) scale(.95)}}
+@keyframes m-etoile{from{transform:scale(.5) rotate(-25deg);opacity:.3}to{transform:scale(1.2) rotate(20deg);opacity:1}}
+/* Logo sans fond blanc, fondu dans le ciel (Fabrice, 13/11/2026) ; en thème sombre, il garde son cadre blanc pour rester lisible */
+.brand-logo{display:block;height:64px;width:auto;max-width:100%;background:transparent;border-radius:10px;align-self:flex-start}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand-logo{background:var(--logo-bg)}}
+:root[data-theme="dark"] .brand-logo{background:var(--logo-bg)}
 @media (min-width:700px){.brand-logo{height:84px}}
 /* Comète lumineuse qui parcourt la courbe du logo (passe derrière les lettres) */
 .brand-wrap{position:relative;display:block;align-self:flex-start;line-height:0;max-width:100%}
@@ -406,7 +426,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ciel:#15384a;--ciel-clair:#102833}}
 :root[data-theme="dark"]{--ciel:#15384a;--ciel-clair:#102833}
 body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg) 100%) top / 100% var(--ciel-h,230px) no-repeat,
-  linear-gradient(to right,var(--bg) 0,var(--bg) 12%,var(--ciel-clair) 38%,var(--ciel) 70%,var(--ciel) 100%) top / 100% var(--ciel-h,230px) no-repeat,var(--bg)}
+  linear-gradient(to right,var(--ciel-clair) 0,var(--ciel-clair) 8%,var(--ciel) 72%,var(--ciel) 100%) top / 100% var(--ciel-h,230px) no-repeat,var(--bg)}
 @media (max-width:699px){body{--ciel-h:150px}}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--tchat-fond:#0b1a22}}
 :root[data-theme="dark"]{--tchat-fond:#0b1a22}
@@ -433,6 +453,9 @@ body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg
 .tchat-avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);border:1px solid var(--line);color:var(--brand-1);font-weight:800;font-family:var(--f-display);font-size:1.15rem;flex:none;overflow:hidden}
 /* L'avatar d'Antony est l'oiseau de l'en-tête (Fabrice, 10/11/2026) */
 .tchat-avatar img{width:118%;height:118%;object-fit:contain;transform:translate(3%,4%)}
+.tchat-avatar .m-avatar{position:relative;display:block;width:118%;transform:translate(3%,4%)}
+.tchat-avatar .m-avatar img{position:absolute;left:0;top:0;width:100%;height:100%;transform:none;animation:none}
+.tchat-avatar .m-avatar .m-corps{position:relative;height:auto}
 @media (max-width:599px){.tchat.discret .tchat-bouton[aria-expanded="false"],.tchat.discret .tchat-invite{opacity:0;visibility:hidden}}
 /* Petite bulle « Posez-moi vos questions » au-dessus de l'oiseau (Fabrice, 10/11/2026 : « pas sous mais au dessus »),
    cachée quand la fenêtre est ouverte */
@@ -488,7 +511,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
   <div class="top-row">
   <header class="top">
     <img class="couple" src="__COUPLE__" width="640" height="314" alt="" aria-hidden="true" decoding="async">
-    <img class="mascotte" src="__MASCOTTE__" alt="" aria-hidden="true">
+    <span class="mascotte" aria-hidden="true"><img class="m-aile-d" src="__MASCOTTE_AILE_D__" alt=""><img class="m-corps" src="__MASCOTTE_CORPS__" alt=""><img class="m-aile-g" src="__MASCOTTE_AILE_G__" alt=""><img class="m-etoile" src="__MASCOTTE_ETOILE__" alt=""></span>
     <span class="brand-wrap"><img class="brand-logo" src="__SANTEO_LOGO__" alt="Santéo, assurance santé"><svg class="comete" viewBox="0 0 609 180" aria-hidden="true" focusable="false"><defs><mask id="cm-masque" maskUnits="userSpaceOnUse" x="0" y="0" width="609" height="180"><image href="__SANTEO_MASQUE__" x="0" y="0" width="609" height="180" preserveAspectRatio="none"/></mask><filter id="cm-lueur" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><radialGradient id="cm-tete-g"><stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#ffffff"/><stop offset=".5" stop-color="#7fe3fa" stop-opacity=".95"/><stop offset="1" stop-color="#1fb2de" stop-opacity="0"/></radialGradient></defs><g mask="url(#cm-masque)" filter="url(#cm-lueur)"><path class="cm-q cm-q1"/><path class="cm-q cm-q2"/><path class="cm-q cm-q3"/><g id="cm-etincelles"></g><circle id="cm-tete" r="9" fill="url(#cm-tete-g)" opacity="0"/></g><path id="cm-etoile" d="M0 -11 C1 -3 3 -1 11 0 C3 1 1 3 0 11 C-1 3 -3 1 -11 0 C-3 -1 -1 -3 0 -11Z" filter="url(#cm-lueur)"/></svg></span>
     <div class="titre-row">
     <h1>Comparez votre mutuelle santé</h1>
@@ -1372,9 +1395,10 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   // Espace admin : « tchat » en marche ou à l'arrêt (réglage du CRM, appliqué dès qu'il arrive)
   window.tchatReglage=on=>{zone.hidden=!on; if(!on){$("tchat-fenetre").hidden=true;$("tchat-voile").classList.remove("ouvert");zone.classList.remove("ouvert")}};
   if(!REGLAGE_TCHAT)zone.hidden=true;
-  // Avatar : l'oiseau de l'en-tête, repris tel quel (sans le copier une seconde fois dans la page) ; sinon la lettre « A »
-  const oiseau=document.querySelector("img.mascotte");
-  document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau&&oiseau.src)i.src=oiseau.src;else i.replaceWith("A")});
+  // Avatar : l'oiseau de l'en-tête, repris tel quel avec ses calques (sans copier les images une seconde fois), immobile ;
+  // sinon la lettre « A »
+  const oiseau=document.querySelector(".mascotte");
+  document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau){const c=oiseau.cloneNode(true);c.className="m-avatar";i.replaceWith(c)}else i.replaceWith("A")});
   // Identification du prospect : après une demande de devis, le numéro de fiche rendu par le CRM accompagne ses messages
   let identite=null; try{identite=JSON.parse(localStorage.getItem("santeo-fiche")||"null")}catch(err){}
   window.tchatDemandeEnvoyee=(d,fiche)=>{identite={fiche:fiche?String(fiche):null,prenom:d.prenom,nom:d.nom,telephone:d.telephone,email:d.email};

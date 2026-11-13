@@ -1,11 +1,23 @@
 const { chromium } = require('playwright');
 (async () => {
   const S = process.argv[2]; const b = await chromium.launch(); const errs = [];
+  // La mascotte : 4 calques de même taille, bien chargés ; elle bouge (4 animations), sauf si la personne a demandé moins d'animations.
+  const mascotte = async (p, name, attendu) => {
+    const m = await p.evaluate(() => { const e = document.querySelector('.mascotte'), r = e.getBoundingClientRect(); return {
+      calques: [...e.querySelectorAll('img')].map(i => i.className + ' ' + i.naturalWidth + 'x' + i.naturalHeight),
+      anims: document.getAnimations().filter(a => /^m-/.test(a.animationName) && a.playState === 'running').length,
+      largeur: Math.round(r.width), hauteur: Math.round(r.height), defile: document.documentElement.scrollWidth > document.documentElement.clientWidth }; });
+    const tailles = new Set(m.calques.map(c => c.split(' ')[1]));
+    if (m.calques.length !== 4 || tailles.size !== 1 || tailles.has('0x0')) errs.push(name + ' mascotte, calques : ' + m.calques.join(', '));
+    if (m.anims !== attendu) errs.push(name + ' mascotte : ' + m.anims + ' animations au lieu de ' + attendu);
+    if (m.defile || m.hauteur < 30) errs.push(name + ' mascotte : défilement ' + m.defile + ', hauteur ' + m.hauteur);
+    console.log(name, '| mascotte', m.largeur + 'x' + m.hauteur, '| calques:', m.calques.join(', '), '| animations:', m.anims);
+  };
   for (const [name, vp] of [['tel', {width: 400, height: 900}], ['pc', {width: 1280, height: 900}]]) {
     const p = await b.newPage({viewport: vp, deviceScaleFactor: 1});
     p.on('pageerror', e => errs.push(name + ': ' + e.message));
     p.on('console', m => { if (m.type() === 'error') errs.push(name + ' console: ' + m.text()); });
-    await p.goto('file://' + S + '/comparateur-santeo.html'); await p.waitForTimeout(300); await p.fill('#age','21/07/1981'); await p.fill('#cp','75012'); await p.waitForTimeout(200);
+    await p.goto('file://' + S + '/comparateur-santeo.html'); await p.waitForTimeout(300); await mascotte(p, name, 4); await p.fill('#age','21/07/1981'); await p.fill('#cp','75012'); await p.waitForTimeout(200);
     const c0 = await p.textContent('#count');
     if (name === 'tel') { await p.click('[data-cyc="dent"]'); await p.click('[data-cyc="dent"]'); }
     else { await p.click('#needs .col:nth-child(3) .stars button[data-v="3"]'); }
@@ -24,6 +36,12 @@ const { chromium } = require('playwright');
     const hs = await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
     console.log(name, '| départ:', c0, '| dentaire 3★:', c1, '| cases:', boxes.join(' / '), '| étoiles dans la case:', starsInPanel, '| implants:', c2, '| + parodontie + autre:', c3, '| case:', lab, '| choisi:', chosen, '| défilement:', hs);
     const sec = await p.$('section.slim'); await sec.scrollIntoViewIfNeeded(); await p.click('.precise[data-open="dent"]'); await p.waitForTimeout(150); await sec.screenshot({path: S + '/panel-' + name + '.png'}); const txt = await p.$$eval('.precise', bs => bs.map(x => x.textContent)); console.log(name, 'boutons :', txt.join(' | '));
+    await p.close();
+  }
+  { // Petit téléphone, animations réduites : la mascotte reste immobile et entière.
+    const p = await b.newPage({viewport: {width: 320, height: 700}, deviceScaleFactor: 1, reducedMotion: 'reduce'});
+    p.on('pageerror', e => errs.push('calme: ' + e.message));
+    await p.goto('file://' + S + '/comparateur-santeo.html'); await p.waitForTimeout(300); await mascotte(p, 'calme 320', 0);
     await p.close();
   }
   console.log('ERREURS:', errs.length ? errs.join(' | ') : 'aucune'); await b.close();
