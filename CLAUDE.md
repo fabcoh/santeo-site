@@ -1,11 +1,18 @@
 # Site Santéo — consignes pour Claude
 
+**Bureau commun des conversations (Fabrice, 12/11/2026) : au début de chaque conversation, attacher le dépôt
+`fabcoh/santeo-bureau` (outil `add_repo`, accès push), le cloner, lire `README.md` et `REGLES.md`, et tenir
+`taches/<nom de la conversation>.md`.** Pour cette conversation (« Santeo.net site ») : `taches/santeo-net-site.md`.
+
 Ce dépôt contient le futur site www.santeo.net : un comparateur de complémentaire santé propre à Santéo
 (CAPI FINANCE, courtier). Les tarifs viennent du moteur du comparateur de Claude (`fabcoh/santeo-tarifs`),
 et les demandes de devis arrivent directement dans le CRM Santéo. Le comparateur OggoData n'est plus utilisé.
 
 Avant tout travail, lire le carnet `docs/carnet/ECHANGES.md` : décisions prises, points ouverts,
 demandes aux autres conversations.
+
+Les règles du bureau commun (`fabcoh/santeo-bureau`, dépôt privé : n'en recopier rien ici) s'appliquent depuis le
+12/11/2026 et passent avant la section « Les autres conversations » ci-dessous quand elles diffèrent.
 
 ## Les règles de Fabrice (Vos mots, reprises de sa passation)
 
@@ -38,10 +45,12 @@ Tout le monde peut le lire, concurrents compris. Donc, en plus des règles 4 et 
 
 ## Les autres conversations
 
-- Fabrice ne parle qu'à la **conversation pilote** (« CRM WhatsApp — relais »). S'il parle directement
-  à cette conversation, on lui répond normalement, une question à la fois.
-- **Cette conversation n'écrit jamais à Manus**, même avec l'outil ou la clé. Une demande pour Manus
-  s'écrit dans le carnet, au format :
+- **Depuis le 12/11/2026 (bureau commun)** : Fabrice écrit à n'importe quelle conversation. Si le sujet est à une
+  autre (voir `ANNUAIRE.md` de `fabcoh/santeo-bureau`), on lui transmet soi-même par `send_message` et on répond à
+  Fabrice « Transmis à … ». Les demandes pour Manus se déposent dans `FILE-MANUS.md` du bureau (gabarit du fichier),
+  puis on prévient la conversation qui envoie à Manus. Chaque livraison, question à Fabrice ou chantier commencé se note le jour même dans `taches/santeo-net-site.md` du bureau (`PLAN.md` n'est plus qu'une archive).
+- **Cette conversation n'écrit jamais à Manus**, même avec l'outil ou la clé. Avant le 12/11/2026, une demande pour
+  Manus s'écrivait dans le carnet, au format :
 
   ```
   ### JJ/MM/AAAA — de Claude site à la conversation pilote — demande pour Manus
@@ -76,6 +85,8 @@ Les adresses e-mail @santeo.net dépendent du même nom de domaine.
 - Moteur et tarifs : `fabcoh/santeo-tarifs`, fichiers `src/moteur.js`, `src/tarifs_all.json`,
   `src/garanties.json` (lecture seule ; conversation « comparateur claude »).
 - Hébergement prévu : GitHub Pages, à l'adresse santeo.net.
-- Site de test : publié par `.github/workflows/site-de-test.yml` (page `--site`, cachée à Google). Le jour du passage
-  sur santeo.net, retirer le `noindex` et le bandeau de test de `maquette/build.py`.
+- Site en ligne : https://www.santeo.net, publié par `.github/workflows/site-de-test.yml` (construction `--site
+  --en-ligne` : visible par Google, sans bandeau) depuis le 11/11/2026. Seule la ligne DNS `www` (CNAME vers
+  `fabcoh.github.io.`) a été changée chez OVH ; `santeo.net` sans www reste sur l'ancien serveur tant que la question du
+  SPF (« a ») n'est pas réglée. Adresses du CRM (demandes, tchat) : `maquette/reglages-site.json`.
 - Ne jamais désactiver la vérification des certificats (TLS) pour contourner un blocage.

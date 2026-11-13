@@ -1,0 +1,29 @@
+{
+ "slug": "mutuelle-assureur-institution-prevoyance",
+ "chapitre": "choisir",
+ "lien": "Mutuelle, assureur ou prévoyance ?",
+ "ordre": 17,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Mutuelle, assureur, institution de prévoyance : différences",
+ "description": "Mutuelles, sociétés d'assurance, institutions de prévoyance : codes, gouvernance, contrats, et ce qui change ou non pour vous en complémentaire santé.",
+ "h1": "Mutuelle, société d'assurance, institution de prévoyance : quelles différences ?",
+ "faq": [
+  {
+   "q": "Une mutuelle rembourse-t-elle mieux qu'une société d'assurance ?",
+   "r": "Pas par nature. Le niveau de remboursement dépend du contrat et de ses garanties, pas du statut de l'organisme. Comparez les tableaux de garanties à garanties égales."
+  },
+  {
+   "q": "Ma « mutuelle » d'entreprise est-elle forcément une mutuelle ?",
+   "r": "Non. Le contrat collectif de votre entreprise peut être proposé par une mutuelle, une société d'assurance ou une institution de prévoyance. Le nom de l'organisme figure sur votre notice d'information."
+  },
+  {
+   "q": "Peut-on souscrire seul auprès d'une institution de prévoyance ?",
+   "r": "C'est rare. Leur activité en santé porte surtout sur les contrats collectifs d'entreprise, qui représentent 88 % de leurs cotisations selon la DREES."
+  },
+  {
+   "q": "Qui contrôle ces organismes ?",
+   "r": "Les trois familles sont contrôlées par l'Autorité de contrôle prudentiel et de résolution (ACPR), adossée à la Banque de France."
+  }
+ ]
+}

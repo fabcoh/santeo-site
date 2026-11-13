@@ -1,0 +1,33 @@
+{
+ "slug": "surcomplementaire-sante",
+ "chapitre": "choisir",
+ "lien": "Surcomplémentaire santé",
+ "ordre": 15,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Surcomplémentaire santé : à quoi sert-elle, pour qui ?",
+ "description": "Surcomplémentaire santé : définition, différence avec l'option, salariés couverts par l'entreprise, dépassements d'honoraires, optique, dentaire.",
+ "h1": "Surcomplémentaire santé : à quoi sert-elle et pour qui ?",
+ "faq": [
+  {
+   "q": "Quelle est la différence entre une surcomplémentaire et une option ?",
+   "r": "L'option est un niveau de garanties supérieur dans le même contrat. La surcomplémentaire est un contrat distinct, qui peut être souscrit auprès d'un autre organisme."
+  },
+  {
+   "q": "Mon employeur doit-il payer ma surcomplémentaire ?",
+   "r": "Non. Il doit financer au moins la moitié de la complémentaire santé collective de base, mais la loi ne l'oblige pas à financer les options ni les surcomplémentaires."
+  },
+  {
+   "q": "Peut-on être remboursé plus que la dépense ?",
+   "r": "Non. Les remboursements ne peuvent pas dépasser les frais qui restent à votre charge après tous les autres remboursements."
+  },
+  {
+   "q": "Une surcomplémentaire rembourse-t-elle les dépassements d'honoraires ?",
+   "r": "Oui, si ses garanties le prévoient. Non responsable, elle peut aller au-delà du plafond imposé aux contrats responsables pour les médecins qui n'adhèrent pas à l'OPTAM."
+  },
+  {
+   "q": "Faut-il une surcomplémentaire quand on a une mutuelle d'entreprise ?",
+   "r": "Pas forcément. Tout dépend de vos dépenses de santé et des garanties de votre contrat : comparez d'abord votre tableau de garanties à vos besoins réels."
+  }
+ ]
+}

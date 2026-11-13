@@ -1,0 +1,12 @@
+{
+ "_explication": "Chapitres du Guide de la mutuelle, dans l'ordre d'affichage. Chaque article (maquette/guide/<slug>.json) indique son chapitre dans le champ « chapitre ». Titres et présentations : Mon idée.",
+ "chapitres": [
+  {"id": "comprendre", "titre": "Comprendre les remboursements", "intro": "Base de remboursement, tarifs des médecins, médicaments, hôpital : comment se calcule ce que vous recevez."},
+  {"id": "soins", "titre": "Dentaire, optique et audition", "intro": "Le 100 % Santé et les prothèses : les postes où le reste à charge peut être le plus élevé."},
+  {"id": "choisir", "titre": "Choisir sa mutuelle", "intro": "Lire des garanties, comparer, demander un devis ou l'avis d'un courtier."},
+  {"id": "situation", "titre": "Selon votre situation", "intro": "Retraite, famille, travail indépendant, petits revenus : ce qui change pour vous."},
+  {"id": "jeunes", "titre": "Jeunes et premier emploi", "intro": "Études, premier contrat, période sans emploi : se couvrir entre 20 et 30 ans sans payer trop."},
+  {"id": "entreprise", "titre": "Mutuelle d'entreprise", "intro": "La mutuelle obligatoire des salariés, ses dispenses et sa portabilité."},
+  {"id": "changer", "titre": "Changer de mutuelle", "intro": "Résilier à tout moment et connaître vos droits face au démarchage."}
+ ]
+}

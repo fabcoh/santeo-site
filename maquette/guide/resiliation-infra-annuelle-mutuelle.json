@@ -1,0 +1,33 @@
+{
+ "slug": "resiliation-infra-annuelle-mutuelle",
+ "chapitre": "changer",
+ "lien": "Résilier sa mutuelle à tout moment",
+ "ordre": 24,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Résiliation infra-annuelle de mutuelle (RIA) : mode d'emploi",
+ "description": "Résilier sa mutuelle à tout moment après un an : démarches, délai d'un mois, remboursement de la cotisation, résiliation en 3 clics et exceptions.",
+ "h1": "Résiliation infra-annuelle (RIA) de la mutuelle : comment ça marche ?",
+ "faq": [
+  {
+   "q": "Puis-je résilier ma mutuelle avant un an de contrat ?",
+   "r": "Pas avec la résiliation à tout moment. Vous pouvez résilier à la première échéance annuelle, au moins deux mois avant, ou plus tôt en cas de motif légitime, par exemple si vous obtenez la Complémentaire santé solidaire."
+  },
+  {
+   "q": "La résiliation infra-annuelle coûte-t-elle quelque chose ?",
+   "r": "Non. Une fois le contrat âgé d'un an, la résiliation se fait sans frais ni pénalité."
+  },
+  {
+   "q": "Dois-je envoyer une lettre recommandée ?",
+   "r": "Non, ce n'est plus obligatoire. Une lettre simple, un courriel, l'espace client ou la fonction de résiliation en ligne conviennent, selon ce que propose l'organisme."
+  },
+  {
+   "q": "En combien de temps la résiliation est-elle effective ?",
+   "r": "Elle prend effet un mois après la réception de votre demande par l'organisme. Le trop-perçu de cotisation doit vous être remboursé dans les 30 jours suivant la résiliation."
+  },
+  {
+   "q": "Puis-je résilier la mutuelle obligatoire de mon entreprise ?",
+   "r": "Non. Seul l'employeur peut résilier le contrat collectif obligatoire. Les options facultatives que vous avez ajoutées peuvent, elles, être résiliées après un an."
+  }
+ ]
+}

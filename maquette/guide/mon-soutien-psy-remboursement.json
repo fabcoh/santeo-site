@@ -1,0 +1,37 @@
+{
+ "slug": "mon-soutien-psy-remboursement",
+ "chapitre": "comprendre",
+ "lien": "Mon soutien psy (psychologue)",
+ "ordre": 30,
+ "publie": "2026-11-12",
+ "maj": "2026-11-12",
+ "titre_page": "Mon soutien psy : remboursement et rôle de la mutuelle",
+ "description": "Mon soutien psy : 12 séances par an chez un psychologue conventionné, 50 € la séance, remboursée à 60 % par l'Assurance maladie. Et la mutuelle ?",
+ "h1": "Mon soutien psy : remboursement des séances chez le psychologue et part de la mutuelle",
+ "faq": [
+  {
+   "q": "Combien de séances de psychologue sont remboursées avec Mon soutien psy ?",
+   "r": "Jusqu'à 12 séances par année civile : un entretien d'évaluation, puis jusqu'à 11 séances de suivi. Il n'y a pas de limite pour un enfant en affection de longue durée, dans le cadre de son protocole de soins."
+  },
+  {
+   "q": "Combien rembourse la mutuelle pour une séance chez le psychologue ?",
+   "r": "Avec Mon soutien psy, la séance coûte 50 € : l'Assurance maladie rembourse 30 €, et une complémentaire santé responsable finance les 20 € restants. Chez un psychologue non conventionné, tout dépend de votre contrat."
+  },
+  {
+   "q": "Faut-il une ordonnance du médecin pour Mon soutien psy ?",
+   "r": "Non. Vous pouvez prendre rendez-vous directement avec un psychologue conventionné. Votre médecin peut toutefois vous aider à savoir si le dispositif vous convient."
+  },
+  {
+   "q": "Le psychologue conventionné peut-il demander plus de 50 € ?",
+   "r": "Non. Dans le cadre de Mon soutien psy, la séance est facturée 50 €, sans dépassement d'honoraires possible."
+  },
+  {
+   "q": "Mon soutien psy est-il possible pour un enfant ?",
+   "r": "Oui, dès 3 ans, si l'enfant présente un mal-être ou une souffrance psychique qui inquiète son entourage. Les situations qui demandent l'avis d'un psychiatre en sont exclues."
+  },
+  {
+   "q": "Avec la C2S, faut-il avancer les frais chez le psychologue ?",
+   "r": "Non. Avec la Complémentaire santé solidaire, le tiers payant s'applique et les séances sont prises en charge à 100 % par l'Assurance maladie."
+  }
+ ]
+}

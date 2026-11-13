@@ -1,7 +1,10 @@
 <title>Comparateur Santéo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- polices chargées sans bloquer l'affichage du texte (référencement : vitesse sur téléphone) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap"></noscript>
 <style>
 /* Mise en page : une colonne sur téléphone (cartes), une grille d'offres sur ordinateur ; le bleu Santéo de l'ancien site en accent, l'or pour les étoiles. */
 :root{
@@ -38,15 +41,30 @@ h1,h2{font-weight:800;color:var(--brand-1)}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   h1,h2{background:linear-gradient(90deg,var(--brand-1) 0%,var(--brand-1) 55%,var(--brand-2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 }
-h1{font-size:1.4rem}
+h1,.titre-vue{font-size:1.4rem}
 h2{font-size:1.05rem}
+/* Étape 1 : « Comparez sans vous dévoiler » mis en avant, un reflet lumineux le traverse ; la suite en italique, sans gras */
+#t-vous .accroche{font-size:1.32em;font-weight:800;letter-spacing:-.005em}
+#t-vous .accroche-suite{font-family:var(--f-body);font-style:italic;font-weight:400}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  #t-vous .accroche{background:linear-gradient(105deg,var(--brand-1) 0%,var(--brand-1) 38%,var(--brand-2) 47%,#bff0ff 50%,var(--brand-2) 53%,var(--brand-1) 62%,var(--brand-1) 100%);
+    background-size:260% 100%;background-position:0 0;-webkit-background-clip:text;background-clip:text;color:transparent}
+  @media (prefers-reduced-motion: no-preference){#t-vous .accroche{animation:accroche-reflet 5s ease-in-out .8s infinite}}
+}
+@keyframes accroche-reflet{0%{background-position:100% 0}45%,100%{background-position:0 0}}
 p{margin:0}
 .small{font-size:.88rem;color:var(--muted)}
 .banner{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:.6rem .9rem;font-size:.9rem}
 header.top{display:flex;flex-direction:column;gap:.35rem;position:relative;flex:1 1 auto;width:100%}
+/* Photo du couple en haut à droite, sous l'oiseau (Fabrice, 12/11/2026) : bords fondus dans l'image, derrière le logo et les titres */
+.couple{position:absolute;top:0;right:30px;height:70px;width:auto;pointer-events:none;user-select:none;z-index:0}
+@media (min-width:700px){.couple{height:150px;right:42px;top:-4px}}
+@media (max-width:359px){.couple{height:56px;right:24px}}
+header.top>*:not(.couple){position:relative;z-index:1}
 /* Mascotte animée, en petit en haut à droite. Quatre calques de même taille, empilés : aile droite, corps, aile gauche, étoile.
-   Elle flotte, bat des ailes et son étoile scintille ; immobile si la personne a demandé moins d'animations. */
-.mascotte{position:absolute;top:0;right:0;display:block;width:58px;pointer-events:none;user-select:none}
+   Elle flotte, bat des ailes et son étoile scintille ; immobile si la personne a demandé moins d'animations.
+   Rythme ralenti de moitié (Fabrice, 13/11/2026 : « ralenti de moitie son rythme »). */
+.mascotte{position:absolute!important;top:0;right:0;display:block;width:58px;pointer-events:none;user-select:none;z-index:2!important}
 @media (min-width:700px){.mascotte{width:76px}}
 @media (max-width:359px){.mascotte{width:46px}}
 .mascotte img{position:absolute;left:0;top:0;display:block;width:100%;height:100%}
@@ -55,10 +73,10 @@ header.top{display:flex;flex-direction:column;gap:.35rem;position:relative;flex:
 .m-aile-d{transform-origin:__MASCOTTE_PIVOT_D__}
 .m-etoile{transform-origin:__MASCOTTE_PIVOT_ETOILE__}
 @media (prefers-reduced-motion: no-preference){
-  .mascotte{animation:m-vol 3.2s ease-in-out infinite alternate}
-  .m-aile-g{animation:m-aile-g .34s ease-in-out infinite alternate}
-  .m-aile-d{animation:m-aile-d .34s ease-in-out infinite alternate}
-  .m-etoile{animation:m-etoile 1.6s ease-in-out infinite alternate}
+  .mascotte{animation:m-vol 6.4s ease-in-out infinite alternate}
+  .m-aile-g{animation:m-aile-g .68s ease-in-out infinite alternate}
+  .m-aile-d{animation:m-aile-d .68s ease-in-out infinite alternate}
+  .m-etoile{animation:m-etoile 3.2s ease-in-out infinite alternate}
 }
 @keyframes m-vol{from{transform:translateY(4%) rotate(-2deg)}to{transform:translateY(-5%) rotate(2deg)}}
 @keyframes m-aile-g{from{transform:rotate(5deg)}to{transform:rotate(-24deg) scale(.95)}}
@@ -271,7 +289,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .offer{background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:.8rem 1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem}
 .o-left{display:grid;grid-template-columns:1fr auto;gap:.15rem .6rem;align-items:baseline;min-width:0}
 .o-name{font-family:var(--f-display);font-weight:700;font-size:1.1rem}
-.o-real{grid-column:1 / -1;justify-self:start;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
+.o-real{margin-right:auto;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
 .o-price{font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .o-price small{font-weight:400;font-size:.8rem;color:var(--muted)}
 .o-gar{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:.3rem .5rem;align-items:start}
@@ -281,8 +299,11 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-col .pc{font-weight:700;font-size:.9rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .o-col .sub{display:flex;flex-direction:column;margin-top:.25rem;font-size:.72rem;color:var(--muted)}
 .o-col .sub b{color:var(--fg);font-size:.84rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-.o-actions{display:flex;flex-wrap:wrap;gap:.4rem}
-.o-actions button{font-size:.8rem;padding:.3rem .65rem}
+/* Carte d'offre (Fabrice, 12/11/2026) : « Détails » et « Cette offre m'intéresse » sur la même ligne, en bas à droite ;
+   la carte reste basse et ne grandit que quand le visiteur coche des options (lignes en plus sous les garanties). */
+.o-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.4rem .6rem}
+.o-btns{display:flex;flex-wrap:nowrap;gap:.4rem}
+.o-actions button{font-size:.8rem;padding:.3rem .65rem;white-space:nowrap}
 .det-pop{border:0;border-radius:16px;padding:0;width:min(36rem,calc(100vw - 2rem));max-height:min(88vh,48rem);background:var(--surface);color:var(--fg);box-shadow:0 24px 60px rgba(8,30,45,.35);overflow:hidden}
 .det-pop[open]{display:flex;flex-direction:column;animation:pop-in .16s ease-out}
 .det-pop::backdrop{background:rgba(8,30,45,.45)}
@@ -311,16 +332,16 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .chosen{background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
 .empty{padding:1rem;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
 @media (min-width:700px){
-  .offer{grid-template-columns:13rem minmax(0,1fr);column-gap:1.2rem}
+  .offer{grid-template-columns:9.5rem minmax(0,1fr);column-gap:1.2rem;row-gap:.45rem;padding:.7rem 1rem .65rem}
   .o-left{grid-column:1;grid-row:1;grid-template-columns:1fr;align-content:start}
   .o-left .o-price{text-align:left}
-  .o-actions{grid-column:1;grid-row:2;align-self:end}
-  .o-gar{grid-column:2;grid-row:1 / span 2;border-left:1px solid var(--line);padding-left:1.1rem}
+  .o-gar{grid-column:2;grid-row:1;border-left:1px solid var(--line);padding-left:1.1rem}
+  .o-actions{grid-column:1 / -1;grid-row:2}
   .o-col .lab{font-size:.85rem;color:var(--fg);font-weight:600}
   .o-col .lab .full{display:inline}
   .o-col .lab .short{display:none}
   .o-col .pc{font-size:1rem}
-  .o-col .sub{font-size:.8rem}
+  .o-col .sub{font-size:.8rem;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:0 .35rem;margin-top:.15rem}  /* « Verres complexes 200 € » sur une ligne : la carte grandit moins vite */
   .o-col .sub b{font-size:.92rem}
 }
 }
@@ -350,6 +371,8 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 #lead input:hover,#lead select:hover{border-color:var(--accent)}
 #lead input:focus-visible,#lead select:focus-visible{border-color:var(--accent);outline:3px solid var(--accent);outline-offset:1px}
 #lead .manque{border-color:#c0392b!important;background:var(--warn-soft)!important}
+/* Champ piège : invisible, seuls les robots le remplissent */
+.piege{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
 #send{font-size:1.08rem;padding:.85rem 1.6rem;border-radius:10px;box-shadow:0 3px 10px rgba(10,122,165,.28)}
 @media (max-width:599px){#lead .wa{flex-direction:column;align-items:stretch}#send{width:100%}#lead .wa .wa-btn{justify-content:center}}
 @keyframes attire{0%{box-shadow:var(--form-shadow),0 0 0 0 rgba(10,122,165,.55)}70%{box-shadow:var(--form-shadow),0 0 0 14px rgba(10,122,165,0)}100%{box-shadow:var(--form-shadow),0 0 0 0 rgba(10,122,165,0)}}
@@ -357,9 +380,21 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 @media (prefers-reduced-motion: reduce){#form-panel.attire{animation:none}}
 .consent{display:flex;flex-direction:column;gap:.5rem}
 .accords{border:2px solid var(--accent);border-radius:10px;padding:.7rem .85rem;display:flex;flex-direction:column;gap:.5rem}
+/* « Votre accord » : lien souligné sous la case ; un clic affiche le détail (retrait de l'accord, données personnelles) */
+.votre-accord{margin-top:.6rem}
+.votre-accord summary{display:inline-block;cursor:pointer;color:var(--accent);text-decoration:underline;text-underline-offset:2px;font-size:.88rem;padding:.25rem 0;list-style:none}
+.votre-accord summary::-webkit-details-marker{display:none}
+.votre-accord summary::marker{content:""}
+.votre-accord summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.votre-accord p{margin-top:.45rem}
 .consent label{display:flex;gap:.55rem;align-items:flex-start;font-size:.93rem}
 .consent input{margin-top:.25rem;flex:0 0 auto}
 .done{background:var(--accent-soft);border-radius:8px;padding:.8rem .9rem}
+/* Confirmation après l'envoi : ce qui va se passer */
+.merci-titre{font-weight:700;color:var(--fg);margin:0 0 .5rem}
+.merci-suite{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem}
+.merci-suite li{line-height:1.45}
+.merci-suite a{color:var(--accent);font-weight:700}
 .wa{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
 
 /* Notes */
@@ -379,11 +414,100 @@ th,td{border-bottom:1px solid var(--line);padding:.45rem .5rem;text-align:left;v
 th{color:var(--muted)}
 ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:.35rem;font-size:.92rem}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
+
+/* ---------- Tchat avec Antony (bulle en bas à droite, PC et téléphone) ---------- */
+:root{--tchat-fond:#eef4f8}
+/* Ciel de l'en-tête (Fabrice, 12/11/2026 : « continu le ciel sur toute la partie pour harmoniser en estompant vers le titre ») :
+   bande de ciel en haut de la page, de la couleur du ciel de la photo, qui s'estompe vers le titre (à gauche) et vers le bas. */
+:root{--ciel:#d6ecfa;--ciel-clair:#eef7fd}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ciel:#15384a;--ciel-clair:#102833}}
+:root[data-theme="dark"]{--ciel:#15384a;--ciel-clair:#102833}
+body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg) 100%) top / 100% var(--ciel-h,230px) no-repeat,
+  linear-gradient(to right,var(--bg) 0,var(--bg) 12%,var(--ciel-clair) 38%,var(--ciel) 70%,var(--ciel) 100%) top / 100% var(--ciel-h,230px) no-repeat,var(--bg)}
+@media (max-width:699px){body{--ciel-h:150px}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--tchat-fond:#0b1a22}}
+:root[data-theme="dark"]{--tchat-fond:#0b1a22}
+.tchat-voile{position:fixed;inset:0;background:rgba(5,20,30,.5);display:none}
+@media (max-width:599px){.tchat-voile.ouvert{display:block}}
+/* Sur téléphone, le tchat ouvert prend tout l'écran (Fabrice, 10/11/2026 : « Surtout depuis un portable ») */
+@media (max-width:599px){
+  .tchat.ouvert{inset:0;right:0;bottom:0;z-index:80}
+  .tchat.ouvert .tchat-fenetre{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;max-height:none;border:0;border-radius:0;box-shadow:none}
+  .tchat.ouvert .tchat-tete{padding-top:max(.65rem,env(safe-area-inset-top,0px))}
+  .tchat.ouvert .tchat-saisie{padding-bottom:max(.7rem,env(safe-area-inset-bottom,0px))}
+  .tchat.ouvert .tchat-pied{display:none}
+}
+.tchat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(max(16px,env(safe-area-inset-bottom,0px)) + var(--bandeau-h,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
+.tchat>*{pointer-events:auto}
+.tchat[hidden]{display:none}
+.tchat-bouton{position:relative}
+.tchat-pastille{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:#c0392b;color:#fff;font-size:.72rem;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.tchat-pastille[hidden]{display:none}
+.tchat-msg.en-cours{opacity:.6}
+.tchat-reessayer{align-self:flex-end;border:0;background:transparent;color:#c0392b;font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer;padding:0}
+.tchat-bouton{display:flex;align-items:center;gap:.55rem;border:2px solid #128c4a;border-radius:999px;background:var(--surface);color:var(--fg);box-shadow:0 6px 22px rgba(10,40,60,.22);padding:.3rem;font:inherit;font-size:.92rem;cursor:pointer;transition:opacity .2s}
+.tchat-bouton:focus-visible,.tchat-x:focus-visible,.tchat-envoyer:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tchat-avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);border:1px solid var(--line);color:var(--brand-1);font-weight:800;font-family:var(--f-display);font-size:1.15rem;flex:none;overflow:hidden}
+/* L'avatar d'Antony est l'oiseau de l'en-tête (Fabrice, 10/11/2026) */
+.tchat-avatar img{width:118%;height:118%;object-fit:contain;transform:translate(3%,4%)}
+.tchat-avatar .m-avatar{position:relative;display:block;width:118%;transform:translate(3%,4%)}
+.tchat-avatar .m-avatar img{position:absolute;left:0;top:0;width:100%;height:100%;transform:none;animation:none}
+.tchat-avatar .m-avatar .m-corps{position:relative;height:auto}
+@media (max-width:599px){.tchat.discret .tchat-bouton[aria-expanded="false"],.tchat.discret .tchat-invite{opacity:0;visibility:hidden}}
+/* Petite bulle « Posez-moi vos questions » au-dessus de l'oiseau (Fabrice, 10/11/2026 : « pas sous mais au dessus »),
+   cachée quand la fenêtre est ouverte */
+.tchat-pied{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem}
+.tchat-invite{background:var(--surface);color:var(--brand-1);border:1px solid var(--line);border-radius:14px 14px 4px 14px;box-shadow:0 4px 14px rgba(10,40,60,.16);padding:.35rem .7rem;font:inherit;font-size:.8rem;font-weight:600;line-height:1.2;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+.tchat-invite[hidden]{display:none}
+.tchat-invite:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:599px){.tchat-invite{font-size:.74rem;padding:.3rem .6rem}}
+@media (prefers-reduced-motion: no-preference){.tchat-invite{animation:tchat-invite-arrive .4s ease-out 1.2s both}}
+@keyframes tchat-invite-arrive{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.tchat-fenetre{position:relative;width:min(360px,calc(100vw - 32px));max-height:min(540px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--tchat-fond);border:2px solid var(--brand-1);border-radius:16px;box-shadow:0 18px 50px rgba(5,30,50,.42),0 0 0 5px rgba(14,88,131,.10);overflow:hidden}
+.tchat-fenetre[hidden]{display:none}
+.tchat-tete{display:flex;align-items:center;gap:.6rem;padding:.65rem .75rem;background:linear-gradient(135deg,#0e5883,#0a7aa5);color:#fff}   /* mêmes bleus foncés en clair et en sombre : texte blanc lisible */
+.tchat-qui{display:flex;flex-direction:column;line-height:1.25;flex:1;min-width:0;color:#fff;font-size:1.05rem}
+.tchat-qui span{font-size:.78rem;color:var(--muted)}
+.tchat-x{border:0;background:rgba(255,255,255,.18);font-size:1.5rem;line-height:1;color:#fff;cursor:pointer;padding:.05rem .5rem .15rem;border-radius:8px}
+.tchat-fil{padding:.8rem;display:flex;flex-direction:column;gap:.5rem;overflow-y:auto;flex:1;min-height:3rem}
+.tchat-fil:empty{display:none}
+.tchat-msg{max-width:88%;padding:.55rem .75rem;border-radius:14px;font-size:.92rem;line-height:1.4;white-space:pre-wrap}
+.tchat-msg.lui{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+.tchat-msg.moi{background:#d9fdd3;color:#111b21;border-bottom-right-radius:4px;align-self:flex-end}
+.tchat-saisie{display:flex;flex-direction:column;gap:.45rem;padding:.7rem .8rem;border-top:1px solid var(--line);background:var(--surface)}
+.tchat-saisie textarea{width:100%;resize:none;border:2px solid var(--brand-1);border-radius:10px;padding:.55rem .65rem;font:inherit;font-size:16px;background:var(--surface);color:var(--fg)}
+.tchat-envoyer{border:0;border-radius:999px;background:#128c4a;color:#fff;font:inherit;font-weight:700;padding:.6rem 1rem;cursor:pointer}
+.cache-visuel{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tchat-msg.moi{background:#005c4b;color:#e9edef}}
+:root[data-theme="dark"] .tchat-msg.moi{background:#005c4b;color:#e9edef}
+@media (prefers-reduced-motion: no-preference){.tchat-fenetre:not([hidden]){animation:tchat-ouvre .18s ease-out}}
+@keyframes tchat-ouvre{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media print{.tchat{display:none}}
+html.controle .o-real{display:block!important;color:#7a5200;background:#fdf1d8;border-radius:6px;padding:.1rem .4rem;font-weight:700}
+html.controle body::before{content:"Vue de contrôle : compagnie et formule affichées sous chaque offre";display:block;max-width:62rem;margin:0 auto .8rem;
+  background:#fdf1d8;color:#7a5200;border:1px dashed #7a5200;border-radius:8px;padding:.45rem .8rem;font-size:.88rem;text-align:center}
+/* debut-css-cookies */
+/* ---------- Bandeau cookies : statistiques et annonces Google, seulement avec l'accord du visiteur ----------
+   « Refuser » et « Accepter » ont exactement la même apparence (règle de la CNIL). */
+.cookies{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--surface);color:var(--fg);border-top:2px solid var(--brand-1);box-shadow:0 -8px 28px rgba(5,30,50,.22);padding:.85rem max(16px,env(safe-area-inset-right,0px)) max(.85rem,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cookies[hidden]{display:none}
+.cookies-dedans{max-width:1100px;margin:0 auto;display:flex;gap:.8rem 1.2rem;align-items:center;flex-wrap:wrap}
+.cookies p{margin:0;flex:1 1 420px;font-size:.88rem;line-height:1.45}
+.cookies p a{color:var(--accent);font-weight:700}
+.cookies-choix{display:flex;gap:.6rem;flex:0 0 auto}
+.cookies-choix button{min-width:8.5rem;border:2px solid #0e5883;border-radius:999px;padding:.55rem 1.1rem;font:inherit;font-weight:700;cursor:pointer;background:#0e5883;color:#fff}   /* même bleu foncé en clair et en sombre : texte blanc lisible */
+.cookies-choix button:focus-visible,.lien-cookies:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:599px){.cookies-choix{width:100%}.cookies-choix button{flex:1;min-width:0}.cookies p{font-size:.84rem}}
+.lien-cookies{border:0;background:none;padding:0;font:inherit;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline}
+.lien-cookies[hidden]{display:none}
+@media print{.cookies{display:none}}
+/* fin-css-cookies */
 </style>
 
 <div class="wrap">
   <div class="top-row">
   <header class="top">
+    <img class="couple" src="__COUPLE__" width="640" height="314" alt="" aria-hidden="true" decoding="async">
     <span class="mascotte" aria-hidden="true"><img class="m-aile-d" src="__MASCOTTE_AILE_D__" alt=""><img class="m-corps" src="__MASCOTTE_CORPS__" alt=""><img class="m-aile-g" src="__MASCOTTE_AILE_G__" alt=""><img class="m-etoile" src="__MASCOTTE_ETOILE__" alt=""></span>
     <span class="brand-wrap"><img class="brand-logo" src="__SANTEO_LOGO__" alt="Santéo, assurance santé"><svg class="comete" viewBox="0 0 609 180" aria-hidden="true" focusable="false"><defs><mask id="cm-masque" maskUnits="userSpaceOnUse" x="0" y="0" width="609" height="180"><image href="__SANTEO_MASQUE__" x="0" y="0" width="609" height="180" preserveAspectRatio="none"/></mask><filter id="cm-lueur" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><radialGradient id="cm-tete-g"><stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#ffffff"/><stop offset=".5" stop-color="#7fe3fa" stop-opacity=".95"/><stop offset="1" stop-color="#1fb2de" stop-opacity="0"/></radialGradient></defs><g mask="url(#cm-masque)" filter="url(#cm-lueur)"><path class="cm-q cm-q1"/><path class="cm-q cm-q2"/><path class="cm-q cm-q3"/><g id="cm-etincelles"></g><circle id="cm-tete" r="9" fill="url(#cm-tete-g)" opacity="0"/></g><path id="cm-etoile" d="M0 -11 C1 -3 3 -1 11 0 C3 1 1 3 0 11 C-1 3 -3 1 -11 0 C-3 -1 -1 -3 0 -11Z" filter="url(#cm-lueur)"/></svg></span>
     <div class="titre-row">
@@ -396,7 +520,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
   <div id="vue-comparateur" class="vue">
 
   <section class="panel" aria-labelledby="t-vous">
-    <div class="step"><b>1</b><div class="step-textes"><h2 id="t-vous">Comparez sans vous dévoiler : indiquez juste votre âge, CP, régime</h2>
+    <div class="step"><b>1</b><div class="step-textes"><h2 id="t-vous"><span class="accroche">Comparez sans vous dévoiler</span><span class="accroche-suite"> : indiquez juste votre âge, Code Postal, Régime sécu</span></h2>
     <p class="sous-etape">Si une offre vous intéresse, vous pourrez indiquer vos informations afin de recevoir votre devis sur votre boîte mail.</p></div></div>
     <div class="vous-grid">
       <label class="f" for="age" id="f-age"><span class="fl-t"><span class="lab-full">Votre date de naissance</span><span class="lab-short">Date de naissance</span></span>
@@ -445,6 +569,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
     <p class="form-intro">Indiquez vos coordonnées : un conseiller Santéo vous envoie le devis de cette offre. Tous les champs sont obligatoires.</p>
     <div class="chosen-box" id="chosen-box"></div>
     <form id="lead" novalidate>
+      <label class="piege" aria-hidden="true">Ne pas remplir <input id="site_web" type="text" tabindex="-1" autocomplete="off"></label>
       <div class="fields">
         <label class="f" for="civ">Civilité
           <select id="civ"><option value="">Choisir</option><option>Madame</option><option>Monsieur</option></select></label>
@@ -463,8 +588,11 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
           <label for="c-accord"><input type="checkbox" id="c-accord"> <span>J'accepte d'être contacté(e) par téléphone, WhatsApp par un conseiller de Santéo (CAPI FINANCE) au sujet de ma demande de devis de complémentaire santé, pendant les 3 prochains mois, du lundi au vendredi, entre 10 h et 13 h ou entre 14 h et 20 h.<br>J'accepte de recevoir par e-mail ou WhatsApp les offres de Santéo et les relances (CAPI FINANCE) sur ma complémentaire santé.</span></label>
           <p class="small" style="font-weight:700;color:var(--fg)">Vos coordonnées restent chez Santéo : un seul interlocuteur, aucune revente.</p>
         </div>
-        <p class="small">Votre devis vous est envoyé par e-mail dans tous les cas. Vous pouvez retirer votre accord à tout moment : répondez « STOP » sur WhatsApp, cliquez sur le lien de désinscription d'un e-mail, ou écrivez à gestion@santeo.net. La date, l'heure et le texte de chaque accord sont enregistrés avec votre demande.</p>
-        <p class="small rgpd">CAPI FINANCE (Santéo), 72 rue du Rendez-vous, 75012 Paris, traite les informations de ce formulaire pour établir votre devis, vous recontacter selon les accords cochés ci-dessus et suivre votre dossier. Elles sont réservées aux conseillers de Santéo et, si vous adhérez, à l'assureur que vous choisissez : elles ne sont ni vendues ni cédées à d'autres sociétés. Elles sont conservées 3 ans après notre dernier contact. Vous pouvez y accéder, les faire corriger ou effacer, et vous opposer à leur utilisation en écrivant à gestion@santeo.net ; vous pouvez aussi adresser une réclamation à la CNIL. Pour en savoir plus : notre politique de confidentialité (page à rédiger).</p>
+        <details class="votre-accord">
+          <summary>Votre accord</summary>
+          <p class="small">Votre devis vous est envoyé par e-mail dans tous les cas. Vous pouvez retirer votre accord à tout moment : répondez « STOP » sur WhatsApp, cliquez sur le lien de désinscription d'un e-mail, ou écrivez à gestion@santeo.net. La date, l'heure et le texte de chaque accord sont enregistrés avec votre demande.</p>
+          <p class="small rgpd">CAPI FINANCE (Santéo), 72 rue du Rendez-vous, 75012 Paris, traite les informations de ce formulaire pour établir votre devis, vous recontacter selon les accords cochés ci-dessus et suivre votre dossier. Elles sont réservées aux conseillers de Santéo et, si vous adhérez, à l'assureur que vous choisissez : elles ne sont ni vendues ni cédées à d'autres sociétés. Elles sont conservées 3 ans après notre dernier contact. Vous pouvez y accéder, les faire corriger ou effacer, et vous opposer à leur utilisation en écrivant à gestion@santeo.net ; vous pouvez aussi adresser une réclamation à la CNIL. Pour en savoir plus : notre politique de confidentialité (page à rédiger).</p>
+        </details>
       </div>
       <p class="small" id="form-err" role="alert" style="color:var(--warn);margin-top:.6rem"></p>
       <div class="wa" style="margin-top:.8rem">
@@ -509,34 +637,34 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
     <p class="small" style="margin-top:.5rem">Aucune étoile = poste non couvert au-delà de la Sécurité sociale. Médecines douces données par séance sans nombre de séances : hypothèse de 4 séances par an, à vérifier. Seuls les documents contractuels de chaque assureur font foi.</p>
   </details>
   <dialog class="det-pop" id="det-pop" aria-labelledby="det-titre"></dialog>
-  <footer class="pied"><a href="#mentions-legales">Mentions légales</a> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
+  <footer class="pied"><a href="guide/">Guide de la mutuelle</a> · <a href="simulateur-remboursement/">Simulateur de remboursement</a> · <a href="#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
   </div>
   <main id="vue-mentions" class="mentions" hidden>
     <p><a class="retour" href="#comparateur">← Retour au comparateur</a></p>
-    <h1>Mentions légales</h1>
-    <p class="small">Mise à jour : 08/11/2026</p>
+    <h2 class="titre-vue">Mentions légales</h2>
+    <p class="small">Mise à jour : 10/11/2026</p>
 
     <div class="a-confirmer">
       <strong>Maquette : points à confirmer par Fabrice avant la mise en ligne</strong>
       <ul>
-                <li>Forme et capital : l'attestation d'assurance indique une SAS ; l'ancienne page santeo.net indiquait une SARL au capital de 21 342 €.</li>
+        <li>Forme et capital : SAS au capital de 21 342 € d'après le registre public (verif.com, 09/11/2026), à confirmer.</li>
         <li>Base du conseil (liste d'assureurs ci-dessous), mode de rémunération, absence de liens capitalistiques.</li>
-        <li>Numéro de TVA intracommunautaire, capital social, adresses e-mail de contact.</li>
-        <li>Hébergeur définitif du nouveau site (OVH indiqué ci-dessous).</li>
+        <li>Numéro de TVA intracommunautaire : caché sur le site tant qu'il n'est pas confirmé (le courtage d'assurance est en principe exonéré de TVA).</li>
+        <li>Hébergeur : GitHub (le site est publié par GitHub Pages).</li>
       </ul>
     </div>
 
     <section>
       <h2>Éditeur du site</h2>
-      <p>Le site www.santeo.net est édité par <strong>CAPI FINANCE</strong>, société par actions simplifiée au capital de <em>[à confirmer]</em>, immatriculée au registre du commerce et des sociétés de Paris sous le numéro <strong>388 103 301</strong>, code APE 6622Z. Santéo est une marque de CAPI FINANCE.</p>
+      <p>Le site www.santeo.net est édité par <strong>CAPI FINANCE</strong>, société par actions simplifiée au capital de 21 342 €, immatriculée au registre du commerce et des sociétés de Paris sous le numéro <strong>388 103 301</strong>, code APE 6622Z. Santéo est une marque de CAPI FINANCE.</p>
       <p>Siège social : 72 rue du Rendez-vous, 75012 Paris. Téléphone : 01 53 19 17 17. E-mail : gestion@santeo.net.</p>
-      <p>Numéro de TVA intracommunautaire : <em>à compléter</em>.</p>
+      <p class="a-confirmer">Numéro de TVA intracommunautaire : <em>à compléter</em>.</p>
       <p>Directeur de la publication : <strong>Fabrice Cohen</strong>.</p>
     </section>
 
     <section>
       <h2>Hébergeur</h2>
-      <p>OVH SAS, au capital de 10 059 500 €, RCS Lille Métropole 424 761 419, siège social : 2 rue Kellermann, 59100 Roubaix, France. Téléphone : 1007 (depuis la France).</p>
+      <p>GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis. Téléphone : +1 877 448 4820.</p>
     </section>
 
     <section>
@@ -560,7 +688,7 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
       <p>Toute réclamation peut être adressée gratuitement à CAPI FINANCE :</p>
       <ul>
         <li>par courrier : CAPI FINANCE, service réclamations, 72 rue du Rendez-vous, 75012 Paris ;</li>
-        <li>par e-mail : fcohen@santeo.net ;</li>
+        <li>par e-mail : gestion@santeo.net ;</li>
         <li>par téléphone : 01 53 19 17 17.</li>
       </ul>
       <p>Nous accusons réception de votre réclamation dans un délai de 10 jours ouvrables, sauf si la réponse vous est apportée dans ce délai, et nous vous répondons dans un délai de 2 mois au plus à compter de sa réception.</p>
@@ -587,7 +715,9 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 
     <section>
       <h2>Cookies</h2>
-      <p>Le site n'utilise que les cookies nécessaires à son fonctionnement et, le cas échéant, une mesure d'audience respectant les conditions d'exemption de la CNIL. Tout autre traceur ne sera déposé qu'avec votre accord, que vous pourrez refuser aussi simplement que l'accepter.</p>
+      <p>Sans votre accord, le site ne dépose aucun cookie de mesure d'audience ni de publicité. Il garde seulement dans votre navigateur ce qui sert à son fonctionnement : votre conversation avec un conseiller, les réglages du comparateur et votre choix sur les cookies.</p>
+      <p>Avec votre accord, des cookies de Google (Google Analytics et Google Ads, édités par Google Ireland Limited) mesurent la fréquentation du site et l'efficacité de nos annonces : pages vues, provenance de la visite, demandes de devis et messages envoyés depuis le site (sans leur contenu). Google peut traiter ces données hors de l'Union européenne, dans le cadre reconnu par la Commission européenne (Data Privacy Framework). Ces cookies sont conservés 13 mois au plus.</p>
+      <p>Votre choix, accepté ou refusé, est gardé 6 mois. Vous pouvez le changer à tout moment par le lien « Cookies » en bas de page, aussi simplement que vous l'avez fait la première fois.</p>
     </section>
 
     <section>
@@ -602,34 +732,114 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
   </main>
 </div>
 
+<!-- debut-html-cookies -->
+<!-- Bandeau cookies : affiché seulement si des statistiques Google sont réglées (maquette/reglages-site.json, « google_mesure ») -->
+<div class="cookies" id="cookies" role="region" aria-label="Choix des cookies" hidden>
+  <div class="cookies-dedans">
+    <p>Avec votre accord, nous utilisons des cookies de Google pour mesurer la fréquentation du site et l'efficacité de nos annonces. Vous pourrez changer d'avis à tout moment par le lien « Cookies » en bas de page. <a href="#mentions-legales">En savoir plus</a></p>
+    <div class="cookies-choix"><button type="button" id="cookies-non">Refuser</button><button type="button" id="cookies-oui">Accepter</button></div>
+  </div>
+</div>
+<!-- fin-html-cookies -->
+
+<!-- Tchat avec Antony : la question du visiteur part sur WhatsApp (ligne 01 53 19 86 46), avec ce qu'il a déjà saisi -->
+<div class="tchat" id="tchat">
+  <div class="tchat-voile" id="tchat-voile" aria-hidden="true"></div>
+  <section class="tchat-fenetre" id="tchat-fenetre" role="dialog" aria-labelledby="tchat-nom" hidden>
+    <div class="tchat-tete"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-qui"><strong id="tchat-nom">Antony</strong></span><button type="button" class="tchat-x" id="tchat-x" aria-label="Fermer la discussion">×</button></div>
+    <div class="tchat-fil" id="tchat-fil" aria-live="polite"></div>
+    <form class="tchat-saisie" id="tchat-saisie"><label class="cache-visuel" for="tchat-texte">Votre message à Antony</label><textarea id="tchat-texte" rows="2" maxlength="600" enterkeyhint="send" placeholder="Votre message"></textarea><button type="submit" class="tchat-envoyer">Envoyer</button></form>
+  </section>
+  <div class="tchat-pied">
+    <button type="button" class="tchat-invite" id="tchat-invite">Posez-moi vos questions</button>
+  <button type="button" class="tchat-bouton" id="tchat-bouton" aria-expanded="false" aria-controls="tchat-fenetre" aria-label="Écrire à Antony"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-pastille" id="tchat-pastille" aria-label="Nouveau message d'Antony" hidden></span></button>
+  </div>
+</div>
+
 <script>
 __MOTEUR__
 </script>
 <script type="application/json" id="d-tarifs">__TARIFS__</script>
 <script type="application/json" id="d-gammes">__GAMMES__</script>
 <script type="application/json" id="d-extras">__EXTRAS__</script>
+<script type="application/json" id="d-catalogue">__CATALOGUE__</script>
+<script type="application/json" id="d-april">__APRIL__</script>
 <script>
 (function(){
 "use strict";
 const D=JSON.parse(document.getElementById("d-tarifs").textContent);
 const G=JSON.parse(document.getElementById("d-gammes").textContent);
 const EX=JSON.parse(document.getElementById("d-extras").textContent);
-const COMPAGNIES=[
-  {co:"Avenir Mutuelle",items:[["CAPEVO","Cap Évolution"],["CAPNR","Cap NR"],["LPSH","LPS Hospi (hospitalisation seule)"],["TALIS","Talis (surcomplémentaire)"]]},
-  {co:"MCCI",items:[["MCCINOVA","Nova (non responsable)"],["FLEXIA","Flexia"],["SOLENCIA","Solencia (62 ans et plus)"]]},
-  {co:"La Mutuelle Verte",items:[["MV","Gamme courtage GCI"]]},
-  {co:"Révoluo",items:[["REV","Révoluo"],["RF50","Révoluo RF50"],["RF100","Révoluo RF100"]]},
-  {co:"APRIL",items:[],note:"Tarifs par le relais APRIL : pas encore dans la maquette."},
-  {co:"Apicil",items:[],note:"Tarifs par le relais Apicil : pas encore dans la maquette."},
-  {co:"Alptis",items:[],note:"Pas de tarifs dans le comparateur de Claude."}];
-const CFG_DEPART=()=>({gammes:{CAPEVO:true,CAPNR:true,LPSH:false,TALIS:false,MCCINOVA:true,FLEXIA:true,SOLENCIA:true,MV:true,REV:true,RF50:true,RF100:true},
+/* Catalogue des compagnies et produits (maquette/catalogue.json, publié aussi en /catalogue.json pour l'espace admin du CRM).
+   Sur le site, les réglages viennent de l'espace admin (CRM, « produits », « logos », « tchat ») ; à défaut, des derniers
+   réglages connus, puis des réglages par défaut du catalogue : le site n'est jamais vide. Dans la maquette, la « Gestion des
+   compagnies » reste locale (cet appareil seulement). */
+const CATALOGUE=JSON.parse(document.getElementById("d-catalogue").textContent);
+const COMPAGNIES=CATALOGUE.compagnies.map(c=>({co:c.nom,items:c.produits.map(p=>[p.code,p.nom]),note:c.note||""}));
+const CFG_DEPART=()=>({gammes:Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits.map(p=>[p.code,!!p.defaut]))),
   logos:Object.fromEntries(COMPAGNIES.map(c=>[c.co,true]))});
-const CLE="santeo-maquette-gestion-v1";
-let CFG=CFG_DEPART();
-try{const s=JSON.parse(localStorage.getItem(CLE)||"null"); if(s&&s.gammes&&s.logos){Object.assign(CFG.gammes,s.gammes);Object.assign(CFG.logos,s.logos);}}catch(e){}
+const CLE="santeo-maquette-gestion-v1", MODE_SITE="__MODE__"==="site";
+/* Vue de contrôle (Fabrice, 11/11/2026 : « je voudrais avoir une version avec les compagnies affiché pour bien controler »,
+   puis « OK ») : www.santeo.net/?controle=1 affiche sous chaque offre la compagnie et la formule, avec les vrais tarifs
+   (APRIL et API Santé compris). Les visiteurs ordinaires ne voient rien de changé ; ces noms sont déjà dans le code de la page. */
+const CONTROLE=MODE_SITE&&/[?&]controle=1(&|$)/.test(location.search);
+const REEL=CONTROLE?"Contrôle : ":"Maquette : ";
+if(CONTROLE)document.documentElement.classList.add("controle");
+let CFG=CFG_DEPART(), REGLAGE_TCHAT=CATALOGUE.tchat_defaut!==false;
+function appliquerReglages(r){
+  if(!r||typeof r!=="object")return false;
+  const p=r.produits||{}, l=r.logos||{};
+  Object.keys(CFG.gammes).forEach(k=>{if(typeof p[k]==="boolean")CFG.gammes[k]=p[k]});
+  Object.keys(CFG.logos).forEach(k=>{if(typeof l[k]==="boolean")CFG.logos[k]=l[k]});
+  if(typeof r.tchat==="boolean")REGLAGE_TCHAT=r.tchat;
+  return true;
+}
+if(MODE_SITE){ try{const r=JSON.parse(localStorage.getItem("santeo-reglages")||"null"); if(r&&r.recu&&Date.now()-r.recu<30*864e5)appliquerReglages(r.reglages)}catch(e){} }
+else{ try{const s=JSON.parse(localStorage.getItem(CLE)||"null"); if(s&&s.gammes&&s.logos){Object.assign(CFG.gammes,s.gammes);Object.assign(CFG.logos,s.logos);}}catch(e){} }
 function garder(){try{localStorage.setItem(CLE,JSON.stringify(CFG))}catch(e){}}
 const ZONES=Moteur.zones(D);
 const $=id=>document.getElementById(id);
+/* debut-js-cookies */
+/* ---------- Bandeau cookies et statistiques Google ----------
+   Rien de Google n'est chargé sans l'accord du visiteur (règles de la CNIL) ; « Refuser » aussi simple qu'« Accepter » ;
+   choix gardé 6 mois ; lien « Cookies » en bas de page pour changer d'avis. Identifiant de mesure : reglages-site.json.
+   window.mesure(nom) compte un événement (demande envoyée, tchat) ; sans accord, il ne fait rien. */
+const GOOGLE="__GOOGLE__";
+window.mesure=function(){};
+document.addEventListener("DOMContentLoaded",()=>{
+  const bandeau=$("cookies"), lien=$("cookies-lien");
+  if(!GOOGLE||!bandeau||!lien)return;
+  const CLE_C="santeo-cookies", DUREE=182*864e5, TOUT=v=>({ad_storage:v,analytics_storage:v,ad_user_data:v,ad_personalization:v});
+  let choix=null; try{const c=JSON.parse(localStorage.getItem(CLE_C)||"null");if(c&&(c.choix==="oui"||c.choix==="non")&&Date.now()-c.date<DUREE)choix=c.choix}catch(e){}
+  lien.hidden=false;
+  let charge=false;
+  function charger(){
+    if(!charge){
+      charge=true; window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments)};
+      gtag("consent","default",TOUT("denied")); gtag("consent","update",TOUT("granted"));
+      gtag("js",new Date()); gtag("config",GOOGLE);
+      const sc=document.createElement("script"); sc.async=true; sc.src="https://www.googletagmanager.com/gtag/js?id="+encodeURIComponent(GOOGLE); document.head.appendChild(sc);
+    } else gtag("consent","update",TOUT("granted"));
+    window.mesure=(nom,params)=>{try{gtag("event",nom,params||{})}catch(e){}};
+  }
+  function effacer(){
+    const domaines=["",location.hostname,"."+location.hostname.replace(/^www\./,"")];
+    document.cookie.split(";").map(c=>c.split("=")[0].trim()).filter(n=>/^(_ga|_gid|_gcl|_gac)/.test(n))
+      .forEach(n=>domaines.forEach(d=>{document.cookie=n+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"+(d?"; domain="+d:"")}));
+  }
+  const hauteur=()=>document.documentElement.style.setProperty("--bandeau-h",bandeau.hidden?"0px":bandeau.offsetHeight+"px");
+  function decider(c){
+    try{localStorage.setItem(CLE_C,JSON.stringify({choix:c,date:Date.now()}))}catch(e){}
+    bandeau.hidden=true; hauteur();
+    if(c==="oui")charger();
+    else{if(charge)gtag("consent","update",TOUT("denied")); window.mesure=function(){}; effacer()}
+  }
+  $("cookies-oui").onclick=()=>decider("oui"); $("cookies-non").onclick=()=>decider("non");
+  lien.onclick=()=>{bandeau.hidden=false;hauteur();$("cookies-non").focus({preventScroll:true})};
+  window.addEventListener("resize",hauteur);
+  if(choix==="oui")charger(); else if(!choix){bandeau.hidden=false;hauteur()}
+});
+/* fin-js-cookies */
 const eur=v=>v.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
 
 /* ---------- Étoiles (Mon idée) ---------- */
@@ -834,6 +1044,98 @@ document.addEventListener("keydown",e=>{
   const b=document.querySelector('[data-open="'+k+'"]'); if(b)b.focus();
 });
 
+/* ---------- API Santé (VERALTI) : tarif demandé à l'assureur par le relais de Santéo ----------
+   La page n'appelle jamais APICIL : elle interroge le relais capisante.fr/apicil.php (tarification seulement, ouvert à
+   santeo.net le 11/11/2026), qui seul détient les accès. Un appel par profil complet (date de naissance exacte et code
+   postal), jamais à chaque frappe ; la réponse redessine les offres. Même profil que le comparateur de Claude. */
+const APICIL_URL="__APICIL__";
+const APICIL_REG={SAL:["GENERAL","SALARIE"],TNS:["SSI","ACTIF"],RL:["ALSACEMOSELLE","SALARIE"],TNSRL:["ALSACEMOSELLE","ACTIF"]};
+let APICIL={cle:"",etat:"vide",tarifs:null,message:""}, apicilMinuteur=null;
+const isoDe=v=>{const m=String(v||"").trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);return m?m[3]+"-"+m[2]+"-"+m[1]:null};
+function apicilEffet(){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-01"}
+function apicilProfil(cpv,dept,reg,hasCnj){
+  const r=APICIL_REG[reg]||APICIL_REG.SAL;
+  const cp=/^\d{5}$/.test(cpv)?cpv:(/^\d{2}$/.test(dept||"")?dept+"000":null);
+  const dnA=isoDe($("age").value); if(!cp||!dnA) return null;
+  const b=[{role:"ASSUR",dateNaissance:dnA,regimeSocial:r[0]}];
+  if(hasCnj){const dnC=isoDe(S.cnj); if(!dnC) return null; b.push({role:"CONJT",dateNaissance:dnC,regimeSocial:r[0]})}
+  const an=new Date().getFullYear();   // le site ne demande pas l'âge des enfants : transmis à 10 ans, comme le comparateur
+  for(let i=0;i<Math.min(S.kids,8);i++) b.push({role:"ENFNT",dateNaissance:(an-10)+"-01-01",regimeSocial:r[0]});
+  return {codePostalAssure:cp,dateEffetContrat:apicilEffet(),situationProfessionnelle:r[1],beneficiaires:b};
+}
+function apicilPourCalcul(cpv,dept,reg,hasCnj){
+  if(!APICIL_URL) return {};
+  const prof=apicilProfil(cpv,dept,reg,hasCnj); if(!prof) return {};
+  const cle=JSON.stringify(prof);
+  if(APICIL.cle!==cle){
+    APICIL={cle,etat:"attente",tarifs:null,message:""};
+    clearTimeout(apicilMinuteur); apicilMinuteur=setTimeout(()=>apicilCharge(prof,cle),500);
+  }
+  return {profil:prof,etat:APICIL.etat,tarifs:APICIL.tarifs,message:APICIL.message,approche:false,cpExact:/^\d{5}$/.test(cpv)};
+}
+async function apicilCharge(prof,cle){
+  let st;
+  try{
+    const rp=await fetch(APICIL_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(prof)});
+    const d=await rp.json().catch(()=>null);
+    if(!rp.ok||!d||!Array.isArray(d.Formules)) st={cle,etat:"erreur",tarifs:null,message:"service indisponible"};
+    else{const t={};d.Formules.forEach(f=>{const v=parseFloat(f.TarifFormule);if(!isNaN(v))t[f.LibelleFormule]=v});st={cle,etat:"ok",tarifs:t,message:""}}
+  }catch(e){st={cle,etat:"erreur",tarifs:null,message:"service injoignable"}}
+  if(APICIL.cle===cle){APICIL=st;upd()}   // une réponse pour un profil déjà changé est ignorée
+}
+
+/* ---------- APRIL : tarifs demandés à l'assureur par le relais de Santéo (capisante.fr/april.php) ----------
+   Tarification seulement (jamais April-On ni souscription), ouvert à santeo.net le 11/11/2026. Produits : ceux cochés dans
+   l'espace admin (catalogue « APRIL:… »), produits réservés aux indépendants seulement pour un régime TNS. Un seul appel par
+   profil complet ; garanties lues dans la page du comparateur de Claude au moment de la construction (« n.c. » = non
+   communiqué). Mêmes règles que le comparateur : code postal du chef-lieu à défaut des 5 chiffres, enfants à 10 ans,
+   produits modulables lus sur la diagonale (« Niv. 3 » = 03|03). */
+const APRIL=JSON.parse(document.getElementById("d-april").textContent);
+const APRIL_REG={SAL:"SS",TNS:"TNS",RL:"AlsaceMoselle",TNSRL:"AlsaceMoselle"};
+const APRIL_NOMS=Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits).filter(p=>p.code.startsWith("APRIL:")).map(p=>[p.code.slice(6),p.nom]));
+let APRIL_ST={cle:"",etat:"vide",res:null,famille:false}, aprilMinuteur=null;
+function aprilCP(cpv,dept){
+  if(/^\d{5}$/.test(cpv))return cpv; if(!dept)return null;
+  const s={"13":"13001","69":"69001","75":"75001","2A":"20000","2B":"20200"}[dept]; if(s)return s;
+  if(/^97\d$/.test(dept))return dept+"00"; return /^\d{2}$/.test(dept)?dept+"000":null;
+}
+function aprilProduits(reg){
+  return Object.keys(CFG.gammes).filter(k=>k.startsWith("APRIL:")&&CFG.gammes[k]).map(k=>k.slice(6))
+    .filter(c=>APRIL.ordre.includes(c)&&(!APRIL.tns.includes(c)||reg==="TNS"||reg==="TNSRL"));
+}
+function aprilNiveaux(n){
+  const k=Object.keys(n||{}).sort(), diag=k.filter(x=>x.includes("|")).filter(x=>new Set(x.split("|")).size===1);
+  return (k.some(x=>x.includes("|"))?diag:k).map(x=>({niv:parseInt(x,10),prix:n[x]})).filter(x=>x.niv>0&&typeof x.prix==="number"&&x.prix>0);
+}
+function aprilPourCalcul(cpv,dept,reg,hasCnj){
+  if(!APRIL.url) return {};
+  const produits=aprilProduits(reg), cp=aprilCP(cpv,dept), dn=isoDe($("age").value);
+  if(!produits.length||!cp||!dn) return {};
+  const assures=[{role:"AssurePrincipal",naissance:dn}];
+  if(hasCnj){const dc=isoDe(S.cnj); if(!dc) return {}; assures.push({role:"Conjoint",naissance:dc})}
+  const an=new Date().getFullYear();
+  for(let i=0;i<Math.min(S.kids,8);i++) assures.push({role:"Enfant",naissance:(an-10)+"-01-01"});
+  const profil={cp,effet:apicilEffet(),regime:APRIL_REG[reg]||"SS",assures,produits,remise:false};
+  const cle=JSON.stringify(profil);
+  if(APRIL_ST.cle!==cle){
+    APRIL_ST={cle,etat:"attente",res:null,famille:false};
+    clearTimeout(aprilMinuteur); aprilMinuteur=setTimeout(()=>aprilCharge(profil,cle),600);
+  }
+  if(APRIL_ST.etat!=="ok") return {etat:APRIL_ST.etat};
+  return {etat:"ok",famille:APRIL_ST.famille,produits:APRIL_ST.res.map(p=>({code:p.produit,idx:APRIL.ordre.indexOf(p.produit),
+    nom:APRIL_NOMS[p.produit]||p.produit,resp:APRIL.resp[p.produit]===true,niveaux:aprilNiveaux(p.niveaux)}))};
+}
+async function aprilCharge(profil,cle){
+  let st;
+  try{
+    const rp=await fetch(APRIL.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(profil)});
+    const d=await rp.json().catch(()=>null);
+    if(!rp.ok||!d||!Array.isArray(d.produits)) st={cle,etat:"erreur",res:null,famille:false};
+    else st={cle,etat:"ok",res:d.produits.filter(p=>p&&p.etat==="ok"&&APRIL.ordre.includes(p.produit)),famille:!!d.famille&&!d.liensFamille};
+  }catch(e){st={cle,etat:"erreur",res:null,famille:false}}
+  if(APRIL_ST.cle===cle){APRIL_ST=st;upd()}
+}
+
 /* ---------- Calcul ---------- */
 function compute(){
   const age=ageDeDate($("age").value);
@@ -849,7 +1151,9 @@ function compute(){
   if(hasCnj&&cnjAge==null) return {err:S.cnj.replace(/\D/g,"").length===8?"La date de naissance du conjoint n'existe pas : vérifiez le jour et le mois.":"Indiquez la date de naissance complète du conjoint (jour, mois, année)."};
   const SEL=Object.assign({},CFG.gammes);
   if(!Object.values(SEL).some(v=>v)) return {err:"Aucune gamme n'est affichée : cochez-en au moins une dans « Gestion des compagnies », en bas de la page."};
-  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null});
+  const apicil=SEL.APICIL?apicilPourCalcul(cpv,dept,reg,hasCnj):{};
+  const april=aprilPourCalcul(cpv,dept,reg,hasCnj); SEL.APRIL=april.etat==="ok";
+  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null,apicil,april});
   const rows=r.rows.filter(x=>!x.incomplete&&x.total>0).map(x=>{
     const st={}; POSTES.forEach(p=>st[p.k]=p.st(x)); return Object.assign({},x,{st});
   });
@@ -857,16 +1161,18 @@ function compute(){
   return {rows,fit};
 }
 const CHAMP={hosp:"hospO",hono:"honoO",dent:"dent",opt:"opt",autres:"md"};
-function fmtVal(s){if(NONE(s))return "Non couvert";if(/^incl/.test(String(s)))return "dans le forfait optique";return String(s).replace(/\s*BR$/,"").replace(/€\/s$/,"€/séance")}
+// « n.c. » = non communiqué par l'assureur (APRIL sans tableau publié) : jamais affiché « non couvert » ni « — »
+const NC=s=>s==="n.c.";
+function fmtVal(s){if(NC(s))return "Non communiqué";if(NONE(s))return "Non couvert";if(/^incl/.test(String(s)))return "dans le forfait optique";return String(s).replace(/\s*BR$/,"").replace(/€\/s$/,"€/séance")}
 function lignesEnPlus(p,x){return p.more.filter(f=>S.flt[f.id]&&f.v).map(f=>'<span class="sub"><span class="lab2">'+f.lib+'</span><b>'+fmtVal(f.v(x))+'</b></span>').join("")}
 // « Autres » n'apparaît dans les offres que si le visiteur le demande (étoiles, précision ou texte)
 function postesAffiches(){return POSTES.filter(p=>p.k!=="autres"||S.need.autres>0||p.more.some(f=>S.flt[f.id])||(S.autre.autres||"").trim())}
-function valeur(p,x){const s=x[CHAMP[p.k]]; if(NONE(s))return "—"; return String(s).replace(/\s*BR$/,"").replace(/\s*\/an$/," /an").replace(/€\/s$/,"€/séance");}
+function valeur(p,x){const s=x[CHAMP[p.k]]; if(NC(s))return "n.c."; if(NONE(s))return "—"; return String(s).replace(/\s*BR$/,"").replace(/\s*\/an$/," /an").replace(/€\/s$/,"€/séance");}
 function starsOf(n){return "★".repeat(n)+"<i>"+"★".repeat(5-n)+"</i>"}
 function starLine(n){return n?"★".repeat(n)+"<i>"+"★".repeat(5-n)+"</i>":"<i>Non couvert</i>"}
 function detailHtml(x){
-  const v=s=>NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
-  const lentilles=(a,f)=>NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
+  const v=s=>NC(s)?"Non communiqué":NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
+  const lentilles=(a,f)=>NC(a)&&NC(f)?"Non communiqué":NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
   // poste principal (en gras, même valeur que sur la carte) puis ses sous-postes
   const G=[
     ["Hospitalisation",valeur(POSTES[0],x),[["Honoraires du chirurgien (OPTAM)",v(x.hospO)],["Honoraires du chirurgien (hors OPTAM)",v(x.hospN)],["Chambre particulière",v(x.ch)]]],
@@ -876,14 +1182,14 @@ function detailHtml(x){
     ["Autres",valeur(POSTES[4],x),[["Médecines douces",v(x.md)],["Aides auditives",v(x.aud||ex(x,"aud"))]]]
   ];
   return '<table class="gar"><colgroup><col><col class="c-niv"></colgroup><thead><tr><th scope="col">Garantie</th><th scope="col">Niveau</th></tr></thead>'+
-    G.map(g=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th><td>'+(g[1]==="—"?"Non couvert":g[1])+'</td></tr>'+
+    G.map(g=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th><td>'+(g[1]==="—"?"Non couvert":g[1]==="n.c."?"Non communiqué":g[1])+'</td></tr>'+
       g[2].map(l=>'<tr class="g-sous"><td>'+l[0]+'</td><td>'+l[1]+'</td></tr>').join("")+'</tbody>').join("")+
     '<tbody><tr class="g-poste"><th scope="row">Contrat responsable</th><td>'+(x.resp?"Oui":"Non")+'</td></tr></tbody></table>';
 }
 function ouvrirDetail(i){
   const x=LAST[i], d=$("det-pop"); if(!x)return;
   d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">Option '+(i+1)+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
-    '<div class="o-real" title="Visible seulement dans la maquette">Maquette : '+x.gamme+' · '+x.formule+'</div></div>'+
+    '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
     '<button type="button" class="np-x dp-x" aria-label="Fermer">×</button></div>'+
     '<div class="dp-corps">'+detailHtml(x)+'</div>'+
     '<div class="dp-pied"><button type="button" class="ghost dp-fermer">Fermer</button><button type="button" class="btn dp-choisir">Cette offre m\'intéresse</button></div>';
@@ -900,6 +1206,10 @@ function upd(){
   $("more-offers").hidden=true;
   if(res.err){$("count").textContent=res.err;LAST=[];return}
   const list=res.fit; LAST=list;
+  // L'option choisie est suivie par son identité (gamme et formule) : si des offres arrivent ou partent (tarif API Santé,
+  // étoiles), son numéro suit ; si elle n'est plus proposée, le choix est retiré.
+  if(S.chosen==null) S.choixId=null;
+  else if(S.choixId){const j=list.findIndex(x=>x.key+"|"+x.fi===S.choixId); if(j<0){S.chosen=null;S.choixId=null;$("chosen-box").innerHTML=""} else if(j!==S.chosen){S.chosen=j;afficherChoix(j)}}
   if(!list.length){
     $("count").textContent="Aucune offre n'atteint tous vos niveaux.";
     box.innerHTML='<p class="empty">Baissez une étoile ou retirez une précision : nous avons '+res.rows.length+' offres pour votre profil. Un conseiller peut aussi chercher pour vous.</p>';
@@ -911,11 +1221,11 @@ function upd(){
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
     o.setAttribute("aria-label","Option "+(i+1));
     const cols=postesAffiches();
-    o.innerHTML='<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+
-      '<div class="o-real" title="Visible seulement dans la maquette">Maquette : '+x.gamme+' · '+x.formule+'</div></div>'+
+    o.innerHTML='<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div></div>'+
       '<div class="o-gar" style="--n:'+cols.length+'">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="lab"><span class="short">'+p.sh+'</span><span class="full">'+p.nm+'</span></span>'+
-        '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</div>'}).join("")+'</div>'+
-      '<div class="o-actions"><button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog">(+) Détails</button><button type="button" class="btn" data-c="'+i+'">Cette offre m\'intéresse</button></div>';
+        '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</div>'}).join("")+'</div>'+
+      '<div class="o-actions"><div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
+      '<span class="o-btns"><button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog">(+) Détails</button><button type="button" class="btn" data-c="'+i+'">Cette offre m\'intéresse</button></span></div>';
     box.appendChild(o);
   });
   box.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>ouvrirDetail(+b.dataset.d));
@@ -928,13 +1238,16 @@ $("more-offers").onclick=()=>{S.shown=LAST.length;upd()};
 function besoinsPrecis(){
   const L=[]; POSTES.forEach(p=>{p.more.forEach(f=>{if(S.flt[f.id])L.push(f.lb+(f.ok?"":" (à voir avec le conseiller)"))}); const a=(S.autre[p.k]||"").trim(); if(a)L.push(p.nm+" : "+a.replace(/</g,"&lt;"))});
   return L; }
-function choose(i){
-  S.chosen=i; const x=LAST[i];
-  const bp=besoinsPrecis();
+function afficherChoix(i){
+  const x=LAST[i], bp=besoinsPrecis();
   $("chosen-box").innerHTML='<div class="ch-titre"><span class="ch-lib">Votre choix</span><strong>Option '+(i+1)+'</strong><span class="ch-prix">'+eur(x.total)+' <small>/mois</small></span></div>'+
     '<div class="ch-gar">'+postesAffiches().map(p=>'<span>'+p.nm+' <b>'+valeur(p,x)+'</b></span>').join("")+'</div>'+
     (bp.length?'<div class="ch-plus">Vos besoins précis : '+bp.join(", ")+'</div>':"");
+}
+function choose(i){
+  S.chosen=i; S.choixId=LAST[i].key+"|"+LAST[i].fi; afficherChoix(i);
   $("form-panel").hidden=false; $("done").hidden=true; $("lead").hidden=false;
+  document.querySelector("#form-panel .form-intro").hidden=false; $("t-form").textContent="Recevoir mon devis";
   upd(); majWhatsApp();
   const fp=$("form-panel"), doux=!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
   fp.scrollIntoView({behavior:doux?"smooth":"auto",block:"start"});
@@ -953,11 +1266,77 @@ $("lead").addEventListener("submit",e=>{
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($("mail").value.trim()))$("mail").classList.add("manque");
   if(miss.length){$("form-err").textContent="Il manque "+miss.join(", ")+".";const m=document.querySelector("#lead .manque");if(m)m.focus();return}
   $("form-err").textContent="";
-  const canaux=$("c-accord").checked?["téléphone et WhatsApp","offres et relances par e-mail ou WhatsApp"]:[];
-  const preuve=new Date().toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"short"});
-  $("lead").hidden=true; $("done").hidden=false;
-  $("done").innerHTML="<strong>Maquette : rien n'a été envoyé.</strong><br>En service, cette demande créerait une fiche dans le CRM Santéo (provenance « Site Santéo »), avec l'option choisie, vos besoins précis et les accords donnés : "+(canaux.length?canaux.join(" ; "):"aucune relance : devis par e-mail seulement")+". Preuve des accords enregistrée le "+preuve+".";
+  envoyer();
 });
+
+/* ---------- Envoi de la demande ----------
+   Maquette : rien n'est envoyé. Site : la demande part vers le CRM Santéo (adresse ENVOI) ; si cette adresse n'est pas
+   encore ouverte et que REPLI vaut "whatsapp", la demande s'ouvre dans WhatsApp, prête à envoyer à la ligne Santéo. */
+const MODE="__MODE__", ENVOI="__ENVOI__", REPLI="__REPLI__";
+// Provenance : ?src=whatsapp (lien envoyé aux clients WhatsApp), ?utm_source=… ou une annonce Google ; gardée pendant la visite
+const SOURCE=(()=>{let v="";try{const q=new URLSearchParams(location.search);
+  v=(q.get("src")||q.get("utm_source")||(q.get("gclid")?"google-ads":"")).toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,30);
+  if(v)sessionStorage.setItem("santeo-source",v);else v=sessionStorage.getItem("santeo-source")||""}catch(e){}return v})();
+function provenance(){return SOURCE==="whatsapp"?"Site Santéo – WhatsApp":SOURCE?"Site Santéo – "+SOURCE:"Site Santéo"}
+function texteAccord(){const l=document.querySelector('label[for="c-accord"] span');return l?l.textContent.replace(/\s+/g," ").trim():""}
+function laDemande(){
+  const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
+  return {civilite:$("civ").value,prenom:$("prenom").value.trim(),nom:$("nom").value.trim(),telephone:$("tel").value.trim(),email:$("mail").value.trim(),
+    date_naissance:$("age").value.trim(),code_postal:$("cp").value.trim().toUpperCase(),regime:$("reg").options[$("reg").selectedIndex].text,
+    conjoint:S.cnj!==null?{date_naissance:S.cnj.trim()}:null,enfants:S.kids,
+    offre:x?{numero:S.chosen+1,cotisation_mensuelle:Math.round(x.total*100)/100,gamme:x.gamme,formule:x.formule}:null,
+    niveaux:Object.assign({},S.need),besoins:besoinsPrecis().map(t=>t.replace(/&lt;/g,"<")).join(" ; "),
+    accord_recontact:$("c-accord").checked,texte_accord:$("c-accord").checked?texteAccord():"",date_accord:new Date().toISOString(),
+    provenance:provenance(),page:location.href.split("#")[0],site_web:$("site_web").value,test:/[?&]test=1(&|$)/.test(location.search)};
+}
+function messageWhatsApp(d){
+  const L=["Bonjour, je demande un devis depuis le site Santéo."];
+  if(d.offre)L.push("Option "+d.offre.numero+" à "+eur(d.offre.cotisation_mensuelle)+" par mois.");
+  L.push("Né(e) le "+d.date_naissance+", code postal "+d.code_postal+", "+d.regime+".");
+  if(d.conjoint)L.push("Conjoint né(e) le "+d.conjoint.date_naissance+".");
+  if(d.enfants)L.push(d.enfants+" enfant"+(d.enfants>1?"s":"")+".");
+  if(d.besoins)L.push("Besoins précis : "+d.besoins+".");
+  L.push(d.civilite+" "+d.prenom+" "+d.nom+", "+d.telephone+", "+d.email+".");
+  L.push(d.accord_recontact?"J'accepte d'être recontacté(e) par téléphone et WhatsApp.":"Merci de m'envoyer le devis par e-mail seulement.");
+  return L.join("\n");
+}
+function fini(html,titre){$("lead").hidden=true;document.querySelector("#form-panel .form-intro").hidden=true;if(titre)$("t-form").textContent=titre;
+  $("done").hidden=false;$("done").innerHTML=html;$("done").scrollIntoView({block:"nearest"})}
+const html=t=>String(t).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+function envoyer(){
+  const d=laDemande(), b=$("send");
+  if(MODE!=="site"){
+    const canaux=d.accord_recontact?["téléphone et WhatsApp","offres et relances par e-mail ou WhatsApp"]:[];
+    const preuve=new Date().toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"short"});
+    fini("<strong>Maquette : rien n'a été envoyé.</strong><br>En service, cette demande créerait une fiche dans le CRM Santéo (provenance « "+d.provenance+" »), avec l'option choisie, vos besoins précis et les accords donnés : "+(canaux.length?canaux.join(" ; "):"aucune relance : devis par e-mail seulement")+". Preuve des accords enregistrée le "+preuve+".");
+    return;
+  }
+  const lienWA=waLien(messageWhatsApp(d));
+  if(!ENVOI){
+    if(REPLI==="whatsapp"&&lienWA){
+      fini('<strong>Dernière étape : envoyez votre demande sur WhatsApp.</strong><br>WhatsApp s\'ouvre avec votre demande déjà écrite : il vous reste à appuyer sur « Envoyer ».<div class="wa" style="margin-top:.7rem"><a class="btn" href="'+lienWA+'" target="_blank" rel="noopener">Ouvrir WhatsApp</a></div>');
+      try{window.open(lienWA,"_blank","noopener")}catch(e){}
+    } else $("form-err").textContent="L'envoi des demandes n'est pas encore ouvert. Appelez-nous au 01 53 19 17 17.";
+    return;
+  }
+  b.disabled=true; const lib=b.textContent; b.textContent="Envoi en cours…";
+  // Refus du CRM : sa raison est affichée (champ mal formé, essai refusé…) ; sinon, problème de connexion
+  const rate=e=>{b.disabled=false;b.textContent=lib;
+    const raison=e&&e.raison?String(e.raison).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c])):"";
+    $("form-err").innerHTML="Votre demande n'a pas pu partir"+(raison?" : "+raison+". Corrigez et réessayez":". Vérifiez votre connexion et réessayez")+(lienWA?', ou <a href="'+lienWA+'" target="_blank" rel="noopener">envoyez-la sur WhatsApp</a>':"")+"."};
+  fetch(ENVOI,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)})
+    .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error("refus");if(typeof j.erreur==="string")e.raison=j.erreur.slice(0,200);throw e}
+      b.disabled=false;b.textContent=lib;
+      if(window.tchatDemandeEnvoyee)window.tchatDemandeEnvoyee(d,j.id);
+      window.mesure("generate_lead",{provenance:provenance()});   // compté par Google seulement si le visiteur a accepté les cookies
+      const waQ=waLien("Bonjour, je viens de demander un devis sur le site Santéo"+(d.offre?" (option "+d.offre.numero+")":"")+".");
+      fini('<p class="merci-titre">✓ Merci '+html(d.prenom)+', votre demande est bien arrivée.</p><ul class="merci-suite">'+
+        '<li><b>Votre devis</b> : un conseiller Santéo l\'étudie et vous l\'envoie par e-mail à <b>'+html(d.email)+'</b>.</li>'+
+        (d.accord_recontact?'<li><b>Un conseiller peut vous appeler</b> ou vous écrire sur WhatsApp au <b>'+html(d.telephone)+'</b>, du lundi au vendredi, entre 10 h et 13 h ou entre 14 h et 20 h.</li>'
+          :'<li><b>Aucun appel</b> : vous recevez seulement votre devis par e-mail.</li>')+
+        '<li><b>Une question d\'ici là ?</b> '+(waQ?'<a href="'+waQ+'" target="_blank" rel="noopener">Écrivez-nous sur WhatsApp</a> ou appelez':'Appelez')+' le 01 53 19 17 17.</li></ul>',"Demande envoyée")}))
+    .catch(rate);
+}
 
 /* ---------- Gestion des compagnies (maquette) ---------- */
 function appliquerLogos(){document.querySelectorAll(".logo-box").forEach(b=>{b.hidden=!CFG.logos[b.dataset.co]})}
@@ -977,7 +1356,7 @@ $("adm-all").onclick=()=>{Object.keys(CFG.gammes).forEach(k=>CFG.gammes[k]=true)
 $("adm-reset").onclick=()=>{CFG=CFG_DEPART();garder();renderAdmin();appliquerLogos();upd()};
 
 /* ---------- WhatsApp (ligne 86 46) ---------- */
-const WA_NUMERO="33153188646";   // ligne 86 46 : 01 53 18 86 46 (Fabrice, 08/11/2026), au format international sans « + »
+const WA_NUMERO="33153198646";   // ligne 86 46 : 01 53 19 86 46 (Fabrice, 09/11/2026 : « 0153198646 »), au format international sans « + »
 function waLien(texte){return WA_NUMERO?("https://wa.me/"+WA_NUMERO+"?text="+encodeURIComponent(texte)):null}
 function majWhatsApp(){
   const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
@@ -995,9 +1374,151 @@ window.addEventListener("hashchange",route);
 
 
 
+/* ---------- Tchat avec Antony ----------
+   Deux modes (maquette/reglages-site.json, « tchat ») :
+   - « direct » : le visiteur écrit ici et reste ici ; le CRM transmet au WhatsApp d'Antony et renvoie ses réponses,
+     affichées ici. Le visiteur n'ouvre jamais WhatsApp (Fabrice, 10/11/2026 : « je veux pas que le client ouvre
+     WhatsApp […] Le but, c'est de rester dans le chat ») ;
+   - « aucun » : pas de tchat (tant que le relais du CRM n'est pas en service).
+   Fenêtre sans texte (Fabrice, 10/11/2026 : « retirer tout les textes jsute un chat et un bouton envoyer »).
+   Prénom ou pseudo au début (Fabrice, 11/11/2026 : « il écrit bonjour / envoyer pour envoyer merci d'idiquer votre prénom
+   ou votre psuedo ») : le premier message attend ici le pseudo, puis part avec lui ; le CRM ajoute « 2 », « 3 »… pour
+   Antony si le pseudo est déjà pris (« elle pense avoir son pseudo et nous a ajoute juste un 2 après »). */
+const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
+(function(){
+  const zone=$("tchat"), bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte");
+  if(!bouton)return;
+  if(TCHAT_MODE!=="direct"||!TCHAT_CRM){zone.hidden=true;return}
+  // Espace admin : « tchat » en marche ou à l'arrêt (réglage du CRM, appliqué dès qu'il arrive)
+  window.tchatReglage=on=>{zone.hidden=!on; if(!on){$("tchat-fenetre").hidden=true;$("tchat-voile").classList.remove("ouvert");zone.classList.remove("ouvert")}};
+  if(!REGLAGE_TCHAT)zone.hidden=true;
+  // Avatar : l'oiseau de l'en-tête, repris tel quel avec ses calques (sans copier les images une seconde fois), immobile ;
+  // sinon la lettre « A »
+  const oiseau=document.querySelector(".mascotte");
+  document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau){const c=oiseau.cloneNode(true);c.className="m-avatar";i.replaceWith(c)}else i.replaceWith("A")});
+  // Identification du prospect : après une demande de devis, le numéro de fiche rendu par le CRM accompagne ses messages
+  let identite=null; try{identite=JSON.parse(localStorage.getItem("santeo-fiche")||"null")}catch(err){}
+  window.tchatDemandeEnvoyee=(d,fiche)=>{identite={fiche:fiche?String(fiche):null,prenom:d.prenom,nom:d.nom,telephone:d.telephone,email:d.email};
+    try{localStorage.setItem("santeo-fiche",JSON.stringify({fiche:identite.fiche}))}catch(err){}};
+  function contexte(){
+    const age=ageDeDate($("age").value), cp=$("cp").value.trim().toUpperCase();
+    const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
+    return {age, cp:cp&&Moteur.departement(cp)?cp:"", reg:$("reg").options[$("reg").selectedIndex].text,
+      offre:x?{numero:S.chosen+1,prix:x.total,gamme:x.gamme,formule:x.formule}:null};
+  }
+  function bulle(t,qui){const b=document.createElement("div");b.className="tchat-msg "+qui;b.textContent=t;fil.appendChild(b);fil.scrollTop=fil.scrollHeight;return b}
+  const invite=$("tchat-invite");
+  const voile=$("tchat-voile"); voile.onclick=()=>fermer();
+  function fermer(){fen.hidden=true;invite.hidden=false;voile.classList.remove("ouvert");zone.classList.remove("ouvert");bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
+  $("tchat-x").onclick=()=>fermer();
+  fen.addEventListener("keydown",e=>{if(e.key==="Escape")fermer()});
+  // Sur téléphone, la bulle s'efface quand l'étape 4 est à l'écran : elle couvrirait le bouton « Recevoir mon devis »
+  const fp=$("form-panel");
+  if(window.IntersectionObserver&&fp)new IntersectionObserver(es=>es.forEach(en=>zone.classList.toggle("discret",en.isIntersecting)),{threshold:.05}).observe(fp);
+
+  /* --- La conversation reste ici ; Antony répond depuis son WhatsApp, par le CRM --- */
+  const CLE="santeo-tchat", ARRET_SUIVI=30*60*1000, ESSAI=/[?&]test=1(&|$)/.test(location.search);
+  let etat={conversation:null,messages:[],dernier:null,activite:0,pseudo:null,attendPseudo:false}, minuterie=null, nonLus=0;
+  try{const e=JSON.parse(localStorage.getItem(CLE)||"null");if(e&&(e.conversation||e.attendPseudo||e.pseudo)&&Date.now()-(e.activite||0)<7*864e5)etat=Object.assign(etat,e)}catch(err){}
+  const garderT=()=>{try{localStorage.setItem(CLE,JSON.stringify(etat))}catch(err){}};
+  const pastille=$("tchat-pastille");
+  function majPastille(){pastille.hidden=!nonLus;pastille.textContent=nonLus>9?"9+":String(nonLus)}
+  function afficher(){
+    fil.innerHTML="";
+    etat.messages.forEach(m=>{
+      const b=bulle(m.texte,m.de==="antony"||m.de==="site"?"lui":"moi");
+      if(m.de==="visiteur"&&(m.statut==="envoi"||m.statut==="attente"))b.classList.add("en-cours");
+      if(m.de==="visiteur"&&m.statut==="echec"){
+        const r=document.createElement("button");r.type="button";r.className="tchat-reessayer";r.textContent="Non envoyé. Réessayer";
+        r.onclick=()=>{etat.messages=etat.messages.filter(x=>x!==m);envoyer(m.texte)};b.after(r);
+      }
+    });
+  }
+  function ouvrir(){fen.hidden=false;invite.hidden=true;voile.classList.add("ouvert");zone.classList.add("ouvert");bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
+  bouton.onclick=()=>fen.hidden?ouvrir():fermer();
+  invite.onclick=ouvrir;
+  const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error(j.erreur||rep.status);e.status=rep.status;throw e}return j}));
+  // Conversation inconnue du CRM (404) : on repart d'une conversation neuve au prochain message
+  const oublier=()=>{etat={conversation:null,messages:[],dernier:null,activite:0,pseudo:etat.pseudo,attendPseudo:false};garderT();modeSaisie();if(!fen.hidden)afficher()};
+  // Prénom ou pseudo : demandé au premier message, sauf si le visiteur est déjà connu (demande de comparatif envoyée)
+  const QUESTION_PSEUDO="Pour envoyer, merci d'indiquer votre prénom ou votre pseudo.";
+  const etiquette=document.querySelector('label[for="tchat-texte"]'), PH_MESSAGE=texte.placeholder, ET_MESSAGE=etiquette?etiquette.textContent:"";
+  const pseudoConnu=()=>etat.pseudo||(identite&&identite.prenom)||null;
+  const visiteurConnu=()=>Boolean(pseudoConnu()||(identite&&identite.fiche));
+  function modeSaisie(){
+    const p=etat.attendPseudo;
+    texte.placeholder=p?"Votre prénom ou pseudo":PH_MESSAGE; texte.maxLength=p?30:600; texte.rows=p?1:2;
+    if(etiquette)etiquette.textContent=p?"Votre prénom ou pseudo":ET_MESSAGE;
+  }
+  modeSaisie();
+  let numLocal=0;
+  // `garde` : un message resté en attente du pseudo, envoyé à sa place dans le fil
+  function envoyer(t,garde){
+    const c=contexte(), m=garde||{id:"local-"+Date.now()+"-"+(++numLocal),de:"visiteur",texte:t,date:new Date().toISOString()};
+    m.statut="envoi"; if(!garde)etat.messages.push(m); etat.activite=Date.now(); afficher();
+    appel(TCHAT_CRM,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+      conversation:etat.conversation,texte:t,
+      contexte:{age:c.age,code_postal:c.cp,regime:c.age!=null?c.reg:"",offre:c.offre?{numero:c.offre.numero,cotisation_mensuelle:Math.round(c.offre.prix*100)/100,gamme:c.offre.gamme,formule:c.offre.formule}:null},
+      identite:identite&&(identite.fiche||identite.telephone)?identite:null,
+      pseudo:pseudoConnu(),provenance:provenance(),page:location.href.split("#")[0],site_web:"",test:ESSAI})})
+    .then(j=>{if(!etat.conversation&&j.conversation)window.mesure("tchat_premier_message");
+      etat.conversation=j.conversation||etat.conversation;if(j.message)m.id=String(j.message);m.statut="ok"})
+    .catch(()=>{m.statut="echec"})
+    .then(()=>{garderT();if(!fen.hidden)afficher();suivreBientot()});
+  }
+  $("tchat-saisie").addEventListener("submit",e=>{
+    e.preventDefault();const t=texte.value.trim();if(!t){texte.focus();return}texte.value="";
+    if(etat.attendPseudo){
+      // La réponse à la question devient le pseudo ; les messages gardés partent alors avec lui
+      etat.pseudo=t.replace(/\s+/g," ").slice(0,30); etat.attendPseudo=false; modeSaisie();
+      const gardes=etat.messages.filter(m=>m.statut==="attente");
+      etat.messages.push({id:"local-pseudo",de:"pseudo",texte:etat.pseudo,date:new Date().toISOString()});
+      if(gardes.length)gardes.forEach(m=>envoyer(m.texte,m));else{garderT();afficher()}
+      return;
+    }
+    if(!etat.conversation&&!visiteurConnu()){
+      etat.messages.push({id:"local-"+Date.now()+"-"+(++numLocal),de:"visiteur",texte:t,date:new Date().toISOString(),statut:"attente"});
+      etat.messages.push({id:"local-question",de:"site",texte:QUESTION_PSEUDO,date:new Date().toISOString()});
+      etat.attendPseudo=true; etat.activite=Date.now(); garderT(); modeSaisie(); afficher(); texte.focus({preventScroll:true});
+      return;
+    }
+    envoyer(t);
+  });
+  // Entrée envoie le message ; Maj + Entrée passe à la ligne (Fabrice, 10/11/2026 : « on dois pouvoir faire entrée pour envoyer un message depuis le clavier »)
+  texte.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();$("tchat-saisie").requestSubmit()}});
+  // Réponses d'Antony : toutes les 4 secondes fenêtre ouverte, toutes les 30 secondes fermée, arrêt après 30 minutes sans activité
+  function suivreBientot(){clearTimeout(minuterie);if(!etat.conversation||Date.now()-etat.activite>ARRET_SUIVI)return;minuterie=setTimeout(suivre,fen.hidden?30000:4000)}
+  function suivre(){
+    appel(TCHAT_CRM+"/"+encodeURIComponent(etat.conversation)+(etat.dernier?"?depuis="+encodeURIComponent(etat.dernier):""),{method:"GET"})
+    .then(j=>{
+      let neufs=0;
+      (j.messages||[]).forEach(r=>{
+        const id=String(r.id); etat.dernier=id;
+        if(etat.messages.some(x=>x.id===id))return;
+        if(r.de==="antony"){etat.messages.push({id,de:"antony",texte:String(r.texte||""),date:r.date||""});neufs++;etat.activite=Date.now()}
+      });
+      if(neufs){garderT();if(fen.hidden){if(neufs>0){nonLus+=neufs;majPastille()}}else afficher()}
+    })
+    .catch(e=>{if(e&&e.status===404)oublier()})
+    .then(suivreBientot);
+  }
+  if(etat.conversation)suivreBientot();
+})();
+
 /* ---------- Démarrage ---------- */
 ["age","cp","reg"].forEach(id=>{const el=$(id);const maj=()=>{if(el.dataset.vu===el.value)return;el.dataset.vu=el.value;S.shown=5;S.chosen=null;upd()};el.addEventListener("input",maj);el.addEventListener("change",maj)});
 renderNeeds(); renderAdmin(); appliquerLogos(); upd(); majWhatsApp(); route();
+/* Réglages de l'espace admin (CRM) : lus à chaque visite ; délai court ; à défaut, ceux déjà appliqués restent. */
+const REGLAGES_URL="__REGLAGES__";
+if(MODE_SITE&&REGLAGES_URL){
+  const ctrl=window.AbortController?new AbortController():null, minuteur=setTimeout(()=>{if(ctrl)ctrl.abort()},4000);
+  fetch(REGLAGES_URL,{cache:"no-cache",signal:ctrl?ctrl.signal:undefined}).then(r=>r.ok?r.json():null).then(r=>{
+    clearTimeout(minuteur);
+    if(!r||r.ok!==true||!appliquerReglages(r))return;
+    try{localStorage.setItem("santeo-reglages",JSON.stringify({recu:Date.now(),reglages:{produits:r.produits,logos:r.logos,tchat:r.tchat}}))}catch(e){}
+    S.shown=Math.max(S.shown,5); renderAdmin(); appliquerLogos(); upd(); if(window.tchatReglage)window.tchatReglage(REGLAGE_TCHAT);
+  }).catch(()=>{});
+}
 /* ---- Vague autour des logos partenaires : même comète, en transparence, juste après celle du logo ---- */
 (function(){
   const svg=document.querySelector(".vague-logos"); if(!svg)return;

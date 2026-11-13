@@ -1,0 +1,29 @@
+{
+ "slug": "avis-courtier-sur-votre-mutuelle",
+ "chapitre": "choisir",
+ "lien": "L'avis d'un courtier sur votre mutuelle",
+ "ordre": 11,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Avis d'un courtier sur votre mutuelle : relire son contrat",
+ "description": "Faire relire sa mutuelle par un courtier : garanties utiles, doublons, surcoûts, âge, résiliation possible, et les documents à préparer.",
+ "h1": "L'avis d'un courtier sur votre mutuelle : faire relire votre contrat actuel",
+ "faq": [
+  {
+   "q": "Quels documents faut-il pour faire relire sa mutuelle ?",
+   "r": "Le tableau de garanties, les conditions générales, le certificat d'adhésion, le dernier avis d'échéance et vos relevés de remboursement des douze derniers mois. Ajoutez vos devis en cours."
+  },
+  {
+   "q": "Puis-je changer de mutuelle après la relecture ?",
+   "r": "Oui, si votre contrat individuel a plus d'un an : vous pouvez le résilier à tout moment, et la résiliation prend effet un mois après la réception de votre demande."
+  },
+  {
+   "q": "Que faire si je suis couvert par deux contrats ?",
+   "r": "Vérifiez d'abord ce que chacun rembourse. Deux contrats ne remboursent jamais plus que la dépense. Selon votre situation, une dispense d'adhésion ou la résiliation de l'un des deux peut être possible."
+  },
+  {
+   "q": "Ma mutuelle d'entreprise peut-elle être relue aussi ?",
+   "r": "Oui, pour savoir si elle couvre vos besoins. Mais vous ne pouvez pas la résilier vous-même : seul l'employeur le peut. Les options facultatives que vous avez prises peuvent, elles, être résiliées après un an."
+  }
+ ]
+}

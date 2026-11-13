@@ -1,0 +1,24 @@
+<h1>Simulateur de remboursement : Sécurité sociale et mutuelle</h1>
+<p class="chapo">Choisissez un soin et indiquez ce que vous avez payé : le simulateur calcule le remboursement de la Sécurité sociale, puis celui de la Sécurité sociale et d'une mutuelle selon le niveau de garantie, de 100 % à 400 %.</p>
+<form class="simu" id="simu" onsubmit="return false">
+<label for="s-rub">Type d'acte</label>
+<select id="s-rub"></select>
+<label for="s-acte">Précisez</label>
+<select id="s-acte"></select>
+<label for="s-montant">Montant réglé</label>
+<span class="s-euro"><input id="s-montant" type="number" inputmode="decimal" min="0" step="0.01"> €</span>
+<p class="s-info" id="s-info"></p>
+</form>
+<div class="s-res" aria-live="polite">
+<p class="s-secu">Remboursement Sécurité sociale : <strong id="s-secu"></strong></p>
+<h2 id="s-titre-mut">Remboursement Sécurité sociale + mutuelle</h2>
+<div class="tableau"><table id="s-table"><thead><tr><th>Garantie</th><th>Remboursé</th><th>Reste à payer</th></tr></thead><tbody></tbody></table></div>
+<p class="s-aide">Touchez une ligne pour l'afficher dans le schéma.</p>
+<figure class="s-schema"><figcaption id="s-cap"></figcaption>
+<div id="s-barre" class="s-barre" role="img"></div>
+<ul class="s-leg" id="s-leg"></ul></figure>
+</div>
+__EXPLICATION__
+<script id="s-data" type="application/json">__DONNEES__</script>
+<script>__CALCUL__</script>
+<script>__PAGEJS__</script>

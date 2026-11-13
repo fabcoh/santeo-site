@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="__ROBOTS__">
+<title>__TITRE__</title>
+<meta name="description" content="__DESCRIPTION__">
+<link rel="canonical" href="__CANONIQUE__">
+<meta name="theme-color" content="#0a7aa5">
+<link rel="icon" type="image/png" sizes="48x48" href="__RACINE__icone-48.png">
+<link rel="apple-touch-icon" href="__RACINE__icone-180.png">
+<meta property="og:type" content="__OG_TYPE__">
+<meta property="og:site_name" content="Santéo">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="__TITRE__">
+<meta property="og:description" content="__DESCRIPTION__">
+<meta property="og:url" content="__CANONIQUE__">
+<meta property="og:image" content="__ADRESSE__partage.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">__JSONLD__</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- polices chargées avant l'affichage : sans cela le texte des articles bouge quand elles arrivent (décalage mesuré 0,11 à 0,14,
+     au-dessus du seuil de 0,1 de Google), et les articles s'affichent déjà en moins d'une seconde -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap">
+<style>
+/* Pages du guide (articles) : même charte que le comparateur, une colonne de lecture, PC et téléphone. */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --fg:#0f2430; --muted:#526b77; --line:#d3e2e8;
+  --accent:#0a7aa5; --accent-fg:#ffffff; --accent-soft:#e0f2f9; --warn-soft:#fdf1d8; --warn:#7a5200;
+  --brand-1:#0e5883; --brand-2:#07a4c7;
+  --f-display:"Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-body:"Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0c161b; --surface:#13212a; --fg:#e3eef2; --muted:#9db3bd; --line:#27404c;
+  --accent:#4cc3ee; --accent-fg:#06202b; --accent-soft:#143341; --warn-soft:#33290f; --warn:#f0c870;
+  --brand-1:#5fb8e6; --brand-2:#3fd6e8; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0c161b; --surface:#13212a; --fg:#e3eef2; --muted:#9db3bd; --line:#27404c;
+  --accent:#4cc3ee; --accent-fg:#06202b; --accent-soft:#143341; --warn-soft:#33290f; --warn:#f0c870;
+  --brand-1:#5fb8e6; --brand-2:#3fd6e8; color-scheme:dark }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:46rem;margin:0 auto}
+a{color:var(--accent)}
+.tete{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-bottom:.8rem;border-bottom:1px solid var(--line)}
+.tete .logo img{display:block;height:52px;width:auto;border-radius:8px;background:#fff}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-fg);font-weight:700;text-decoration:none;border-radius:999px;padding:.55rem 1.1rem;font-size:.95rem}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fil{font-size:.85rem;color:var(--muted);margin:.9rem 0 .4rem}
+.fil a{color:var(--muted)}
+h1,h2,h3{font-family:var(--f-display);line-height:1.25;color:var(--brand-1);text-wrap:balance}
+h1{font-size:2rem;font-weight:800;margin:.4rem 0 .8rem}
+h2{font-size:1.35rem;font-weight:800;margin:2rem 0 .6rem}
+h3{font-size:1.1rem;margin:1.4rem 0 .4rem}
+p,li{max-width:70ch}
+.chapo{font-size:1.1rem;color:var(--fg);border-left:4px solid var(--accent);padding:.2rem 0 .2rem .9rem;margin:0 0 1.2rem}
+.tableau{overflow-x:auto;margin:1rem 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:30rem}
+th,td{padding:.5rem .65rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:700}
+tr:last-child td{border-bottom:0}
+/* Téléphone : les tableaux de 2 ou 3 colonnes tiennent dans l'écran, sans défilement de côté (les plus larges défilent encore dans leur cadre) */
+@media (max-width:540px){table{min-width:0;font-size:.86rem}th,td{padding:.45rem .5rem}}
+.faq details{border:1px solid var(--line);border-radius:10px;padding:.6rem .9rem;margin:.55rem 0;background:var(--surface)}
+.faq summary{cursor:pointer;font-weight:700}
+.faq details p{margin:.5rem 0 0}
+.sources{font-size:.88rem;color:var(--muted)}
+.sources h2{font-size:1.05rem}
+.maj{font-size:.85rem;color:var(--muted);margin-top:1.6rem}
+.cta{margin:2rem 0;padding:1.1rem 1.2rem;border-radius:14px;background:var(--accent-soft);border:1px solid var(--line)}
+.cta p{margin:0 0 .7rem;font-weight:600}
+.liste{list-style:none;padding:0;margin:0;display:grid;gap:.7rem}
+.chapitres ul{list-style:none;padding:0;margin:0 0 .4rem;display:flex;flex-wrap:wrap;gap:.45rem}
+.chapitres a{display:inline-block;padding:.35rem .75rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--accent);font-weight:600;font-size:.9rem;text-decoration:none}
+.chapitres a:hover{border-color:var(--accent)}
+.chapitre{margin-top:1.8rem;scroll-margin-top:1rem}
+.chapitre h2{margin:0 0 .25rem}
+.intro-chap{color:var(--muted);margin:0 0 .75rem;font-size:.95rem}
+.liste a{display:block;padding:.85rem 1rem;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--fg);background:var(--surface)}
+.liste a strong{display:block;color:var(--brand-1);font-family:var(--f-display);font-size:1.05rem;margin-bottom:.15rem}
+.liste a span{font-size:.92rem;color:var(--muted)}
+.liste a:hover strong{text-decoration:underline}
+.pied{font-size:.8rem;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:.8rem;margin-top:2.4rem}
+.pied a{color:var(--accent);font-weight:700}
+/* Schéma des dents (article des prothèses dentaires) */
+:root{--g:#f3d3d8;--d-fond:#ffffff;--d-trait:#7d939d;--p100:#cbeed8;--p100-t:#1d7a45;--pmai:#fde2ae;--pmai-t:#9a6100;--plib:#e2e8eb;--plib-t:#5f737d}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--g:#4a2a31;--d-fond:#1b2c35;--d-trait:#9db3bd;--p100:#1c4a30;--p100-t:#6fd49b;--pmai:#4d3910;--pmai-t:#f0c870;--plib:#2a3a42;--plib-t:#b4c6ce} }
+:root[data-theme="dark"]{--g:#4a2a31;--d-fond:#1b2c35;--d-trait:#9db3bd;--p100:#1c4a30;--p100-t:#6fd49b;--pmai:#4d3910;--pmai-t:#f0c870;--plib:#2a3a42;--plib-t:#b4c6ce}
+.schema-dents{margin:1.4rem 0;padding:1rem 1rem .4rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.schema-dents figcaption{font-family:var(--f-display);font-weight:800;color:var(--brand-1);font-size:1.1rem;margin-bottom:.3rem}
+.sd-aide{font-size:.9rem;color:var(--muted);margin:0 0 .5rem}
+.sd-svg{display:block;width:100%;max-width:34rem;height:auto;margin:0 auto}
+.sd-svg text{font-family:var(--f-body);text-anchor:middle;fill:var(--fg)}
+.sd-nom{font-size:11.5px;font-weight:700}
+.sd-sous{font-size:10px;fill:var(--muted)!important}
+.sd-gencive{fill:var(--g)}
+.sd-trait{fill:none;stroke:var(--d-trait);stroke-width:1}
+.sd-dent{fill:var(--d-fond);stroke:var(--d-trait);stroke-width:1.2}
+.d100{fill:var(--p100);stroke:var(--p100-t);stroke-width:1.4}
+.dmai{fill:var(--pmai);stroke:var(--pmai-t);stroke-width:1.4}
+.dlib{fill:var(--plib);stroke:var(--plib-t);stroke-width:1.4}
+.sd-legende{list-style:none;padding:0;margin:.6rem 0 .8rem;display:grid;gap:.35rem;font-size:.92rem}
+.sd-legende li{display:grid;grid-template-columns:.95rem 1fr;gap:.55rem;align-items:start}
+.sd-legende i{flex:none;width:.95rem;height:.95rem;border-radius:4px;border:1.5px solid;margin-top:.25rem}
+.sd-legende i.d100{background:var(--p100);border-color:var(--p100-t)}
+.sd-legende i.dmai{background:var(--pmai);border-color:var(--pmai-t)}
+.sd-legende i.dlib{background:var(--plib);border-color:var(--plib-t)}
+.sd-mat{border-top:1px solid var(--line);padding:.7rem 0 .2rem}
+.sd-mat-nom{font-weight:700;margin:0 0 .3rem}
+.sd-mat-txt{font-size:.9rem;color:var(--muted);margin:.35rem 0 .3rem}
+/* Simulateur de remboursement (page /simulateur-remboursement/) */
+:root{--s-secu:#0a7aa5;--s-mut:#2e9e62;--s-rac:#e08a1e}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--s-secu:#4cc3ee;--s-mut:#5cc98b;--s-rac:#f0a64a} }
+:root[data-theme="dark"]{--s-secu:#4cc3ee;--s-mut:#5cc98b;--s-rac:#f0a64a}
+.simu{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:.6rem .9rem;align-items:center;margin:1.2rem 0;padding:1rem 1.1rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.simu label{font-weight:700}
+.simu select,.simu input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:.5rem .6rem;width:100%;min-width:0}
+.s-euro{display:flex;align-items:center;gap:.4rem;font-weight:700}
+.s-euro input{max-width:9rem}
+.s-info{grid-column:1 / -1;margin:.2rem 0 0;font-size:.88rem;color:var(--muted)}
+.s-secu{font-size:1.15rem;margin:1.2rem 0 .2rem}
+.s-secu strong{color:var(--s-secu);font-size:1.3rem}
+#s-table tbody tr{cursor:pointer}
+#s-table tbody tr:hover td{background:var(--accent-soft)}
+#s-table tr.s-choisi td{background:var(--accent-soft);font-weight:700}
+#s-table td:nth-child(n+2),#s-table th:nth-child(n+2){text-align:right;white-space:nowrap}
+.s-aide{font-size:.85rem;color:var(--muted);margin:-.4rem 0 .6rem}
+.s-schema{margin:.6rem 0 1.4rem;padding:.9rem 1rem .5rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.s-schema figcaption{font-weight:700;margin-bottom:.4rem}
+.s-barre{position:relative;display:flex;gap:2px;height:2.8rem;margin:.3rem 0 .4rem}
+.s-barre.s-avec-base{margin-bottom:1.7rem}
+.s-barre span{display:flex;align-items:center;justify-content:center;min-width:3px;border-radius:4px;color:#fff;font-weight:700;font-size:.92rem;white-space:nowrap;overflow:hidden}
+.s-br{position:absolute;top:100%;height:.45rem;width:0;border-left:2px solid var(--fg);font-style:normal}
+.s-br b{position:absolute;top:100%;left:0;margin-top:.15rem;font-size:.8rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.s-p-secu{fill:var(--s-secu);background:var(--s-secu)}.s-p-mut{fill:var(--s-mut);background:var(--s-mut)}.s-p-rac{fill:var(--s-rac);background:var(--s-rac)}
+.s-leg{list-style:none;padding:0;margin:.5rem 0 .3rem;display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;font-size:.92rem}
+.s-leg i{display:inline-block;width:.85rem;height:.85rem;border-radius:3px;margin-right:.35rem;vertical-align:-.1rem}
+@media (max-width:599px){.simu{grid-template-columns:1fr;gap:.35rem}.simu label{margin-top:.35rem}}
+@media (max-width:599px){body{font-size:16px}h1{font-size:1.6rem}h2{font-size:1.2rem}.tete .logo img{height:44px}.btn{padding:.5rem .9rem;font-size:.9rem}}
+__COOKIES_CSS__
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="tete"><a class="logo" href="__RACINE__" aria-label="Santéo, accueil du comparateur"><img src="__RACINE__images/Logo_santeo_pt.png" alt="Santéo" width="166" height="68"></a><a class="btn" href="__RACINE__">Comparer les mutuelles</a></header>
+  <nav class="fil" aria-label="Fil d'Ariane">__FIL__</nav>
+  <main>
+__CONTENU__
+  </main>
+  <footer class="pied"><a href="__RACINE__">Comparateur</a> · <a href="__RACINE__guide/">Guide de la mutuelle</a> · <a href="__RACINE__simulateur-remboursement/">Simulateur de remboursement</a> · <a href="__RACINE__#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
+</div>
+__COOKIES_HTML__
+<script>
+const $=id=>document.getElementById(id);
+__COOKIES_JS__
+</script>
+</body>
+</html>

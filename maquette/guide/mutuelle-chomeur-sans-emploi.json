@@ -1,0 +1,33 @@
+{
+ "slug": "mutuelle-chomeur-sans-emploi",
+ "chapitre": "jeunes",
+ "lien": "Mutuelle chômeur, jeune sans emploi",
+ "ordre": 29,
+ "publie": "2026-11-12",
+ "maj": "2026-11-12",
+ "titre_page": "Mutuelle chômeur, jeune sans emploi : les solutions",
+ "description": "Mutuelle chômeur ou jeune sans emploi : portabilité, Complémentaire santé solidaire, mutuelle des parents, contrat individuel et démarches.",
+ "h1": "Mutuelle chômeur ou jeune sans emploi : les solutions pour rester couvert",
+ "faq": [
+  {
+   "q": "Un chômeur a-t-il droit à une mutuelle gratuite ?",
+   "r": "Parfois. Avec la portabilité, vous gardez gratuitement la mutuelle de votre ancienne entreprise pendant votre chômage indemnisé, 12 mois au plus. Si vos ressources sont sous le plafond, la Complémentaire santé solidaire est gratuite."
+  },
+  {
+   "q": "La mutuelle est-elle obligatoire quand on est sans emploi ?",
+   "r": "Non. La mutuelle d'entreprise est obligatoire pour les salariés, mais une complémentaire individuelle reste un choix. Sans elle, vous payez vous-même la part que l'Assurance maladie ne rembourse pas."
+  },
+  {
+   "q": "Quelle complémentaire santé pour un chômeur qui n'a jamais travaillé ?",
+   "r": "Sans emploi passé, pas de portabilité. Regardez d'abord la Complémentaire santé solidaire si vos ressources sont modestes, puis la mutuelle de vos parents si leur contrat vous couvre encore, et enfin une mutuelle individuelle."
+  },
+  {
+   "q": "Puis-je rester sur la mutuelle de mes parents si je suis sans emploi ?",
+   "r": "Cela dépend de leur contrat, qui fixe l'âge limite des enfants et ses conditions. Pour l'Assurance maladie, vous n'êtes plus leur ayant droit depuis l'année de vos 18 ans, mais vous restez remboursé à titre personnel."
+  },
+  {
+   "q": "Que devient ma Complémentaire santé solidaire si je retrouve un emploi ?",
+   "r": "Vous pouvez y renoncer à tout moment pour rejoindre la mutuelle de votre employeur. Vous pouvez aussi la garder : tant que vous en bénéficiez, vous pouvez demander à être dispensé de la mutuelle d'entreprise."
+  }
+ ]
+}

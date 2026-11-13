@@ -12,6 +12,145 @@ est résumé par Claude.
 
 ## Entrées pour les autres conversations
 
+### 11/11/2026 — de Claude site à la conversation pilote — démarchage téléphonique : règles depuis le 11/08/2026
+Statut : POUR INFORMATION (trouvé en écrivant l'article du guide sur le démarchage ; rien n'est demandé)
+Quoi : selon Service-Public (fiche F33267, vérifiée le 12/08/2026), depuis le 11 août 2026 un professionnel ne peut plus
+démarcher par téléphone sans l'accord préalable de la personne (loi du 30 juin 2025, article 13 ; décret du 23 juillet
+2026). L'accord est valable 1 an au plus, sa preuve se garde 3 ans ; Bloctel n'existe plus. En assurance, en plus : accord
+pour poursuivre l'appel, pas de vente au premier appel, 24 h avant la signature, appels enregistrés et gardés 2 ans ; les
+plateformes ne peuvent plus appeler depuis un 06 ou un 07. Le formulaire du site recueille déjà un accord (case non cochée,
+3 mois, jours et heures). Les fiches venues d'autres sources (comparateurs, partenaires) sont l'affaire du CRM : à faire
+regarder par la pilote si elle le juge utile ; ce n'est pas un avis juridique.
+Pourquoi : les rappels d'Antony après une demande de devis entrent dans ce cadre.
+Vérification attendue : aucune.
+
+### 11/11/2026 — de Claude site à la conversation pilote — espace admin du site (réglages dans le CRM)
+Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/2026 vers 19 h 30 ; À TRAITER par elle
+- Fabrice : « je veux pouvoir gérer sans toi automatqiuemeny », puis « fait un espace admin sur santéo pour gerer certaine
+  fonctions » ; proposition de Claude (www.santeo.net/admin ouvre une page de réglages du CRM, protégée par la connexion du
+  CRM ; première version : produits affichés, logos, tchat) ; Fabrice : « oui très bien ».
+- Contrat : le site publie `/catalogue.json` (compagnies, produits avec leur code et leur réglage par défaut, produits
+  APRIL compris, `tchat_defaut`). Le CRM sert `GET /api/site/reglages` (public, `Access-Control-Allow-Origin: *`,
+  cache 60 s au plus) : `{"ok": true, "modifieLe", "produits": {code: booléen}, "logos": {compagnie: booléen}, "tchat":
+  booléen}` ; clé absente = défaut du catalogue. Écriture depuis la page de réglages du CRM seulement (membre connecté,
+  historique, migration additive, aucun champ libre). URL de la page à donner à Claude site pour le renvoi de `/admin`.
+- Côté site (demande de fusion « espace-admin ») : lecture à chaque visite (délai court), puis derniers réglages connus
+  (30 jours), puis défauts du catalogue ; le site n'est jamais vide. Tant que le CRM ne sert pas l'adresse, rien ne
+  change. `/admin` affiche « bientôt » tant que l'URL n'est pas connue. Dans la maquette, la gestion reste locale.
+- Le chemin `/admin` est public (Fabrice l'a demandé) : il ne mène qu'à la page de connexion du CRM.
+- Fait par la pilote (PR #528 du CRM, publiée le 11/11) : page de réglages du CRM (connexion obligatoire) ; premiers
+  réglages enregistrés le 11/11 à 19 h 49 (Paris), lus et appliqués par le site (vérifié). `/admin` renvoie vers elle
+  (`admin_crm` de `maquette/reglages-site.json`).
+
+### 11/11/2026 — de Claude site à la conversation pilote — tchat : prénom ou pseudo au début (contrat)
+Statut : ENVOYÉ par message à la session de la conversation pilote le 11/11/2026 ; À TRAITER par elle (CRM WhatsApp)
+- Fabrice, sur la façon de reconnaître les visiteurs du tchat (adresse IP déconseillée par Claude : partagée par
+  plusieurs personnes, changeante, donnée personnelle) : « au premier envoi on peu demander à la personne d'indiquer son
+  prénom ou son pseudo ? », puis « je pense qu'il faut le faire au début c'est plus logique / si un pseudo est déjà pris
+  on le prend en ajoutant 2 pour antony et moi / exemple / rose / rose2 elle pense avoir son pseudo et nous a ajoute
+  juste un 2 après et un 3 ..; », puis « il écrit / bonjour / envoyer pour envoyer merci d'idiquer votre prénom ou votre
+  psuedo ». L'idée des noms de planètes (« mars neptune jupiter ») est remplacée par le pseudo.
+- Côté site (demande de fusion « tchat-pseudo ») : le premier message reste sur le site ; le tchat répond *Pour envoyer,
+  merci d'indiquer votre prénom ou votre pseudo.* ; ce que le visiteur tape ensuite (30 caractères au plus) devient son
+  pseudo, puis le premier message part. Pas de question si le visiteur a déjà envoyé sa demande de comparatif (fiche
+  connue) : son prénom sert de pseudo.
+- Contrat : chaque `POST /api/site/tchat` porte désormais `"pseudo": "Rose"` (chaîne de 1 à 30 caractères, ou `null`
+  pour un visiteur connu par sa fiche sans prénom et pour les conversations ouvertes avant ce changement). Aujourd'hui le
+  CRM ignore ce champ : rien ne casse si le site est publié avant le CRM.
+- À faire côté CRM WhatsApp : garder le pseudo sur la conversation à sa création ; s'il est déjà pris par une autre
+  conversation du tchat (comparaison sans majuscules, accents ni espaces), lui ajouter le plus petit numéro libre, collé :
+  « Rose2 », « Rose3 » ; l'afficher à Antony et à la 86 36 dans l'en-tête, en gardant le numéro pour les réponses par
+  citation : « 💬 Site santeo.net #12 · Rose2 ». Le numéro ajouté n'est jamais renvoyé au site : le visiteur garde
+  « Rose ». Portée de la comparaison (toutes les conversations, ou les récentes seulement) : au choix de la pilote.
+- Avant, le même matin : le tchat marchait en essai mais plus en réel (« le chat ne fonctionne pas… il fonctionnait
+  parfaitement quand il était en test ») ; les messages partaient vers Antony d'une autre ligne que la 86 36. Réparé par
+  la pilote (fabcoh/WhatsApp_Solution, demande de fusion 523, sa réparation R-196), publié à 10 h 25 ; Fabrice : « c'est ok ».
+
+### 10/11/2026 — de Claude site à la conversation pilote — fiche du CRM Santéo : suivi par CAPI, statut AUCUN
+Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 vers 9 h 15 (pour « CRM Santeo »)
+- Fabrice, avec une fiche réelle du CRM Santéo en modèle (rien n'en est recopié ici) : « Attribué a capi ... tu dois
+  suivre les éléments de cette fiche ».
+- Correction de l'entrée ci-dessous : « attribution en aucun » désignait le statut. Fiche d'une demande du site :
+  **Suivi par CAPI, statut AUCUN, provenance santeo.net**.
+- Champs : Titre (Madame / Monsieur), Nom, Prénom, Date de naissance, Code postal, Tél mobile (ou Tél fixe pour un
+  numéro en 01 à 05 ou 09), Courriel ; Ville déduite du code postal si le CRM sait le faire ; Adresse et Fax vides (le
+  site ne les demande pas) ; la note avec l'offre, le prix, les besoins et l'accord.
+
+### 10/11/2026 — de Claude site à la conversation pilote — décision de Fabrice : les demandes du site passent par le CRM Santéo
+Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 au matin ; À TRAITER par elle
+- Vos mots : « faire passer le lead dans un circuit classique avec une provenance santéo.net pour qu'il suive l'envoi sur
+  le CRM WhatsApp classiquement, parce que sinon on va se retrouver avec des multiples points d'entrée. […] autant la
+  mettre sur le site de Santéo avec une provenance santéo.net et une attribution en aucun pour qu'elle puisse être
+  travaillée, sauf si elle est déjà présente dans le CRM par Anthony ».
+- Compris par Claude site : chaque demande crée une fiche dans le CRM Santéo, provenance « santeo.net », attribution
+  « aucun », avec la note (offre, prix, besoins, accords) ; personne déjà présente (même téléphone ou e-mail) : la
+  demande s'ajoute à sa fiche, attribution inchangée ; le CRM WhatsApp la récupère ensuite par l'import habituel. Un
+  seul point d'entrée.
+- Côté site : rien à changer (même adresse, mêmes champs). La porte range « Site Santéo » et « Site Santéo – WhatsApp »
+  en « santeo.net ».
+- Constat du 10/11 : pour l'essai de 7 h, le site a affiché « Merci, votre demande est bien arrivée », donc la porte a
+  répondu « ok » ; la fiche d'essai est dans le CRM WhatsApp, pas dans le CRM Santéo où Fabrice travaille.
+- Plus tard, à Fabrice : le premier message WhatsApp habituel pour la provenance « santeo.net » (ligne et texte).
+
+### 10/11/2026 — de Claude site à la conversation pilote — essai du formulaire : la fiche n'arrive pas
+Statut : ENVOYÉ par message à la session de la conversation pilote le 10/11/2026 vers 7 h 30 (Paris) ; à suivre
+- Fabrice : « J'ai une test, mais ça n'arrive pas dans le CRM. Tu regardes avec Manus, voilà. Je sais pas pourquoi. »
+- Essais de Fabrice depuis son téléphone : 09/11 vers 23 h 10 (numéro inventé 06 12 34 56 78, pas de « Merci ») ; 10/11
+  entre 7 h 08 et 7 h 25 (Camille Essai, 07 00 00 00 01). Fiche non trouvée dans le CRM.
+- Demandé à la pilote (constat Manus en lecture seule) : journaux des POST `/api/site/demande` et lignes « [Site] »
+  depuis le 09/11 22 h, fiches créées par la porte, et où elles apparaissent à l'écran.
+- Question de fond posée à la pilote, à confirmer avec Fabrice : il écrit le 09/11 « Lorsque l'information arrive sur le
+  crm.via whatsapp le crm whats app doit créer une fiche complète a partir du crm de santeo... Si Inconnu pas grave...
+  on laisse comme ça ». Compris par Claude site : les demandes du site devraient arriver dans le CRM Santéo, comme les
+  autres leads ; la porte actuelle crée la fiche dans le CRM WhatsApp seulement.
+- Mon environnement refuse que j'envoie moi-même une demande à la porte (envoi vers un service partagé).
+
+### 10/11/2026 — de Claude site à la conversation pilote — porte d'entrée : codes postaux de Corse et d'outre-mer
+Statut : À TRAITER
+- **Fait vérifiable** : le site accepte comme code postal un département à 2 caractères, y compris `2A` et `2B`, ou à
+  3 chiffres pour l'outre-mer (`971` à `976`), ou un code postal à 5 chiffres. La porte d'entrée
+  (`server/siteDemandeFlux.ts`, `lireDemandeSite`) n'accepte que `^(\d{2}|\d{5})$` : un visiteur de Corse ou
+  d'outre-mer qui tape son département reçoit « Format invalide : code_postal » et sa demande n'arrive pas.
+- **Demande** : accepter aussi `2A`, `2B` (majuscules ou minuscules) et `971` à `976`.
+- **Vérification attendue** : une demande d'essai avec `"code_postal":"2A"` répond `ok: true`.
+
+### 09/11/2026 — de Claude site à la conversation pilote — porte d'entrée du site dans le CRM
+Statut : À TRAITER (code : conversation pilote, dépôt `WhatsApp_Solution` ; mise en service : Manus)
+Quoi : dans le CRM, ouvrir une adresse de réception des demandes de devis du nouveau site www.santeo.net,
+appelable depuis le navigateur du visiteur, **sans clé** (la page est publique : une clé y serait lisible par tous).
+Modèle existant, lu le 09/11/2026 : `server/csmLeadRouter.ts` (leads Comparadise, circuit « Autres provenances »).
+Ses deux contrôles, jeton et adresse IP du partenaire, sont impossibles depuis une page publique ; ils sont remplacés
+par les contrôles 2 et 3 ci-dessous.
+1. Une adresse `POST` qui reçoit du JSON et répond `{"ok": true, "id": "<numéro de la fiche>"}` (ou `{"ok": false,
+   "erreur": "<raison>"}`). Le nom de l'adresse est libre ; le dire dans la réponse.
+2. Navigateurs acceptés (CORS) : `https://www.santeo.net`, `https://santeo.net` et `https://fabcoh.github.io` (site de
+   test). Toute autre origine refusée.
+3. Protection contre les robots, puisqu'il n'y a pas de clé : champ piège `site_web` qui doit arriver vide (sinon
+   répondre `ok: true` sans rien créer) ; au plus 10 demandes par heure et par adresse IP ; refus si un champ
+   obligatoire manque ou si le téléphone ou l'e-mail est mal formé.
+4. Champs envoyés (obligatoires en gras) : **`civilite`** (Madame ou Monsieur), **`prenom`**, **`nom`**, **`telephone`**,
+   **`email`**, **`date_naissance`** (JJ/MM/AAAA), **`code_postal`** (2 ou 5 chiffres), **`regime`**, `conjoint`
+   (`{date_naissance}` ou `null`), `enfants` (nombre d'enfants), **`offre`** (`{numero, cotisation_mensuelle, gamme,
+   formule}` : code de la gamme et nom de la formule, pour le conseiller seulement), `niveaux` (étoiles choisies par
+   poste, de 0 à 5), `besoins` (texte des besoins précis), `site_web` (champ piège, voir 3), **`accord_recontact`** (vrai ou faux),
+   **`texte_accord`** (texte exact de la case cochée), **`date_accord`** (date et heure), **`provenance`** (`Site Santéo`,
+   ou `Site Santéo – WhatsApp` quand le visiteur arrive par le lien envoyé sur WhatsApp), `page` (adresse de la page),
+   `test` (vrai pour un essai).
+5. À chaque demande : créer la fiche contact avec la provenance reçue, y joindre une note lisible (offre choisie,
+   prix, besoins, accords avec leur date et leur texte), et prévenir les conseillers comme pour un nouveau contact.
+   Si un contact existe déjà avec le même téléphone ou le même e-mail, ajouter la demande à sa fiche au lieu d'en
+   créer une seconde.
+6. Avec `test: true` : créer la fiche marquée « TEST », facile à supprimer.
+7. Réponse à écrire dans le carnet de la conversation pilote : l'adresse exacte à appeler, et si le CRM peut envoyer
+   lui-même au client un e-mail de confirmation (sinon le conseiller envoie le devis à la main).
+Pourquoi : Fabrice met le site en ligne le 10/11/2026 pour recevoir des demandes de devis directement dans le CRM
+(« J'ai fait ça pour publier un site et recevoir des demandes de devis »).
+Exemple de demande (coordonnées inventées) :
+`{"civilite":"Madame","prenom":"Camille","nom":"Essai","telephone":"06 12 34 56 78","email":"camille.essai@exemple.fr","date_naissance":"21/07/1981","code_postal":"75012","regime":"Sécurité sociale","conjoint":null,"enfants":0,"offre":{"numero":1,"cotisation_mensuelle":32.04,"gamme":"MCCINOVA","formule":"Socle"},"niveaux":{"hosp":0,"hono":0,"dent":0,"opt":0,"autres":0},"besoins":"","accord_recontact":false,"texte_accord":"","date_accord":"2026-11-09T20:00:00.000Z","provenance":"Site Santéo – WhatsApp","page":"https://www.santeo.net/?src=whatsapp","site_web":"","test":true}`
+Vérification attendue : depuis le site de test, une demande d'essai (prénom inventé, `test: true`) crée une fiche
+« TEST » visible dans le CRM avec sa note ; la même demande envoyée d'une autre origine est refusée ; une demande
+avec le champ piège rempli ne crée rien.
+
 ### 08/11/2026 — de Claude site à « comparateur claude » — tarifs APRIL et API Santé (VERALTI) sur le futur site
 Statut : À TRAITER
 
@@ -135,6 +274,35 @@ Statut : À TRAITER
   naissance », « pour le conjoint aussi »), barres ajoutées toutes seules et masque visible `__/__/____` ; code postal
   à 2 ou 5 chiffres (« TU DOIS ACCEPTE 2 CHIFFRES POUR LE CODE POSTAL », « 2 OU 5 ») ; *Sécurité sociale* à la place
   de *Salarié ou retraité* ; conjoint et enfants ajoutés par deux petits liens « Conjoint (+) » et « Enfant (+) ».
+- Étape 1 (10/11/2026, demande transmise par la conversation pilote) : *Comparez sans vous dévoiler* mis en avant (plus
+  grand, un reflet lumineux le traverse toutes les 5 secondes, immobile si l'appareil demande moins d'animations) ;
+  *: indiquez juste votre âge, CP, régime* en italique, sans gras (« comparez sans vous dévoiler doit etre en avant si tu
+  peux ajouter une sorte d'animation du texte et le texte à coté a droite cp régime doit en italique et pas en gras »).
+- Tchat avec Antony (10/11/2026) : « on créer un tchat bot relié au whatsapp de antony / il doit etre idividualisé »,
+  numéro « 01 53 19 86 46 ». Bulle en bas à droite (PC et téléphone ; sur téléphone elle s'efface quand l'étape 4 est à
+  l'écran). L'accueil s'adapte à l'avancement du visiteur (rien saisi, âge et code postal, offre choisie, demande
+  envoyée) ; le visiteur écrit sa question, WhatsApp s'ouvre vers Antony avec la question, l'âge, le code postal, le
+  régime et l'offre. Textes : Mon idée. Avatar : l'oiseau de l'en-tête (« l'avatar c'est loiseau du haut »).
+- Tchat (10/11/2026, correction de Fabrice) : « je veux qu'il écrive ici mais pas qu'il ouvre leur whatsapp et
+  qu'antony puisse voir la conversation et y répondre depuis sont whatsapp ». Mode « direct » préparé côté site
+  (`maquette/reglages-site.json`, `tchat` et `tchat_crm`) : le message part au CRM, les réponses d'Antony s'affichent dans
+  la fenêtre, la conversation reste après rechargement. Fenêtre sans texte : seulement la conversation, la saisie et
+  « Envoyer » (« retirer tout les textes jsute un chat et un bouton envoyer »). Identification (« bien identifier les
+  prospects sur le crm ») : après une demande de devis, chaque message porte le numéro de fiche rendu par le CRM.
+  Le visiteur n'ouvre jamais WhatsApp (« je veux pas que le client ouvre WhatsApp. Ce n'est pas le but. Le but, c'est
+  de rester dans le chat. Et lui, c'est invisible pour lui. ») : le mode « whatsapp » est supprimé ; tant que le relais
+  du CRM n'est pas en service, le tchat est caché (réglage « aucun »). Relais écrit par la conversation pilote (fabcoh/WhatsApp_Solution, demande de
+  fusion 508, 10/11) : `https://crm.capisante.fr/api/site/tchat` ; avec `?test=1`, les messages vont à Fabrice seul
+  (« 🧪 ESSAI »), jamais à Antony. Le site passe en mode « direct » dès que le relais est en service. Bulle « Posez-moi vos
+  questions » au-dessus de l'oiseau (« sous l'oiseau du tchat petit message "Posez moi vos questions" », puis « pas sous
+  mais au dessus »), cachée quand la fenêtre est ouverte. Entrée envoie le message, Maj + Entrée passe à la ligne (« on dois pouvoir
+  faire entrée pour envoyer un message depuis le clavier », transmis par « CRM Santeo » le 10/11). Fenêtre bien
+  distincte de la page (« Le Tchat est confondu avec l'arrière plan il faut pouvoir le distinguer ») : en-tête bleu,
+  cadre bleu, fond propre au tchat ; sur téléphone, le tchat ouvert prend tout l'écran (« Surtout depuis un portable »).
+- Étape 1 (10/11/2026, transmis par « CRM Santeo ») : « Comparez sans vous dévoiler : indiquez juste votre âge, Code
+  Postal, Régime sécu (avec le filtre actuel) » ; mise en forme inchangée (titre en avant avec son reflet, suite en
+  italique). Relais côté CRM demandé à la conversation pilote le 10/11 (message à sa session ;
+  contrat : `POST /api/site/tchat`, `GET /api/site/tchat/<conversation>?depuis=`).
 - Étape 2 : le volet *Précisez* devient une petite fenêtre accrochée au poste, qui se ferme seule après 4 secondes
   sans action.
 - Étape 2 (09/11/2026) : la fenêtre *Précisez* ne s'ouvre plus toute seule quand on met des étoiles, seulement au clic
@@ -145,6 +313,9 @@ Statut : À TRAITER
   de tableau (postes en gras, sous-postes en normal) ; les logos des compagnies et leur vague animée (avec étoile et
   *IA*) sont sous les résultats.
 - Étape 4 : formulaire mis en avant ; pas de nom fictif dans les champs (« ne pas mettre de nom fictif »).
+- Étape 4 (10/11/2026) : sous la case d'accord, le détail (retrait de l'accord, données personnelles) est replié derrière
+  un lien souligné *Votre accord* qui l'affiche au clic (« cette partie ne doit pas etre intégré au formulaire d'envoi
+  sous cette forme mais avec un Votre accord (souligné) et cela affiche l'enselble du texte »).
 - En-tête : lumière animée sur le logo Santéo ; mascotte en petit en haut à droite ; *Contactez-nous sur : WhatsApp*
   masqué pour le moment (« TU LE MASQUE POUR LE MOMENT »).
 - En-tête (09/11/2026) : la mascotte est animée (« Tu peux animer l'oiseau du site ? ») : elle flotte, bat des ailes et
@@ -172,6 +343,315 @@ Statut : À TRAITER
   (La demande APRIL / API Santé est envoyée : voir l'entrée du 08/11 en haut.)
 - Services internes de l'ancien comparateur qui passent encore par www.santeo.net : à déplacer avant le
   changement d'adresse (à voir avec les conversations concernées).
+
+## Mise en ligne de www.santeo.net (demandée le 09/11/2026 pour le 10/11/2026)
+
+Fait le 11/11/2026 :
+- zone DNS de santeo.net relevée avant toute modification (28 lignes, gardée hors du dépôt : adresses de serveurs) ;
+- GitHub, réglages Pages : domaine personnalisé `www.santeo.net` ;
+- OVH : seule la ligne `www` changée (A vers l'ancien serveur supprimée, CNAME `www` vers `fabcoh.github.io.` ajouté) ;
+  aucune ligne des mails, du CRM, de GestCom, du comparateur ni `public` touchée ;
+- certificat de www.santeo.net créé par GitHub (vérifié le 11/11 à 9 h 06, valable jusqu'au 09/02/2027) ;
+- publication passée en `--en-ligne`.
+- `santeo.net` sans www : Fabrice a remplacé dans OVH, le 11/11 vers 9 h, la ligne `@` de type A (ancien serveur) par une
+  des adresses de GitHub Pages ; SPF et lignes des mails inchangés. Le constat de Manus sur les mails envoyés par l'ancien
+  serveur n'a pas pu se faire (pas d'accès à cette machine). Le navigateur de Fabrice gardait en mémoire l'ancien renvoi
+  vers capisante.com (il disparaît en navigation privée).
+- `santeo.net` sans www : certificat créé par GitHub le 11/11 vers 12 h 31 (Paris), juste après que Fabrice a ouvert la
+  page des réglages Pages (« DNS check » relancé) ; le certificat couvre santeo.net et www.santeo.net ;
+  `https://santeo.net` renvoie vers `https://www.santeo.net/` (vérifié).
+- santeo.fr (Fabrice : « Et pour santeo.fr il faudra faire le nouveau renvoi ») : fait le 11/11 vers 18 h. Dépôt
+  `fabcoh/santeo-fr` (page de renvoi vers www.santeo.net, paramètres comme `?src=whatsapp` gardés), publié par GitHub
+  Pages, domaine `santeo.fr`, « Enforce HTTPS » coché. Zone OVH de santeo.fr relevée avant (11 lignes, gardée hors du
+  dépôt) ; changé : ligne `@` de type A vers une adresse de GitHub Pages, lignes `www` (A et TXT « 3|welcome » de la page
+  d'attente OVH) remplacées par `www` CNAME `fabcoh.github.io.` ; MX, SPF, NS et ftp inchangés. Certificat pour
+  santeo.fr et www.santeo.fr ; renvoi vérifié sur PC et téléphone. Le comparateur utilise capisante.fr, pas santeo.fr.
+Reste :
+- plus tard, ajouter éventuellement les trois autres adresses de GitHub Pages pour les lignes `@` de santeo.net et
+  santeo.fr (une seule est en place pour chacun).
+
+
+Demande de Fabrice : « tu vas référencer tout ce qu'il y a à faire et on met en place tout ça pour le publier
+demain ». But : « publier un site et recevoir des demandes de devis, commencer à référencer le site, commencer à te
+mettre en place des achats de mots-clés », et avoir « une référence pour mes clients qui viennent de WhatsApp ».
+
+Constat vérifié le 09/11/2026 : le certificat de sécurité de santeo.net et de www.santeo.net a expiré le 05/10/2026.
+Les visiteurs de l'adresse actuelle voient donc une alerte de sécurité. Sur GitHub, le certificat est gratuit et
+renouvelé automatiquement.
+
+Points relevés le 09/11/2026 :
+- les devis envoyés par le comparateur de « comparateur claude » renvoient vers `santeo.net/mentions-legales` et
+  « Infos légales : www.santeo.net » : le nouveau site doit garder cette adresse de page ;
+- aucun appel technique du comparateur actuel vers santeo.net trouvé (seulement des adresses e-mail et ces
+  mentions) ; les services de l'ancien comparateur (OggoData) ne sont plus utilisés ;
+- registre public : CAPI FINANCE, SAS au capital de 21 342 €, créée le 29/07/1992, SIREN 388 103 301 (à confirmer
+  sur le site de l'ORIAS, inaccessible depuis cette conversation).
+
+Fait le 09/11/2026 au soir :
+- la conversation pilote a écrit la porte d'entrée du CRM (fabcoh/WhatsApp_Solution, demande de fusion 501,
+  fusionnée) : `https://crm.capisante.fr/api/site/demande`. À 21 h 25 (Paris), elle n'était pas encore en service
+  (l'adresse renvoyait la page du CRM). Le site y est branché (`maquette/reglages-site.json`) ; une réponse qui n'est pas
+  un « ok » explicite du CRM est traitée comme un échec, et le visiteur peut réessayer ou passer par WhatsApp ;
+- les mails de devis de l'ancien comparateur affichent le logo depuis `www.santeo.net/images/Logo_santeo_pt.png` :
+  cette adresse est gardée sur le nouveau site (logo Santéo actuel) ;
+- point ouvert : d'après « Comparateur Santeo » (carnet de la conversation pilote, 08/11), d'anciens mails de devis
+  renvoient vers `www.santeo.net/files/<gamme>/` ; après la bascule, ces liens mèneront à l'accueil du nouveau site.
+
+Avant la mise en ligne (Claude, 09/11 au soir) :
+1. Demande au CRM pour recevoir les demandes du formulaire (entrée pour la conversation pilote, en haut).
+2. Version « en ligne » de la page : visible par Google, sans bandeau de test ; titre et description pour Google ;
+   aperçu propre quand le lien est partagé sur WhatsApp ; plan du site pour Google ; vraie page `/mentions-legales` ;
+   anciennes adresses du site renvoyées vers l'accueil.
+3. Mentions légales : capital, hébergeur GitHub, e-mail de réclamation générique (pas d'adresse personnelle).
+4. Formulaire : envoi vers le CRM dès que l'adresse est connue.
+5. Lien à envoyer aux clients WhatsApp : `https://www.santeo.net/?src=whatsapp` (la demande arrive avec la provenance
+   « Site Santéo – WhatsApp »).
+
+Le jour de la mise en ligne (Fabrice clique, Claude guide une étape par message) :
+6. Fabrice fusionne les demandes de fusion.
+7. Fabrice montre toute la zone DNS de santeo.net dans OVH (capture). Le relevé est gardé hors du dépôt, qui est
+   public (il contient des adresses de serveur).
+8. GitHub, réglages du dépôt, Pages : domaine personnalisé `www.santeo.net`, puis « Enforce HTTPS ».
+9. OVH : `www` vers `fabcoh.github.io.` ; `santeo.net` sans www vers les quatre adresses de GitHub Pages. Jamais les
+   lignes MX, SPF, DKIM, DMARC, ni les sous-domaines du CRM et de GestCom ; vérifier avant qu'aucun sous-domaine ne
+   dépend de la ligne `santeo.net`.
+10. Claude passe la publication en mode « en ligne » et vérifie l'adresse sur PC et téléphone, certificat compris.
+11. Google Search Console : envoyer le plan du site `https://www.santeo.net/sitemap.xml`.
+
+Ensuite, un lot à la fois :
+12. Pages pour le référencement (Google et moteurs d'IA).
+13. Achats de mots-clés (Google Ads) : la mesure des demandes reçues demande un bandeau d'accord pour les cookies
+    (règle de la CNIL), à faire avant la première campagne.
+14. APRIL et API Santé (en attente de « comparateur claude »).
+15. Gestion des compagnies réservée à Santéo.
+
+## Statistiques et Google Ads (décidé le 11/11/2026)
+
+- Fabrice : « on peux avoir les statisatique et les personnes en ligne actuellement sur le site ? », puis « j'ai un avoir
+  de 400€ pour faire du google ad », puis « oui on fait ce tes ». Choix : statistiques Google (Google Analytics), reliées
+  à son compte Google Ads, plutôt que Plausible (proposé d'abord, sans cookie mais payant).
+- Fait (demande de fusion « bandeau-cookies ») : bandeau cookies, « Refuser » et « Accepter » identiques ; rien de Google
+  chargé avant l'accord ; choix gardé 6 mois ; lien « Cookies » en bas de page ; mentions légales, section Cookies, mise
+  à jour ; la demande de comparatif envoyée (`generate_lead`) et le premier message du tchat (`tchat_premier_message`)
+  sont comptés, sans leur contenu. Tant que `google_mesure` est vide dans `maquette/reglages-site.json`, rien ne
+  change sur le site.
+- Identifiant de mesure (11/11) : la propriété Google Analytics existait déjà (« http://www.santeo.net – GA4 », compte
+  Analytics « www.santeo.fr », même compte Google que le compte Google Ads « santeo ») ; identifiant `G-WMWFVBYLE0` mis
+  dans `maquette/reglages-site.json` (demande de fusion « mesure-google-analytics »). Essais avant envoi : bandeau visible
+  sur téléphone et PC, rien de Google avant l'accord, balise chargée après « Accepter », rien après « Refuser ».
+- Compte Google Ads « santeo », état des lieux du 11/11 (lu par Windsor.ai) : actif ; 4 anciennes campagnes en veille,
+  sans dépense depuis au moins 2 ans et inutilisables (groupes d'annonces supprimés ou annonces absentes, une campagne
+  sans rapport avec Santéo) ; aucun suivi des conversions ; page Promotions vue par Fabrice : aucune offre, aucun avoir ;
+  dernier paiement en 2013 : carte à remplacer par Fabrice avant toute dépense. Anciennes annonces refusées quand elles
+  citaient des assureurs : ne jamais citer de nom d'assureur dans une annonce.
+- Compte « Santeo V2 » (captures du 11/11) : désactivé par Google depuis le 28/02/2020, paiement refusé ; ses 4 campagnes
+  ont été mises en veille par Fabrice le 11/11 (l'une était encore active et aurait dépensé dès la carte acceptée).
+  Sa page Promotions n'a pas été vue : l'avoir de 400 € y est peut-être (voir la phrase de Fabrice ci-dessous), mais les
+  offres de Google sont en général réservées aux nouveaux annonceurs, ce que Santéo n'est plus (non vérifié).
+- Windsor.ai branché le 11/11 (plug-in et connecteur claude.ai, choix de Fabrice : « oui on branche Windsor.ai ») ; il
+  lit le compte Google Ads actif « santeo ». Un second compte Google Ads (« Santeo V2 ») demande un nouveau moyen de
+  paiement ; Fabrice : « mais les 400 euros étais sur l'autre adresse » (compte exact de l'avoir à préciser avec lui).
+- Environnement cloud (réglages réseau) : adresses autorisées le 11/11 avec l'accord de Fabrice : Windsor.ai (son
+  plug-in était refusé par le réseau) et santeo.fr / www.santeo.fr (vérification du renvoi).
+- Décision de Fabrice (11/11) sur le prix des clics « mutuelle » : « C'est trop cher pour moi. » Nouvelle cible :
+  « ce qui nous intéresse, c'est d'attirer les jeunes 20, 25 ans, 30 ans ». Ordre retenu (« Ok je te fais confiance ? ») :
+  1. la mesure, gratuite : Google Analytics (ce lot), puis lien Analytics ↔ Google Ads, puis Search Console (vérifiée
+     par un fichier ou une balise dans le site, sans toucher à OVH) ;
+  2. des articles du guide pour les jeunes : étudiants, apprentis et alternants, jeunes sans emploi, fin de la mutuelle
+     des parents, premier emploi (dispense de la mutuelle d'entreprise) ; textes « Mon idée » validés par Fabrice ;
+  3. un petit test payant sur les mots-clés jeunes les moins chers, avec un prix maximum par clic, budget à fixer avec
+     Fabrice (moins de 400 € par mois), seulement après la carte remplacée et la mesure en place.
+- Les chiffres de visites, de recherches Google et de prix des mots-clés ne s'écrivent jamais dans ce dépôt public.
+
+## Vue de contrôle (11/11/2026)
+
+- Fabrice : « je voudrais avoir une version avec les compagnies affiché pour bien controler », puis « POURQUOI JE NE VOIS
+  PAS DANS LA MAQUETTE » (prix APRIL et API Santé : leurs relais n'acceptent que santeo.net, la maquette tourne sur
+  claude.ai), puis « OK » à la vue de contrôle.
+- www.santeo.net/?controle=1 : sous chaque offre, « Contrôle : gamme · formule », avec les vrais tarifs ; bandeau « Vue de
+  contrôle » en haut. Un visiteur ordinaire ne voit rien de changé (les noms sont déjà dans le code de la page).
+
+## Reste à faire selon Fabrice (11/11/2026, ses mots)
+
+« ajouter les garantie april et varalti qui ne sont pas encore sur le site / google sur des mot clefs pas chere /
+référencement naturel / avec un agent tu pourrais documenter mieux le site avec des articles a créer et les explications /
+thèmes / contrat non responsable / ACS aide à la mutuelle / surcomplémentaire santé / Mutuelle de groupe ou obligatoire /
+Exemple de remboursement / Comprendre la mutuelle et le principe des remboursement / On peut ajouter plein d'article pour
+mieux référencer le site »
+
+- **Guide de la mutuelle** (demande de fusion « guide-articles ») : 6 articles, un par thème, rédigés par deux agents
+  puis relus par Claude (textes : Mon idée). Pages `/guide/` et `/guide/<slug>/`, plan du site, données pour Google
+  (article, fil d'Ariane, questions fréquentes), lien dans le pied de page de l'accueil. L'ACS n'existe plus depuis le
+  01/11/2019 : l'article le dit dès le titre et explique la Complémentaire santé solidaire.
+- Chiffres vérifiés sur Service-Public (lecture directe) et, pour ameli et Légifrance qui refusent les lectures
+  automatiques, par recherche : C2S (plafonds et participations), franchises et participation forfaitaire (plafonds de
+  70 € par an), consultation à 30 €, base de 23 € en secteur 2 hors OPTAM, forfait journalier de 23 € (17 € en
+  psychiatrie) depuis le 01/03/2026, couronne 100 % Santé à 515 € et base de 120 €.
+- **À remettre à jour chaque année** : plafonds de la C2S (1er avril), forfait journalier, tarifs des consultations,
+  plafonds du 100 % Santé, franchises.
+- Mots-clés visés et points douteux de chaque article : gardés hors de ce dépôt public (stratégie de référencement et
+  d'annonces).
+- APRIL et API Santé : relais ouverts à santeo.net et www.santeo.net le 11/11 (tarification seulement, versions
+  2026-11-11, d'après « comparateur claude »). Fabrice : « et april et varalti ne sont pas dispo au niveau des tarifs ? ».
+- **API Santé (VERALTI)** branché (demande de fusion « api-sante ») : le site appelle `capisante.fr/apicil.php` une fois
+  par profil complet (date de naissance exacte, code postal), garanties lues dans `garanties.json` (gamme APICIL), offres
+  ajoutées aux autres. Vérifié le 11/11 par un vrai calcul (profil fictif, 60 ans, 75012 : 11 formules). Dans la maquette
+  (page privée), pas de tarif API Santé : le relais n'accepte que santeo.net. Au passage, l'option choisie est suivie par
+  son identité : une offre qui arrive ou un changement d'étoiles ne fait plus envoyer une autre offre que celle choisie.
+- **APRIL** branché (demande de fusion « april ») : le site appelle `capisante.fr/april.php` une fois par profil complet,
+  tarification seulement ; produits = ceux cochés dans l'espace admin (par défaut Santé Mix Proximité et Simply Santé,
+  comme le comparateur ; produits « indépendants » seulement pour un régime TNS) ; garanties lues à la construction dans
+  la page du comparateur (`APRIL_GAR`, `APRIL_ORDRE_RANG`), en lecture seule, tant qu'elles ne sont pas dans
+  `garanties.json` ; produits modulables lus sur la diagonale (« Niv. 3 » = 03|03). « n.c. » (garanties non publiées,
+  Simply Santé) s'affiche « n.c. » / « Non communiqué », jamais « — » (non couvert). Au passage : garanties détaillées
+  d'API Santé (pharmacie, implants, lentilles…) ajoutées, elles manquaient dans le détail.
+- Point à surveiller : chaque calcul APRIL renvoie un numéro de projet (« x-projectUuid ») ; APRIL enregistre peut-être
+  un dossier par calcul (non vérifié).
+- **5 articles de plus** (demande de Fabrice du 11/11, ses mots : « résiliation infra annuelle RIA / les différents tarifs
+  de convention / Les medecins signataire des convention ceux qui sont OPTAM ou NON OPTAM / LE 100% santé avec les
+  différentes réforme / Prothèeses dentaires remboursé avec les tarifs de convention et kes shéma des dnets pour
+  expqiuer ») : demande de fusion « guide-articles-2 », 11 articles en tout. Rédigés par deux agents, relus par Claude
+  (textes : Mon idée). Retiré à la relecture, faute de preuve : l'étape dentaire du 1er janvier 2022 (annoncée en 2019,
+  réalisation non vérifiée) et une définition du contrat responsable qui était celle du contrat « solidaire ».
+- **Schéma des dents** (article des prothèses) : dessiné à la construction à partir de `schema_dents` du JSON de
+  l'article (panier de chaque couronne selon la dent et le matériau), avec le même contenu en texte. La construction
+  s'arrête si `a_confirmer` n'est pas vide. Paniers en vigueur depuis le 1er janvier 2026 : la couronne en zircone sur
+  molaire est passée des tarifs maîtrisés au 100 % Santé (plafond 453,20 €).
+- Chiffres de ces 5 articles : Service-Public et securite-sociale.fr lus directement ; ameli et Légifrance par recherche
+  seulement (ils refusent les lectures automatiques). Plafonds dentaires 2026 relevés de 3 % (515 €, 566,50 €,
+  453,20 €, 298,70 €, inlay-core 150 €). L'exemple du spécialiste à 65 € (base de 31,50 €) est celui du Haut Conseil pour
+  l'avenir de l'assurance maladie (octobre 2025), cité comme tel. **À remettre à jour chaque année** : plafonds dentaires
+  et tarifs des consultations. Le contrôle « nom d'assureur dans un article » laisse passer le nom de ce Haut Conseil.
+- **Référencement naturel, vérification du 11/11** (demande de Fabrice : « Tu peux vérifier que le code permet un bon
+  référencement naturel ») : bases en place (adresse officielle, plan du site, robots, données pour Google, texte lisible
+  sans JavaScript, téléphone). Trois points trouvés, dans l'ordre : 1) les anciennes pages de l'ancien site connues de
+  Google tombaient en erreur 404 ; 2) l'accueil est lourd sur téléphone (logos des compagnies intégrés dans la page) ;
+  3) petits défauts de l'accueil (description trop longue, deux titres h1, pas de liens vers les articles). Fabrice :
+  « Oui » pour commencer par le point 1.
+- **Renvois des anciennes adresses** (demande de fusion « anciennes-adresses ») : `maquette/renvois.json` liste les
+  anciennes adresses (`/actu/…`, `/question/…`, `/devis/…`, relevées dans l'export de la Search Console du 08/11) et la
+  page la plus proche du nouveau site (article du guide, guide, ou comparateur ; choix : Mon idée). La construction écrit
+  à chaque ancienne adresse une page de renvoi immédiat avec l'adresse officielle de la destination, et s'arrête si la
+  destination n'existe pas. `/mentions-legales` avait déjà son renvoi. Les chiffres de l'export restent hors du dépôt.
+- **Décision de Fabrice (11/11, ses mots)** : « Je vais te demander ce qu'il reste à faire pour ma première question qui
+  était d'augmenter les chances de référencement. À chaque fois, je vais devoir te demander, alors qu'est-ce qu'il reste à
+  faire? Ou tu peux passer à la suite? Est-ce que tu peux essayer d'enchaîner ». Pour le référencement, Claude enchaîne
+  les lots de code sans redemander ; Fabrice fusionne. Reste dans l'ordre : accueil allégé et petits défauts (fait dans
+  « accueil-leger »), polices sans blocage (même lot), liens entre articles dans le texte, puis Search Console (accès à
+  demander à Fabrice ou à son fils).
+- **Accueil allégé** (demande de fusion « accueil-leger ») : logos des compagnies en WebP de 72 px de haut (dans la page :
+  310 Ko -> 56 Ko ; rendu identique à l'œil, PC et téléphone) ; description pour Google de 143 caractères (Mon idée) ;
+  « Mentions légales » devient un sous-titre (un seul titre h1 sur l'accueil) ; liens vers les 11 articles du guide en bas
+  de l'accueil (champ `lien` de chaque article, texte court : Mon idée) ; polices Google chargées sans bloquer l'affichage
+  (accueil et articles). Tests : liens vers chaque article, un seul h1, description de 155 caractères au plus, images
+  intégrées de moins de 120 Ko.
+- **Liens entre articles** (demande de fusion « liens-articles », suite du référencement enchaînée à la demande de
+  Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
+  pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
+  jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Simulateur, dentaire (Fabrice, 13/11, ses mots, avec une capture)** : « ajoute les implants dentaire meme si l'implants
+  en lui meme n'est pas rembousé certaines partie comme la couronne et autres sont remboursés […] Orthonditie adulte n'est
+  pas remboursé mais certaines mutuelle peuvent prendre en charge comme révoluo REV6 RENFORT 100 qui va remboursé jusqu'à
+  200% 193.50€ X 2 par semestre / endodontie et parondontie idém.. ». Fait (demande de fusion « simulateur-dentaire ») :
+  implant en deux lignes (pose de l'implant : forfaits en euros ; couronne posée sur l'implant : base de 107,50 € à 60 %,
+  code HBLD418, source : forum des assurés de l'Assurance maladie, par recherche, à vérifier sur le devis) ; orthodontie
+  adulte : 0 € de Sécurité sociale, pourcentages de 100 à 400 % d'une base de 193,50 € par semestre (base d'un semestre
+  d'enfant, Service-Public F33956 ; base utilisée par certains contrats : Vos mots) ; soins des gencives non remboursés :
+  forfaits (remboursés seulement dans certains cas d'ALD, comme le diabète : Assurance maladie, par recherche) ;
+  dévitalisation d'une prémolaire et d'une molaire (1 à 26 ans, F33956). L'endodontie (dévitalisation) est remboursée
+  par la Sécurité sociale (60 %, F33956) ; pour les plus de 26 ans, Service-Public ne donne que l'incisive et la canine.
+- **Simulateur de remboursement (Fabrice, 12/11, ses mots)** : « Crée le simulateur hyper performant et il faut récupérer
+  les données et codification pour mettre en olace l'outil avec les vrais chiffres / Idem simple / Type d'acte 》 ici tu
+  ajoutes les sous rubriques / Montants regle / Remboursement secu / Remboursement secu et mutuelle / 100% = … 400%= / Tu
+  peux adaptées si tu as un Remboursement en € ». Fait (demande de fusion « simulateur-remboursement ») : page
+  /simulateur-remboursement/ (PC et téléphone), 7 types d'acte et 32 sous-rubriques ; montant réglé modifiable ;
+  remboursement Sécurité sociale, puis Sécurité sociale + mutuelle et reste à payer à 100, 130, 150, 200, 250, 300 et
+  400 % de la base, ou en forfaits en euros (chambre particulière, lunettes hors 100 % Santé, lentilles, aides auditives
+  de classe II, psychologue non conventionné, ostéopathe) ; schéma Sécurité sociale / mutuelle / reste à payer ; texte
+  d'explication pour les internautes (Mon idée). Règles appliquées : participation forfaitaire et franchises jamais
+  remboursées par un contrat responsable ; médecin non OPTAM : 20 points de moins que chez un OPTAM, 200 % au plus
+  (instruction de la Direction de la sécurité sociale du 29/05/2019) ; 100 % Santé jusqu'au prix limite. Contrôlé sur
+  l'exemple officiel du HCAAM (spécialiste à 65 €, garantie 200 % : 4 € de reste chez un OPTAM, 25,60 € chez un non
+  OPTAM) et sur ceux de Service-Public (généraliste, médicament). Données : `maquette/simulateur/actes.json`, chaque acte
+  avec ses sources ; montants d'exemple signalés comme tels.
+  Pas encore dedans, faute de source officielle lisible : codes des actes (fichier CCAM d'ameli.fr, qui refuse les
+  lectures automatiques ; la page de data.gouv.fr envoyée par Fabrice est bloquée par le réseau de la session, et
+  l'ajout de data.gouv.fr au réseau a été refusé), analyses, radiologie, kinésithérapie, psychiatre (55 € ou 57 €
+  selon la source), implants, transports. **À remettre à jour chaque année** : bases, prix limites, participation et
+  franchises.
+- **Un article par jour (Fabrice, 12/11, ses mots)** : « Il faut régulièrement mettre a jour le site avec les actualités et
+  informations les recherches médicales et autres sujets intéressant pour la mutuelle sante / La dépendance les dispositifs
+  mon psy ... / Tu dois écrire chaque jour un article que tu va s ajouter l'histoire de mieux référence le dite et aussi le
+  déclare auprès des ia chat gpt et toi ». Premier article (demande de fusion « article-mon-soutien-psy ») : Mon soutien
+  psy, rangé dans « Comprendre les remboursements » (texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur
+  Service-Public (F34917, A17461) : 12 séances par an, dès 3 ans, 50 € la séance sans dépassement, 60 % remboursés par
+  l'Assurance maladie, 40 % pour un contrat responsable, accès sans passer par le médecin, tiers payant dans certains cas,
+  tiers payant pour tous prévu par la loi de financement pour 2026 (décret attendu). Corrigé à la relecture : la date des
+  changements de 2024-2025 (Service-Public les rattache au décret du 13 mai 2025, l'Assurance maladie au 15 juin 2024 :
+  les deux textes sont cités sans trancher), le centre médico-psychologique (Service-Public ne parle que du psychiatre),
+  une source non lue retirée. Sujet suivant prévu : la dépendance.
+  Téléphone : les tableaux des articles n'imposent plus une largeur de 480 px ; à 390 px de large, 44 tableaux sur 47
+  tiennent dans l'écran (avant : aucun), les plus larges défilent encore dans leur cadre.
+  Déclarer le site aux IA : aucun formulaire n'existe chez ChatGPT ni chez Claude ; le fichier `robots.txt` laisse déjà
+  lire tout le site à tous les robots. Pistes (Mon idée) : inscrire le site sur Bing (la recherche de ChatGPT s'appuie en
+  partie sur Bing : meilleure explication, non vérifiée) et prévenir Bing à chaque nouvel article.
+- **Articles pour les jeunes (12/11, demande de la conversation « Audit compte Google Ads »)** : Fabrice, ses mots
+  transmis par cette conversation : « On commence le référencement naturelle » et « ce qui nous intéresse, c'est d'attirer
+  les jeunes 20, 25 ans, 30 ans ». Fait (demande de fusion « articles-jeunes ») : nouveau chapitre « Jeunes et premier
+  emploi » (titre et présentation : Mon idée), avec 4 articles : mutuelle jeune (20-30 ans), mutuelle étudiante (avec
+  « Ce qui a changé pour les étudiants » : fin de la sécurité sociale étudiante, 2018-2019), dispense de mutuelle
+  d'entreprise (CDD, apprenti, exemple de lettre écrit par Santéo), mutuelle chômeur ou jeune sans emploi. Rédaction par
+  deux agents, relue par Claude (textes : Mon idée). L'ancienne adresse /devis/junior renvoie maintenant vers l'article
+  mutuelle jeune ; l'article sur la mutuelle d'entreprise obligatoire renvoie vers celui sur la dispense.
+  Vérifié par Claude sur les pages officielles : plafonds de la Complémentaire santé solidaire pour une personne seule en
+  métropole (10 421 € gratuite, 14 069 € payante, au 1er avril 2026), 8 € par mois à 29 ans ou moins, revenus d'activité
+  comptés à 70 % au chômage indemnisé, C2S payante proposée d'office avec l'allocation du contrat d'engagement jeune
+  (1er juillet 2026), demande seul après 25 ans, fin du statut d'ayant droit l'année des 18 ans, régime gardé en entrant
+  dans le supérieur. Points restés incertains, écrits prudemment : les pages officielles sur les dispenses datent de mai
+  2024 ; aucune page ne dit en ces mots que la mutuelle n'est pas obligatoire pour un étudiant ; l'âge limite sur la
+  mutuelle des parents dépend de leur contrat (déjà écrit dans l'article famille).
+  **À remettre à jour chaque année** en plus : plafonds et participation de la Complémentaire santé solidaire.
+- **Ciel de l'en-tête (Fabrice, 12/11, ses mots, avec une capture)** : « continu le ciel sur toute la partie pour
+  harmoniser en estempant vers le titre ». Fait (demande de fusion « ciel-entete ») : bande de ciel en haut de la page, de
+  la couleur du ciel de la photo, qui s'estompe vers le titre (à gauche) et vers le bas ; bords haut et gauche de la photo
+  plus fondus. Thème sombre : bande bleu nuit.
+- **Photo du couple (Fabrice, 12/11, ses mots, avec la photo et une maquette)** : « tu vas ajouter cette photo au site sans
+  changer le site tu intégres que la partie du couple avec l'oiseu ». Fait (demande de fusion « photo-couple ») : photo
+  recadrée (têtes et épaules), bords gauche et bas fondus en transparence, en haut à droite de l'en-tête sous l'oiseau déjà
+  en place ; rien d'autre ne bouge. Fichier à part sur le site (`images/couple.webp`, 27 Ko), intégré dans la maquette.
+  Sur les petits téléphones (moins de 360 px de large), le logo cache une partie de la photo.
+- **Carte d'offre (Fabrice, 12/11, avec une capture d'une offre sur PC ; ses mots)** : « il faudrait que cette offre
+  m'intéresse soit placée plutôt au milieu, tu vois, ou vers la droite, dans le coin droit […] détail et cette offre
+  m'intéresserait placée sur la même ligne […] que la ligne ne garde pas cet aspect ce carré. Ça s'agrandit au fur et à
+  mesure qu'il coche sur des options ». Fait (demande de fusion « carte-offre ») : les deux boutons sur une ligne, en bas à
+  droite ; nom et prix à gauche, garanties à droite ; repère de contrôle à gauche de la ligne des boutons ; sur PC, une option
+  cochée ajoute une seule ligne (« Verres complexes 200 € »). Hauteur sur PC : 122 px au lieu de 188 au départ ; téléphone
+  inchangé, sauf les boutons alignés à droite.
+- **Décision de Fabrice (12/11, ses mots, avec une capture du bas de l'accueil sur téléphone)** : « Je ne veux pas tout
+  ses titres / Tu fois les intégrer dans guide de la mutuelle ». Le bas de l'accueil ne montre plus les titres des
+  articles : il garde seulement le lien « Guide de la mutuelle » du pied de page ; les titres restent dans le sommaire du
+  guide (par chapitre). Annule la partie « liens vers les 11 articles en bas de l'accueil » du lot « accueil-leger ».
+- **Reprise des anciennes pages** (demande de fusion « anciennes-pages », Fabrice, ses mots : « Tu reprennes ces pages, tu
+  les corriges, tu les améliores et tu les mets dans les bons chapitres ou tu crées des chapitres différents. […] Tu peux
+  faire de la progressivité sur les anciennes en disant ce qu'il y avait avant et ce qu'il y a maintenant ») : les 34
+  anciennes pages (29 actualités 2010-2023, 5 questions), retrouvées dans le dépôt privé `santeo-net` (lecture seule) et
+  montrées à Fabrice dans une page privée, sont reprises en 14 nouveaux articles et 7 parties « avant / maintenant »
+  ajoutées aux articles existants : 25 articles en tout. Rédaction par quatre agents, relue par Claude (textes : Mon idée).
+  Guide rangé en six chapitres (`maquette/chapitres.json`, champ `chapitre` de chaque article) : sommaire par chapitre avec
+  un menu en tête, fil d'Ariane avec le chapitre, « À lire aussi » du même chapitre, bas de l'accueil groupé par chapitre.
+  Chaque ancienne adresse renvoie maintenant vers sa nouvelle version (`maquette/renvois.json`) ; seules les annonces de
+  produits de 2011-2012, la grippe H1N1, la FAQ et les pages de rubrique restent vers l'accueil ou le guide. Pas d'article
+  pour les jeunes : prévu par la conversation Google Ads (l'ancienne adresse /devis/junior pourra y renvoyer).
+  Vérifié en plus par Claude : forfait de 32 € sur les actes lourds (1er avril 2026), forfait journalier de 23 €, plafonds
+  des franchises à 70 € (1er octobre 2026), règles du démarchage (11 août 2026), gel des cotisations 2026 censuré par le
+  Conseil constitutionnel (décision QPC du 23 octobre 2026), contribution de 2,05 % en 2026. Corrigé à la relecture :
+  avis d'échéance « moins de 15 jours avant l'échéance » (texte officiel), date de la consultation à 26,50 €, service de
+  relecture de Santéo décrit au conditionnel remplacé par ce que le site permet vraiment (tchat, devis).
+  **À remettre à jour chaque année** en plus : forfaits hospitaliers, franchises, taxe et contribution des complémentaires.
+- **Correction (11/11, après publication de « accueil-leger »)** : sur les articles, les polices chargées sans blocage
+  faisaient bouger le texte à leur arrivée (décalage mesuré en ligne 0,11 à 0,14, au-dessus du seuil de 0,1 de Google ;
+  0 avant). Les articles reviennent au chargement d'avant (ils s'affichent en moins d'une seconde) ; l'accueil garde le
+  chargement sans blocage (décalage 0,06, contenu principal affiché en 1,9 s au lieu de 2,7 s sur téléphone lent simulé).
 
 ## Prochains lots proposés (chacun validé par Fabrice avant le suivant)
 

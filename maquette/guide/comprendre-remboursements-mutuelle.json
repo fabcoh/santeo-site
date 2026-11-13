@@ -1,0 +1,33 @@
+{
+ "slug": "comprendre-remboursements-mutuelle",
+ "chapitre": "comprendre",
+ "lien": "Comprendre les remboursements",
+ "ordre": 1,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Comprendre les remboursements mutuelle : BR, 100 %, 200 %",
+ "description": "Base de remboursement, ticket modérateur, 100 % ou 200 %, OPTAM, 100 % Santé, franchises : les remboursements de mutuelle expliqués simplement.",
+ "h1": "Comprendre la mutuelle santé et le principe des remboursements",
+ "faq": [
+  {
+   "q": "Qu'est-ce que la BRSS ?",
+   "r": "C'est la base de remboursement de la Sécurité sociale : le tarif de référence à partir duquel la Sécurité sociale, et la plupart des complémentaires, calculent leurs remboursements. Elle peut être inférieure au prix que vous payez."
+  },
+  {
+   "q": "La mutuelle rembourse-t-elle la participation forfaitaire de 2 € ?",
+   "r": "Non. Un contrat responsable ne peut rembourser ni la participation forfaitaire ni les franchises médicales. Elles restent à votre charge, sauf exonération."
+  },
+  {
+   "q": "Qu'est-ce qu'un dépassement d'honoraires ?",
+   "r": "C'est la partie du prix qui dépasse la base de remboursement. La Sécurité sociale ne la rembourse pas. Votre complémentaire peut la prendre en charge selon votre contrat, avec des limites pour les médecins non adhérents à l'OPTAM."
+  },
+  {
+   "q": "Qu'est-ce qu'un contrat responsable ?",
+   "r": "C'est une complémentaire qui respecte des règles fixées par le Code de la sécurité sociale. Elle rembourse notamment le ticket modérateur, le forfait journalier hospitalier sans limite de durée et le 100 % Santé, mais pas la participation forfaitaire ni les franchises."
+  },
+  {
+   "q": "Qu'est-ce qu'un délai de carence ?",
+   "r": "C'est une période, après la souscription, pendant laquelle certaines garanties ne s'appliquent pas encore. Sa durée varie selon les contrats, de quelques jours à 12 mois."
+  }
+ ]
+}

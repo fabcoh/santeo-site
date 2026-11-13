@@ -1,0 +1,33 @@
+{
+ "slug": "exemples-de-remboursement",
+ "chapitre": "comprendre",
+ "lien": "Exemples de remboursement",
+ "ordre": 2,
+ "publie": "2026-11-11",
+ "maj": "2026-11-11",
+ "titre_page": "Exemples de remboursement mutuelle : 5 cas chiffrés 2026",
+ "description": "Consultation, dépassement, lunettes, couronne, hospitalisation : 5 exemples chiffrés de remboursement Sécu et mutuelle, montants de 2026.",
+ "h1": "Exemples de remboursement de mutuelle : 5 cas chiffrés",
+ "faq": [
+  {
+   "q": "Pourquoi reste-t-il 2 € à payer après une consultation ?",
+   "r": "C'est la participation forfaitaire, retenue par l'Assurance Maladie sur chaque consultation ou acte de médecin. Un contrat responsable ne peut pas la rembourser. Elle est plafonnée à 70 € par an et par personne depuis le 1er octobre 2026, et ne s'applique pas aux moins de 18 ans."
+  },
+  {
+   "q": "Une garantie à 200 % rembourse-t-elle deux fois ma dépense ?",
+   "r": "Non. Elle rembourse au plus deux fois la base de remboursement, Sécurité sociale comprise en général, et jamais plus que ce que vous avez payé."
+  },
+  {
+   "q": "Combien coûte le forfait journalier hospitalier en 2026 ?",
+   "r": "Depuis le 1er mars 2026, il est de 23 € par jour à l'hôpital ou en clinique et de 17 € par jour en service psychiatrique. Un contrat responsable le rembourse sans limite de durée."
+  },
+  {
+   "q": "Les lunettes 100 % Santé sont-elles vraiment sans reste à charge ?",
+   "r": "Oui, avec un contrat responsable, pour un équipement complet du panier 100 % Santé : monture à 30 € au plus et verres de classe A. L'opticien doit toujours vous le proposer."
+  },
+  {
+   "q": "Pourquoi ma couronne dentaire est-elle mal remboursée ?",
+   "r": "La base de remboursement d'une couronne est de 120 €, souvent bien inférieure au prix. Hors 100 % Santé, ce qui dépasse le remboursement de votre garantie reste à votre charge."
+  }
+ ]
+}
