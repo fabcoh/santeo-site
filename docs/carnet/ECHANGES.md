@@ -549,6 +549,17 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Comparateur, WhatsApp et tchat dans chaque article (Fabrice, 13/11, idée d'Antony, ses mots)** : « dans chaque article
+  que tu vas faire, tu vas créer au moins une phrase qui va le ramener sur le comparateur et une icône WhatsApp […] sur
+  chaque blog, tu as un chat. Et enfin, tu as une icône WhatsApp pour pouvoir poser ses questions […] pour tarifer votre
+  mutuelle, cliquez là ». Fait (demande de fusion « guide-tchat-whatsapp ») : sur chaque article, un encart au milieu du
+  texte (avant la 3e section) : « Combien coûterait votre mutuelle ? Comparez les offres en quelques secondes […] Antony
+  vous répond sur WhatsApp ou dans le tchat » (Mon idée), avec les boutons « Tarifer ma mutuelle » (comparateur) et
+  « WhatsApp » ; en bas de page, « Comparer les mutuelles » et « Poser une question sur WhatsApp ». Le lien WhatsApp
+  ouvre la ligne de Santéo avec un message déjà écrit qui cite la page lue. Le tchat d'Antony de l'accueil est sur toutes
+  les pages du guide et sur le simulateur (mêmes réglages de l'espace admin ; provenance « Site Santéo – Guide » ; sans
+  âge ni offre puisque ces pages n'ont pas de comparateur ; avatar : l'oiseau en une image, `images/oiseau.webp`).
+  Les prochains articles contiendront aussi une phrase avec un lien vers le comparateur (`docs/redaction/article-du-jour.md`).
 - **Oiseau animé et en-tête sans coupure (Fabrice, 13/11, ses mots)** : « oui remets l'oiseau animé à jour mais ralenti
   de moitie son rythme », puis, avec une capture : « tu peux retirer le fond blanc du logo de santéo pour le fondre dans
   la couleur bleuté et mieux harmoniser les séparations car la on voit vraiment les coupure » et « plus en va vers la

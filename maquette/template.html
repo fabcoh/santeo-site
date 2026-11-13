@@ -418,8 +418,6 @@ th{color:var(--muted)}
 ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:.35rem;font-size:.92rem}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
 
-/* ---------- Tchat avec Antony (bulle en bas à droite, PC et téléphone) ---------- */
-:root{--tchat-fond:#eef4f8}
 /* Ciel de l'en-tête (Fabrice, 12/11/2026 : « continu le ciel sur toute la partie pour harmoniser en estompant vers le titre ») :
    bande de ciel en haut de la page, de la couleur du ciel de la photo, qui s'estompe vers le titre (à gauche) et vers le bas. */
 :root{--ciel:#d6ecfa;--ciel-clair:#eef7fd}
@@ -428,6 +426,9 @@ ul.n{margin:.6rem 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap
 body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg) 100%) top / 100% var(--ciel-h,230px) no-repeat,
   linear-gradient(to right,var(--ciel-clair) 0,var(--ciel-clair) 8%,var(--ciel) 72%,var(--ciel) 100%) top / 100% var(--ciel-h,230px) no-repeat,var(--bg)}
 @media (max-width:699px){body{--ciel-h:150px}}
+/* debut-css-tchat */
+/* ---------- Tchat avec Antony (bulle en bas à droite, PC et téléphone) ---------- */
+:root{--tchat-fond:#eef4f8}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--tchat-fond:#0b1a22}}
 :root[data-theme="dark"]{--tchat-fond:#0b1a22}
 .tchat-voile{position:fixed;inset:0;background:rgba(5,20,30,.5);display:none}
@@ -486,6 +487,7 @@ body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg
 @media (prefers-reduced-motion: no-preference){.tchat-fenetre:not([hidden]){animation:tchat-ouvre .18s ease-out}}
 @keyframes tchat-ouvre{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media print{.tchat{display:none}}
+/* fin-css-tchat */
 html.controle .o-real{display:block!important;color:#7a5200;background:#fdf1d8;border-radius:6px;padding:.1rem .4rem;font-weight:700}
 html.controle body::before{content:"Vue de contrôle : compagnie et formule affichées sous chaque offre";display:block;max-width:62rem;margin:0 auto .8rem;
   background:#fdf1d8;color:#7a5200;border:1px dashed #7a5200;border-radius:8px;padding:.45rem .8rem;font-size:.88rem;text-align:center}
@@ -745,6 +747,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
 </div>
 <!-- fin-html-cookies -->
 
+<!-- debut-html-tchat -->
 <!-- Tchat avec Antony : la question du visiteur part sur WhatsApp (ligne 01 53 19 86 46), avec ce qu'il a déjà saisi -->
 <div class="tchat" id="tchat">
   <div class="tchat-voile" id="tchat-voile" aria-hidden="true"></div>
@@ -758,6 +761,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
   <button type="button" class="tchat-bouton" id="tchat-bouton" aria-expanded="false" aria-controls="tchat-fenetre" aria-label="Écrire à Antony"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-pastille" id="tchat-pastille" aria-label="Nouveau message d'Antony" hidden></span></button>
   </div>
 </div>
+<!-- fin-html-tchat -->
 
 <script>
 __MOTEUR__
@@ -1387,6 +1391,7 @@ window.addEventListener("hashchange",route);
    Prénom ou pseudo au début (Fabrice, 11/11/2026 : « il écrit bonjour / envoyer pour envoyer merci d'idiquer votre prénom
    ou votre psuedo ») : le premier message attend ici le pseudo, puis part avec lui ; le CRM ajoute « 2 », « 3 »… pour
    Antony si le pseudo est déjà pris (« elle pense avoir son pseudo et nous a ajoute juste un 2 après »). */
+/* debut-js-tchat */
 const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 (function(){
   const zone=$("tchat"), bouton=$("tchat-bouton"), fen=$("tchat-fenetre"), fil=$("tchat-fil"), texte=$("tchat-texte");
@@ -1398,12 +1403,15 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   // Avatar : l'oiseau de l'en-tête, repris tel quel avec ses calques (sans copier les images une seconde fois), immobile ;
   // sinon la lettre « A »
   const oiseau=document.querySelector(".mascotte");
-  document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau){const c=oiseau.cloneNode(true);c.className="m-avatar";i.replaceWith(c)}else i.replaceWith("A")});
+  document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau){const c=oiseau.cloneNode(true);c.className="m-avatar";i.replaceWith(c)}
+    else if(window.AVATAR_OISEAU)i.src=window.AVATAR_OISEAU;   // pages du guide : l'oiseau en une seule image
+    else i.replaceWith("A")});
   // Identification du prospect : après une demande de devis, le numéro de fiche rendu par le CRM accompagne ses messages
   let identite=null; try{identite=JSON.parse(localStorage.getItem("santeo-fiche")||"null")}catch(err){}
   window.tchatDemandeEnvoyee=(d,fiche)=>{identite={fiche:fiche?String(fiche):null,prenom:d.prenom,nom:d.nom,telephone:d.telephone,email:d.email};
     try{localStorage.setItem("santeo-fiche",JSON.stringify({fiche:identite.fiche}))}catch(err){}};
   function contexte(){
+    if(!$("age")||typeof Moteur==="undefined")return {age:null,cp:"",reg:"",offre:null};   // pages du guide : pas de comparateur
     const age=ageDeDate($("age").value), cp=$("cp").value.trim().toUpperCase();
     const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
     return {age, cp:cp&&Moteur.departement(cp)?cp:"", reg:$("reg").options[$("reg").selectedIndex].text,
@@ -1507,6 +1515,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   }
   if(etat.conversation)suivreBientot();
 })();
+/* fin-js-tchat */
 
 /* ---------- Démarrage ---------- */
 ["age","cp","reg"].forEach(id=>{const el=$(id);const maj=()=>{if(el.dataset.vu===el.value)return;el.dataset.vu=el.value;S.shown=5;S.chosen=null;upd()};el.addEventListener("input",maj);el.addEventListener("change",maj)});
