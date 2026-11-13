@@ -51,7 +51,7 @@ Ce fichier est la procédure. Il ne dépend d'aucune conversation : une conversa
 
 ## Sujets (Mon idée, dans l'ordre ; cocher quand l'article est en ligne)
 - [x] Mon soutien psy : séances chez le psychologue (12/11/2026)
-- [ ] La dépendance : perte d'autonomie, APA, ce que couvrent la Sécurité sociale et les contrats
+- [x] La dépendance : perte d'autonomie, APA, ce que couvrent la Sécurité sociale et les contrats (13/11/2026)
 - [ ] Les franchises médicales et la participation forfaitaire
 - [ ] Les médecines douces (ostéopathe, etc.) : ce que rembourse une complémentaire
 - [ ] Les transports sanitaires : quand ils sont remboursés

@@ -549,6 +549,14 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 13/11 : la dépendance** (demande de fusion « article-dependance », chapitre « Selon votre
+  situation » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public (pages lues le 13/11) :
+  APA dès 60 ans en GIR 1 à 4, plafonds mensuels 2 080,33 € / 1 682,30 € / 1 215,99 € / 811,52 €, participation nulle
+  jusqu'à 933,89 € de ressources puis jusqu'à 90 % au-delà de 3 439,31 € (F10009) ; APA jamais récupérée (F11678) ;
+  réduction d'impôt de 25 % sur 10 000 € en Ehpad (F17) ; crédit d'impôt de 50 % pour l'aide à domicile (F12) ;
+  allocation journalière du proche aidant 66,64 € (F16920) ; expérimentation en Ehpad dans 23 territoires depuis le
+  1er juillet 2025, 6,16 € par jour en 2026 (annexe du projet de loi de financement pour 2027). Retiré à la relecture :
+  une phrase sur l'aide employée chez un parent bénéficiaire de l'APA (crédit ou réduction d'impôt : sources en désaccord).
 - **Simulateur, dentaire (Fabrice, 13/11, ses mots, avec une capture)** : « ajoute les implants dentaire meme si l'implants
   en lui meme n'est pas rembousé certaines partie comme la couronne et autres sont remboursés […] Orthonditie adulte n'est
   pas remboursé mais certaines mutuelle peuvent prendre en charge comme révoluo REV6 RENFORT 100 qui va remboursé jusqu'à

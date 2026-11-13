@@ -1,0 +1,33 @@
+{
+ "slug": "dependance-perte-autonomie-apa",
+ "chapitre": "situation",
+ "lien": "Dépendance et APA (perte d'autonomie)",
+ "ordre": 31,
+ "publie": "2026-11-13",
+ "maj": "2026-11-13",
+ "titre_page": "Dépendance et APA : aides, Sécurité sociale et mutuelle",
+ "description": "Perte d'autonomie : APA et grille AGGIR, Ehpad, ce que paient Sécurité sociale, mutuelle et assurance dépendance, aides aux proches aidants.",
+ "h1": "Dépendance et perte d'autonomie : APA, Sécurité sociale, mutuelle et aides aux familles",
+ "faq": [
+  {
+   "q": "Qui a droit à l'APA ?",
+   "r": "Toute personne d'au moins 60 ans, classée en GIR 1 à 4 et résidant en France de façon stable, sans plafond de ressources : vos revenus font seulement varier votre participation."
+  },
+  {
+   "q": "Quel est le montant maximum de l'APA à domicile ?",
+   "r": "Selon Service-Public, 2 080,33 € par mois en GIR 1, 1 682,30 € en GIR 2, 1 215,99 € en GIR 3 et 811,52 € en GIR 4."
+  },
+  {
+   "q": "La mutuelle rembourse-t-elle la dépendance ?",
+   "r": "Une complémentaire santé rembourse des frais de santé. L'aide à la vie quotidienne relève de l'APA, des aides du département ou d'un contrat d'assurance dépendance."
+  },
+  {
+   "q": "L'APA est-elle récupérée sur l'héritage ?",
+   "r": "Non, ni du vivant de la personne, ni sur sa succession. L'aide sociale à l'hébergement (ASH), elle, peut être récupérée par le département."
+  },
+  {
+   "q": "Combien rapporte l'allocation journalière du proche aidant ?",
+   "r": "66,64 € par journée ou 33,32 € par demi-journée, 22 jours par mois au plus. Elle se demande à la Caf ou à la MSA."
+  }
+ ]
+}
