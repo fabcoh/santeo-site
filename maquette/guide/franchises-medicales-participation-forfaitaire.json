@@ -1,0 +1,37 @@
+{
+ "slug": "franchises-medicales-participation-forfaitaire",
+ "chapitre": "comprendre",
+ "lien": "Franchises et participation de 2 €",
+ "ordre": 32,
+ "publie": "2026-11-14",
+ "maj": "2026-11-14",
+ "titre_page": "Franchise médicale et participation de 2 € : plafonds 2026",
+ "description": "Participation forfaitaire de 2 €, franchises de 1 € et 4 € : plafonds par jour et par an, exonérations, prélèvement et rôle de la mutuelle.",
+ "h1": "Franchises médicales et participation forfaitaire de 2 € : montants, plafonds et mutuelle",
+ "faq": [
+  {
+   "q": "Quel est le montant de la franchise médicale en 2026 ?",
+   "r": "1 € par boîte de médicaments, 1 € par acte paramédical, dans la limite de 4 € par jour, et 4 € par transport sanitaire, dans la limite de 8 € par jour. Le tout est plafonné à 70 € par an et par personne."
+  },
+  {
+   "q": "Quel est le plafond de la participation forfaitaire de 2 € ?",
+   "r": "8 € par jour chez un même professionnel, et 70 € par an et par personne depuis le 1er octobre 2026, contre 50 € auparavant."
+  },
+  {
+   "q": "Combien peut-on payer au maximum par an ?",
+   "r": "140 € par personne depuis le 1er octobre 2026 : 70 € de participations forfaitaires et 70 € de franchises. Avant, le maximum était de 100 €."
+  },
+  {
+   "q": "La mutuelle rembourse-t-elle la franchise médicale et la participation forfaitaire ?",
+   "r": "En règle générale, non : un contrat responsable, le plus courant, ne rembourse ni la participation forfaitaire ni les franchises. Il rembourse en revanche le ticket modérateur."
+  },
+  {
+   "q": "Qui est exonéré de la franchise médicale ?",
+   "r": "Les moins de 18 ans, les femmes enceintes du 6e mois de grossesse au 12e jour après l'accouchement, les bénéficiaires de la Complémentaire santé solidaire ou de l'AME, et les victimes d'un acte de terrorisme pour les soins liés. Une affection de longue durée n'en dispense pas."
+  },
+  {
+   "q": "Comment payer les franchises avec le tiers payant ?",
+   "r": "Elles sont retenues sur un prochain remboursement. Si vous n'en recevez pas, l'Assurance maladie vous envoie un avis des sommes à payer, à régler en ligne, par virement ou par chèque."
+  }
+ ]
+}

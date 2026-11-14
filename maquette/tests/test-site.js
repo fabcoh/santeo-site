@@ -102,7 +102,7 @@ async function remplir(p) {
     doit(a.titre_page.length <= 60 && a.description.length <= 160, a.slug + ' : titre ou description trop longs pour Google');
     doit(plan.includes('https://www.santeo.net/guide/' + a.slug + '/</loc>'), a.slug + ' : absent du plan du site');
     doit(!/fcohen@|santeo\.net\/guide/.test(a.slug) && !/(april|avenir(?! de l'assurance maladie)|mcci|alptis|apicil|swiss ?life|harmonie|mgen)/i.test(fs.readFileSync(S + '/guide/' + a.slug + '.html', 'utf8')), a.slug + ' : nom d\'assureur dans un article');
-    { const src = fs.readFileSync(S + '/guide/' + a.slug + '.html', 'utf8'), liens = [...src.matchAll(/href="\.\.\/([^"\/]+)\/"/g)].map(m => m[1]);
+    { const src = fs.readFileSync(S + '/guide/' + a.slug + '.html', 'utf8'), liens = [...src.matchAll(/href="\.\.\/([a-z0-9-]+)\/"/g)].map(m => m[1]);   // « ../../ » (comparateur) n'est pas un article
       for (const l of liens) doit(l !== a.slug && guide.some(g => g.slug === l), a.slug + ' : lien vers un article absent ou vers lui-même : ' + l);
       doit(liens.length >= 2, a.slug + ' : moins de 2 liens vers d\'autres articles (' + liens.length + ')'); }
     if (a.schema_dents) doit(h.includes('<figure class="schema-dents">') && !h.includes('<div class="schema-dents"></div>')

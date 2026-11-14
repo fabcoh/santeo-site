@@ -549,6 +549,14 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 14/11 : franchises médicales et participation forfaitaire** (demande de fusion « article-franchises »,
+  chapitre « Comprendre les remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur
+  Service-Public (F165, F21760, F2951, F20314, vérifiés le 01/10/2026 ; actualité A17166 du 16/09/2026) : participation de 2 €
+  (8 € par jour chez un même professionnel), franchises de 1 € par boîte ou acte paramédical (4 € par jour) et 4 € par
+  transport (8 € par jour), plafonds annuels de 70 € chacun depuis le 1er octobre 2026 (100 € au total auparavant, 140 €
+  maintenant). Premier article écrit avec une phrase vers le comparateur et une vers le simulateur ; le test des liens entre
+  articles ignore désormais « ../../ » (comparateur). Retiré à la relecture : la ligne sur le forfait de 32 € des actes
+  lourds dans un contrat responsable (Service-Public : « selon le contrat » ; instruction de 2019 : prise en charge prévue).
 - **Comparateur, WhatsApp et tchat dans chaque article (Fabrice, 13/11, idée d'Antony, ses mots)** : « dans chaque article
   que tu vas faire, tu vas créer au moins une phrase qui va le ramener sur le comparateur et une icône WhatsApp […] sur
   chaque blog, tu as un chat. Et enfin, tu as une icône WhatsApp pour pouvoir poser ses questions […] pour tarifer votre
