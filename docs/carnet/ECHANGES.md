@@ -549,6 +549,13 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Garanties APRIL lues dans garanties.json (14/11, demande de la conversation pilote ; Fabrice : « oui », 16 h 51)** : le
+  comparateur de Claude publie depuis 16 h 59 une section « april » dans `src/garanties.json` (11 produits). Fait (demande de
+  fusion « garanties-april ») : le site lit les garanties APRIL dans cette section ; les 4 produits qu'elle ne contient pas,
+  faute de document APRIL (Simply, Pro Privilège, Protect, Cap Sérénité), gardent les valeurs de la page du comparateur
+  (« n.c. »), tant qu'elle les contient. Avant ce changement, le site affichait déjà ces tableaux, lus dans la page du
+  comparateur : comparaison faite le 14/11, contenus identiques pour les 11 produits (garanties, extras, contrat
+  responsable), seul l'ordre des clés change. Test : chaque niveau des 11 produits affiché comme dans garanties.json.
 - **Article du jour, 14/11 : franchises médicales et participation forfaitaire** (demande de fusion « article-franchises »,
   chapitre « Comprendre les remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur
   Service-Public (F165, F21760, F2951, F20314, vérifiés le 01/10/2026 ; actualité A17166 du 16/09/2026) : participation de 2 €
