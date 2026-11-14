@@ -405,6 +405,19 @@ async function remplir(p) {
     doit(/<p class="lien-simu">[^<]*<a href="simulateur-remboursement\/">Accéder au simulateur de remboursement Sécu<\/a>/.test(fs.readFileSync(d + '/index.html', 'utf8')), 'accueil : accès au simulateur absent');
     doit(/<aside class="s-acces">.*?<a class="btn" href="\.\.\/">Accéder au tarificateur<\/a>/s.test(fs.readFileSync(d + '/simulateur-remboursement/index.html', 'utf8')), 'simulateur : accès au tarificateur absent');
   }
+  // Garanties APRIL : celles de garanties.json, section « april » (publiée le 14/11/2026), sont celles que le site affiche
+  {
+    const G = JSON.parse(fs.readFileSync(path.join(R, 'src', 'garanties.json'), 'utf8')).april || { gammes: {}, extras: {} };
+    const h = fs.readFileSync(sites.crm + '/index.html', 'utf8');
+    const GS = JSON.parse(h.match(/<script type="application\/json" id="d-gammes">(.*?)<\/script>/s)[1]).APRIL;
+    const XS = JSON.parse(h.match(/<script type="application\/json" id="d-extras">(.*?)<\/script>/s)[1]).APRIL;
+    let n = 0;
+    for (const [code, g] of Object.entries(G.gammes)) g.fi.forEach((fi, i) => {
+      for (const k of ['hospO', 'honoO', 'dent', 'opt', 'aud']) { n++; doit(GS[k][String(fi)] === g[k][i], 'APRIL ' + code + ' niv. ' + g.niv[i] + ' ' + k + ' : ' + GS[k][String(fi)] + ' au lieu de ' + g[k][i]); }
+      for (const k of ['imp', 'orthN', 'optC', 'plaf']) { n++; doit(XS[k][String(fi)] === G.extras[code][k][i], 'APRIL ' + code + ' niv. ' + g.niv[i] + ' ' + k); }
+    });
+    doit(Object.keys(G.gammes).length >= 11 && n > 0, 'APRIL : section absente de garanties.json (' + Object.keys(G.gammes).length + ' produits)');
+  }
   // Simulateur de remboursement (/simulateur-remboursement/) : calcul vérifié sur des cas faits à la main, puis la page sur PC et téléphone
   {
     const SC = require(path.join(S, 'simulateur', 'calcul.js'));

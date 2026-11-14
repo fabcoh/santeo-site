@@ -36,30 +36,47 @@ keep = ["MCCINOVA","FLEXIA","SOLENCIA","CAPEVO","CAPNR","REV","RF50","RF100","MV
 tarifs = {k: v for k, v in tarifs.items() if k not in ("DOCSMD",)}
 gammes = g["gammes"]
 extras = {k: dict(g["extras"][k]) for k in keep if k in g["extras"]}
-# APRIL : garanties (APRIL_GAR) et rang des produits (APRIL_ORDRE_RANG) lus dans la page du comparateur de Claude, en lecture
-# seule, tant qu'ils ne sont pas dans garanties.json ; mêmes règles que sa page (fi = rang × 100 + niveau ; « n.c. » = non
-# communiqué, jamais « non couvert » ; orthodontie non remboursée comptée dans le forfait dentaire chez Only, Pro, Pro Start).
+# APRIL : garanties lues dans garanties.json, section « april » (publiée par le comparateur de Claude le 14/11/2026, validé par
+# Fabrice : « oui »), une entrée par code produit, tableaux par niveau. Les produits absents de cette section (sans document
+# APRIL : Simply, Pro Privilège, Protect, Cap Sérénité) gardent les valeurs de la page du comparateur (APRIL_GAR, « n.c. »),
+# tant qu'elle les contient. Rang des produits : APRIL_ORDRE_RANG de la page (fi = rang × 100 + niveau). « n.c. » = non
+# communiqué, jamais « non couvert ».
 APRIL_URL = option("--april", reglages.get("april", ""))
 _cmp = open(R + "/src/comparateur.html", encoding="utf-8").read()
-APRIL_GAR = json.loads(re.search(r"^const APRIL_GAR=(\{.*?\});\s*$", _cmp, re.M).group(1))
+_m = re.search(r"^const APRIL_GAR=(\{.*?\});\s*$", _cmp, re.M)
+APRIL_GAR = json.loads(_m.group(1)) if _m else {}
 APRIL_ORDRE = json.loads(re.search(r"const APRIL_ORDRE_RANG=(\[.*?\]);", _cmp, re.S).group(1))
+_AJ = g.get("april") or {}
+_GJ, _XJ = _AJ.get("gammes", {}), _AJ.get("extras", {})
 _noms = {p["code"][6:]: p["nom"] for c in CATALOGUE["compagnies"] if c["nom"] == "APRIL" for p in c["produits"]}
 _GA = {"label": "APRIL", "resp": False, "ins": "april", "names": {}}
-for _k in ("hospO", "hospN", "honoO", "honoN", "dent", "opt", "aud", "ch", "md"): _GA[_k] = {}
-_EA = {k: {} for k in ("imp", "orthR", "orthN", "lentA", "lentR", "optC", "pharR", "pharN", "aud", "plaf")}
-for _code, _g in APRIL_GAR.items():
-    if _code not in APRIL_ORDRE: continue
+_KG = ("hospO", "hospN", "honoO", "honoN", "dent", "opt", "aud", "ch", "md")
+_KX = ("imp", "orthR", "orthN", "lentA", "lentR", "optC", "pharR", "pharN", "aud", "plaf")
+for _k in _KG: _GA[_k] = {}
+_EA = {k: {} for k in _KX}
+APRIL_SOURCE = {}
+for _code in APRIL_ORDRE:
     _r = APRIL_ORDRE.index(_code)
+    if _code in _GJ:                                   # garanties.json, section april
+        _g, _x = _GJ[_code], _XJ[_code]
+        assert _g["fi"] == [_r * 100 + _n for _n in _g["niv"]], "APRIL : rang différent pour " + _code
+        APRIL_SOURCE[_code] = "garanties.json"
+    elif _code in APRIL_GAR:                           # repli : page du comparateur
+        _g = APRIL_GAR[_code]
+        _x = {k: [_g[k][i] if k in _g else "n.c." for i in range(len(_g["niv"]))] for k in _KX if k != "orthN"}
+        _x["orthN"] = ["n.c." if v == "n.c." else (v if _code in ("OnlySante", "SantePro", "SanteProStart") else "—") for v in _g["imp"]]
+        APRIL_SOURCE[_code] = "page du comparateur"
+    else:
+        continue
     for _i, _n in enumerate(_g["niv"]):
         _fi = str(_r * 100 + _n)
         _GA["names"][_fi] = _noms.get(_code, _code) + " Niv. " + str(_n)
-        for _k in ("hospO", "hospN", "honoO", "honoN", "dent", "opt", "aud", "ch", "md"): _GA[_k][_fi] = _g[_k][_i]
-        for _k in ("imp", "orthR", "lentA", "lentR", "aud"): _EA[_k][_fi] = _g[_k][_i]
-        for _k in ("optC", "pharR", "pharN", "plaf"): _EA[_k][_fi] = _g[_k][_i] if _k in _g else "n.c."
-        _EA["orthN"][_fi] = "n.c." if _g["imp"][_i] == "n.c." else (_g["imp"][_i] if _code in ("OnlySante", "SantePro", "SanteProStart") else "—")
+        for _k in _KG: _GA[_k][_fi] = _g[_k][_i]
+        for _k in _KX: _EA[_k][_fi] = _x[_k][_i]
 gammes = dict(gammes, APRIL=_GA)
 extras["APRIL"] = _EA
-APRIL_DATA = {"url": "", "ordre": APRIL_ORDRE, "resp": {c: v.get("resp") is True for c, v in APRIL_GAR.items()},
+APRIL_DATA = {"url": "", "ordre": APRIL_ORDRE, "resp": dict({c: v.get("resp") is True for c, v in APRIL_GAR.items()},
+                                                          **{c: v.get("resp") is True for c, v in _GJ.items()}),
               "tns": [p["code"][6:] for c in CATALOGUE["compagnies"] if c["nom"] == "APRIL" for p in c["produits"] if p.get("tns")]}
 def js(o): return json.dumps(o, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 out = t.replace("__MOTEUR__", moteur.replace("</", "<\\/")).replace("__TARIFS__", js(tarifs)).replace("__GAMMES__", js(gammes)).replace("__EXTRAS__", js(extras))
