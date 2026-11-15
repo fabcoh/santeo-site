@@ -57,7 +57,7 @@ Ce fichier est la procédure. Il ne dépend d'aucune conversation : une conversa
 - [x] Mon soutien psy : séances chez le psychologue (12/11/2026)
 - [x] La dépendance : perte d'autonomie, APA, ce que couvrent la Sécurité sociale et les contrats (13/11/2026)
 - [x] Les franchises médicales et la participation forfaitaire (14/11/2026)
-- [ ] Les médecines douces (ostéopathe, etc.) : ce que rembourse une complémentaire
+- [x] Les médecines douces (ostéopathe, etc.) : ce que rembourse une complémentaire (15/11/2026)
 - [ ] Les transports sanitaires : quand ils sont remboursés
 - [ ] La prévention et le dépistage remboursés (vaccins, examens)
 - [ ] L'affection de longue durée (ALD) : ce qui reste à payer

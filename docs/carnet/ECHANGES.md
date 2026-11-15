@@ -549,6 +549,14 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 15/11 : médecines douces** (demande de fusion « article-medecines-douces », chapitre « Comprendre les
+  remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public : ostéopathie non
+  remboursée mais prise en charge par certains contrats (F20314), homéopathie plus remboursée (F21760), information sur les
+  tarifs des pédicures-podologues et diététiciens (F19948), recours à la Miviludes (F31654). Dates de l'homéopathie
+  (15 % au 1er janvier 2020, fin au 1er janvier 2021) : ministère de la Santé, par recherche. Retiré ou adouci à la relecture
+  (sources contradictoires ou lues par recherche seulement) : l'acupuncture « remboursée si faite par un médecin » devient
+  « seul un médecin peut la facturer, à vérifier avec lui » ; nombre de séances de podologie par grade et du programme
+  « Mission : retrouve ton cap » retirés.
 - **Garanties APRIL lues dans garanties.json (14/11, demande de la conversation pilote ; Fabrice : « oui », 16 h 51)** : le
   comparateur de Claude publie depuis 16 h 59 une section « april » dans `src/garanties.json` (11 produits). Fait (demande de
   fusion « garanties-april ») : le site lit les garanties APRIL dans cette section ; les 4 produits qu'elle ne contient pas,

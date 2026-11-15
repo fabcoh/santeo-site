@@ -1,0 +1,37 @@
+{
+ "slug": "medecines-douces-osteopathe-remboursement",
+ "chapitre": "comprendre",
+ "lien": "Médecines douces et ostéopathe",
+ "ordre": 33,
+ "publie": "2026-11-15",
+ "maj": "2026-11-15",
+ "titre_page": "Ostéopathe et médecines douces : remboursement et mutuelle",
+ "description": "Ostéopathie, acupuncture, homéopathie, podologue : ce que rembourse la Sécurité sociale, les forfaits des mutuelles et les signaux d'alerte.",
+ "h1": "Ostéopathe et médecines douces : quel remboursement par la Sécurité sociale et la mutuelle ?",
+ "faq": [
+  {
+   "q": "L'ostéopathe est-il remboursé par la Sécurité sociale ?",
+   "r": "Non, l'Assurance maladie ne rembourse pas l'ostéopathie. Une complémentaire santé peut prendre en charge tout ou partie de la séance, si le contrat le prévoit."
+  },
+  {
+   "q": "Comment se faire rembourser l'ostéopathe par sa mutuelle ?",
+   "r": "Vérifiez que votre contrat prévoit un forfait pour l'ostéopathie, puis envoyez la facture du praticien à votre complémentaire. Le remboursement est limité au montant et au nombre de séances prévus par le contrat."
+  },
+  {
+   "q": "L'acupuncture est-elle remboursée ?",
+   "r": "Seulement si elle est pratiquée par un médecin, car c'est un acte de la classification des actes médicaux : demandez-lui avant la séance. Sinon, seule une complémentaire peut intervenir, selon le contrat."
+  },
+  {
+   "q": "L'homéopathie est-elle encore remboursée ?",
+   "r": "Non. Les médicaments homéopathiques ne sont plus remboursés par l'Assurance maladie depuis le 1er janvier 2021. Certaines complémentaires santé peuvent les rembourser sous forme de forfait."
+  },
+  {
+   "q": "Le pédicure-podologue est-il remboursé ?",
+   "r": "Dans des cas précis, surtout chez les personnes diabétiques dont les pieds présentent un risque de lésions, avec un nombre limité de séances par an. Pour les autres soins, renseignez-vous avant le rendez-vous."
+  },
+  {
+   "q": "La mutuelle rembourse-t-elle la sophrologie ou la naturopathie ?",
+   "r": "Certaines complémentaires le font, sous forme de forfait, si le contrat le prévoit. L'Assurance maladie, elle, ne rembourse pas ces pratiques."
+  }
+ ]
+}
