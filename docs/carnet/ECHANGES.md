@@ -549,6 +549,21 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 16/11 : transports sanitaires** (demande de fusion « article-transports-sanitaires », chapitre « Comprendre
+  les remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public (F2951, F165,
+  vérifiés le 01/10/2026 ; F34068, vérifié le 15/10/2026 ; actualités A18110 du 19/03/2025 et A17166 du 16/09/2026) :
+  remboursement à 55 % du tarif de la Sécurité sociale, cas à 100 % (grossesse du 6e mois au 12e jour après l'accouchement,
+  nouveau-né de moins de 30 jours, ALD, CAMSP et CMPP, C2S et AME, Alsace-Moselle), accord préalable (plus de 150 km aller,
+  4 trajets de plus de 50 km aller en 2 mois, CAMSP et CMPP, avion ou bateau ; sans réponse en 15 jours, accord), franchise
+  de 4 € par transport et 8 € par jour, plafond de 70 € par an, transport partagé (10 km de détour par patient, 30 km au
+  plus, 45 minutes d'attente au plus ; refus : plus de tiers payant), taxi non conventionné à la charge du patient. Franchise
+  passée de 2 € à 4 € le 31/03/2024 : Commission des comptes de la Sécurité sociale (mai 2024). Contrat responsable et
+  ticket modérateur des transports : instruction de la Direction de la sécurité sociale de 2019 (exceptions : cures, certains
+  médicaments, homéopathie). Part de 45 % laissée à l'assuré : décision publiée au Journal officiel du 1er août 2023, lue par
+  recherche sur Légifrance (la date « 1er août 2023 » comme date d'application est devenue « Août 2023 » à la relecture).
+  Accident du travail à 100 % : ameli.fr, par recherche. Laissé hors du texte (non confirmé) : tarif au kilomètre en voiture
+  personnelle, ancien taux de 65 %, autres cas à 100 % (invalidité, rente). À revérifier début 2027 : Légifrance annonce une
+  nouvelle version de l'article R160-5 au 1er janvier 2027, contenu non trouvé.
 - **Article du jour, 15/11 : médecines douces** (demande de fusion « article-medecines-douces », chapitre « Comprendre les
   remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public : ostéopathie non
   remboursée mais prise en charge par certains contrats (F20314), homéopathie plus remboursée (F21760), information sur les
