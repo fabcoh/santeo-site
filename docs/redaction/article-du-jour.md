@@ -54,6 +54,19 @@ Ce fichier est la procédure. Il ne dépend d'aucune conversation : une conversa
   sont copiés dans le dépôt par le script d'intégration.
 
 ## Sujets (Mon idée, dans l'ordre ; cocher quand l'article est en ligne)
+### Semaine du 17 au 23/11/2026 : la mutuelle et ce qu'elle apporte
+Demande de Fabrice (16/11/2026, ses mots) : « axe un peux plus les articles sur le la mutuelle et les intérets pendant 1 semaine ».
+Les sept sujets sont Mon idée ; chacun dit ce que l'Assurance maladie rembourse, ce qui reste à payer et ce qu'une
+complémentaire peut apporter, sans promesse. Après le 23/11, reprendre la liste générale ci-dessous.
+- [ ] Pourquoi prendre une mutuelle santé : ce qui reste à payer sans complémentaire
+- [ ] Hospitalisation : chambre particulière, dépassements d'honoraires, ce que rembourse la mutuelle
+- [ ] Lunettes et lentilles : remboursement de la Sécurité sociale et de la mutuelle
+- [ ] Le délai de carence (délai d'attente) d'une mutuelle : ce qu'il faut savoir
+- [ ] Le tiers payant et la carte de mutuelle : ne pas avancer les frais
+- [ ] Lire son tableau de garanties : pourcentages, forfaits en euros, plafonds
+- [ ] Au-delà des remboursements : téléconsultation, assistance, réseaux de soins
+
+### Liste générale
 - [x] Mon soutien psy : séances chez le psychologue (12/11/2026)
 - [x] La dépendance : perte d'autonomie, APA, ce que couvrent la Sécurité sociale et les contrats (13/11/2026)
 - [x] Les franchises médicales et la participation forfaitaire (14/11/2026)

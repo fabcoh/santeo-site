@@ -549,6 +549,9 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Décision de Fabrice (16/11, ses mots)** : « axe un peux plus les articles sur le la mutuelle et les intérets pendant 1
+  semaine ». Du 17 au 23/11, les articles du jour portent sur la mutuelle et ce qu'elle apporte : sept sujets (Mon idée) en
+  tête de la liste de `docs/redaction/article-du-jour.md`, avant la liste générale, qui reprend ensuite.
 - **Article du jour, 16/11 : transports sanitaires** (demande de fusion « article-transports-sanitaires », chapitre « Comprendre
   les remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public (F2951, F165,
   vérifiés le 01/10/2026 ; F34068, vérifié le 15/10/2026 ; actualités A18110 du 19/03/2025 et A17166 du 16/09/2026) :
