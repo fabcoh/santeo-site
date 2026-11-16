@@ -1,0 +1,37 @@
+{
+ "slug": "transport-sanitaire-ambulance-taxi-remboursement",
+ "chapitre": "comprendre",
+ "lien": "Transports sanitaires remboursés",
+ "ordre": 34,
+ "publie": "2026-11-16",
+ "maj": "2026-11-16",
+ "titre_page": "Transport sanitaire : ambulance, taxi, VSL, remboursement",
+ "description": "Ambulance, VSL, taxi conventionné, voiture : prescription, remboursement à 55 % ou 100 %, franchise de 4 €, transport partagé et rôle de la mutuelle.",
+ "h1": "Transport sanitaire : remboursement de l'ambulance, du taxi conventionné et du VSL",
+ "faq": [
+  {
+   "q": "Le taxi conventionné est-il remboursé à 100 % ?",
+   "r": "En général, non : il est remboursé à 55 % du tarif de la Sécurité sociale, moins 4 € de franchise. Il l'est à 100 % dans certains cas : ALD pour les trajets liés, grossesse à partir du 6e mois, Complémentaire santé solidaire, AME, régime d'Alsace-Moselle."
+  },
+  {
+   "q": "Faut-il une prescription médicale de transport pour être remboursé ?",
+   "r": "Oui. Le médecin la remplit avant le trajet, sauf en cas d'urgence. Un accord préalable de la caisse est aussi nécessaire pour un trajet de plus de 150 km aller, une série de longs trajets, l'avion ou le bateau."
+  },
+  {
+   "q": "Combien coûte la franchise sur un transport sanitaire ?",
+   "r": "4 € par transport en taxi conventionné, VSL ou ambulance, dans la limite de 8 € par jour et de 70 € par an pour toutes les franchises. Les mineurs, les femmes enceintes du 6e mois au 12e jour après l'accouchement et les bénéficiaires de la C2S ou de l'AME n'en paient pas."
+  },
+  {
+   "q": "La mutuelle rembourse-t-elle les frais de transport sanitaire ?",
+   "r": "Un contrat responsable rembourse le ticket modérateur, soit les 45 % que l'Assurance maladie ne paie pas, sur la base de son tarif. Il ne rembourse pas, sauf rares cas, la franchise de 4 €. Un trajet non remboursé par l'Assurance maladie n'est couvert que si le contrat le prévoit."
+  },
+  {
+   "q": "Que se passe-t-il si je refuse le transport partagé ?",
+   "r": "Si le transport partagé était possible, vous perdez en principe le tiers payant : vous payez tout le trajet, puis l'Assurance maladie vous rembourse aux conditions habituelles."
+  },
+  {
+   "q": "Un taxi non conventionné est-il remboursé ?",
+   "r": "Non. Seuls les taxis conventionnés, reconnaissables à leur logo bleu sur la vitre arrière droite, peuvent être pris en charge. Sinon, le trajet reste entièrement à votre charge."
+  }
+ ]
+}
