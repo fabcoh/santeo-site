@@ -1,0 +1,37 @@
+{
+ "slug": "pourquoi-prendre-une-mutuelle-sante",
+ "chapitre": "choisir",
+ "lien": "Pourquoi prendre une mutuelle santé",
+ "ordre": 35,
+ "publie": "2026-11-17",
+ "maj": "2026-11-17",
+ "titre_page": "Pourquoi prendre une mutuelle santé : le reste à charge",
+ "description": "Mutuelle obligatoire ou non ? Consultation, hôpital, lunettes, couronne : ce qui reste à payer sans complémentaire santé, et les aides possibles.",
+ "h1": "Pourquoi prendre une mutuelle santé : ce qui reste à payer sans complémentaire",
+ "faq": [
+  {
+   "q": "La mutuelle santé est-elle obligatoire ?",
+   "r": "Non pour un particulier, qui choisit d'en souscrire une ou non. Un salarié du secteur privé doit en revanche adhérer à la complémentaire collective de son employeur, sauf cas de dispense."
+  },
+  {
+   "q": "Combien coûte une consultation sans mutuelle ?",
+   "r": "Chez un généraliste de secteur 1 qui est votre médecin traitant, la consultation coûte 30 €. L'Assurance maladie rembourse 19 €, il reste donc 11 € à payer. Avec un contrat responsable, il ne reste que la participation forfaitaire de 2 €."
+  },
+  {
+   "q": "Que reste-t-il à payer après une hospitalisation sans mutuelle ?",
+   "r": "Le forfait journalier de 23 € par jour (17 € en psychiatrie), jour de sortie compris. Sauf prise en charge à 100 %, s'y ajoutent 20 % des frais ou un forfait de 32 € pour un acte d'au moins 120 €, ainsi que les dépassements d'honoraires et la chambre particulière."
+  },
+  {
+   "q": "Le 100 % Santé fonctionne-t-il sans mutuelle ?",
+   "r": "Non. Le reste à charge zéro suppose une complémentaire santé responsable ou la Complémentaire santé solidaire. Sans elles, l'Assurance maladie ne verse que sa part : pour une couronne 100 % Santé à 515 €, il reste 443 € à payer."
+  },
+  {
+   "q": "Que faire si mon budget ne permet pas de prendre une mutuelle ?",
+   "r": "Vérifiez vos droits à la Complémentaire santé solidaire, gratuite ou avec une participation de 8 € à 30 € par mois et par personne selon l'âge : un simulateur officiel les estime. Salarié ou ancien salarié, pensez à la mutuelle d'entreprise et à la portabilité."
+  },
+  {
+   "q": "Une mutuelle rembourse-t-elle tout ?",
+   "r": "Non. Un contrat responsable ne rembourse ni la participation forfaitaire de 2 €, ni, sauf rares cas, les franchises médicales, ni la majoration hors parcours de soins. Les dépassements d'honoraires et les équipements hors 100 % Santé dépendent des garanties choisies."
+  }
+ ]
+}
