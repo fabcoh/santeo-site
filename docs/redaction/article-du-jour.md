@@ -58,7 +58,7 @@ Ce fichier est la procédure. Il ne dépend d'aucune conversation : une conversa
 Demande de Fabrice (16/11/2026, ses mots) : « axe un peux plus les articles sur le la mutuelle et les intérets pendant 1 semaine ».
 Les sept sujets sont Mon idée ; chacun dit ce que l'Assurance maladie rembourse, ce qui reste à payer et ce qu'une
 complémentaire peut apporter, sans promesse. Après le 23/11, reprendre la liste générale ci-dessous.
-- [ ] Pourquoi prendre une mutuelle santé : ce qui reste à payer sans complémentaire
+- [x] Pourquoi prendre une mutuelle santé : ce qui reste à payer sans complémentaire (17/11/2026)
 - [ ] Hospitalisation : chambre particulière, dépassements d'honoraires, ce que rembourse la mutuelle
 - [ ] Lunettes et lentilles : remboursement de la Sécurité sociale et de la mutuelle
 - [ ] Le délai de carence (délai d'attente) d'une mutuelle : ce qu'il faut savoir

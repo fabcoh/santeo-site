@@ -549,6 +549,19 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 17/11 : pourquoi prendre une mutuelle santé** (demande de fusion « article-pourquoi-mutuelle »,
+  chapitre « Bien choisir », premier sujet de la semaine sur la mutuelle ; texte : Mon idée, rédigé par un agent, relu par
+  Claude). Vérifié sur Service-Public : consultation de 30 € (19 € remboursés, 11 € restants sans complémentaire, 2 € avec ;
+  F20314), forfait de 32 € des actes lourds et forfait patient urgences de 23 € (F165), forfait journalier de 23 € (17 € en
+  psychiatrie), jour de sortie compris (F200), base de 23 € en secteur 2 hors Optam (F17042), aide auditive 100 % Santé
+  (F34781), employeur à 50 % au moins (F20739), portabilité de 12 mois au plus et demande du contrat individuel dans les
+  6 mois (F20744), C2S gratuite jusqu'à 10 421 € et payante jusqu'à 14 069 € pour une personne seule en métropole, de 8 € à
+  30 € par mois selon l'âge (F10027 et barème de la Direction de la sécurité sociale au 1er avril 2026). Couronne 100 %
+  Santé à 515 € (base 120 €) : comme le simulateur. Contrat responsable (forfait journalier, majoration hors parcours) :
+  instruction de 2019. Part de la population sans complémentaire (3,4 % en 2023) : DREES, par recherche. Retiré à la
+  relecture : l'exemple des lunettes (bases de Service-Public qui semblent anciennes, colonne « avec mutuelle » floue) et
+  « forfait des actes lourds compris » pour le contrat responsable (même retrait que dans l'article sur les franchises).
+  Titres des colonnes du tableau raccourcis : il débordait sur téléphone.
 - **Décision de Fabrice (16/11, ses mots)** : « axe un peux plus les articles sur le la mutuelle et les intérets pendant 1
   semaine ». Du 17 au 23/11, les articles du jour portent sur la mutuelle et ce qu'elle apporte : sept sujets (Mon idée) en
   tête de la liste de `docs/redaction/article-du-jour.md`, avant la liste générale, qui reprend ensuite.
