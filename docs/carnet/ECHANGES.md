@@ -549,6 +549,18 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 18/11 : hospitalisation, chambre particulière et dépassements** (demande de fusion
+  « article-hospitalisation », chapitre « Comprendre les remboursements » ; texte : Mon idée, rédigé par un agent, relu par
+  Claude). Vérifié sur Service-Public : 80 % du tarif conventionnel, 100 % dès le 31e jour, en ALD, pour un nouveau-né de moins
+  de 30 jours, avec la C2S ou l'AME, avec une pension d'invalidité (F200, vérifié le 01/03/2026) ; forfait de 32 € pour un
+  acte d'au moins 120 €, pas de participation de 2 € en hospitalisation complète (F165) ; forfait journalier de 23 € (17 € en
+  psychiatrie), jour de sortie compris (F200, A18830) ; information écrite dès 70 € d'honoraires en cas de dépassement, pas de
+  dépassement à l'hôpital public, tarifs affichés (F19948, vérifié le 03/07/2026) ; contrat responsable : ticket modérateur
+  et forfait journalier sans limitation de durée (F20314, instruction de 2019), dépassements des non-OPTAM limités à 100 % de
+  la base. Forfait journalier inclus dans les 20 % quand ils le dépassent : article L174-4 (par recherche) et Haut Conseil pour
+  l'avenir de l'assurance maladie (annexe d'octobre 2025). Retiré à la relecture : « 24 € jusqu'au 31 mars 2026 » (connu par
+  recherche seulement) ; les deux forfaits de l'exemple chiffré (leur cumul n'est écrit sur aucune page officielle lue) : le
+  tableau ne compte plus que le dépassement et la chambre (840 € sans mutuelle, 290 € avec le contrat fictif).
 - **Article du jour, 17/11 : pourquoi prendre une mutuelle santé** (demande de fusion « article-pourquoi-mutuelle »,
   chapitre « Bien choisir », premier sujet de la semaine sur la mutuelle ; texte : Mon idée, rédigé par un agent, relu par
   Claude). Vérifié sur Service-Public : consultation de 30 € (19 € remboursés, 11 € restants sans complémentaire, 2 € avec ;
