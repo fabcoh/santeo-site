@@ -1,0 +1,37 @@
+{
+ "slug": "hospitalisation-chambre-particuliere-depassements",
+ "chapitre": "comprendre",
+ "lien": "Hospitalisation et mutuelle",
+ "ordre": 36,
+ "publie": "2026-11-18",
+ "maj": "2026-11-18",
+ "titre_page": "Hospitalisation : chambre particulière et dépassements",
+ "description": "Hôpital ou clinique : 80 % remboursés, forfait de 32 €, forfait journalier, dépassements du chirurgien, chambre particulière et rôle de la mutuelle.",
+ "h1": "Hospitalisation : chambre particulière, dépassements d'honoraires, ce que rembourse la mutuelle",
+ "faq": [
+  {
+   "q": "La mutuelle rembourse-t-elle la chambre particulière ?",
+   "r": "Selon votre contrat. L'Assurance maladie ne la rembourse pas et un contrat responsable n'est pas obligé de la couvrir. La garantie peut être un montant en euros par jour."
+  },
+  {
+   "q": "Combien rembourse la Sécurité sociale pour une hospitalisation ?",
+   "r": "80 % des frais dans un hôpital public ou une clinique conventionnée, 100 % dans certains cas, comme une ALD. Restent les 20 % ou le forfait de 32 €, le forfait journalier, les dépassements et le confort."
+  },
+  {
+   "q": "Les dépassements d'honoraires du chirurgien sont-ils remboursés ?",
+   "r": "Pas par l'Assurance maladie. Votre complémentaire peut les rembourser selon vos garanties. Pour un médecin non adhérent à l'OPTAM, un contrat responsable limite ce remboursement à 100 % de la base."
+  },
+  {
+   "q": "À partir de quel montant le chirurgien doit-il remettre un devis ?",
+   "r": "S'il pratique un dépassement, il doit vous remettre une information écrite dès que ses honoraires atteignent 70 €. La même règle vaut pour l'anesthésiste."
+  },
+  {
+   "q": "Y a-t-il des dépassements d'honoraires à l'hôpital public ?",
+   "r": "En principe non, selon Service-Public. Ils restent possibles si un médecin hospitalier vous soigne dans le cadre de son activité libérale."
+  },
+  {
+   "q": "Faut-il avancer les frais d'une hospitalisation ?",
+   "r": "Pas la part de l'Assurance maladie, dans un établissement conventionné. Pour celle de la complémentaire, renseignez-vous avant l'entrée : elle dépend du contrat et de l'établissement."
+  }
+ ]
+}
