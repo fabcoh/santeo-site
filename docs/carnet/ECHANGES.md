@@ -549,6 +549,24 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 19/11 : lunettes et lentilles** (demande de fusion « article-lunettes-lentilles », chapitre « Soins et
+  équipements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public F33950 (vérifié le
+  13/03/2026) : 60 %, monture 100 % Santé à 30 € au plus, validité des ordonnances (5 ans de 16 à 42 ans, 2 ans par un
+  orthoptiste, 3 ans dès 43 ans, 1 an avant 16 ans), lunettes cassées avec une ordonnance de moins de 3 ans, lentilles
+  remboursées pour 6 indications à 60 % d'un forfait annuel de 39,48 € par œil ; F20314 : prix limites de 42,50 € par verre
+  simple et 30 € par monture. Contrat responsable (instruction de 2019) : minimums et maximums par équipement (50/420 à
+  200/800 €), Assurance maladie et ticket modérateur compris, monture à 100 € au plus, un équipement tous les 2 ans dès 16 ans
+  (1 an si la vue change), 1 an avant 16 ans, 6 mois jusqu'à 6 ans. Aucune base de remboursement chiffrée (celles de F33950
+  semblent anciennes). Chirurgie réfractive : ameli.fr, par recherche.
+- **capisante.com renvoie vers www.santeo.net (18/11)** (Fabrice : « on va trasferer capisante.com vers santeo.net »).
+  Dépôt public `fabcoh/capisante-com` créé par Fabrice : petites pages de renvoi comme pour santeo.fr (accueil et toute autre
+  adresse vers l'accueil, `/cgu` et `/mentions-legales` vers les mentions légales, paramètres gardés), demande de fusion n° 1
+  fusionnée par Fabrice, GitHub Pages et domaine `www.capisante.com` réglés par lui. Zone DNS de capisante.com relevée avant
+  (13 lignes, gardée dans le bureau privé, jamais ici) ; chez OVH, seule la ligne `www` a changé (CNAME vers
+  `fabcoh.github.io.`) ; mails (Google), SPF, DKIM et autres sous-domaines intacts. `capisante.com` sans www passe encore par
+  l'ancien hébergeur, qui renvoie vers www (SPF « a » à régler avant de changer cette ligne). Certificat créé à 20 h 41 après
+  que Fabrice a retiré puis remis le domaine ; renvoi vérifié sur PC et téléphone à 20 h 42. « Enforce HTTPS » refusé par
+  GitHub le soir même (croix rouge), à réessayer.
 - **Article du jour, 18/11 : hospitalisation, chambre particulière et dépassements** (demande de fusion
   « article-hospitalisation », chapitre « Comprendre les remboursements » ; texte : Mon idée, rédigé par un agent, relu par
   Claude). Vérifié sur Service-Public : 80 % du tarif conventionnel, 100 % dès le 31e jour, en ALD, pour un nouveau-né de moins
