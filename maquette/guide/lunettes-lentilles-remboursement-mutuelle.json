@@ -1,0 +1,37 @@
+{
+ "slug": "lunettes-lentilles-remboursement-mutuelle",
+ "chapitre": "soins",
+ "lien": "Lunettes, lentilles et mutuelle",
+ "ordre": 37,
+ "publie": "2026-11-19",
+ "maj": "2026-11-19",
+ "titre_page": "Remboursement lunettes et lentilles : Sécu et mutuelle",
+ "description": "Lunettes classe A ou B, plafonds du contrat responsable, ordonnance, renouvellement, lentilles et laser : ce que remboursent la Sécu et la mutuelle.",
+ "h1": "Lunettes et lentilles : remboursement de la Sécurité sociale et de la mutuelle",
+ "faq": [
+  {
+   "q": "Combien rembourse la Sécurité sociale pour des lunettes ?",
+   "r": "60 % de sa base de remboursement. En classe A, il ne reste rien à payer avec un contrat responsable ou la Complémentaire santé solidaire. En classe B, sa part est très faible : l'essentiel dépend de votre mutuelle."
+  },
+  {
+   "q": "Quel est le plafond de remboursement des lunettes avec une mutuelle responsable ?",
+   "r": "En classe B, de 420 € à 800 € par équipement selon les verres, Sécurité sociale comprise, dont 100 € au plus pour la monture. La classe A est remboursée en totalité."
+  },
+  {
+   "q": "Tous les combien la mutuelle rembourse-t-elle des lunettes ?",
+   "r": "Tous les 2 ans à partir de 16 ans, ou au bout d'un an si votre vue a changé. Avant 16 ans, un équipement par an en général."
+  },
+  {
+   "q": "Combien de temps une ordonnance de lunettes est-elle valable ?",
+   "r": "5 ans entre 16 et 42 ans, 3 ans à partir de 43 ans et 1 an avant 16 ans. Celle d'un orthoptiste vaut 2 ans."
+  },
+  {
+   "q": "Les lentilles de contact sont-elles remboursées ?",
+   "r": "Par l'Assurance maladie, seulement pour certaines indications médicales : 60 % d'un forfait de 39,48 € par œil et par an. Sinon, seul le forfait lentilles de votre contrat, s'il existe, rembourse."
+  },
+  {
+   "q": "L'opération des yeux au laser est-elle remboursée ?",
+   "r": "Pas par l'Assurance maladie. Certaines mutuelles la remboursent, souvent en partie, selon le contrat."
+  }
+ ]
+}
