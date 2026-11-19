@@ -263,9 +263,13 @@ async function remplir(p) {
     c = await nouveau(); q = await c.newPage(); q.on('pageerror', e => err(nom + ' cookies : ' + e.message));
     await q.goto('https://www.santeo.net/'); await q.waitForTimeout(300); await q.click('#cookies-oui'); await q.waitForTimeout(400);
     doit(gtm.some(u => /gtag\/js\?id=G-ESSAI123/.test(u)), nom + ' : après « Accepter », la balise Google doit se charger (' + gtm.join(' ') + ')');
+    const avant = await q.evaluate(() => (window.dataLayer || []).map(a => Array.from(a)).filter(a => a[0] === 'event').map(a => a[1]));
+    doit(!avant.includes('comparateur_resultats') && !avant.includes('formulaire_ouvert'), nom + ' : aucun événement de parcours avant la saisie (' + avant.join(',') + ')');
     await remplir(q); await q.check('#c-accord').catch(() => {}); await q.click('#send'); await q.waitForTimeout(700);
     const evts = await q.evaluate(() => (window.dataLayer || []).map(a => Array.from(a)).filter(a => a[0] === 'event').map(a => a[1]));
     doit(evts.includes('generate_lead'), nom + ' : la demande envoyée doit être comptée (événements : ' + evts.join(',') + ')');
+    doit(evts.filter(e => e === 'comparateur_resultats').length === 1 && evts.filter(e => e === 'formulaire_ouvert').length === 1,
+      nom + ' : offres affichées et formulaire ouvert doivent être comptés une fois chacun (événements : ' + evts.join(',') + ')');
     const consent = await q.evaluate(() => (window.dataLayer || []).map(a => Array.from(a)).filter(a => a[0] === 'consent').map(a => a[1] + ':' + a[2].analytics_storage));
     doit(consent.join(',') === 'default:denied,update:granted', nom + ' : signaux d\'accord Google ' + consent.join(','));
     console.log(nom, '| cookies : boutons', bt.map(x => x[0]).join('/'), '| Google chargé après accord :', gtm.length > 0, '| événements', evts.join(','));

@@ -549,6 +549,14 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Formulaire de demande et mesure du parcours (19/11, demande d'Audit Google Ads)** : essai réel sur le site en ligne
+  (`?test=1`, prénom inventé, téléphone et e-mail fictifs), sur PC et téléphone à 17 h 21 : le CRM répond `ok: true` avec un
+  numéro de fiche, et le visiteur voit « Merci, votre demande est bien arrivée » ; aucune erreur dans la page. Un premier essai
+  avec l'ancien téléphone fictif des tests est refusé par le CRM (« ce téléphone ou cet e-mail appartient à une fiche réelle ») :
+  normal pour un essai, et la raison s'affiche bien. Ajouté (demande de fusion « mesure-parcours ») : deux événements Google
+  Analytics, « comparateur_resultats » (premières offres affichées) et « formulaire_ouvert » (une offre choisie), une fois par
+  page, comptés seulement si le visiteur a accepté les cookies, comme « generate_lead ». Test : aucun avant la saisie, un de
+  chaque après.
 - **Article du jour, 19/11 : lunettes et lentilles** (demande de fusion « article-lunettes-lentilles », chapitre « Soins et
   équipements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public F33950 (vérifié le
   13/03/2026) : 60 %, monture 100 % Santé à 30 € au plus, validité des ordonnances (5 ans de 16 à 42 ans, 2 ans par un
