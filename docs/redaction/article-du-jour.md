@@ -61,7 +61,7 @@ complémentaire peut apporter, sans promesse. Après le 23/11, reprendre la list
 - [x] Pourquoi prendre une mutuelle santé : ce qui reste à payer sans complémentaire (17/11/2026)
 - [x] Hospitalisation : chambre particulière, dépassements d'honoraires, ce que rembourse la mutuelle (18/11/2026)
 - [x] Lunettes et lentilles : remboursement de la Sécurité sociale et de la mutuelle (19/11/2026)
-- [ ] Le délai de carence (délai d'attente) d'une mutuelle : ce qu'il faut savoir
+- [x] Le délai de carence (délai d'attente) d'une mutuelle : ce qu'il faut savoir (20/11/2026)
 - [ ] Le tiers payant et la carte de mutuelle : ne pas avancer les frais
 - [ ] Lire son tableau de garanties : pourcentages, forfaits en euros, plafonds
 - [ ] Au-delà des remboursements : téléconsultation, assistance, réseaux de soins
