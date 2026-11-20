@@ -1217,6 +1217,9 @@ function upd(){
   $("more-offers").hidden=true;
   if(res.err){$("count").textContent=res.err;LAST=[];return}
   const list=res.fit; LAST=list;
+  // Mesure du parcours (Audit Google Ads, 19/11) : premières offres affichées, une fois par visite de page ; compté par Google
+  // seulement si le visiteur a accepté les cookies
+  if(list.length&&!window.__mesResultats){window.__mesResultats=1;window.mesure("comparateur_resultats",{offres:list.length})}
   // L'option choisie est suivie par son identité (gamme et formule) : si des offres arrivent ou partent (tarif API Santé,
   // étoiles), son numéro suit ; si elle n'est plus proposée, le choix est retiré.
   if(S.chosen==null) S.choixId=null;
@@ -1256,6 +1259,7 @@ function afficherChoix(i){
     (bp.length?'<div class="ch-plus">Vos besoins précis : '+bp.join(", ")+'</div>':"");
 }
 function choose(i){
+  if(!window.__mesFormulaire){window.__mesFormulaire=1;window.mesure("formulaire_ouvert",{option:i+1})}
   S.chosen=i; S.choixId=LAST[i].key+"|"+LAST[i].fi; afficherChoix(i);
   $("form-panel").hidden=false; $("done").hidden=true; $("lead").hidden=false;
   document.querySelector("#form-panel .form-intro").hidden=false; $("t-form").textContent="Recevoir mon devis";
