@@ -1,0 +1,33 @@
+{
+ "slug": "delai-de-carence-mutuelle",
+ "chapitre": "choisir",
+ "lien": "Le délai de carence d'une mutuelle",
+ "ordre": 38,
+ "publie": "2026-11-20",
+ "maj": "2026-11-20",
+ "titre_page": "Délai de carence mutuelle : durées, exceptions, conseils",
+ "description": "Délai de carence d'une mutuelle : durées selon les soins, ce qu'un contrat responsable couvre dès le 1er jour, changer de mutuelle sans trou.",
+ "h1": "Le délai de carence (délai d'attente) d'une mutuelle : ce qu'il faut savoir",
+ "faq": [
+  {
+   "q": "Qu'est-ce que le délai de carence d'une mutuelle ?",
+   "r": "Une période qui commence à la souscription, pendant laquelle certaines garanties de la complémentaire ne jouent pas encore. L'Assurance maladie continue de rembourser sa part."
+  },
+  {
+   "q": "Combien de temps dure un délai de carence de mutuelle ?",
+   "r": "Le contrat le fixe. Selon la DGCCRF, de quelques jours à 12 mois, avec par exemple 9 mois pour la maternité et 6 à 9 mois pour le dentaire."
+  },
+  {
+   "q": "Une mutuelle peut-elle appliquer un délai de carence à une hospitalisation ?",
+   "r": "Avec un contrat responsable, pas au ticket modérateur ni au forfait journalier hospitalier, dus dès le début. La chambre particulière ou les dépassements d'honoraires peuvent avoir un délai."
+  },
+  {
+   "q": "Y a-t-il un délai de carence quand on change de mutuelle ?",
+   "r": "Le nouveau contrat peut en prévoir un. Certains contrats le suppriment ou le réduisent si vous étiez déjà couvert : demandez-le avant de signer, par écrit."
+  },
+  {
+   "q": "Le délai de carence de 3 jours en arrêt maladie concerne-t-il la mutuelle ?",
+   "r": "Non. Il vise les indemnités journalières de l'Assurance maladie d'un salarié en arrêt maladie, pas les remboursements de votre complémentaire santé."
+  }
+ ]
+}

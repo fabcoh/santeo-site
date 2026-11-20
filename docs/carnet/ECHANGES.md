@@ -549,6 +549,16 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 20/11 : délai de carence** (demande de fusion « article-delai-carence », chapitre « Bien choisir » ;
+  texte : Mon idée, rédigé par un agent, relu par Claude). Règle centrale vérifiée dans l'instruction de la Direction de la
+  sécurité sociale de 2019 : dans un contrat responsable, ni délai de carence ni clause de stage ne peuvent reporter le
+  ticket modérateur (soins de ville et hôpital) ni le forfait journalier. Service-Public : contrat responsable le plus vendu,
+  résiliation à tout moment après un an (F20314), 3 jours de carence des indemnités journalières (F3053), définition de la
+  franchise (F31257), grossesse à 100 % dès le 6e mois (F164), mutuelle d'entreprise quelle que soit l'ancienneté (F20739),
+  portabilité à l'identique (F20744). DGCCRF (par recherche) : de quelques jours à 12 mois, exemples de 9 mois (maternité,
+  chambre particulière) et de 6 à 9 mois (dentaire). Commission des clauses abusives, 2017 (par recherche) : laisser croire à
+  une carence sur l'hospitalisation d'un contrat responsable est abusif. Non affirmé faute de source : « pas de carence en
+  mutuelle d'entreprise », durées habituelles en optique et audition.
 - **Formulaire de demande et mesure du parcours (19/11, demande d'Audit Google Ads)** : essai réel sur le site en ligne
   (`?test=1`, prénom inventé, téléphone et e-mail fictifs), sur PC et téléphone à 17 h 21 : le CRM répond `ok: true` avec un
   numéro de fiche, et le visiteur voit « Merci, votre demande est bien arrivée » ; aucune erreur dans la page. Un premier essai
