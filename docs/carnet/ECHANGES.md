@@ -549,6 +549,18 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 21/11 : tiers payant et carte de mutuelle** (demande de fusion « article-tiers-payant », chapitre
+  « Comprendre les remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public :
+  F167 (vérifié le 30/10/2026 : définition, cas de droit dont la C2S, l'AME, le dépistage organisé, la grossesse, l'accident
+  du travail, la contraception des moins de 26 ans, l'IVG, les victimes de terrorisme ; refus possible en pharmacie sans
+  générique ; radiologie, analyses et médecin traitant au choix du professionnel ; carte Vitale à mettre à jour une fois par
+  an), F20314 et F20739 (tiers payant du 100 % Santé dans les contrats responsables, depuis le 1er janvier 2022), F265
+  (appli carte Vitale dans toute la France depuis novembre 2025, garder la carte physique, remboursement en une semaine),
+  F11616 (feuille papier : 2 ans, exemple du 23/04/2026 au 30/06/2028 ; moins de 100 € par l'appli), F243 et A17679
+  (M'T dents chaque année de 3 à 24 ans depuis le 1er avril 2025, 60 % et 40 %, sans avance de frais), F164, F200, F19948.
+  Par recherche (ameli.fr) : contenu de la carte de mutuelle, convention nécessaire pour la part complémentaire, annonce de la
+  mutuelle dans l'appli carte Vitale (« prochainement », 22/09/2026). Non écrit faute de source : durée de validité de la carte
+  de mutuelle, délai de remboursement de la mutuelle.
 - **Article du jour, 20/11 : délai de carence** (demande de fusion « article-delai-carence », chapitre « Bien choisir » ;
   texte : Mon idée, rédigé par un agent, relu par Claude). Règle centrale vérifiée dans l'instruction de la Direction de la
   sécurité sociale de 2019 : dans un contrat responsable, ni délai de carence ni clause de stage ne peuvent reporter le
