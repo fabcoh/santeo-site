@@ -497,15 +497,15 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
 /* debut-css-cookies */
 /* ---------- Bandeau cookies : statistiques et annonces Google, seulement avec l'accord du visiteur ----------
    « Refuser » et « Accepter » ont exactement la même apparence (règle de la CNIL). */
-.cookies{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--surface);color:var(--fg);border-top:2px solid var(--brand-1);box-shadow:0 -8px 28px rgba(5,30,50,.22);padding:.85rem max(16px,env(safe-area-inset-right,0px)) max(.85rem,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cookies{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:70;width:min(340px,calc(100vw - 32px));background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 22px rgba(5,30,50,.18);padding:.65rem .8rem}   /* petite carte en bas à gauche (Fabrice, 21/11 : « plus discrets ») */
 .cookies[hidden]{display:none}
-.cookies-dedans{max-width:1100px;margin:0 auto;display:flex;gap:.8rem 1.2rem;align-items:center;flex-wrap:wrap}
-.cookies p{margin:0;flex:1 1 420px;font-size:.88rem;line-height:1.45}
+.cookies-dedans{display:flex;flex-direction:column;gap:.5rem}
+.cookies p{margin:0;font-size:.78rem;line-height:1.4}
 .cookies p a{color:var(--accent);font-weight:700}
-.cookies-choix{display:flex;gap:.6rem;flex:0 0 auto}
-.cookies-choix button{min-width:8.5rem;border:2px solid #0e5883;border-radius:999px;padding:.55rem 1.1rem;font:inherit;font-weight:700;cursor:pointer;background:#0e5883;color:#fff}   /* même bleu foncé en clair et en sombre : texte blanc lisible */
+.cookies-choix{display:flex;gap:.5rem}
+.cookies-choix button{flex:1;min-width:0;border:1.5px solid #0e5883;border-radius:999px;padding:.32rem .7rem;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer;background:#0e5883;color:#fff}   /* « Refuser » et « Accepter » identiques (CNIL) ; même bleu foncé en clair et en sombre */
 .cookies-choix button:focus-visible,.lien-cookies:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media (max-width:599px){.cookies-choix{width:100%}.cookies-choix button{flex:1;min-width:0}.cookies p{font-size:.84rem}}
+@media (max-width:599px){.cookies{left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));width:auto;padding:.55rem .7rem}}
 .lien-cookies{border:0;background:none;padding:0;font:inherit;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline}
 .lien-cookies[hidden]{display:none}
 @media print{.cookies{display:none}}
@@ -745,7 +745,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
 <!-- Bandeau cookies : affiché seulement si des statistiques Google sont réglées (maquette/reglages-site.json, « google_mesure ») -->
 <div class="cookies" id="cookies" role="region" aria-label="Choix des cookies" hidden>
   <div class="cookies-dedans">
-    <p>Avec votre accord, nous utilisons des cookies de Google pour mesurer la fréquentation du site et l'efficacité de nos annonces. Vous pourrez changer d'avis à tout moment par le lien « Cookies » en bas de page. <a href="#mentions-legales">En savoir plus</a></p>
+    <p>Avec votre accord, des cookies Google mesurent la fréquentation et nos annonces. Modifiable à tout moment (lien « Cookies » en bas de page). <a href="#mentions-legales">En savoir plus</a></p>
     <div class="cookies-choix"><button type="button" id="cookies-non">Refuser</button><button type="button" id="cookies-oui">Accepter</button></div>
   </div>
 </div>
@@ -838,7 +838,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.cookie.split(";").map(c=>c.split("=")[0].trim()).filter(n=>/^(_ga|_gid|_gcl|_gac)/.test(n))
       .forEach(n=>domaines.forEach(d=>{document.cookie=n+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"+(d?"; domain="+d:"")}));
   }
-  const hauteur=()=>document.documentElement.style.setProperty("--bandeau-h",bandeau.hidden?"0px":bandeau.offsetHeight+"px");
+  // La bulle du tchat ne monte que si la carte des cookies est sous elle (téléphone) ; sur ordinateur, la carte est à gauche
+  const hauteur=()=>{let h=0;if(!bandeau.hidden){const r=bandeau.getBoundingClientRect();if(r.right>innerWidth-120)h=innerHeight-r.top}
+    document.documentElement.style.setProperty("--bandeau-h",h?Math.ceil(h-8)+"px":"0px")};   // la bulle reste 8 px au-dessus de la carte
   function decider(c){
     try{localStorage.setItem(CLE_C,JSON.stringify({choix:c,date:Date.now()}))}catch(e){}
     bandeau.hidden=true; hauteur();

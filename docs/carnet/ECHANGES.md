@@ -549,6 +549,12 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Bandeau des cookies plus discret (Fabrice, 21/11 vers 18 h 12, transmis par CRM Santeo : « les cookies tu peux les
+  mettres plus discrets »)** (demande de fusion « cookies-discrets ») : le bandeau pleine largeur devient une petite carte en
+  bas à gauche sur ordinateur (340 px de large, environ 4 % de l'écran au lieu de 9 %) et une carte en bas de l'écran sur
+  téléphone (environ 16 % au lieu de 28 %) ; texte raccourci (Mon idée), lien « En savoir plus » gardé ; « Refuser » et
+  « Accepter » toujours identiques (CNIL). La bulle du tchat ne monte que si la carte est sous elle (téléphone). Test : bulle
+  et carte ne se recouvrent pas, carte de 6 % de l'écran au plus sur PC et 20 % sur téléphone.
 - **Décision de Fabrice (21/11, vers 10 h 40)** : « pourquoi tu ne fusionne pas directement claude cRM whatsapp le fait
   dircetemenyt », puis « validé » à « Voulez-vous que je fusionne moi-même mes demandes à partir de maintenant ? ». Claude
   fusionne désormais ses demandes après les vérifications (règle notée dans `CLAUDE.md` et dans la procédure de l'article du
