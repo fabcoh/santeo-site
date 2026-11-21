@@ -1,0 +1,37 @@
+{
+ "slug": "tiers-payant-carte-mutuelle",
+ "chapitre": "comprendre",
+ "lien": "Le tiers payant et la carte de mutuelle",
+ "ordre": 39,
+ "publie": "2026-11-21",
+ "maj": "2026-11-21",
+ "titre_page": "Tiers payant et carte mutuelle : ne pas avancer les frais",
+ "description": "Tiers payant : quand il est de droit, à quoi sert la carte de mutuelle, le 100 % Santé, la feuille de soins et l'hôpital, avec un exemple.",
+ "h1": "Le tiers payant et la carte de mutuelle : ne pas avancer les frais",
+ "faq": [
+  {
+   "q": "Qu'est-ce que le tiers payant ?",
+   "r": "La dispense d'avance de frais : l'Assurance maladie paie directement le professionnel pour sa part. Avec le tiers payant intégral, la part de la mutuelle aussi : vous ne réglez rien sur place."
+  },
+  {
+   "q": "Le tiers payant est-il obligatoire chez le médecin ?",
+   "r": "Dans certains cas seulement : C2S, AME, ALD, grossesse, accident du travail, par exemple. Ailleurs, le médecin peut le proposer, sans y être obligé."
+  },
+  {
+   "q": "Quelle est la durée de validité d'une carte de mutuelle ?",
+   "r": "Elle est inscrite sur l'attestation, et le professionnel la vérifie. Si elle est dépassée, demandez une nouvelle attestation à votre complémentaire."
+  },
+  {
+   "q": "Les lunettes 100 % Santé sont-elles en tiers payant ?",
+   "r": "Les contrats responsables doivent accepter le tiers payant sur le panier 100 % Santé : optique, dentaire et aides auditives. Présentez vos deux cartes."
+  },
+  {
+   "q": "Combien de temps pour être remboursé sans tiers payant ?",
+   "r": "Avec la carte Vitale, en principe une semaine pour la part de l'Assurance maladie. Une feuille de soins papier s'envoie dans les 2 ans."
+  },
+  {
+   "q": "L'appli carte Vitale remplace-t-elle la carte de mutuelle ?",
+   "r": "Pas encore. L'Assurance maladie annonce qu'elle pourra prochainement intégrer la complémentaire santé : gardez votre carte de mutuelle."
+  }
+ ]
+}
