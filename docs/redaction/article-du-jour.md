@@ -19,9 +19,10 @@ Ce fichier est la procédure. Il ne dépend d'aucune conversation : une conversa
 5. **Vérifier** : les deux suites de tests (`maquette/README.md`) affichent `ERREURS: aucune` ; captures sur PC et
    téléphone (l'article dans le sommaire, aucune page qui déborde).
 6. **Carnet** (`docs/carnet/ECHANGES.md`) : une ligne par article (sujet, chiffres vérifiés, corrections).
-7. **Branche, demande de fusion**. La fusion sur `main` reste faite par Fabrice : la sécurité de la session de Claude
-   refuse qu'il fusionne lui-même (12/11/2026). Envoyer le lien à Fabrice ; après la fusion, vérifier l'article en ligne
-   et le lui dire.
+7. **Branche, demande de fusion, fusion**. Depuis le 21/11/2026, Claude fusionne lui-même après les vérifications
+   (Fabrice : « validé »), attend la publication, vérifie l'article en ligne sur PC et téléphone, puis envoie à Fabrice le lien
+   de l'article en ligne. Si la sécurité de la session refuse la fusion (comme le 12/11/2026), envoyer le lien de la demande
+   à Fabrice, qui fusionne.
 8. **Bureau commun** : mettre à jour la ligne de l'article du jour dans le fichier de tâches de la conversation.
 
 ## Règles de rédaction

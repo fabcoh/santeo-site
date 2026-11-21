@@ -32,6 +32,11 @@ Les règles du bureau commun (`fabcoh/santeo-bureau`, dépôt privé : n'en reco
 8. **Tu travailles sur une branche**, jamais directement sur `main` ; Pull Request, vérifications, puis
    fusion.
 
+**Qui fusionne (Fabrice, 21/11/2026)** : à la question « Voulez-vous que je fusionne moi-même mes demandes à partir de maintenant ? », Fabrice a répondu « validé ». Claude fusionne donc lui-même ses demandes de fusion, seulement après les
+vérifications : les deux suites de tests affichent `ERREURS: aucune`, la page est vérifiée sur PC et téléphone, aucun secret
+ni donnée de client. Après la publication, il vérifie en ligne et envoie à Fabrice le lien de la page en ligne. Si le contrôle
+de sécurité de la session refuse la fusion, Claude ne le contourne pas : il le dit à Fabrice, qui fusionne.
+
 Seule exception à la règle 8 : le tout premier fichier (`README.md`), envoyé directement sur `main`
 le 08/11/2026 avec l'accord de Fabrice, parce qu'un dépôt vide ne peut pas recevoir de demande de fusion.
 

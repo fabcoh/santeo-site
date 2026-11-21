@@ -549,6 +549,10 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Décision de Fabrice (21/11, vers 10 h 40)** : « pourquoi tu ne fusionne pas directement claude cRM whatsapp le fait
+  dircetemenyt », puis « validé » à « Voulez-vous que je fusionne moi-même mes demandes à partir de maintenant ? ». Claude
+  fusionne désormais ses demandes après les vérifications (règle notée dans `CLAUDE.md` et dans la procédure de l'article du
+  jour). Si la sécurité de la session refuse, Fabrice fusionne, comme avant.
 - **Article du jour, 21/11 : tiers payant et carte de mutuelle** (demande de fusion « article-tiers-payant », chapitre
   « Comprendre les remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public :
   F167 (vérifié le 30/10/2026 : définition, cas de droit dont la C2S, l'AME, le dépistage organisé, la grossesse, l'accident
