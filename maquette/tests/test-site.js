@@ -289,12 +289,12 @@ async function remplir(p) {
     const p0 = appelsApicil[0] || {};
     doit(p0.codePostalAssure === '75012' && p0.situationProfessionnelle === 'SALARIE' && p0.beneficiaires && p0.beneficiaires[0].dateNaissance === '1966-07-21', nom + ' : profil envoyé ' + JSON.stringify(p0));
     doit(api.length === 3 && api.some(o => /85,52/.test(o.prix)), nom + ' : offres API Santé affichées ' + JSON.stringify(api));
-    // Choisir une offre API Santé, puis changer d'étoiles : l'option choisie suit (ou se retire), jamais une autre offre à sa place
+    // Choisir une offre API Santé, puis changer un curseur : l'option choisie suit (ou se retire), jamais une autre offre à sa place
     if (api.length) {
       await q.click('[data-c="' + api[0].i + '"]'); await q.waitForTimeout(400);
       const lire = () => q.$eval('#chosen-box', e => ({ opt: (e.querySelector('strong') || {}).textContent || '', prix: (e.querySelector('.ch-prix') || {}).textContent || '' }));
       const avant = await lire();
-      await q.locator('#needs .stars button:visible, #needs [data-cyc]:visible').first().click(); await q.waitForTimeout(400);   // une étoile de plus : la liste change
+      await q.$eval('#cur-hosp', e => { e.value = String(+e.value + 1); e.dispatchEvent(new Event('input', { bubbles: true })); }); await q.waitForTimeout(400);   // un cran de plus au curseur : la liste change
       const apres = await lire(), liste2 = await toutes(), n = +(apres.opt.match(/\d+/) || [0])[0];
       const ligne = liste2[n - 1];
       doit(!apres.opt || (ligne && /API SANT/i.test(ligne.nom) && ligne.prix.replace(/\s/g, '') === apres.prix.replace(/\s/g, '') && apres.prix === avant.prix),
@@ -363,6 +363,56 @@ async function remplir(p) {
     await q.selectOption('#reg', 'TNS'); await q.waitForTimeout(1500);
     doit(appelsApril.length === 2 && appelsApril[1] && appelsApril[1].regime === 'TNS', nom + ' : appel APRIL pour un indépendant ' + JSON.stringify(appelsApril[1]));
     console.log(nom, '| APRIL :', april.join(' ; ').replace(/Contrôle : /g, ''), '| appels', appelsApril.length);
+    await c.close();
+  }
+  // 14. Vos besoins en curseurs et les offres en cartes (Fabrice, 22/11/2026, d'après le comparateur de son CRM) : 3 cartes
+  // d'offres par ligne sur ordinateur, 2 de 600 à 899 px, 1 sur téléphone ; rien qui déborde ; « Petit prix » sur la première
+  // seulement (liste de la moins chère à la plus chère) ; aucun nom d'assureur ni promesse dans les cartes, APRIL et API Santé compris
+  const ASSUREURS = /avenir|mcci|mutuelle verte|r[ée]voluo|april|apicil|alptis|veralti|api sant[ée]|\bnova\b|flexia|solencia|cap [ée]volution|cap nr|sant[ée] mix|simply|gamme|formule/i;
+  for (const [nom, opt, parLigne, lignesBesoins] of [['tel', devices['iPhone 13'], 1, 5], ['moyen', { viewport: { width: 760, height: 900 } }, 2, 3], ['pc', { viewport: { width: 1280, height: 900 } }, 3, 1]]) {
+    appelsApril = []; appelsApicil = [];
+    const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
+    q.on('pageerror', e => err(nom + ' cartes : ' + e.message));
+    await q.goto('https://www.santeo.net/'); await q.fill('#age', '21/07/1981'); await q.fill('#cp', '75012'); await q.waitForTimeout(1800);   // offres APRIL et API Santé arrivées
+    const mesure = () => q.evaluate(() => {
+      const offres = [...document.querySelectorAll('#offers article.offer')], r = offres.map(o => o.getBoundingClientRect()), zone = document.getElementById('offers').getBoundingClientRect();
+      const prix = offres.map(o => parseFloat(o.querySelector('.o-price').textContent.replace(/\s/g, '').replace(',', '.')));
+      return { n: offres.length, lignes: new Set(r.map(x => Math.round(x.top))).size, premiereLigne: r.filter(x => Math.abs(x.top - r[0].top) < 2).length,
+        largeur: r.length ? Math.round(r[0].width / zone.width * 100) : 0,
+        deborde: [...document.querySelectorAll('#offers article.offer, #offers .o-col, #offers .o-actions, #needs .cell, #needs .b-tete, #needs .b-bornes')].filter(e => e.scrollWidth > e.clientWidth + 1).map(e => e.className),
+        hs: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+        badges: [...document.querySelectorAll('#offers .o-badge')].map(e => offres.indexOf(e.closest('article.offer')) + ':' + e.textContent),
+        croissant: prix.every((x, i) => !i || prix[i - 1] <= x), textes: offres.map(o => o.innerText).join(' | '),
+        nomsVisibles: [...document.querySelectorAll('#offers .o-real')].filter(e => e.offsetParent).length,
+        boutons: offres.every(o => o.querySelector('[data-c]') && o.querySelector('[data-d]')),
+        besoinsLignes: new Set([...document.querySelectorAll('#needs .col')].map(e => Math.round(e.getBoundingClientRect().top))).size,
+        curseurs: [...document.querySelectorAll('#needs input[type=range]')].map(e => Math.round(e.getBoundingClientRect().height)) };
+    });
+    const m1 = await mesure();
+    doit(m1.n === 5 && m1.premiereLigne === parLigne && m1.lignes === Math.ceil(5 / parLigne) && !m1.hs && !m1.deborde.length && m1.boutons
+      && m1.largeur <= Math.ceil(100 / parLigne) && m1.largeur >= Math.floor(100 / parLigne) - 4,
+      nom + ' : cartes d\'offres : ' + parLigne + ' par ligne attendues ' + JSON.stringify({ n: m1.n, lignes: m1.lignes, premiereLigne: m1.premiereLigne, largeur: m1.largeur, deborde: m1.deborde, hs: m1.hs }));
+    doit(m1.besoinsLignes === lignesBesoins && m1.curseurs.length === 5 && m1.curseurs.every(h => h >= 44), nom + ' : cartes des besoins : ' + m1.besoinsLignes + ' lignes (attendu ' + lignesBesoins + '), curseurs ' + m1.curseurs.join(','));
+    doit(m1.croissant && m1.badges.join() === '0:Petit prix', nom + ' : « Petit prix » sur la première offre seulement ' + JSON.stringify(m1.badges));
+    // Toutes les offres (APRIL et API Santé comprises) : aucun nom d'assureur, de gamme ni de formule, aucune promesse
+    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(120); }
+    const m2 = await mesure();
+    doit(appelsApril.length === 1 && appelsApicil.length === 1 && m2.n > 40 && !ASSUREURS.test(m2.textes) && !/recommand|offert|gratuit|meilleur/i.test(m2.textes) && m2.nomsVisibles === 0,
+      nom + ' : nom d\'assureur ou promesse dans les cartes : ' + ((m2.textes.match(ASSUREURS) || m2.textes.match(/recommand|offert|gratuit|meilleur/i) || [''])[0]) + ' (' + m2.n + ' offres, ' + m2.nomsVisibles + ' noms visibles)');
+    doit(m2.badges.join() === '0:Petit prix' && m2.croissant && !m2.hs && !m2.deborde.length, nom + ' : toutes les offres : badge ' + JSON.stringify(m2.badges) + ', débordement ' + JSON.stringify(m2.deborde));
+    // Au doigt (téléphone) ou à la souris : toucher le rail à 60 % règle le niveau 3 et filtre les offres
+    const avant = await q.textContent('#count');
+    await q.$eval('#cur-hono', e => e.scrollIntoView({ block: 'center' }));
+    const rail = await q.$eval('#cur-hono', e => { const r = e.getBoundingClientRect(); return { x: r.left + 13 + (r.width - 26) * .6, y: r.top + r.height / 2 }; });
+    if (nom === 'tel') await q.touchscreen.tap(rail.x, rail.y); else await q.mouse.click(rail.x, rail.y);
+    await q.waitForTimeout(200);
+    const touche = await q.$eval('#cur-hono', e => e.value + ' ' + e.getAttribute('aria-valuetext')), apres = await q.textContent('#count');
+    doit(touche === '3 Au moins 180 %' && apres !== avant && /atteignent vos niveaux/.test(apres), nom + ' : curseur au toucher : ' + touche + ' | ' + apres);
+    // L'offre choisie reste mise en évidence ; le formulaire s'ouvre
+    await q.click('[data-c="1"]'); await q.waitForTimeout(500);
+    const choisie = await q.$$eval('#offers article.offer', l => l.map((o, i) => o.classList.contains('chosen') ? i : -1).filter(i => i >= 0));
+    doit(choisie.join() === '1' && await q.isVisible('#form-panel'), nom + ' : offre choisie ' + JSON.stringify(choisie));
+    console.log(nom, '| cartes :', m1.premiereLigne, 'par ligne,', m1.lignes, 'lignes pour', m1.n, 'offres | besoins sur', m1.besoinsLignes, 'ligne(s) | toutes les offres :', m2.n, '| toucher :', touche, '|', apres);
     await c.close();
   }
   // 9. Pages du guide sur téléphone et PC : lisibles, sans défilement de côté, bouton vers le comparateur
