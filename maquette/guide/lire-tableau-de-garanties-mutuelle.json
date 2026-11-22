@@ -1,0 +1,33 @@
+{
+ "slug": "lire-tableau-de-garanties-mutuelle",
+ "chapitre": "choisir",
+ "lien": "Lire son tableau de garanties",
+ "ordre": 40,
+ "publie": "2026-11-22",
+ "maj": "2026-11-22",
+ "titre_page": "Lire un tableau de garanties mutuelle : BR, euros, plafonds",
+ "description": "BR, TM, FR, PMSS, Sécurité sociale incluse : lire son tableau de garanties de mutuelle ligne par ligne, avec des exemples chiffrés par poste.",
+ "h1": "Lire son tableau de garanties de mutuelle : pourcentages, forfaits en euros, plafonds",
+ "faq": [
+  {
+   "q": "Que veut dire BR sur un tableau de garanties ?",
+   "r": "La base de remboursement de la Sécurité sociale, le tarif qui sert au calcul. Une garantie à 200 % BR se calcule sur cette base, pas sur le prix payé."
+  },
+  {
+   "q": "Que signifie « Sécurité sociale incluse » ?",
+   "r": "Le pourcentage comprend la part de la Sécurité sociale : à 200 % BR, le total remboursé atteint au plus deux fois la base. « TM + 100 % BR » donne le même total, écrit autrement."
+  },
+  {
+   "q": "Que veut dire 100 % FR dans un tableau de garanties ?",
+   "r": "100 % des frais réels : le remboursement va jusqu'à ce que vous avez payé. Une mutuelle ne rembourse jamais plus que la dépense."
+  },
+  {
+   "q": "Combien vaut le PMSS en 2026 pour une mutuelle ?",
+   "r": "4 005 € par mois : une garantie à 2 % du PMSS par jour vaut 80,10 € par jour. Service-Public annonce 4 075 € pour 2027."
+  },
+  {
+   "q": "Pourquoi un médecin non OPTAM est-il moins bien remboursé ?",
+   "r": "Sa base est plus basse, et un contrat responsable limite le remboursement de ses dépassements : 100 % de la base au plus, et 20 points de moins que pour un médecin OPTAM."
+  }
+ ]
+}

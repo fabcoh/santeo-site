@@ -549,6 +549,13 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Article du jour, 22/11 : lire son tableau de garanties** (demande de fusion « article-tableau-garanties », chapitre
+  « Bien choisir » ; texte : Mon idée, rédigé par un agent, relu par Claude, chaque montant des exemples recalculé). Vérifié :
+  PMSS de 4 005 € en 2026 et 4 075 € annoncés au 1er janvier 2027 (Service-Public A15386) ; F20314 (« 150 % Assurance maladie
+  incluse », forfait « à hauteur de 200 € », aide auditive 950 € / base 400 € / 240 €) ; F165 ; F17042 (bases de 30 € et 23 €) ;
+  F21760 (boîte à 20 € : 12 € versés, 1 € de franchise) ; F33956 (carie à 30,74 €, 18,44 € remboursés) ; F34781 ; F200 ;
+  instruction de 2019 (non OPTAM, optique 420 à 800 €, aides auditives de classe II 1 700 €, renouvellements). Par recherche :
+  sigles TM et BR (ameli.fr), article 9 de la loi du 31/12/1989 et lignes « % du PMSS » des accords de branche (Légifrance).
 - **Comparateur à curseurs et en cartes (Fabrice, 22/11, capture du comparateur du CRM Santéo : « C'EST PLUS SYMPA LES CURSEURS ET
   L'AFFICHAGE EN 3 BLOQUES PAR LIGNE », puis « valide »)** (demande de fusion « comparateur-curseurs » ; code écrit par un agent,
   relu par Claude) : un curseur par poste (0 à 5, mêmes niveaux et même filtrage que les étoiles, grilles de Fabrice du
