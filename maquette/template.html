@@ -1519,11 +1519,12 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error(j.erreur||rep.status);e.status=rep.status;throw e}return j}));
   // Conversation inconnue du CRM (404) : on repart d'une conversation neuve au prochain message
   const oublier=()=>{etat={conversation:null,messages:[],dernier:null,activite:0,pseudo:etat.pseudo,attendPseudo:false};garderT();modeSaisie();if(!fen.hidden)afficher()};
-  // Prénom ou pseudo : demandé au premier message, sauf si le visiteur est déjà connu (demande de comparatif envoyée)
+  // Prénom ou pseudo : demandé tant qu'il n'est pas connu, même dans une conversation déjà commencée ou après une demande
+  // de comparatif (Fabrice, 22/11/2026 : « il fallait ajouter qu'il ajoute son pseudo ») ; le prénom de la demande envoyée
+  // dans cette visite en tient lieu
   const QUESTION_PSEUDO="Pour envoyer, merci d'indiquer votre prénom ou votre pseudo.";
   const etiquette=document.querySelector('label[for="tchat-texte"]'), PH_MESSAGE=texte.placeholder, ET_MESSAGE=etiquette?etiquette.textContent:"";
   const pseudoConnu=()=>etat.pseudo||(identite&&identite.prenom)||null;
-  const visiteurConnu=()=>Boolean(pseudoConnu()||(identite&&identite.fiche));
   function modeSaisie(){
     const p=etat.attendPseudo;
     texte.placeholder=p?"Votre prénom ou pseudo":PH_MESSAGE; texte.maxLength=p?30:600; texte.rows=p?1:2;
@@ -1555,7 +1556,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       if(gardes.length)gardes.forEach(m=>envoyer(m.texte,m));else{garderT();afficher()}
       return;
     }
-    if(!etat.conversation&&!visiteurConnu()){
+    if(!pseudoConnu()){
       etat.messages.push({id:"local-"+Date.now()+"-"+(++numLocal),de:"visiteur",texte:t,date:new Date().toISOString(),statut:"attente"});
       etat.messages.push({id:"local-question",de:"site",texte:QUESTION_PSEUDO,date:new Date().toISOString()});
       etat.attendPseudo=true; etat.activite=Date.now(); garderT(); modeSaisie(); afficher(); texte.focus({preventScroll:true});

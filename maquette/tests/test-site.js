@@ -218,21 +218,37 @@ async function remplir(p) {
     doit(/200 € tous les deux ans/.test(filR) && (filR.match(/merci d'indiquer/g) || []).length === 1, nom + ' : la conversation du tchat ne reste pas après rechargement');
     console.log(nom, '| tchat direct : envois', envoisT.map(e => e.texte + ' / ' + e.pseudo).join(' ; '), '| lectures', lectures);
     await ctx.close();
-    // 7. Visiteur déjà connu (demande de comparatif envoyée) : pas de question, le message part tout de suite avec sa fiche
-    ctx = await b.newContext(opt); await servir(ctx, 'https://www.santeo.net/', sites.tchat);
-    await ctx.addInitScript(() => { try { localStorage.setItem('santeo-fiche', JSON.stringify({ fiche: '42' })); } catch (e) {} });
-    let envoiC = null;
-    await ctx.route('https://crm.exemple.invalid/tchat**', r => {
-      const req = r.request(), cors = { 'access-control-allow-origin': 'https://www.santeo.net' };
-      if (req.method() === 'POST') envoiC = JSON.parse(req.postData());
-      r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: req.method() === 'POST' ? '{"ok":true,"conversation":"c-9","message":"m9"}' : '{"ok":true,"messages":[]}' });
-    });
-    p = await ctx.newPage(); p.on('pageerror', e => err(nom + ' tchat connu : ' + e.message));
-    await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300); await p.click('#tchat-invite');
-    await p.fill('#tchat-texte', 'Bonjour'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
-    doit(envoiC && envoiC.texte === 'Bonjour' && envoiC.identite && envoiC.identite.fiche === '42' && !/merci d'indiquer/.test((await p.textContent('#tchat-fil')) || ''),
-      nom + ' : tchat : un visiteur déjà connu ne doit pas recevoir la question du pseudo (' + JSON.stringify(envoiC) + ')');
-    await ctx.close();
+    // 7. Visiteur connu par sa fiche (demande de comparatif envoyée une autre fois) : le pseudo est demandé quand même
+    // (Fabrice, 22/11/2026 : « il fallait ajouter qu'il ajoute son pseudo »), puis le message part avec la fiche et le pseudo.
+    // 7 bis. Conversation commencée sans pseudo (avant le 11/11/2026) : le pseudo est demandé au message suivant.
+    for (const [cas, init] of [
+      ['fiche', () => { try { localStorage.setItem('santeo-fiche', JSON.stringify({ fiche: '42' })); } catch (e) {} }],
+      ['conversation', () => { try { localStorage.setItem('santeo-tchat', JSON.stringify({ conversation: 'c-ancienne', messages: [{ id: '7', de: 'visiteur', texte: 'Ancien message' }], dernier: '7', activite: Date.now(), pseudo: null, attendPseudo: false })); } catch (e) {} }],
+    ]) {
+      ctx = await b.newContext(opt); await servir(ctx, 'https://www.santeo.net/', sites.tchat);
+      await ctx.addInitScript(init);
+      const envoisC = [];
+      await ctx.route('https://crm.exemple.invalid/tchat**', r => {
+        const req = r.request(), cors = { 'access-control-allow-origin': 'https://www.santeo.net' };
+        if (req.method() === 'POST') envoisC.push(JSON.parse(req.postData()));
+        r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: req.method() === 'POST' ? '{"ok":true,"conversation":"' + (cas === 'fiche' ? 'c-9' : 'c-ancienne') + '","message":"m9"}' : '{"ok":true,"messages":[]}' });
+      });
+      p = await ctx.newPage(); p.on('pageerror', e => err(nom + ' tchat ' + cas + ' : ' + e.message));
+      await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300); await p.click('#tchat-bouton');
+      await p.fill('#tchat-texte', 'Bonjour'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
+      const filC = (await p.textContent('#tchat-fil')) || '';
+      doit(envoisC.length === 0 && /merci d'indiquer votre prénom ou votre pseudo/.test(filC) && (await p.getAttribute('#tchat-texte', 'placeholder')) === 'Votre prénom ou pseudo',
+        nom + ' : tchat (' + cas + ') : sans pseudo connu, la question du pseudo doit venir avant l\'envoi (' + filC + ')');
+      await p.fill('#tchat-texte', 'Lina'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
+      const e = envoisC[0] || {};
+      doit(envoisC.length === 1 && e.texte === 'Bonjour' && e.pseudo === 'Lina'
+        && (cas === 'fiche' ? e.identite && e.identite.fiche === '42' && e.conversation === null : e.conversation === 'c-ancienne'),
+        nom + ' : tchat (' + cas + ') : le message doit partir avec le pseudo (' + JSON.stringify(envoisC) + ')');
+      await p.fill('#tchat-texte', 'Et ensuite ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
+      doit(envoisC.length === 2 && envoisC[1].pseudo === 'Lina' && (((await p.textContent('#tchat-fil')) || '').match(/merci d'indiquer/g) || []).length === 1,
+        nom + ' : tchat (' + cas + ') : le pseudo n\'est demandé qu\'une fois');
+      await ctx.close();
+    }
   }
   // 8. Bandeau cookies (statistiques Google) : rien de Google avant l'accord, « Refuser » aussi simple qu'« Accepter »
   for (const [nom, opt] of [['tel', devices['iPhone 13']], ['pc', { viewport: { width: 1280, height: 850 } }]]) {

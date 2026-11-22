@@ -566,6 +566,19 @@ mieux référencer le site »
   Tests : libellés et filtrage à chaque niveau, clavier, toucher, cartes par ligne, aucun nom d'assureur ni mot de promesse
   dans les cartes. Repéré, laissé tel quel : deux accolades en trop avant « /* Formulaire */ » dans template.html font ignorer
   la règle .chosen-box (encadré « Votre choix ») ; à corriger dans un lot à part si Fabrice le souhaite.
+- **Tchat : le pseudo est toujours demandé (Fabrice, 22/11 : « le chat ne fonctionne plus correctement / on devais identifier
+  la personne qui envoie son chat et surtout les réponses n'arrive plus », puis « par contre il fallait ajouter qu'il ajoute
+  son pseudo »)** (demande de fusion « tchat-pseudo »). Essai en ligne le 22/11 à 10 h 36 (marqué essai, parti vers Fabrice
+  seul) : envoi accepté par le CRM, conversation suivie toutes les 4 s, aucune erreur : le site marche. Cause trouvée dans le
+  code du site : le pseudo n'était demandé qu'au premier message d'une conversation neuve, et jamais à un visiteur qui avait
+  déjà envoyé une demande de comparatif ; une conversation ouverte avant le 11/11 (gardée 7 jours après la dernière
+  activité) ou un visiteur déjà connu par sa fiche écrivait donc sans nom. Désormais : demandé tant qu'aucun pseudo n'est
+  connu, même au milieu d'une conversation (le CRM le garde au premier message qui en porte un) ; le prénom d'une demande
+  envoyée pendant la même visite en tient lieu. Tests : visiteur connu par sa fiche et conversation commencée sans pseudo
+  (question avant l'envoi, pseudo envoyé, demandé une seule fois), en échec avant la correction. Les réponses : le CRM ne
+  range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
+  dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
+  n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
 - **Mentions légales (Fabrice, 22/11 : « fais strictement ce qui est obligatoire et précise que nous les contactons par whatsapp
   pour respecter leur tranquillité et tu expliques les avantages »)** (demande de fusion n° 63, fusionnée par Claude) : hébergeur
   inchangé (GitHub, Inc. ; adresse et téléphone confirmés par la documentation de GitHub, le téléphone étant sa ligne
