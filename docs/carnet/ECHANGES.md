@@ -549,6 +549,13 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Mentions légales (Fabrice, 22/11 : « fais strictement ce qui est obligatoire et précise que nous les contactons par whatsapp
+  pour respecter leur tranquillité et tu expliques les avantages »)** (demande de fusion n° 63, fusionnée par Claude) : hébergeur
+  inchangé (GitHub, Inc. ; adresse et téléphone confirmés par la documentation de GitHub, le téléphone étant sa ligne
+  commerciale) ; destinataires des données complétés par la catégorie obligatoire « nos prestataires techniques, qui hébergent
+  le site et nos logiciels de gestion » ; paragraphe « Pourquoi WhatsApp ? » (Mon idée : tranquillité, réponse quand on veut,
+  trace écrite, documents en photo, « STOP ») ; date de mise à jour au 22/11/2026. Point ouvert : l'hébergeur du CRM qui reçoit
+  les demandes (Manus) n'a pas de coordonnées vérifiées ; s'il garde les données hors de l'Union européenne, il faudra le dire.
 - **Décision de Fabrice (21/11, vers 10 h 40)** : « pourquoi tu ne fusionne pas directement claude cRM whatsapp le fait
   dircetemenyt », puis « validé » à « Voulez-vous que je fusionne moi-même mes demandes à partir de maintenant ? ». Claude
   fusionne désormais ses demandes après les vérifications (règle notée dans `CLAUDE.md` et dans la procédure de l'article du
