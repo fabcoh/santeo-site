@@ -579,6 +579,19 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Tchat : le pseudo dans une petite fenêtre avec l'oiseau (Fabrice, 22/11, capture de son essai : « pourquoi il garde la
+  mémoire de conversatiion et le pseudo doit être plus evident un petit popup rigolo type l'oiseau / Bonjour je veux des
+  renseignement / avant de faire partir popup du pseudo / comment fond les sites pour différencier les interlaucuteur dans
+  les chat ??? »)** (demande de fusion « tchat-pseudo-oiseau »). Le visiteur écrit son premier message ; avant qu'il parte,
+  une petite fenêtre s'ouvre dans le tchat : l'oiseau de l'en-tête qui bat des ailes et sautille, *Enchanté ! Comment puis-je
+  vous appeler ?*, *Votre prénom ou un pseudo, pour qu'Antony sache à qui il répond.*, champ *Prénom ou pseudo*, bouton
+  *Envoyer mon message* (textes : Mon idée). Le message attend, puis part avec le pseudo. Champ vide : la fenêtre tremble,
+  rien ne part. La question et le pseudo ne sont plus des bulles du fil. Pages du guide : l'oiseau en une seule image.
+  Mémoire : voulue depuis le 10/11 (« la conversation reste après rechargement »), gardée dans le navigateur du visiteur
+  7 jours après le dernier message, pour qu'il retrouve la réponse d'Antony s'il quitte la page. Les autres outils de tchat
+  (pages d'aide lues le 22/11) : formulaire avant le tchat (tawk.to, Zendesk, Chatwoot ; tawk.to prévient qu'il fait baisser
+  le nombre de conversations), nom provisoire puis adresse e-mail demandée après le premier message (Intercom), nom passé
+  par le site quand le visiteur est connecté (Crisp, HubSpot).
 - **Mentions légales (Fabrice, 22/11 : « fais strictement ce qui est obligatoire et précise que nous les contactons par whatsapp
   pour respecter leur tranquillité et tu expliques les avantages »)** (demande de fusion n° 63, fusionnée par Claude) : hébergeur
   inchangé (GitHub, Inc. ; adresse et téléphone confirmés par la documentation de GitHub, le téléphone étant sa ligne
