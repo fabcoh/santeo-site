@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Nunito:wght@700;800&display=swap"></noscript>
 <style>
-/* Mise en page : une colonne sur téléphone (cartes), une grille d'offres sur ordinateur ; le bleu Santéo de l'ancien site en accent, l'or pour les étoiles. */
+/* Mise en page : une colonne sur téléphone (cartes), une grille d'offres sur ordinateur ; le bleu Santéo de l'ancien site en accent, l'or pour l'allumage des curseurs. */
 :root{
   --bg:#ffffff; --surface:#ffffff; --fg:#0f2430; --muted:#526b77; --line:#d3e2e8;
   --accent:#0a7aa5; --accent-fg:#ffffff; --accent-soft:#e0f2f9; --star:#d99a00; --star-off:#c9d6dc;
@@ -222,22 +222,56 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .panel.slim{padding:.7rem .8rem;gap:.55rem}
 .slim-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .6rem}
 .slim-head h2{font-size:1.05rem}
-.needline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.35rem}
-.col{display:flex;flex-direction:column;align-items:stretch;gap:.15rem;min-width:0}
-.precise{background:none;border:0;padding:.2rem 0;min-height:24px;color:var(--accent);font-weight:700;font-size:.72rem;line-height:1.15;text-align:center}
-.precise.has{text-decoration:underline;text-underline-offset:2px}
-.cell{position:relative;border:1px solid var(--line);border-radius:8px;padding:.35rem .1rem;display:flex;flex-direction:column;align-items:center;gap:.15rem;min-width:0;background:var(--bg)}
+/* Vos besoins : un curseur par poste (Fabrice, 22/11/2026, d'après le comparateur de son CRM ; remplace les étoiles).
+   Carte : pictogramme, nom, niveau en couleur, curseur 0 à 5, bornes « Pas de besoin » / maximum, lien « (+) Précisez ».
+   Téléphone : une carte par ligne ; 600 à 899 px : deux ; 900 à 1059 px : 3 puis 2 ; ordinateur : les 5 sur une ligne. */
+.needline{display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem}
+@media (min-width:600px){.needline{grid-template-columns:repeat(2,minmax(0,1fr))}.needline>.col:last-child{grid-column:1 / -1}}
+@media (min-width:900px){.needline{grid-template-columns:repeat(6,minmax(0,1fr))}.needline>.col:nth-child(-n+3){grid-column:span 2}.needline>.col:nth-child(n+4){grid-column:span 3}}
+@media (min-width:1060px){.needline{grid-template-columns:repeat(5,minmax(0,1fr))}.needline>.col:nth-child(n){grid-column:auto}}
+.col{display:flex;min-width:0}
+.cell{position:relative;flex:1 1 auto;min-width:0;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);padding:.6rem .75rem .45rem;display:flex;flex-direction:column;gap:.05rem;transition:border-color .15s,background-color .15s,box-shadow .15s}
+.cell.actif{border-color:var(--accent)}
 .cell.open{border-color:var(--accent);background:var(--accent-soft)}
-.cell-open{background:none;border:0;padding:0;color:var(--fg);font-weight:700;font-size:.8rem;line-height:1.2;display:flex;align-items:center;gap:.1rem;max-width:100%}
-.cell-open .full{display:none}
-.cell-open .plus{color:var(--accent);font-weight:700}
-.stars{display:inline-flex;gap:0}
-.stars button{background:none;border:0;padding:0;font-size:.64rem;line-height:1.1;color:var(--star-off);pointer-events:none}
-.stars button.on{color:var(--star)}
-/* Allumage des étoiles (une fois la date de naissance et le code postal remplis) */
-.stars button.allume{color:var(--star);transform:scale(1.18);transition:color .08s,transform .08s}
-.cell.allumage{border-color:var(--star);box-shadow:0 0 0 2px rgba(217,154,0,.18)}
-.cycle.allumage{color:var(--star)}
+.b-tete{display:flex;align-items:center;gap:.5rem;min-width:0}
+.b-ico{flex:0 0 auto;width:2.1rem;height:2.1rem;border-radius:10px;display:grid;place-items:center;background:var(--accent-soft);color:var(--brand-1)}
+.cell.open .b-ico{background:var(--surface)}
+.b-ico svg{width:1.3rem;height:1.3rem;display:block}
+.b-textes{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
+.b-nom{font-family:var(--f-display);font-weight:800;font-size:1rem;line-height:1.2;color:var(--fg);cursor:pointer}
+.b-niv{font-size:.84rem;font-weight:700;line-height:1.25;color:var(--accent)}
+.b-niv.zero{color:var(--muted);font-weight:600}
+/* Le curseur : zone tactile de 44 px de haut ; le rail et ses 6 crans sont dessinés dessous, seule la poignée est celle du curseur */
+.b-piste{position:relative;height:44px;margin-top:auto;--poignee:26px}
+.b-rail{position:absolute;left:calc(var(--poignee) / 2);right:calc(var(--poignee) / 2);top:50%;height:6px;margin-top:-3px;border-radius:99px;background:var(--line);pointer-events:none}
+.b-rail::before{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--p,0) * 100%);border-radius:inherit;background:var(--accent);transition:width .12s}
+.b-rail i{position:absolute;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--field-line)}
+.b-rail i.on{background:var(--accent-fg)}
+.b-rail i:nth-child(1){left:0}.b-rail i:nth-child(2){left:20%}.b-rail i:nth-child(3){left:40%}.b-rail i:nth-child(4){left:60%}.b-rail i:nth-child(5){left:80%}.b-rail i:nth-child(6){left:100%}
+.curseur{-webkit-appearance:none;appearance:none;position:relative;z-index:1;display:block;width:100%;height:44px;margin:0;padding:0;background:transparent;cursor:pointer;border-radius:8px}
+.curseur::-webkit-slider-runnable-track{height:44px;background:transparent;border:0}
+.curseur::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;box-sizing:border-box;width:var(--poignee);height:var(--poignee);margin-top:calc((44px - var(--poignee)) / 2);border-radius:50%;background:var(--surface);border:3px solid var(--accent);box-shadow:0 1px 4px rgba(8,45,66,.3)}
+.curseur::-moz-range-track{height:44px;background:transparent;border:0}
+.curseur::-moz-range-thumb{box-sizing:border-box;width:var(--poignee);height:var(--poignee);border-radius:50%;background:var(--surface);border:3px solid var(--accent);box-shadow:0 1px 4px rgba(8,45,66,.3)}
+.curseur:focus{outline:none}
+.curseur:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.b-bornes{display:flex;justify-content:space-between;gap:.5rem;font-size:.74rem;line-height:1.2;color:var(--muted);margin-top:-.2rem}
+.b-bornes span:last-child{text-align:right}
+.precise{align-self:flex-start;background:none;border:0;padding:.3rem 0;min-height:32px;color:var(--accent);font-weight:700;font-size:.84rem;line-height:1.15;text-align:left;margin-top:.15rem}
+.precise.has{text-decoration:underline;text-underline-offset:2px}
+/* Téléphone : « (+) Précisez » en haut à droite de la carte, la carte reste basse ; sous le curseur sur un très petit écran */
+@media (min-width:380px) and (max-width:599px){
+  .precise{position:absolute;top:.45rem;right:.6rem;margin:0;padding:.3rem .1rem;text-align:right}
+  .b-textes{padding-right:6.4rem}
+}
+@media (max-width:379px){.b-ico{width:1.8rem;height:1.8rem}.precise{margin-top:0}}
+@media (min-width:1060px){.b-ico{width:1.9rem;height:1.9rem}.b-ico svg{width:1.15rem;height:1.15rem}.cell{padding:.6rem .65rem .4rem}.b-nom{font-size:.98rem}.b-niv{font-size:.8rem}}
+/* Allumage : une fois la date de naissance et le code postal remplis, chaque carte s'allume l'une après l'autre et une lueur
+   parcourt son rail ; ne règle rien, une seule fois par visite, s'arrête dès que le visiteur touche un curseur */
+.cell.allumage{border-color:var(--star);box-shadow:0 0 0 3px rgba(217,154,0,.18)}
+.cell.allumage .b-rail::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--star);transform-origin:left center;animation:allume-rail .8s ease-in-out both}
+@keyframes allume-rail{0%{transform:scaleX(0);opacity:1}60%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+@media (prefers-reduced-motion: reduce){.cell.allumage .b-rail::after{animation:none;display:none}.cell,.b-rail::before{transition:none}}
 .besoins-zone{position:relative}
 #needpanel{position:absolute;z-index:30;left:0;top:0;width:min(22rem,calc(100% - 1rem))}
 #needpanel:empty{display:none}
@@ -252,7 +286,6 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .needpanel .more label{padding:.15rem 0}
 .needpanel .more .autre{flex-direction:column;align-items:stretch;gap:.3rem;font-size:.9rem}
 .needpanel .more .autre input{width:100%}
-.needpanel .big button{font-size:1.9rem;padding:.1rem .15rem;pointer-events:auto}
 .needpanel-head{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
 /* Barre qui montre le temps avant la fermeture automatique du volet (4 s) */
 .np-temps{height:3px;background:var(--line);border-radius:99px;overflow:hidden}
@@ -262,28 +295,8 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .more .autre{grid-column:1 / -1;display:flex;align-items:center;gap:.5rem;font-weight:700}
 .more .autre input{flex:1 1 auto}
 .more em{font-style:normal}
-.cycle{background:none;border:0;padding:.25rem 0;min-height:24px;width:100%;color:var(--star);font-size:.64rem;line-height:1;letter-spacing:0}
-.cycle i{color:var(--star-off);font-style:normal}
-.stars{display:none}
 .more label{display:flex;gap:.5rem;align-items:flex-start;font-size:.92rem}
 .more input{margin-top:.25rem}
-@media (max-width:389px){
-  .cell-open{font-size:.72rem}
-  .precise{font-size:.66rem}
-  .cycle{font-size:.56rem}
-}
-@media (max-width:339px){.cycle{font-size:.48rem}.cell{padding:.35rem 0}.cell-open{font-size:.64rem}}
-@media (min-width:860px){
-  .cell{padding:.45rem .5rem}
-  .precise{font-size:.98rem}
-  .cell-open{gap:.25rem}
-  .cell-open{font-size:1.08rem}
-  .cell-open .full{display:inline}
-  .cell-open .short{display:none}
-  .stars{display:inline-flex}
-  .cycle{display:none}
-  .stars button{font-size:1.1rem;pointer-events:auto;padding:0 .08rem}
-}
 
 /* Résultats */
 .legal{font-size:.8rem;color:var(--muted)}
@@ -291,25 +304,36 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 /* Accès au simulateur de remboursement depuis le comparateur (Fabrice, 13/11/2026) */
 .lien-simu{margin:0;font-size:.92rem;color:var(--muted)}
 .lien-simu a{display:inline-block;margin-left:.15rem;font-weight:700;color:var(--accent)}
-.offers{display:flex;flex-direction:column;gap:.8rem}
-.offer{background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:.8rem 1rem;display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem}
-.o-left{display:grid;grid-template-columns:1fr auto;gap:.15rem .6rem;align-items:baseline;min-width:0}
-.o-name{font-family:var(--f-display);font-weight:700;font-size:1.1rem}
-.o-real{margin-right:auto;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
-.o-price{font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
-.o-price small{font-weight:400;font-size:.8rem;color:var(--muted)}
-.o-gar{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:.3rem .5rem;align-items:start}
-.o-col{display:flex;flex-direction:column;gap:.05rem;min-width:0}
-.o-col .lab{font-size:.74rem;color:var(--muted)}
-.o-col .lab .full{display:none}
-.o-col .pc{font-weight:700;font-size:.9rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+/* Les offres en cartes (Fabrice, 22/11/2026, d'après le comparateur de son CRM) : 3 par ligne sur ordinateur, 2 de 600 à
+   899 px, 1 sur téléphone. Carte : « Petit prix » sur la première quand la liste va de la moins chère à la plus chère (un
+   fait, pas une recommandation), « Option N » (jamais de nom d'assureur sur le site public), prix, garanties des postes
+   affichés en 2 colonnes, puis les boutons. Les lignes en plus (options cochées) s'ajoutent sous chaque garantie. */
+.offers{display:grid;grid-template-columns:minmax(0,1fr);gap:1.15rem .9rem;padding-top:.45rem}
+@media (min-width:600px){.offers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:900px){.offers{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.offers>.empty{grid-column:1 / -1}
+.offer{position:relative;min-width:0;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:1rem .95rem .9rem;display:flex;flex-direction:column;gap:.7rem;box-shadow:0 2px 12px rgba(8,45,66,.07)}
+.offer.chosen{border-color:var(--accent)}
+.o-badge{position:absolute;top:0;left:.95rem;transform:translateY(-50%);background:var(--accent);color:var(--accent-fg);font-size:.74rem;font-weight:700;line-height:1;letter-spacing:.02em;border-radius:99px;padding:.32rem .65rem;white-space:nowrap}
+.o-left{display:flex;flex-direction:column;gap:.1rem;min-width:0}
+.o-name{font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.o-real{align-self:flex-start;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
+.o-price{font-family:var(--f-display);font-weight:800;font-size:1.75rem;line-height:1.15;color:var(--brand-1);font-variant-numeric:tabular-nums;white-space:nowrap}
+.o-price small{font-family:var(--f-body);font-weight:600;font-size:.85rem;color:var(--muted)}
+.o-gar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem .6rem;align-items:start;border-top:1px solid var(--line);padding-top:.75rem}
+.o-col{display:flex;align-items:flex-start;gap:.45rem;min-width:0}
+.o-ico{flex:0 0 auto;width:1.75rem;height:1.75rem;border-radius:8px;display:grid;place-items:center;background:var(--accent-soft);color:var(--brand-1)}
+.o-ico svg{width:1.05rem;height:1.05rem;display:block}
+.offer.chosen .o-ico{background:var(--surface)}
+.o-txt{display:flex;flex-direction:column;min-width:0}
+.o-col .lab{font-size:.76rem;line-height:1.25;color:var(--muted);overflow-wrap:anywhere}
+.o-col .pc{font-weight:700;font-size:.98rem;line-height:1.3;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .o-col .sub{display:flex;flex-direction:column;margin-top:.25rem;font-size:.72rem;color:var(--muted)}
 .o-col .sub b{color:var(--fg);font-size:.84rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-/* Carte d'offre (Fabrice, 12/11/2026) : « Détails » et « Cette offre m'intéresse » sur la même ligne, en bas à droite ;
-   la carte reste basse et ne grandit que quand le visiteur coche des options (lignes en plus sous les garanties). */
-.o-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.4rem .6rem}
-.o-btns{display:flex;flex-wrap:nowrap;gap:.4rem}
-.o-actions button{font-size:.8rem;padding:.3rem .65rem;white-space:nowrap}
+.o-actions{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:auto}
+.o-actions button{min-height:44px;font-size:.9rem;padding:.5rem .8rem}
+.o-actions .btn{flex:2 1 auto}
+.o-actions .ghost{flex:1 1 auto}
 .det-pop{border:0;border-radius:16px;padding:0;width:min(36rem,calc(100vw - 2rem));max-height:min(88vh,48rem);background:var(--surface);color:var(--fg);box-shadow:0 24px 60px rgba(8,30,45,.35);overflow:hidden}
 .det-pop[open]{display:flex;flex-direction:column;animation:pop-in .16s ease-out}
 .det-pop::backdrop{background:rgba(8,30,45,.45)}
@@ -337,19 +361,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-detail dd{margin:0;font-variant-numeric:tabular-nums}
 .chosen{background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
 .empty{padding:1rem;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
-@media (min-width:700px){
-  .offer{grid-template-columns:9.5rem minmax(0,1fr);column-gap:1.2rem;row-gap:.45rem;padding:.7rem 1rem .65rem}
-  .o-left{grid-column:1;grid-row:1;grid-template-columns:1fr;align-content:start}
-  .o-left .o-price{text-align:left}
-  .o-gar{grid-column:2;grid-row:1;border-left:1px solid var(--line);padding-left:1.1rem}
-  .o-actions{grid-column:1 / -1;grid-row:2}
-  .o-col .lab{font-size:.85rem;color:var(--fg);font-weight:600}
-  .o-col .lab .full{display:inline}
-  .o-col .lab .short{display:none}
-  .o-col .pc{font-size:1rem}
-  .o-col .sub{font-size:.8rem;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:0 .35rem;margin-top:.15rem}  /* « Verres complexes 200 € » sur une ligne : la carte grandit moins vite */
-  .o-col .sub b{font-size:.92rem}
-}
+@media (min-width:900px){.o-price{font-size:1.65rem}}
 }
 }
 
@@ -554,7 +566,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
   </section>
 
   <section class="panel slim besoins-zone" aria-labelledby="t-besoins">
-    <div class="slim-head"><div class="step"><b>2</b><h2 id="t-besoins">Vos besoins</h2></div><span class="small">aucune étoile = toutes les offres ; touchez les étoiles pour exiger un niveau minimum</span></div>
+    <div class="slim-head"><div class="step"><b>2</b><h2 id="t-besoins">Vos besoins</h2></div><span class="small" id="besoins-aide">poussez un curseur vers la droite : seules les offres qui remboursent au moins ce niveau restent</span></div>
     <div class="needline" id="needs"></div>
     <div id="needpanel"></div>
   </section>
@@ -632,9 +644,9 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
       <li><strong>Famille</strong> : le moteur demande l'âge du conjoint et le nombre d'enfants (pas leur âge).</li>
       <li><strong>Envoi</strong> : en service, le formulaire créera une fiche dans le CRM Santéo, provenance « Site Santéo ». Le bouton WhatsApp attend le choix de la ligne.</li>
     </ul>
-    <h3 style="margin-top:1rem;font-size:1rem">Comment les étoiles sont comptées (Mon idée, à valider)</h3>
+    <h3 style="margin-top:1rem;font-size:1rem">Comment les niveaux des curseurs sont comptés (Mon idée, à valider)</h3>
     <div class="table-box"><table>
-      <thead><tr><th>Poste</th><th>Valeur lue</th><th>★</th><th>★★</th><th>★★★</th><th>★★★★</th><th>★★★★★</th></tr></thead>
+      <thead><tr><th>Poste</th><th>Valeur lue</th><th>Niveau 1</th><th>Niveau 2</th><th>Niveau 3</th><th>Niveau 4</th><th>Niveau 5</th></tr></thead>
       <tbody>
         <tr><td>Hospitalisation (grille de Fabrice)</td><td>Honoraires OPTAM, % de la base</td><td>100 à 125 %</td><td>130 à 175 %</td><td>180 à 275 %</td><td>300 à 350 %</td><td>400 % et plus</td></tr>
         <tr><td>Honoraires (grille de Fabrice)</td><td>Spécialistes OPTAM, % de la base</td><td>100 à 125 %</td><td>130 à 175 %</td><td>180 à 275 %</td><td>300 à 350 %</td><td>400 % et plus</td></tr>
@@ -643,7 +655,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
         <tr><td>Autres</td><td>Médecines douces, € par an</td><td>jusqu'à 80 €</td><td>jusqu'à 120 €</td><td>jusqu'à 160 €</td><td>jusqu'à 200 €</td><td>plus de 200 €</td></tr>
       </tbody>
     </table></div>
-    <p class="small" style="margin-top:.5rem">Aucune étoile = poste non couvert au-delà de la Sécurité sociale. Médecines douces données par séance sans nombre de séances : hypothèse de 4 séances par an, à vérifier. Seuls les documents contractuels de chaque assureur font foi.</p>
+    <p class="small" style="margin-top:.5rem">Une offre qui ne couvre pas un poste au-delà de la Sécurité sociale a le niveau 0 pour ce poste : elle n'est affichée que si son curseur est sur « Pas de besoin ». Une offre reste affichée quand, pour chaque poste, son niveau atteint celui du curseur. Médecines douces données par séance sans nombre de séances : hypothèse de 4 séances par an, à vérifier. Seuls les documents contractuels de chaque assureur font foi.</p>
   </details>
   <dialog class="det-pop" id="det-pop" aria-labelledby="det-titre"></dialog>
   <footer class="pied"><a href="guide/">Guide de la mutuelle</a> · <a href="simulateur-remboursement/">Simulateur de remboursement</a> · <a href="#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
@@ -651,7 +663,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
   <main id="vue-mentions" class="mentions" hidden>
     <p><a class="retour" href="#comparateur">← Retour au comparateur</a></p>
     <h2 class="titre-vue">Mentions légales</h2>
-    <p class="small">Mise à jour : 10/11/2026</p>
+    <p class="small">Mise à jour : 22/11/2026</p>
 
     <div class="a-confirmer">
       <strong>Maquette : points à confirmer par Fabrice avant la mise en ligne</strong>
@@ -712,13 +724,14 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
       <h2>Vos données personnelles</h2>
       <p><strong>Responsable du traitement :</strong> CAPI FINANCE, 72 rue du Rendez-vous, 75012 Paris.</p>
       <p><strong>Pourquoi nous utilisons vos données :</strong> établir votre devis et vous conseiller (mesures précontractuelles prises à votre demande) ; vous recontacter et vous adresser nos offres, seulement si vous l'avez accepté (consentement) ; gérer votre adhésion et votre contrat ; respecter nos obligations légales (devoir de conseil, lutte contre la fraude).</p>
-      <p><strong>Qui les reçoit :</strong> uniquement les conseillers de Santéo et, si vous adhérez, l'assureur que vous choisissez. Vos données ne sont ni vendues ni cédées à d'autres sociétés. Si vous choisissez d'échanger avec nous par WhatsApp, vos messages transitent par ce service, édité par Meta.</p>
+      <p><strong>Qui les reçoit :</strong> uniquement les conseillers de Santéo et, si vous adhérez, l'assureur que vous choisissez, ainsi que nos prestataires techniques, qui hébergent le site et nos logiciels de gestion. Vos données ne sont ni vendues ni cédées à d'autres sociétés. Si vous choisissez d'échanger avec nous par WhatsApp, vos messages transitent par ce service, édité par Meta.</p>
       <p><strong>Combien de temps :</strong> 3 ans après notre dernier contact si vous n'êtes pas client ; pendant la durée du contrat puis le délai légal de prescription si vous adhérez ; la preuve de vos accords est gardée aussi longtemps que nécessaire pour la démontrer.</p>
       <p><strong>Vos droits :</strong> accès, rectification, effacement, limitation, opposition, portabilité, et retrait de votre accord à tout moment. Pour les exercer : gestion@santeo.net ou par courrier à l'adresse ci-dessus. Vous pouvez aussi adresser une réclamation à la CNIL, 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07, <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
     </section>
 
     <section>
       <h2>Appels, WhatsApp et e-mails</h2>
+      <p><strong>Pourquoi WhatsApp ?</strong> Pour respecter votre tranquillité, nous vous contactons de préférence par WhatsApp plutôt que par téléphone. Vous lisez nos messages et vous répondez quand vous le souhaitez, sans être dérangé par un appel à un mauvais moment. Vous gardez par écrit nos échanges, vos devis et nos conseils. Vous pouvez nous envoyer vos documents en photo, par exemple votre tableau de garanties actuel. Et vous arrêtez à tout moment en répondant « STOP ».</p>
       <p>Nous ne vous appelons, ne vous écrivons sur WhatsApp et ne vous adressons nos offres par e-mail que si vous l'avez accepté en cochant la case prévue, conformément aux règles en vigueur depuis le 11 août 2026. Les appels ont lieu du lundi au vendredi, de 10 h à 13 h et de 14 h à 20 h. Vous pouvez retirer votre accord à tout moment : en répondant « STOP » sur WhatsApp, par le lien de désinscription de nos e-mails, ou en écrivant à gestion@santeo.net.</p>
     </section>
 
@@ -908,9 +921,25 @@ const POSTES=[
          {id:"a-cur",lb:"Cure thermale"}]}
 ];
 function ex(r,c){const e=EX[r.key]; return e&&e[c]?e[c][r.fi]:null}
+/* Libellé de chaque niveau du curseur (0 à 5), tiré des grilles ci-dessus (hospStars, dentStars, optStars, mdStars) :
+   le niveau n garde les offres dont le niveau calculé atteint n. Maximum affiché à droite du curseur. */
+const NIV_PCT=["Pas de besoin","Au moins 100 %","Au moins 130 %","Au moins 180 %","Au moins 300 %","400 % et plus"];
+const NIVEAUX={hosp:NIV_PCT,hono:NIV_PCT,
+  dent:["Pas de besoin","Au moins 100 %","Au moins 130 %","Au moins 200 %","Au moins 300 %","400 % et plus"],
+  opt:["Pas de besoin","100 % Santé","Au moins 130 €","Au moins 200 €","Au moins 300 €","400 € et plus"],
+  autres:["Pas de besoin","Un forfait","Plus de 80 € par an","Plus de 120 € par an","Plus de 160 € par an","Plus de 200 € par an"]};
+const MAXI={hosp:"400 %",hono:"400 %",dent:"400 %",opt:"400 €",autres:"200 €/an et +"};
+/* Pictogrammes des postes (dessins simples, sans fichier ni police externe) : lit, stéthoscope, dent, lunettes, feuille */
+const PICTO={
+  hosp:'<path d="M3 5.5V19M3 15.5h18M21 19v-6a2.5 2.5 0 0 0-2.5-2.5H11v5"/><circle cx="7" cy="12.2" r="2"/>',
+  hono:'<path d="M5.5 3H4.5v5a3.5 3.5 0 0 0 7 0V3h-1"/><path d="M8 11.5v2.5a5 5 0 0 0 10 0v-1.5"/><circle cx="18" cy="10.5" r="2"/>',
+  dent:'<path d="M12 5.6C10.6 4.4 9.3 4 7.9 4 5.4 4 3.8 6 3.8 8.6c0 1.8.6 3.1 1.2 4.5.6 1.5.9 3.6 1.3 5.7.3 1.4.8 2.2 1.6 2.2.9 0 1.3-.9 1.6-2.2l.7-3.1c.3-1.1.8-1.6 1.8-1.6s1.5.5 1.8 1.6l.7 3.1c.3 1.3.7 2.2 1.6 2.2.8 0 1.3-.8 1.6-2.2.4-2.1.7-4.2 1.3-5.7.6-1.4 1.2-2.7 1.2-4.5C20.2 6 18.6 4 16.1 4c-1.4 0-2.7.4-4.1 1.6z"/>',
+  opt:'<circle cx="6.5" cy="14.5" r="3.5"/><circle cx="17.5" cy="14.5" r="3.5"/><path d="M10 14.2c1.2-.9 2.8-.9 4 0M3 14.5 4.7 7.4A2 2 0 0 1 6.6 6H7.5M21 14.5l-1.7-7.1A2 2 0 0 0 17.4 6h-.9"/>',
+  autres:'<path d="M5 20c-.6-8.4 4.6-14.6 15-15.5.5 9.9-5.2 15.4-13.2 15.5"/><path d="M5 20c2.7-4 6.2-7.3 10-9.6"/>'};
+function picto(k){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+PICTO[k]+'</svg>'}
 
 /* ---------- État ---------- */
-const S={cnj:null,kids:0,need:{hosp:0,hono:0,dent:0,opt:0,autres:0},open:null,flt:{},autre:{},shown:5,chosen:null};
+const S={cnj:null,kids:0,need:{hosp:0,hono:0,dent:0,opt:0,autres:0},open:null,flt:{},autre:{},shown:6,chosen:null};
 
 /* ---------- Personnes (tout dans la ligne) ---------- */
 /* Dates de naissance : barres ajoutées pendant la frappe, puis lecture de l'année */
@@ -936,26 +965,21 @@ masqueDate("age"); masqueDate("cnj");
 function champComplet(id){const v=$(id).value.trim();
   if(id==="cp"){const c=v.toUpperCase();return !!Moteur.departement(c)&&/^(\d{2}|\d{5}|2A|2B|97[1-6])$/.test(c)}
   return ageDeDate(v)!=null}
-/* Allumage : chaque poste s'allume de 1 à 5 étoiles puis s'éteint, l'un après l'autre (environ 0,8 s par poste).
-   Une seule fois par visite ; ne choisit rien ; s'arrête dès que le visiteur touche une étoile. */
+/* Allumage : chaque carte de poste s'allume et une lueur parcourt son curseur, l'une après l'autre (environ 0,8 s par poste).
+   Une seule fois par visite ; ne règle rien (les curseurs restent où ils sont) ; s'arrête dès que le visiteur touche un curseur. */
 const ALLUMAGE={fait:false,actif:false,minuteur:null};
 function allumageStop(){if(!ALLUMAGE.actif)return;ALLUMAGE.actif=false;clearTimeout(ALLUMAGE.minuteur);
-  document.querySelectorAll("#needs .cell.allumage").forEach(c=>c.classList.remove("allumage"));
-  document.querySelectorAll("#needs .stars button.allume").forEach(b=>b.classList.remove("allume"));
-  document.querySelectorAll("#needs .cycle").forEach(c=>{const k=c.dataset.cyc;c.classList.remove("allumage");c.innerHTML=starsOf(S.need[k]||0)})}
+  document.querySelectorAll("#needs .cell.allumage").forEach(c=>c.classList.remove("allumage"))}
 function allumageLancer(){
   if(ALLUMAGE.fait)return; ALLUMAGE.fait=true;
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
   if(POSTES.some(p=>S.need[p.k]>0))return;
-  ALLUMAGE.actif=true; let i=0,n=0;
+  ALLUMAGE.actif=true; let i=0;
   const pas=()=>{
     if(!ALLUMAGE.actif)return;
-    const col=document.querySelectorAll("#needs .col")[i]; if(!col){allumageStop();return}
-    const cell=col.querySelector(".cell"),btns=col.querySelectorAll(".stars button"),cyc=col.querySelector(".cycle");
-    if(n<=5){cell.classList.add("allumage");btns.forEach((b,j)=>b.classList.toggle("allume",j<n));if(cyc){cyc.classList.add("allumage");cyc.innerHTML=starsOf(n)}n++;ALLUMAGE.minuteur=setTimeout(pas,n===6?180:90);return}
-    cell.classList.remove("allumage");btns.forEach(b=>b.classList.remove("allume"));if(cyc){cyc.classList.remove("allumage");cyc.innerHTML=starsOf(S.need[cyc.dataset.cyc]||0)}
-    i++;n=0; if(i>=POSTES.length){ALLUMAGE.actif=false;return}
-    ALLUMAGE.minuteur=setTimeout(pas,60);
+    document.querySelectorAll("#needs .cell.allumage").forEach(c=>c.classList.remove("allumage"));
+    const cell=document.querySelectorAll("#needs .cell")[i++]; if(!cell){ALLUMAGE.actif=false;return}
+    cell.classList.add("allumage"); ALLUMAGE.minuteur=setTimeout(pas,860);
   };
   ALLUMAGE.minuteur=setTimeout(pas,250);
 }
@@ -966,22 +990,68 @@ function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=!ch
 ["focus","change","pointerdown"].forEach(ev=>$("reg").addEventListener(ev,()=>{$("reg").dataset.vu="1";marquerChamps()}));
 ["age","cp","cnj"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,marquerChamps)));
 marquerChamps();
-$("cnj").addEventListener("input",()=>{const v=$("cnj").value.trim();S.cnj=v===""?null:v;S.shown=5;S.chosen=null;upd()});
-$("kids").addEventListener("change",()=>{S.kids=+$("kids").value;S.shown=5;S.chosen=null;upd()});
+$("cnj").addEventListener("input",()=>{const v=$("cnj").value.trim();S.cnj=v===""?null:v;S.shown=6;S.chosen=null;upd()});
+$("kids").addEventListener("change",()=>{S.kids=+$("kids").value;S.shown=6;S.chosen=null;upd()});
 /* Conjoint (+) / Enfant (+) : le champ apparaît à la demande, × le retire */
 function montrer(champ,bouton,oui){$(champ).hidden=!oui;$(bouton).hidden=oui;ajoutsVisibles()}
 $("aj-cnj").onclick=()=>{montrer("f-cnj","aj-cnj",true);$("cnj").focus()};
-$("rt-cnj").onclick=e=>{e.preventDefault();$("cnj").value="";fondMasque("cnj");marquerChamps();S.cnj=null;montrer("f-cnj","aj-cnj",false);S.shown=5;S.chosen=null;upd();$("aj-cnj").focus()};
+$("rt-cnj").onclick=e=>{e.preventDefault();$("cnj").value="";fondMasque("cnj");marquerChamps();S.cnj=null;montrer("f-cnj","aj-cnj",false);S.shown=6;S.chosen=null;upd();$("aj-cnj").focus()};
 function ajoutsVisibles(){const z=$("ajouts");z.hidden=$("aj-cnj").hidden&&$("aj-enf").hidden}
-$("aj-enf").onclick=()=>{montrer("f-kids","aj-enf",true);$("kids").value="1";S.kids=1;S.shown=5;S.chosen=null;upd();$("kids").focus()};
-$("rt-enf").onclick=e=>{e.preventDefault();$("kids").value="0";S.kids=0;montrer("f-kids","aj-enf",false);S.shown=5;S.chosen=null;upd();$("aj-enf").focus()};
+$("aj-enf").onclick=()=>{montrer("f-kids","aj-enf",true);$("kids").value="1";S.kids=1;S.shown=6;S.chosen=null;upd();$("kids").focus()};
+$("rt-enf").onclick=e=>{e.preventDefault();$("kids").value="0";S.kids=0;montrer("f-kids","aj-enf",false);S.shown=6;S.chosen=null;upd();$("aj-enf").focus()};
 
-/* ---------- Besoins ---------- */
-function starsHtml(k,n,nm){let h="";for(let i=1;i<=5;i++)h+='<button type="button" data-k="'+k+'" data-v="'+i+'" class="'+(i<=n?"on":"")+'" aria-label="'+nm+' : '+i+' étoile'+(i>1?"s":"")+'" aria-pressed="'+(i===n)+'">★</button>';return h}
-/* La fenêtre « Précisez » ne s'ouvre plus toute seule (décision du 09/11/2026) : seulement au clic sur « (+) Précisez ». */
-function ouvrirSiBesoin(){}
-function setNeed(k,v){allumageStop();if(S.open&&S.open!==k)S.open=null;const avant=S.need[k];S.need[k]=(S.need[k]===v)?v-1:v;ouvrirSiBesoin(k,avant);S.shown=5;renderNeeds();upd()}
+/* ---------- Besoins : un curseur par poste ----------
+   Le curseur règle S.need[k] (0 = pas de besoin, 1 à 5 = niveau minimum) : même filtrage qu'avec les étoiles (compute).
+   Les cartes sont construites une fois, puis mises à jour sur place : un curseur n'est jamais redessiné pendant qu'on le
+   fait glisser. La fenêtre « Précisez » ne s'ouvre qu'au clic sur « (+) Précisez » (décision du 09/11/2026). */
+function setNeed(k,v){
+  allumageStop(); v=Math.max(0,Math.min(5,Math.round(+v)||0));
+  if(S.need[k]===v){majCarte(k);return}
+  S.need[k]=v; S.shown=6;
+  if(S.open&&S.open!==k){S.open=null;renderNeeds()} else majCarte(k);
+  upd();
+}
 function renderNeedsKeepPanel(){renderNeeds()}
+const nflt=p=>p.more.filter(f=>S.flt[f.id]).length+((S.autre[p.k]||"").trim()?1:0);
+function construireBesoins(){
+  const box=$("needs"); box.innerHTML="";
+  POSTES.forEach(p=>{
+    const d=document.createElement("div"); d.className="col"; d.dataset.k=p.k;
+    d.innerHTML='<div class="cell"><div class="b-tete"><span class="b-ico" aria-hidden="true">'+picto(p.k)+'</span>'+
+      '<span class="b-textes"><label class="b-nom" for="cur-'+p.k+'">'+p.nm+'</label><span class="b-niv" aria-hidden="true"></span></span></div>'+
+      '<div class="b-piste"><span class="b-rail" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>'+
+      '<input type="range" class="curseur" id="cur-'+p.k+'" data-k="'+p.k+'" min="0" max="5" step="1" value="'+S.need[p.k]+'" aria-describedby="besoins-aide"></div>'+
+      '<div class="b-bornes" aria-hidden="true"><span>Pas de besoin</span><span>'+MAXI[p.k]+'</span></div>'+
+      '<button type="button" class="precise" data-open="'+p.k+'"></button></div>';
+    box.appendChild(d);
+  });
+  box.querySelectorAll(".curseur").forEach(c=>{
+    c.addEventListener("input",()=>setNeed(c.dataset.k,+c.value));
+    // Toucher le rail place le curseur au cran le plus proche (Safari sur iPhone ne le fait pas de lui-même) ; un clic sur le
+    // nom du poste (son étiquette) est transmis au curseur : il est ignoré, car il n'a pas lieu sur le rail
+    c.addEventListener("click",e=>{
+      if(!e.detail)return;
+      const r=c.getBoundingClientRect(), t=parseFloat(getComputedStyle(c.parentElement).getPropertyValue("--poignee"))||26;
+      if(r.width<=t||e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;
+      const v=Math.round(Math.min(Math.max(e.clientX-r.left-t/2,0),r.width-t)/(r.width-t)*5);
+      if(v!==+c.value){c.value=v;setNeed(c.dataset.k,v)}
+    });
+  });
+  box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{allumageStop();const k=b.dataset.open;S.open=(S.open===k)?null:k;renderNeeds()});
+}
+/* Met à jour la carte d'un poste : niveau affiché et lu par les lecteurs d'écran, remplissage du rail, lien « Précisez » */
+function majCarte(k){
+  const p=POSTES.find(q=>q.k===k), col=document.querySelector('#needs .col[data-k="'+k+'"]'); if(!p||!col)return;
+  const v=S.need[k], n=nflt(p), op=S.open===k, lib=NIVEAUX[k][v];
+  const cell=col.querySelector(".cell"); cell.classList.toggle("open",op); cell.classList.toggle("actif",v>0);
+  const c=col.querySelector(".curseur"); if(+c.value!==v)c.value=String(v); c.setAttribute("aria-valuetext",lib);
+  col.style.setProperty("--p",String(v/5));
+  col.querySelectorAll(".b-rail i").forEach((i,j)=>i.classList.toggle("on",v>0&&j<=v));
+  const nv=col.querySelector(".b-niv"); nv.textContent=lib; nv.classList.toggle("zero",!v);
+  const b=col.querySelector(".precise"); b.classList.toggle("has",!!n); b.setAttribute("aria-expanded",String(op));
+  b.setAttribute("aria-label","Préciser "+p.nm+(n?" ("+n+" choisi"+(n>1?"s":"")+")":""));
+  b.textContent=op?"(−) Fermer":"(+) Précisez"+(n?" · "+n:"");
+}
 /* Fermeture automatique du volet « Précisez » : 4 s sans action.
    En pause tant que la souris est sur le volet ou que l'on écrit dans « Autre ». */
 const NP_DUREE=4000, NP={t:null,fin:0,survol:false};
@@ -1009,20 +1079,8 @@ function npEcouter(){
 function renderNeeds(){
   npStop();
   const fa0=document.activeElement, focusAvant=(fa0&&$("needpanel").contains(fa0))?fa0.id:null;
-  const box=$("needs"); box.innerHTML="";
-  const nflt=p=>p.more.filter(f=>S.flt[f.id]).length+((S.autre[p.k]||"").trim()?1:0);
-  POSTES.forEach(p=>{
-    const n=nflt(p), op=S.open===p.k;
-    const d=document.createElement("div"); d.className="col";
-    d.innerHTML='<div class="cell'+(op?" open":"")+'"><span class="cell-open"><span class="short">'+p.sh+'</span><span class="full">'+p.nm+'</span></span>'+
-      '<span class="stars" role="group" aria-label="'+p.nm+'">'+starsHtml(p.k,S.need[p.k],p.nm)+'</span>'+
-      '<button type="button" class="cycle" data-cyc="'+p.k+'" aria-label="'+p.nm+' : '+S.need[p.k]+' étoile'+(S.need[p.k]>1?"s":"")+' sur 5, toucher pour changer">'+starsOf(S.need[p.k])+'</button></div>'+
-      '<button type="button" class="precise'+(n?" has":"")+'" data-open="'+p.k+'" aria-expanded="'+op+'" aria-label="Préciser '+p.nm+(n?" ("+n+" choisi"+(n>1?"s":"")+")":"")+'">'+(op?"(−) Fermer":"(+) Précisez"+(n?" · "+n:""))+'</button>';
-    box.appendChild(d);
-  });
-  box.querySelectorAll(".stars button").forEach(b=>b.onclick=()=>setNeed(b.dataset.k,+b.dataset.v));
-  box.querySelectorAll("[data-cyc]").forEach(b=>b.onclick=()=>{allumageStop();const k=b.dataset.cyc,avant=S.need[k];if(S.open&&S.open!==k)S.open=null;S.need[k]=S.need[k]>=5?0:S.need[k]+1;ouvrirSiBesoin(k,avant);S.shown=5;renderNeeds();upd()});
-  box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{allumageStop();const k=b.dataset.open;S.open=(S.open===k)?null:k;renderNeeds()});
+  if(!$("needs").querySelector(".curseur"))construireBesoins();
+  POSTES.forEach(p=>majCarte(p.k));
   const pn=$("needpanel"); pn.innerHTML="";
   const p=POSTES.find(q=>q.k===S.open); if(!p) return;
   pn.innerHTML='<div class="needpanel" role="dialog" aria-label="Préciser '+p.nm+'"><div class="needpanel-head"><strong>'+p.nm+' : précisez</strong><button type="button" class="np-x" id="np-close" aria-label="Fermer">×</button></div>'+
@@ -1030,7 +1088,7 @@ function renderNeeds(){
     '<label for="f-autre" class="autre">Autre <input type="text" id="f-autre" placeholder="Précisez (facultatif)" value="'+(S.autre[p.k]||"").replace(/"/g,"&quot;")+'"></label></div>'+
     '<div class="np-temps" aria-hidden="true" title="Fermeture automatique"><i></i></div></div>';
   const fa=$("f-autre"); fa.oninput=()=>{S.autre[p.k]=fa.value}; fa.onchange=()=>renderNeedsKeepPanel();
-  pn.querySelectorAll("[data-f]").forEach(c=>c.onchange=()=>{S.flt[c.dataset.f]=c.checked;S.shown=5;renderNeeds();upd()});
+  pn.querySelectorAll("[data-f]").forEach(c=>c.onchange=()=>{S.flt[c.dataset.f]=c.checked;S.shown=6;renderNeeds();upd()});
   $("np-close").onclick=()=>{const k=S.open;S.open=null;renderNeeds();const b=document.querySelector('[data-open="'+k+'"]');if(b)b.focus()};
   npPlacer();
   if(focusAvant){const f=document.getElementById(focusAvant);if(f&&pn.contains(f))f.focus({preventScroll:true})}
@@ -1178,11 +1236,9 @@ const CHAMP={hosp:"hospO",hono:"honoO",dent:"dent",opt:"opt",autres:"md"};
 const NC=s=>s==="n.c.";
 function fmtVal(s){if(NC(s))return "Non communiqué";if(NONE(s))return "Non couvert";if(/^incl/.test(String(s)))return "dans le forfait optique";return String(s).replace(/\s*BR$/,"").replace(/€\/s$/,"€/séance")}
 function lignesEnPlus(p,x){return p.more.filter(f=>S.flt[f.id]&&f.v).map(f=>'<span class="sub"><span class="lab2">'+f.lib+'</span><b>'+fmtVal(f.v(x))+'</b></span>').join("")}
-// « Autres » n'apparaît dans les offres que si le visiteur le demande (étoiles, précision ou texte)
+// « Autres » n'apparaît dans les offres que si le visiteur le demande (curseur, précision ou texte)
 function postesAffiches(){return POSTES.filter(p=>p.k!=="autres"||S.need.autres>0||p.more.some(f=>S.flt[f.id])||(S.autre.autres||"").trim())}
 function valeur(p,x){const s=x[CHAMP[p.k]]; if(NC(s))return "n.c."; if(NONE(s))return "—"; return String(s).replace(/\s*BR$/,"").replace(/\s*\/an$/," /an").replace(/€\/s$/,"€/séance");}
-function starsOf(n){return "★".repeat(n)+"<i>"+"★".repeat(5-n)+"</i>"}
-function starLine(n){return n?"★".repeat(n)+"<i>"+"★".repeat(5-n)+"</i>":"<i>Non couvert</i>"}
 function detailHtml(x){
   const v=s=>NC(s)?"Non communiqué":NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
   const lentilles=(a,f)=>NC(a)&&NC(f)?"Non communiqué":NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
@@ -1223,25 +1279,29 @@ function upd(){
   // seulement si le visiteur a accepté les cookies
   if(list.length&&!window.__mesResultats){window.__mesResultats=1;window.mesure("comparateur_resultats",{offres:list.length})}
   // L'option choisie est suivie par son identité (gamme et formule) : si des offres arrivent ou partent (tarif API Santé,
-  // étoiles), son numéro suit ; si elle n'est plus proposée, le choix est retiré.
+  // curseurs), son numéro suit ; si elle n'est plus proposée, le choix est retiré.
   if(S.chosen==null) S.choixId=null;
   else if(S.choixId){const j=list.findIndex(x=>x.key+"|"+x.fi===S.choixId); if(j<0){S.chosen=null;S.choixId=null;$("chosen-box").innerHTML=""} else if(j!==S.chosen){S.chosen=j;afficherChoix(j)}}
   if(!list.length){
     $("count").textContent="Aucune offre n'atteint tous vos niveaux.";
-    box.innerHTML='<p class="empty">Baissez une étoile ou retirez une précision : nous avons '+res.rows.length+' offres pour votre profil. Un conseiller peut aussi chercher pour vous.</p>';
+    box.innerHTML='<p class="empty">Baissez un curseur ou retirez une précision : nous avons '+res.rows.length+' offres pour votre profil. Un conseiller peut aussi chercher pour vous.</p>';
     return;
   }
   const filtre=POSTES.some(p=>S.need[p.k]>0||p.more.some(f=>S.flt[f.id]&&f.ok));
   $("count").textContent=filtre?(list.length+" offre"+(list.length>1?"s":"")+" atteigne"+(list.length>1?"nt":"")+" vos niveaux, sur "+res.rows.length+" calculées pour votre profil."):(list.length+" offres calculées pour votre profil, de la moins chère à la plus chère.");
+  // « Petit prix » : la première offre, seulement si la liste va bien de la moins chère à la plus chère (un fait, pas un conseil)
+  const croissant=list.every((x,j)=>!j||list[j-1].total<=x.total);
+  const cols=postesAffiches();
   list.slice(0,S.shown).forEach((x,i)=>{
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
-    o.setAttribute("aria-label","Option "+(i+1));
-    const cols=postesAffiches();
-    o.innerHTML='<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div></div>'+
-      '<div class="o-gar" style="--n:'+cols.length+'">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="lab"><span class="short">'+p.sh+'</span><span class="full">'+p.nm+'</span></span>'+
-        '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</div>'}).join("")+'</div>'+
-      '<div class="o-actions"><div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
-      '<span class="o-btns"><button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog">(+) Détails</button><button type="button" class="btn" data-c="'+i+'">Cette offre m\'intéresse</button></span></div>';
+    o.setAttribute("aria-label","Option "+(i+1)+(i===0&&croissant?", petit prix":""));
+    o.innerHTML=(i===0&&croissant?'<span class="o-badge">Petit prix</span>':'')+
+      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div></div>'+
+      '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
+        '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
+      '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
+      '<div class="o-actions"><button type="button" class="btn" data-c="'+i+'" aria-label="Recevoir mon devis : option '+(i+1)+'">Recevoir mon devis</button>'+
+      '<button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog" aria-label="Détails de l\'option '+(i+1)+'">(+) Détails</button></div>';
     box.appendChild(o);
   });
   box.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>ouvrirDetail(+b.dataset.d));
@@ -1367,7 +1427,7 @@ function renderAdmin(){
     d.innerHTML=h; box.appendChild(d);
   });
   box.querySelectorAll("[data-logo]").forEach(i=>i.onchange=()=>{CFG.logos[i.dataset.logo]=i.checked;garder();appliquerLogos()});
-  box.querySelectorAll("[data-gamme]").forEach(i=>i.onchange=()=>{CFG.gammes[i.dataset.gamme]=i.checked;garder();S.shown=5;S.chosen=null;upd()});
+  box.querySelectorAll("[data-gamme]").forEach(i=>i.onchange=()=>{CFG.gammes[i.dataset.gamme]=i.checked;garder();S.shown=6;S.chosen=null;upd()});
 }
 $("adm-all").onclick=()=>{Object.keys(CFG.gammes).forEach(k=>CFG.gammes[k]=true);Object.keys(CFG.logos).forEach(k=>CFG.logos[k]=true);garder();renderAdmin();appliquerLogos();upd()};
 $("adm-reset").onclick=()=>{CFG=CFG_DEPART();garder();renderAdmin();appliquerLogos();upd()};
@@ -1528,7 +1588,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 /* fin-js-tchat */
 
 /* ---------- Démarrage ---------- */
-["age","cp","reg"].forEach(id=>{const el=$(id);const maj=()=>{if(el.dataset.vu===el.value)return;el.dataset.vu=el.value;S.shown=5;S.chosen=null;upd()};el.addEventListener("input",maj);el.addEventListener("change",maj)});
+["age","cp","reg"].forEach(id=>{const el=$(id);const maj=()=>{if(el.dataset.vu===el.value)return;el.dataset.vu=el.value;S.shown=6;S.chosen=null;upd()};el.addEventListener("input",maj);el.addEventListener("change",maj)});
 renderNeeds(); renderAdmin(); appliquerLogos(); upd(); majWhatsApp(); route();
 /* Réglages de l'espace admin (CRM) : lus à chaque visite ; délai court ; à défaut, ceux déjà appliqués restent. */
 const REGLAGES_URL="__REGLAGES__";
