@@ -43,8 +43,8 @@ et chaque jour, pour reprendre les tarifs à jour du comparateur.
 | `logos/mascotte.json` | la mascotte, fond retiré, découpée en quatre calques (corps, aile gauche, aile droite, étoile) avec les points autour desquels les ailes tournent |
 | `images-source/` | images reçues de Fabrice (logo Santéo, logo Alptis, mascotte) |
 | `outils/` | scripts qui refont `santeo-masque.b64`, `mascotte.json` et `comete-trajet.txt` à partir des sources |
-| `tests/test-site.js` | essai du site publié (en ligne et test) : entête, fichiers, envoi au CRM simulé, erreur, repli WhatsApp, anciennes adresses |
-| `tests/test-comparateur.js` | essai automatique (téléphone et PC) : mascotte, étoiles, fenêtre « Précisez », cases, choix d'une offre |
+| `tests/test-site.js` | essai du site publié (en ligne et test) : entête, fichiers, envoi au CRM simulé, erreur, repli WhatsApp, anciennes adresses, cartes des offres (3, 2 ou 1 par ligne, « Petit prix » sur la première seulement, aucun nom d'assureur) |
+| `tests/test-comparateur.js` | essai automatique (téléphone et PC) : mascotte, curseurs des besoins (libellés, clavier, toucher, même filtrage que les anciennes étoiles), cartes sans débordement de 320 à 1280 px, fenêtre « Précisez », cases, choix d'une offre |
 
 ## Vérifier
 
