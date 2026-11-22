@@ -202,20 +202,30 @@ async function remplir(p) {
     doit(await p.isVisible('#tchat-fenetre') && !(await p.isVisible('#tchat-invite')), nom + ' : la bulle doit ouvrir le tchat et se cacher');
     doit((await p.textContent('.tchat-envoyer')) === 'Envoyer' && ((await p.textContent('#tchat-fil')) || '').trim() === '', nom + ' : tchat direct : bouton « Envoyer » et fenêtre vide au départ');
     await p.fill('#tchat-texte', 'Les lunettes ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);   // Entrée envoie
-    // Premier message : il attend le prénom ou pseudo (Fabrice, 11/11/2026), rien ne part encore
+    // Premier message : il attend le prénom ou pseudo (Fabrice, 11/11/2026), demandé dans une petite fenêtre avec l'oiseau
+    // (Fabrice, 22/11/2026 : « un petit popup rigolo type l'oiseau »), rien ne part encore
     const filQ = (await p.textContent('#tchat-fil')) || '';
-    doit(envoisT.length === 0 && /Pour envoyer, merci d'indiquer votre prénom ou votre pseudo\./.test(filQ) && /Les lunettes \?/.test(filQ)
-      && (await p.getAttribute('#tchat-texte', 'placeholder')) === 'Votre prénom ou pseudo', nom + ' : tchat : la question du pseudo doit venir avant tout envoi (' + filQ + ')');
-    await p.fill('#tchat-texte', '  Rose  '); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(5200);
+    const popQ = await p.evaluate(() => { const f = document.getElementById('tchat-fenetre').getBoundingClientRect(), c = document.querySelector('.tchat-pseudo-carte').getBoundingClientRect(),
+      i = document.getElementById('tchat-pseudo-champ').getBoundingClientRect(), o = document.querySelector('.tchat-pseudo-oiseau').getBoundingClientRect();
+      return { dedans: c.left >= f.left - 1 && c.right <= f.right + 1 && o.top >= f.top - 1 && i.bottom <= f.bottom + 1, oiseau: o.width > 60 && o.height > 40,
+        calques: document.querySelectorAll('.tchat-pseudo-oiseau .m-pseudo img').length, focus: document.activeElement && document.activeElement.id, titre: document.getElementById('tchat-pseudo-titre').textContent }; });
+    doit(envoisT.length === 0 && /Les lunettes \?/.test(filQ) && !/merci d'indiquer/.test(filQ) && await p.isVisible('#tchat-pseudo') && popQ.dedans && popQ.oiseau && popQ.calques === 4
+      && popQ.focus === 'tchat-pseudo-champ' && /Comment puis-je vous appeler/.test(popQ.titre),
+      nom + ' : tchat : la petite fenêtre du pseudo, avec l\'oiseau, doit venir avant tout envoi (' + filQ + ' | ' + JSON.stringify(popQ) + ')');
+    await p.press('#tchat-pseudo-champ', 'Enter'); await p.waitForTimeout(300);
+    doit(envoisT.length === 0 && await p.isVisible('#tchat-pseudo') && await p.evaluate(() => document.getElementById('tchat-pseudo').classList.contains('erreur')),
+      nom + ' : tchat : un pseudo vide ne doit rien envoyer');
+    await p.fill('#tchat-pseudo-champ', '  Rose  '); await p.press('#tchat-pseudo-champ', 'Enter'); await p.waitForTimeout(5200);
     const filD = (await p.textContent('#tchat-fil')) || '';
     doit(/vous répond ici/.test(ligne) && envoisT.length === 1 && envoiT.texte === 'Les lunettes ?' && envoiT.pseudo === 'Rose' && envoiT.conversation === null && envoiT.site_web === '' && 'contexte' in envoiT
       && /200 € tous les deux ans/.test(filD) && !waOuvert, nom + ' : tchat direct (' + ligne + ' | ' + JSON.stringify(envoiT) + ' | ' + filD.slice(-80) + ')');
-    doit((await p.getAttribute('#tchat-texte', 'placeholder')) === 'Votre message', nom + ' : tchat : après le pseudo, la zone redevient « Votre message »');
+    doit(!(await p.isVisible('#tchat-pseudo')) && !/Rose/.test(filD) && (await p.getAttribute('#tchat-texte', 'placeholder')) === 'Votre message',
+      nom + ' : tchat : après le pseudo, la petite fenêtre se ferme et le pseudo n\'est pas un message du fil');
     await p.fill('#tchat-texte', 'Et le dentaire ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
     doit(envoisT.length === 2 && envoiT.texte === 'Et le dentaire ?' && envoiT.conversation === 'c-123' && envoiT.pseudo === 'Rose', nom + ' : tchat : 2e message sans nouvelle question, même conversation, même pseudo (' + JSON.stringify(envoiT) + ')');
     await p.reload(); await p.waitForTimeout(300); await p.click('#tchat-bouton');
     const filR = (await p.textContent('#tchat-fil')) || '';
-    doit(/200 € tous les deux ans/.test(filR) && (filR.match(/merci d'indiquer/g) || []).length === 1, nom + ' : la conversation du tchat ne reste pas après rechargement');
+    doit(/200 € tous les deux ans/.test(filR) && !(await p.isVisible('#tchat-pseudo')), nom + ' : la conversation du tchat ne reste pas après rechargement');
     console.log(nom, '| tchat direct : envois', envoisT.map(e => e.texte + ' / ' + e.pseudo).join(' ; '), '| lectures', lectures);
     await ctx.close();
     // 7. Visiteur connu par sa fiche (demande de comparatif envoyée une autre fois) : le pseudo est demandé quand même
@@ -237,15 +247,15 @@ async function remplir(p) {
       await p.goto('https://www.santeo.net/'); await p.waitForTimeout(300); await p.click('#tchat-bouton');
       await p.fill('#tchat-texte', 'Bonjour'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
       const filC = (await p.textContent('#tchat-fil')) || '';
-      doit(envoisC.length === 0 && /merci d'indiquer votre prénom ou votre pseudo/.test(filC) && (await p.getAttribute('#tchat-texte', 'placeholder')) === 'Votre prénom ou pseudo',
-        nom + ' : tchat (' + cas + ') : sans pseudo connu, la question du pseudo doit venir avant l\'envoi (' + filC + ')');
-      await p.fill('#tchat-texte', 'Lina'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
+      doit(envoisC.length === 0 && /Bonjour/.test(filC) && await p.isVisible('#tchat-pseudo'),
+        nom + ' : tchat (' + cas + ') : sans pseudo connu, la petite fenêtre du pseudo doit venir avant l\'envoi (' + filC + ')');
+      await p.fill('#tchat-pseudo-champ', 'Lina'); await p.click('#tchat-pseudo-form button'); await p.waitForTimeout(400);
       const e = envoisC[0] || {};
       doit(envoisC.length === 1 && e.texte === 'Bonjour' && e.pseudo === 'Lina'
         && (cas === 'fiche' ? e.identite && e.identite.fiche === '42' && e.conversation === null : e.conversation === 'c-ancienne'),
         nom + ' : tchat (' + cas + ') : le message doit partir avec le pseudo (' + JSON.stringify(envoisC) + ')');
       await p.fill('#tchat-texte', 'Et ensuite ?'); await p.press('#tchat-texte', 'Enter'); await p.waitForTimeout(400);
-      doit(envoisC.length === 2 && envoisC[1].pseudo === 'Lina' && (((await p.textContent('#tchat-fil')) || '').match(/merci d'indiquer/g) || []).length === 1,
+      doit(envoisC.length === 2 && envoisC[1].pseudo === 'Lina' && !(await p.isVisible('#tchat-pseudo')),
         nom + ' : tchat (' + cas + ') : le pseudo n\'est demandé qu\'une fois');
       await ctx.close();
     }

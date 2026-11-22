@@ -501,6 +501,30 @@ body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg
 :root[data-theme="dark"] .tchat-msg.moi{background:#005c4b;color:#e9edef}
 @media (prefers-reduced-motion: no-preference){.tchat-fenetre:not([hidden]){animation:tchat-ouvre .18s ease-out}}
 @keyframes tchat-ouvre{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* Prénom ou pseudo : petite fenêtre avec l'oiseau, avant que le premier message parte (Fabrice, 22/11/2026 : « le pseudo
+   doit être plus evident un petit popup rigolo type l'oiseau ») */
+.tchat-fenetre.avec-pseudo{min-height:min(430px,calc(100vh - 110px))}
+.tchat-pseudo{position:absolute;inset:0;z-index:3;display:flex;align-items:flex-start;justify-content:center;padding:4rem 1rem 1rem;background:rgba(5,20,30,.5);overflow-y:auto}
+.tchat-pseudo[hidden]{display:none}
+.tchat-pseudo-carte{position:relative;width:100%;max-width:300px;background:var(--surface);color:var(--fg);border:2px solid var(--brand-1);border-radius:18px;box-shadow:0 14px 36px rgba(5,30,50,.35);padding:3.2rem 1rem 1rem;display:flex;flex-direction:column;gap:.6rem;text-align:center}
+.tchat-pseudo-oiseau{position:absolute;left:50%;top:-50px;width:100px;margin-left:-50px;display:block;pointer-events:none}
+.tchat-pseudo-oiseau>img{display:block;width:100%;height:auto}
+.tchat-pseudo-oiseau .m-pseudo{position:relative;display:block;width:100%}
+.tchat-pseudo-oiseau .m-pseudo img{position:absolute;left:0;top:0;width:100%;height:100%}
+.tchat-pseudo-oiseau .m-pseudo .m-corps{position:relative;height:auto}
+.tchat-pseudo-titre{margin:0;font-family:var(--f-display);font-weight:800;font-size:1.08rem;line-height:1.3;color:var(--brand-1)}
+.tchat-pseudo-aide{margin:0;font-size:.86rem;line-height:1.4;color:var(--muted)}
+.tchat-pseudo input{width:100%;border:2px solid var(--brand-1);border-radius:10px;padding:.55rem .65rem;font:inherit;font-size:16px;text-align:center;background:var(--surface);color:var(--fg)}
+.tchat-pseudo input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tchat-pseudo.erreur input{border-color:#c0392b}
+@media (prefers-reduced-motion: no-preference){
+  .tchat-pseudo:not([hidden]) .tchat-pseudo-carte{animation:tchat-pseudo-arrive .35s cubic-bezier(.2,1.4,.4,1)}
+  .tchat-pseudo-oiseau{animation:tchat-pseudo-saut 1.8s ease-in-out infinite}
+  .tchat-pseudo.erreur .tchat-pseudo-carte{animation:tchat-pseudo-non .35s}
+}
+@keyframes tchat-pseudo-arrive{from{opacity:0;transform:translateY(14px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes tchat-pseudo-saut{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-9px) rotate(-5deg)}60%{transform:translateY(0) rotate(3deg)}}
+@keyframes tchat-pseudo-non{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media print{.tchat{display:none}}
 /* fin-css-tchat */
 html.controle .o-real{display:block!important;color:#7a5200;background:#fdf1d8;border-radius:6px;padding:.1rem .4rem;font-weight:700}
@@ -772,6 +796,16 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
     <div class="tchat-tete"><span class="tchat-avatar" aria-hidden="true"><img alt=""></span><span class="tchat-qui"><strong id="tchat-nom">Antony</strong></span><button type="button" class="tchat-x" id="tchat-x" aria-label="Fermer la discussion">×</button></div>
     <div class="tchat-fil" id="tchat-fil" aria-live="polite"></div>
     <form class="tchat-saisie" id="tchat-saisie"><label class="cache-visuel" for="tchat-texte">Votre message à Antony</label><textarea id="tchat-texte" rows="2" maxlength="600" enterkeyhint="send" placeholder="Votre message"></textarea><button type="submit" class="tchat-envoyer">Envoyer</button></form>
+    <div class="tchat-pseudo" id="tchat-pseudo" hidden>
+      <form class="tchat-pseudo-carte" id="tchat-pseudo-form" role="dialog" aria-modal="true" aria-labelledby="tchat-pseudo-titre" novalidate>
+        <span class="tchat-pseudo-oiseau" aria-hidden="true"><img alt=""></span>
+        <p class="tchat-pseudo-titre" id="tchat-pseudo-titre">Enchanté ! Comment puis-je vous appeler ?</p>
+        <p class="tchat-pseudo-aide">Votre prénom ou un pseudo, pour qu'Antony sache à qui il répond.</p>
+        <label class="cache-visuel" for="tchat-pseudo-champ">Votre prénom ou pseudo</label>
+        <input id="tchat-pseudo-champ" type="text" maxlength="30" autocomplete="given-name" enterkeyhint="send" placeholder="Prénom ou pseudo">
+        <button type="submit" class="tchat-envoyer">Envoyer mon message</button>
+      </form>
+    </div>
   </section>
   <div class="tchat-pied">
     <button type="button" class="tchat-invite" id="tchat-invite">Posez-moi vos questions</button>
@@ -1474,6 +1508,10 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   document.querySelectorAll(".tchat-avatar img").forEach(i=>{if(oiseau){const c=oiseau.cloneNode(true);c.className="m-avatar";i.replaceWith(c)}
     else if(window.AVATAR_OISEAU)i.src=window.AVATAR_OISEAU;   // pages du guide : l'oiseau en une seule image
     else i.replaceWith("A")});
+  // L'oiseau de la petite fenêtre du pseudo : celui de l'en-tête, qui bat des ailes ; sur les pages du guide, l'image seule
+  const pop=$("tchat-pseudo"), popChamp=$("tchat-pseudo-champ");
+  {const i=document.querySelector(".tchat-pseudo-oiseau img");if(i){if(oiseau){const c=oiseau.cloneNode(true);c.className="m-pseudo";i.replaceWith(c)}
+    else if(window.AVATAR_OISEAU)i.src=window.AVATAR_OISEAU;else i.remove()}}
   // Identification du prospect : après une demande de devis, le numéro de fiche rendu par le CRM accompagne ses messages
   let identite=null; try{identite=JSON.parse(localStorage.getItem("santeo-fiche")||"null")}catch(err){}
   window.tchatDemandeEnvoyee=(d,fiche)=>{identite={fiche:fiche?String(fiche):null,prenom:d.prenom,nom:d.nom,telephone:d.telephone,email:d.email};
@@ -1488,7 +1526,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   function bulle(t,qui){const b=document.createElement("div");b.className="tchat-msg "+qui;b.textContent=t;fil.appendChild(b);fil.scrollTop=fil.scrollHeight;return b}
   const invite=$("tchat-invite");
   const voile=$("tchat-voile"); voile.onclick=()=>fermer();
-  function fermer(){fen.hidden=true;invite.hidden=false;voile.classList.remove("ouvert");zone.classList.remove("ouvert");bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
+  function fermer(){fen.hidden=true;if(window.tchatPseudo)window.tchatPseudo();invite.hidden=false;voile.classList.remove("ouvert");zone.classList.remove("ouvert");bouton.setAttribute("aria-expanded","false");bouton.focus({preventScroll:true});suivreBientot()}
   $("tchat-x").onclick=()=>fermer();
   fen.addEventListener("keydown",e=>{if(e.key==="Escape")fermer()});
   // Sur téléphone, la bulle s'efface quand l'étape 4 est à l'écran : elle couvrirait le bouton « Recevoir mon devis »
@@ -1505,6 +1543,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   function afficher(){
     fil.innerHTML="";
     etat.messages.forEach(m=>{
+      if(m.de==="pseudo"||m.id==="local-question")return;   // anciennes versions : le pseudo et la question étaient dans le fil
       const b=bulle(m.texte,m.de==="antony"||m.de==="site"?"lui":"moi");
       if(m.de==="visiteur"&&(m.statut==="envoi"||m.statut==="attente"))b.classList.add("en-cours");
       if(m.de==="visiteur"&&m.statut==="echec"){
@@ -1513,7 +1552,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       }
     });
   }
-  function ouvrir(){fen.hidden=false;invite.hidden=true;voile.classList.add("ouvert");zone.classList.add("ouvert");bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();texte.focus({preventScroll:true});suivreBientot()}
+  function ouvrir(){fen.hidden=false;invite.hidden=true;voile.classList.add("ouvert");zone.classList.add("ouvert");bouton.setAttribute("aria-expanded","true");nonLus=0;majPastille();afficher();modeSaisie();if(!etat.attendPseudo)texte.focus({preventScroll:true});suivreBientot()}
   bouton.onclick=()=>fen.hidden?ouvrir():fermer();
   invite.onclick=ouvrir;
   const appel=(url,o)=>fetch(url,o).then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error(j.erreur||rep.status);e.status=rep.status;throw e}return j}));
@@ -1521,15 +1560,15 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   const oublier=()=>{etat={conversation:null,messages:[],dernier:null,activite:0,pseudo:etat.pseudo,attendPseudo:false};garderT();modeSaisie();if(!fen.hidden)afficher()};
   // Prénom ou pseudo : demandé tant qu'il n'est pas connu, même dans une conversation déjà commencée ou après une demande
   // de comparatif (Fabrice, 22/11/2026 : « il fallait ajouter qu'il ajoute son pseudo ») ; le prénom de la demande envoyée
-  // dans cette visite en tient lieu
-  const QUESTION_PSEUDO="Pour envoyer, merci d'indiquer votre prénom ou votre pseudo.";
-  const etiquette=document.querySelector('label[for="tchat-texte"]'), PH_MESSAGE=texte.placeholder, ET_MESSAGE=etiquette?etiquette.textContent:"";
+  // dans cette visite en tient lieu. Demandé dans une petite fenêtre avec l'oiseau, le message attend (« Bonjour je veux des
+  // renseignement / avant de faire partir popup du pseudo »).
   const pseudoConnu=()=>etat.pseudo||(identite&&identite.prenom)||null;
   function modeSaisie(){
-    const p=etat.attendPseudo;
-    texte.placeholder=p?"Votre prénom ou pseudo":PH_MESSAGE; texte.maxLength=p?30:600; texte.rows=p?1:2;
-    if(etiquette)etiquette.textContent=p?"Votre prénom ou pseudo":ET_MESSAGE;
+    const p=etat.attendPseudo&&!fen.hidden;
+    pop.hidden=!p; fen.classList.toggle("avec-pseudo",p); pop.classList.remove("erreur");
+    if(p)setTimeout(()=>popChamp.focus({preventScroll:true}),30);
   }
+  window.tchatPseudo=modeSaisie;
   modeSaisie();
   let numLocal=0;
   // `garde` : un message resté en attente du pseudo, envoyé à sa place dans le fil
@@ -1548,21 +1587,21 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
   }
   $("tchat-saisie").addEventListener("submit",e=>{
     e.preventDefault();const t=texte.value.trim();if(!t){texte.focus();return}texte.value="";
-    if(etat.attendPseudo){
-      // La réponse à la question devient le pseudo ; les messages gardés partent alors avec lui
-      etat.pseudo=t.replace(/\s+/g," ").slice(0,30); etat.attendPseudo=false; modeSaisie();
-      const gardes=etat.messages.filter(m=>m.statut==="attente");
-      etat.messages.push({id:"local-pseudo",de:"pseudo",texte:etat.pseudo,date:new Date().toISOString()});
-      if(gardes.length)gardes.forEach(m=>envoyer(m.texte,m));else{garderT();afficher()}
-      return;
-    }
     if(!pseudoConnu()){
       etat.messages.push({id:"local-"+Date.now()+"-"+(++numLocal),de:"visiteur",texte:t,date:new Date().toISOString(),statut:"attente"});
-      etat.messages.push({id:"local-question",de:"site",texte:QUESTION_PSEUDO,date:new Date().toISOString()});
-      etat.attendPseudo=true; etat.activite=Date.now(); garderT(); modeSaisie(); afficher(); texte.focus({preventScroll:true});
+      etat.attendPseudo=true; etat.activite=Date.now(); garderT(); afficher(); modeSaisie();
       return;
     }
     envoyer(t);
+  });
+  // La réponse de la petite fenêtre devient le pseudo ; les messages gardés partent alors avec lui
+  $("tchat-pseudo-form").addEventListener("submit",e=>{
+    e.preventDefault(); const t=popChamp.value.replace(/\s+/g," ").trim().slice(0,30);
+    if(!t){pop.classList.remove("erreur");void pop.offsetWidth;pop.classList.add("erreur");popChamp.focus({preventScroll:true});return}
+    popChamp.value=""; etat.pseudo=t; etat.attendPseudo=false; modeSaisie();
+    const gardes=etat.messages.filter(m=>m.statut==="attente");
+    if(gardes.length)gardes.forEach(m=>envoyer(m.texte,m));else{garderT();afficher()}
+    texte.focus({preventScroll:true});
   });
   // Entrée envoie le message ; Maj + Entrée passe à la ligne (Fabrice, 10/11/2026 : « on dois pouvoir faire entrée pour envoyer un message depuis le clavier »)
   texte.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();$("tchat-saisie").requestSubmit()}});
