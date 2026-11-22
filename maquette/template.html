@@ -937,7 +937,7 @@ const PICTO={
 function picto(k){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+PICTO[k]+'</svg>'}
 
 /* ---------- État ---------- */
-const S={cnj:null,kids:0,need:{hosp:0,hono:0,dent:0,opt:0,autres:0},open:null,flt:{},autre:{},shown:5,chosen:null};
+const S={cnj:null,kids:0,need:{hosp:0,hono:0,dent:0,opt:0,autres:0},open:null,flt:{},autre:{},shown:6,chosen:null};
 
 /* ---------- Personnes (tout dans la ligne) ---------- */
 /* Dates de naissance : barres ajoutées pendant la frappe, puis lecture de l'année */
@@ -988,15 +988,15 @@ function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=!ch
 ["focus","change","pointerdown"].forEach(ev=>$("reg").addEventListener(ev,()=>{$("reg").dataset.vu="1";marquerChamps()}));
 ["age","cp","cnj"].forEach(id=>["input","change"].forEach(ev=>$(id).addEventListener(ev,marquerChamps)));
 marquerChamps();
-$("cnj").addEventListener("input",()=>{const v=$("cnj").value.trim();S.cnj=v===""?null:v;S.shown=5;S.chosen=null;upd()});
-$("kids").addEventListener("change",()=>{S.kids=+$("kids").value;S.shown=5;S.chosen=null;upd()});
+$("cnj").addEventListener("input",()=>{const v=$("cnj").value.trim();S.cnj=v===""?null:v;S.shown=6;S.chosen=null;upd()});
+$("kids").addEventListener("change",()=>{S.kids=+$("kids").value;S.shown=6;S.chosen=null;upd()});
 /* Conjoint (+) / Enfant (+) : le champ apparaît à la demande, × le retire */
 function montrer(champ,bouton,oui){$(champ).hidden=!oui;$(bouton).hidden=oui;ajoutsVisibles()}
 $("aj-cnj").onclick=()=>{montrer("f-cnj","aj-cnj",true);$("cnj").focus()};
-$("rt-cnj").onclick=e=>{e.preventDefault();$("cnj").value="";fondMasque("cnj");marquerChamps();S.cnj=null;montrer("f-cnj","aj-cnj",false);S.shown=5;S.chosen=null;upd();$("aj-cnj").focus()};
+$("rt-cnj").onclick=e=>{e.preventDefault();$("cnj").value="";fondMasque("cnj");marquerChamps();S.cnj=null;montrer("f-cnj","aj-cnj",false);S.shown=6;S.chosen=null;upd();$("aj-cnj").focus()};
 function ajoutsVisibles(){const z=$("ajouts");z.hidden=$("aj-cnj").hidden&&$("aj-enf").hidden}
-$("aj-enf").onclick=()=>{montrer("f-kids","aj-enf",true);$("kids").value="1";S.kids=1;S.shown=5;S.chosen=null;upd();$("kids").focus()};
-$("rt-enf").onclick=e=>{e.preventDefault();$("kids").value="0";S.kids=0;montrer("f-kids","aj-enf",false);S.shown=5;S.chosen=null;upd();$("aj-enf").focus()};
+$("aj-enf").onclick=()=>{montrer("f-kids","aj-enf",true);$("kids").value="1";S.kids=1;S.shown=6;S.chosen=null;upd();$("kids").focus()};
+$("rt-enf").onclick=e=>{e.preventDefault();$("kids").value="0";S.kids=0;montrer("f-kids","aj-enf",false);S.shown=6;S.chosen=null;upd();$("aj-enf").focus()};
 
 /* ---------- Besoins : un curseur par poste ----------
    Le curseur règle S.need[k] (0 = pas de besoin, 1 à 5 = niveau minimum) : même filtrage qu'avec les étoiles (compute).
@@ -1005,7 +1005,7 @@ $("rt-enf").onclick=e=>{e.preventDefault();$("kids").value="0";S.kids=0;montrer(
 function setNeed(k,v){
   allumageStop(); v=Math.max(0,Math.min(5,Math.round(+v)||0));
   if(S.need[k]===v){majCarte(k);return}
-  S.need[k]=v; S.shown=5;
+  S.need[k]=v; S.shown=6;
   if(S.open&&S.open!==k){S.open=null;renderNeeds()} else majCarte(k);
   upd();
 }
@@ -1086,7 +1086,7 @@ function renderNeeds(){
     '<label for="f-autre" class="autre">Autre <input type="text" id="f-autre" placeholder="Précisez (facultatif)" value="'+(S.autre[p.k]||"").replace(/"/g,"&quot;")+'"></label></div>'+
     '<div class="np-temps" aria-hidden="true" title="Fermeture automatique"><i></i></div></div>';
   const fa=$("f-autre"); fa.oninput=()=>{S.autre[p.k]=fa.value}; fa.onchange=()=>renderNeedsKeepPanel();
-  pn.querySelectorAll("[data-f]").forEach(c=>c.onchange=()=>{S.flt[c.dataset.f]=c.checked;S.shown=5;renderNeeds();upd()});
+  pn.querySelectorAll("[data-f]").forEach(c=>c.onchange=()=>{S.flt[c.dataset.f]=c.checked;S.shown=6;renderNeeds();upd()});
   $("np-close").onclick=()=>{const k=S.open;S.open=null;renderNeeds();const b=document.querySelector('[data-open="'+k+'"]');if(b)b.focus()};
   npPlacer();
   if(focusAvant){const f=document.getElementById(focusAvant);if(f&&pn.contains(f))f.focus({preventScroll:true})}
@@ -1425,7 +1425,7 @@ function renderAdmin(){
     d.innerHTML=h; box.appendChild(d);
   });
   box.querySelectorAll("[data-logo]").forEach(i=>i.onchange=()=>{CFG.logos[i.dataset.logo]=i.checked;garder();appliquerLogos()});
-  box.querySelectorAll("[data-gamme]").forEach(i=>i.onchange=()=>{CFG.gammes[i.dataset.gamme]=i.checked;garder();S.shown=5;S.chosen=null;upd()});
+  box.querySelectorAll("[data-gamme]").forEach(i=>i.onchange=()=>{CFG.gammes[i.dataset.gamme]=i.checked;garder();S.shown=6;S.chosen=null;upd()});
 }
 $("adm-all").onclick=()=>{Object.keys(CFG.gammes).forEach(k=>CFG.gammes[k]=true);Object.keys(CFG.logos).forEach(k=>CFG.logos[k]=true);garder();renderAdmin();appliquerLogos();upd()};
 $("adm-reset").onclick=()=>{CFG=CFG_DEPART();garder();renderAdmin();appliquerLogos();upd()};
@@ -1586,7 +1586,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
 /* fin-js-tchat */
 
 /* ---------- Démarrage ---------- */
-["age","cp","reg"].forEach(id=>{const el=$(id);const maj=()=>{if(el.dataset.vu===el.value)return;el.dataset.vu=el.value;S.shown=5;S.chosen=null;upd()};el.addEventListener("input",maj);el.addEventListener("change",maj)});
+["age","cp","reg"].forEach(id=>{const el=$(id);const maj=()=>{if(el.dataset.vu===el.value)return;el.dataset.vu=el.value;S.shown=6;S.chosen=null;upd()};el.addEventListener("input",maj);el.addEventListener("change",maj)});
 renderNeeds(); renderAdmin(); appliquerLogos(); upd(); majWhatsApp(); route();
 /* Réglages de l'espace admin (CRM) : lus à chaque visite ; délai court ; à défaut, ceux déjà appliqués restent. */
 const REGLAGES_URL="__REGLAGES__";

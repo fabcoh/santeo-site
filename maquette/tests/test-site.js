@@ -389,7 +389,7 @@ async function remplir(p) {
         curseurs: [...document.querySelectorAll('#needs input[type=range]')].map(e => Math.round(e.getBoundingClientRect().height)) };
     });
     const m1 = await mesure();
-    doit(m1.n === 5 && m1.premiereLigne === parLigne && m1.lignes === Math.ceil(5 / parLigne) && !m1.hs && !m1.deborde.length && m1.boutons
+    doit(m1.n === 6 && m1.premiereLigne === parLigne && m1.lignes === Math.ceil(6 / parLigne) && !m1.hs && !m1.deborde.length && m1.boutons
       && m1.largeur <= Math.ceil(100 / parLigne) && m1.largeur >= Math.floor(100 / parLigne) - 4,
       nom + ' : cartes d\'offres : ' + parLigne + ' par ligne attendues ' + JSON.stringify({ n: m1.n, lignes: m1.lignes, premiereLigne: m1.premiereLigne, largeur: m1.largeur, deborde: m1.deborde, hs: m1.hs }));
     doit(m1.besoinsLignes === lignesBesoins && m1.curseurs.length === 5 && m1.curseurs.every(h => h >= 44), nom + ' : cartes des besoins : ' + m1.besoinsLignes + ' lignes (attendu ' + lignesBesoins + '), curseurs ' + m1.curseurs.join(','));

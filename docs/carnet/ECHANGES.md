@@ -549,6 +549,16 @@ mieux référencer le site »
   Fabrice) : dans chaque article, 2 à 4 liens vers d'autres articles du guide, posés sur la première expression
   pertinente du texte (contrat responsable, 100 % Santé, OPTAM, secteur 2, ticket modérateur, base de remboursement…),
   jamais dans un titre, la FAQ ou les sources. Test : chaque lien mène à un article qui existe, au moins 2 par article.
+- **Comparateur à curseurs et en cartes (Fabrice, 22/11, capture du comparateur du CRM Santéo : « C'EST PLUS SYMPA LES CURSEURS ET
+  L'AFFICHAGE EN 3 BLOQUES PAR LIGNE », puis « valide »)** (demande de fusion « comparateur-curseurs » ; code écrit par un agent,
+  relu par Claude) : un curseur par poste (0 à 5, mêmes niveaux et même filtrage que les étoiles, grilles de Fabrice du
+  08/11 : « Au moins 100 % », « Au moins 130 % »… « 400 % et plus » ; optique en euros ; Autres en euros par an) ; offres en
+  cartes, 3 par ligne sur ordinateur, 2 de 600 à 899 px, 1 sur téléphone ; 6 offres d'abord (deux lignes pleines sur
+  ordinateur) ; badge « Petit prix » sur la première seulement quand la liste va de la moins chère à la plus chère ; toujours
+  « Option N », sans nom d'assureur ; pas de « Recommandée pour vous » ni de « 1 mois offert » ; bouton « Recevoir mon devis ».
+  Tests : libellés et filtrage à chaque niveau, clavier, toucher, cartes par ligne, aucun nom d'assureur ni mot de promesse
+  dans les cartes. Repéré, laissé tel quel : deux accolades en trop avant « /* Formulaire */ » dans template.html font ignorer
+  la règle .chosen-box (encadré « Votre choix ») ; à corriger dans un lot à part si Fabrice le souhaite.
 - **Mentions légales (Fabrice, 22/11 : « fais strictement ce qui est obligatoire et précise que nous les contactons par whatsapp
   pour respecter leur tranquillité et tu expliques les avantages »)** (demande de fusion n° 63, fusionnée par Claude) : hébergeur
   inchangé (GitHub, Inc. ; adresse et téléphone confirmés par la documentation de GitHub, le téléphone étant sa ligne
