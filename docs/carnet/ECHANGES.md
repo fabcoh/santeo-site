@@ -579,6 +579,23 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Article du jour, 23/11 : au-delà des remboursements, téléconsultation, assistance, réseaux de soins** (demande de fusion
+  « article-teleconsultation », chapitre « Choisir sa mutuelle » ; dernier sujet de la semaine « la mutuelle et ce qu'elle
+  apporte » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public : F34696 (27/06/2026 :
+  conditions, parcours de soins et exceptions, vidéo ou téléphone, alternance avec le cabinet, médecin du même territoire,
+  tarifs 25, 23, 30, 42,50, 50,20, 23 et 32 €, tiers payant ALD, grossesse, C2S, arrêt de travail de 3 jours au plus),
+  F303 (01/09/2026 : 3 jours « en principe » pour être indemnisé, médecin traitant ou son remplaçant, sage-femme référente,
+  prolongation à distance si vu en personne dans les 12 derniers mois), A18975 (loi n° 2026-534 du 25/06/2026, 3 jours
+  renouvellement compris depuis le 27/06/2026), F165 (2 € de participation, exonérations, non remboursée par un contrat
+  responsable), F20314 (contrat responsable « le plus couramment commercialisé », ticket modérateur des honoraires pris en
+  charge, liste des services d'assistance), F33950, F33956, F34781 (100 % Santé). Par recherche seulement : ameli.fr (70 %,
+  15,50 € versés pour 25 €, sociétés de téléconsultation agréées), DGCCRF, HAS, Légifrance (article L863-8 : libre choix,
+  critères objectifs, pas d'exclusivité, numerus clausus des seuls opticiens, pas de modulation pour les médecins,
+  information des adhérents), DREES 2024, IGAS 2017. Corrigé à la relecture : « mieux remboursée dans le parcours » remplacé
+  par la phrase de Service-Public (le parcours permet le remboursement) ; « la loi a permis aux mutuelles de rembourser
+  différemment » retiré (version actuelle de l'article L112-1 du code de la mutualité non vérifiée), remplacé par ce que dit
+  l'article L863-8 ; espaces insécables avant € et % (un montant coupé sur téléphone). Dossier Dropbox des supports :
+  toujours les 4 fichiers vides du 18/11.
 - **Tchat : le pseudo dans une petite fenêtre avec l'oiseau (Fabrice, 22/11, capture de son essai : « pourquoi il garde la
   mémoire de conversatiion et le pseudo doit être plus evident un petit popup rigolo type l'oiseau / Bonjour je veux des
   renseignement / avant de faire partir popup du pseudo / comment fond les sites pour différencier les interlaucuteur dans

@@ -65,7 +65,7 @@ complémentaire peut apporter, sans promesse. Après le 23/11, reprendre la list
 - [x] Le délai de carence (délai d'attente) d'une mutuelle : ce qu'il faut savoir (20/11/2026)
 - [x] Le tiers payant et la carte de mutuelle : ne pas avancer les frais (21/11/2026)
 - [x] Lire son tableau de garanties : pourcentages, forfaits en euros, plafonds (22/11/2026)
-- [ ] Au-delà des remboursements : téléconsultation, assistance, réseaux de soins
+- [x] Au-delà des remboursements : téléconsultation, assistance, réseaux de soins (23/11/2026)
 
 ### Liste générale
 - [x] Mon soutien psy : séances chez le psychologue (12/11/2026)

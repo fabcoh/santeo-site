@@ -1,0 +1,33 @@
+{
+ "slug": "teleconsultation-assistance-reseaux-de-soins",
+ "chapitre": "choisir",
+ "lien": "Téléconsultation, assistance, réseaux",
+ "ordre": 41,
+ "publie": "2026-11-23",
+ "maj": "2026-11-23",
+ "titre_page": "Mutuelle : téléconsultation, assistance, réseaux de soins",
+ "description": "Téléconsultation remboursée, arrêt de travail à distance, services d'assistance, réseaux de soins et loi Le Roux : ce qu'une mutuelle peut apporter.",
+ "h1": "Au-delà des remboursements : téléconsultation, assistance, réseaux de soins",
+ "faq": [
+  {
+   "q": "Une téléconsultation est-elle remboursée par la Sécurité sociale ?",
+   "r": "Oui, comme une consultation au cabinet, dans le parcours de soins ou dans un cas d'exception. Pour un généraliste à 25 €, l'Assurance maladie verse 15,50 €."
+  },
+  {
+   "q": "Ma mutuelle rembourse-t-elle la téléconsultation ?",
+   "r": "Un contrat responsable prend en charge le ticket modérateur, soit 7,50 € pour une téléconsultation de généraliste à 25 €. La participation forfaitaire de 2 € reste à votre charge."
+  },
+  {
+   "q": "Un arrêt de travail peut-il être prescrit en téléconsultation ?",
+   "r": "Oui, mais en principe 3 jours au plus, renouvellement compris, pour être indemnisé. Cette limite ne s'applique pas à votre médecin traitant, à son remplaçant ni à votre sage-femme référente."
+  },
+  {
+   "q": "Qu'est-ce que l'assistance dans une mutuelle ?",
+   "r": "Des services pratiques prévus par certains contrats, comme l'assistance téléphonique, l'aide-ménagère, la garde d'enfants ou le rapatriement, aux conditions fixées par le contrat."
+  },
+  {
+   "q": "Suis-je obligé d'aller chez un professionnel du réseau de ma mutuelle ?",
+   "r": "Non, la loi protège votre libre choix du professionnel. Hors réseau, le remboursement peut être différent si votre contrat le prévoit, sauf pour les actes des médecins."
+  }
+ ]
+}
