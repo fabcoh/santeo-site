@@ -376,6 +376,35 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .det-pop{border:0;border-radius:16px;padding:0;width:min(36rem,calc(100vw - 2rem));max-height:min(88vh,48rem);background:var(--surface);color:var(--fg);box-shadow:0 24px 60px rgba(8,30,45,.35);overflow:hidden}
 .det-pop[open]{display:flex;flex-direction:column;animation:pop-in .16s ease-out}
 .det-pop::backdrop{background:rgba(8,30,45,.45)}
+/* Comparer cette offre : bouton sous le prix, volet à droite, tableau des offres choisies (Fabrice, 25/11/2026) */
+.o-cmp{align-self:flex-start;margin-top:.3rem;border:1.5px solid var(--accent);background:var(--surface);color:var(--accent);border-radius:99px;font:inherit;font-size:.8rem;font-weight:700;padding:.22rem .7rem;cursor:pointer;min-height:32px}
+.o-cmp[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.o-cmp:disabled{border-color:var(--line);color:var(--muted);cursor:not-allowed;font-weight:600}
+.o-cmp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cmp-volet{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:55;width:250px;background:var(--surface);color:var(--fg);border:2px solid var(--brand-1);border-radius:14px;box-shadow:0 14px 40px rgba(5,30,50,.28);padding:.8rem .85rem;display:flex;flex-direction:column;gap:.55rem}
+.cmp-volet[hidden]{display:none}
+.cmp-tete{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
+.cmp-tete strong{font-family:var(--f-display);font-size:1.05rem;color:var(--brand-1)}
+.cmp-n{font-size:.8rem;color:var(--muted)}
+.cmp-liste{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.35rem}
+.cmp-liste li{display:flex;align-items:center;justify-content:space-between;gap:.4rem;border:1px solid var(--line);border-radius:10px;padding:.3rem .3rem .3rem .6rem;font-size:.88rem}
+.cmp-liste li b{color:var(--brand-1)}
+.cmp-retirer{flex:none;width:32px;height:32px;border:0;border-radius:8px;background:var(--accent-soft);color:var(--brand-1);font-size:1.2rem;line-height:1;cursor:pointer}
+.cmp-volet .btn{min-height:44px;width:100%}
+.cmp-volet .btn:disabled{opacity:.55;cursor:not-allowed}
+@media (max-width:599px){.cmp-volet{top:auto;bottom:8px;left:8px;right:8px;width:auto;transform:none;padding:.6rem .7rem;gap:.4rem}.cmp-liste{flex-direction:row;flex-wrap:wrap}.cmp-liste li{flex:1 1 30%;min-width:0;padding:.2rem .2rem .2rem .45rem;font-size:.8rem}}
+.det-pop.cmp-pop{width:min(64rem,calc(100vw - 2rem))}
+.gar-cmp{width:100%;border-collapse:collapse;font-size:.9rem}
+.gar-cmp th,.gar-cmp td{padding:.4rem .5rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.gar-cmp thead th{position:sticky;top:0;background:var(--surface);z-index:1;vertical-align:bottom}
+.gar-cmp .cmp-col{min-width:8.5rem}
+.gar-cmp .cmp-col b{display:block;font-family:var(--f-display);color:var(--brand-1);font-size:1rem}
+.gar-cmp .cmp-col span{display:block;font-weight:700;margin:.1rem 0 .4rem}
+.gar-cmp .cmp-col .btn{font-size:.8rem;padding:.4rem .6rem;min-height:36px;white-space:normal}
+.gar-cmp .g-poste th,.gar-cmp .g-poste td{font-weight:700;background:var(--accent-soft)}
+.gar-cmp th:first-child,.gar-cmp td:first-child{position:sticky;left:0;background:var(--surface);min-width:8rem}
+.gar-cmp .g-poste th:first-child{background:var(--accent-soft)}
+@media (max-width:599px){.gar-cmp{font-size:.8rem}.gar-cmp .cmp-col{min-width:6.5rem}.gar-cmp th:first-child,.gar-cmp td:first-child{min-width:6.5rem}}
 .dp-tete{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;padding:1rem 1.1rem .7rem;border-bottom:1px solid var(--line);background:var(--accent-soft)}
 .dp-tete h3{margin:0;font-family:var(--f-display);font-size:1.2rem;color:var(--brand-1);display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .7rem}
 .dp-prix{font-size:1.15rem;color:var(--fg)}
@@ -495,7 +524,7 @@ body{background:linear-gradient(to bottom,transparent 0,transparent 45%,var(--bg
   .tchat.ouvert .tchat-saisie{padding-bottom:max(.7rem,env(safe-area-inset-bottom,0px))}
   .tchat.ouvert .tchat-pied{display:none}
 }
-.tchat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(max(16px,env(safe-area-inset-bottom,0px)) + var(--bandeau-h,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
+.tchat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(max(16px,env(safe-area-inset-bottom,0px)) + var(--bandeau-h,0px) + var(--cmp-h,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;pointer-events:none}
 .tchat>*{pointer-events:auto}
 .tchat[hidden]{display:none}
 .tchat-bouton{position:relative}
@@ -731,6 +760,12 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
     <p class="small" style="margin-top:.5rem">Une offre qui ne couvre pas un poste au-delà de la Sécurité sociale a le niveau 0 pour ce poste : elle n'est affichée que si son curseur est sur « Pas de besoin ». Une offre reste affichée quand, pour chaque poste, son niveau atteint celui du curseur. Médecines douces données par séance sans nombre de séances : hypothèse de 4 séances par an, à vérifier. Seuls les documents contractuels de chaque assureur font foi.</p>
   </details>
   <dialog class="det-pop" id="det-pop" aria-labelledby="det-titre"></dialog>
+  <!-- Comparer jusqu'à 3 offres : volet à droite (Fabrice, 25/11/2026, par la relais : « Comparer cette offre / un volet a doite avec les offres qui s'affiche ») -->
+  <aside class="cmp-volet" id="cmp-volet" aria-labelledby="cmp-titre" hidden>
+    <div class="cmp-tete"><strong id="cmp-titre">Comparer</strong><span class="cmp-n" id="cmp-n"></span></div>
+    <ul class="cmp-liste" id="cmp-liste"></ul>
+    <button type="button" class="btn" id="cmp-go">Comparer les garanties</button>
+  </aside>
   <footer class="pied"><a href="guide/">Guide de la mutuelle</a> · <a href="simulateur-remboursement/">Simulateur de remboursement</a> · <a href="#mentions-legales">Mentions légales</a> · <button type="button" class="lien-cookies" id="cookies-lien" hidden>Cookies</button> · CAPI FINANCE, courtier en assurance, ORIAS 07 001 983</footer>
   </div>
   <main id="vue-mentions" class="mentions" hidden>
@@ -1020,7 +1055,7 @@ const PICTO={
 function picto(k){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+PICTO[k]+'</svg>'}
 
 /* ---------- État ---------- */
-const S={cnj:null,kids:0,need:{hosp:0,hono:0,dent:0,opt:0,autres:0},open:null,flt:{},autre:{},shown:6,chosen:null};
+const S={cnj:null,kids:0,need:{hosp:0,hono:0,dent:0,opt:0,autres:0},open:null,flt:{},autre:{},shown:6,chosen:null,cmp:[]};
 
 /* ---------- Personnes (tout dans la ligne) ---------- */
 /* Dates de naissance : barres ajoutées pendant la frappe, puis lecture de l'année */
@@ -1333,13 +1368,71 @@ function detailHtml(x){
     ["Optique",valeur(POSTES[3],x),[["Verres et monture simples",v(x.opt)],["Verres complexes",v(ex(x,"optC"))],["Lentilles (acceptées / refusées)",lentilles(ex(x,"lentA"),ex(x,"lentR"))]]],
     ["Autres",valeur(POSTES[4],x),[["Médecines douces",v(x.md)],["Aides auditives",v(x.aud||ex(x,"aud"))]]]
   ];
+  return tableDetail(G,x);
+}
+function lignesDetail(x){
+  const v=s=>NC(s)?"Non communiqué":NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
+  const lentilles=(a,f)=>NC(a)&&NC(f)?"Non communiqué":NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
+  const n=s=>s==="—"?"Non couvert":s==="n.c."?"Non communiqué":s;
+  return [
+    ["Hospitalisation",n(valeur(POSTES[0],x)),[["Honoraires du chirurgien (OPTAM)",v(x.hospO)],["Honoraires du chirurgien (hors OPTAM)",v(x.hospN)],["Chambre particulière",v(x.ch)]]],
+    ["Honoraires médicaux",n(valeur(POSTES[1],x)),[["Médecins et spécialistes (OPTAM)",v(x.honoO)],["Médecins et spécialistes (hors OPTAM)",v(x.honoN)],["Pharmacie remboursée",v(ex(x,"pharR"))],["Pharmacie non remboursée",v(ex(x,"pharN"))]]],
+    ["Dentaire",n(valeur(POSTES[2],x)),[["Prothèses dentaires",v(x.dent)],["Implants",v(ex(x,"imp"))],["Orthodontie enfant",v(ex(x,"orthR"))],["Orthodontie adulte",v(ex(x,"orthN"))]]],
+    ["Optique",n(valeur(POSTES[3],x)),[["Verres et monture simples",v(x.opt)],["Verres complexes",v(ex(x,"optC"))],["Lentilles (acceptées / refusées)",lentilles(ex(x,"lentA"),ex(x,"lentR"))]]],
+    ["Autres",n(valeur(POSTES[4],x)),[["Médecines douces",v(x.md)],["Aides auditives",v(x.aud||ex(x,"aud"))]]],
+    ["Contrat responsable",x.resp?"Oui":"Non",[]]];
+}
+function tableDetail(G,x){
   return '<table class="gar"><colgroup><col><col class="c-niv"></colgroup><thead><tr><th scope="col">Garantie</th><th scope="col">Niveau</th></tr></thead>'+
     G.map(g=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th><td>'+(g[1]==="—"?"Non couvert":g[1]==="n.c."?"Non communiqué":g[1])+'</td></tr>'+
       g[2].map(l=>'<tr class="g-sous"><td>'+l[0]+'</td><td>'+l[1]+'</td></tr>').join("")+'</tbody>').join("")+
     '<tbody><tr class="g-poste"><th scope="row">Contrat responsable</th><td>'+(x.resp?"Oui":"Non")+'</td></tr></tbody></table>';
 }
+/* ---------- Comparer cette offre (3 au plus) ---------- */
+const CMP_MAX=3;
+const idOffre=x=>x.key+"|"+x.fi;
+function boutonComparer(i,x){
+  const pris=S.cmp.includes(idOffre(x)), plein=!pris&&S.cmp.length>=CMP_MAX;
+  return '<button type="button" class="o-cmp" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+'>'+
+    (pris?'✓ À comparer · retirer':plein?'3 offres au maximum : retirez-en une':'Comparer cette offre')+'</button>';
+}
+function basculerComparaison(i){
+  const x=LAST[i]; if(!x)return; const id=idOffre(x), j=S.cmp.indexOf(id);
+  if(j>=0)S.cmp.splice(j,1); else if(S.cmp.length<CMP_MAX)S.cmp.push(id);
+  upd(); const b=document.querySelector('[data-cmp="'+i+'"]'); if(b)b.focus({preventScroll:true});
+}
+function offresComparees(){return S.cmp.map(id=>{const i=LAST.findIndex(x=>idOffre(x)===id);return i<0?null:{i,x:LAST[i]}}).filter(Boolean).sort((a,b)=>a.x.total-b.x.total)}
+function majVolet(visible){
+  const v=$("cmp-volet"), o=offresComparees(), montre=visible&&o.length>0;
+  v.hidden=!montre;
+  document.documentElement.style.setProperty("--cmp-h",montre&&matchMedia("(max-width:599px)").matches?(v.offsetHeight+8)+"px":"0px");
+  if(!montre)return;
+  $("cmp-n").textContent=o.length+" sur "+CMP_MAX;
+  $("cmp-liste").innerHTML=o.map(e=>'<li><span><b>Option '+(e.i+1)+'</b> · '+eur(e.x.total)+'</span><button type="button" class="cmp-retirer" data-retirer="'+e.i+'" aria-label="Retirer l\'option '+(e.i+1)+' de la comparaison">×</button></li>').join("");
+  $("cmp-liste").querySelectorAll("[data-retirer]").forEach(b=>b.onclick=()=>basculerComparaison(+b.dataset.retirer));
+  const go=$("cmp-go"); go.disabled=o.length<2; go.textContent=o.length<2?"Choisissez une 2e offre":"Comparer les garanties";
+  document.documentElement.style.setProperty("--cmp-h",matchMedia("(max-width:599px)").matches?(v.offsetHeight+8)+"px":"0px");
+}
+function ouvrirComparaison(){
+  const o=offresComparees(), d=$("det-pop"); if(o.length<2)return;
+  const L=o.map(e=>lignesDetail(e.x));
+  const tete='<thead><tr><th scope="col">Garantie</th>'+o.map(e=>'<th scope="col" class="cmp-col"><b>Option '+(e.i+1)+'</b><span>'+eur(e.x.total)+' /mois</span><button type="button" class="btn" data-cmp-choisir="'+e.i+'">Cette offre m\'intéresse</button></th>').join("")+'</tr></thead>';
+  const corps=L[0].map((g,gi)=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th>'+L.map(l=>'<td>'+l[gi][1]+'</td>').join("")+'</tr>'+
+    g[2].map((s,si)=>'<tr class="g-sous"><td>'+s[0]+'</td>'+L.map(l=>'<td>'+l[gi][2][si][1]+'</td>').join("")+'</tr>').join("")+'</tbody>').join("");
+  d.classList.add("cmp-pop");
+  d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">Détail des garanties : '+o.length+' offres, de la moins chère à la plus chère</h3></div><button type="button" class="np-x dp-x" aria-label="Fermer">×</button></div>'+
+    '<div class="dp-corps"><table class="gar-cmp">'+tete+corps+'</table></div>'+
+    '<div class="dp-pied"><button type="button" class="ghost dp-fermer">Fermer</button></div>';
+  const fermer=()=>{if(d.close)d.close();else d.removeAttribute("open")};
+  d.querySelector(".dp-x").onclick=fermer; d.querySelector(".dp-fermer").onclick=fermer;
+  d.querySelectorAll("[data-cmp-choisir]").forEach(b=>b.onclick=()=>{fermer();choose(+b.dataset.cmpChoisir)});
+  d.onclick=e=>{if(e.target===d)fermer()};
+  if(d.showModal)d.showModal();else d.setAttribute("open","");
+  d.querySelector(".dp-corps").scrollTop=0;
+}
+$("cmp-go").onclick=ouvrirComparaison;
 function ouvrirDetail(i){
-  const x=LAST[i], d=$("det-pop"); if(!x)return;
+  const x=LAST[i], d=$("det-pop"); if(!x)return; d.classList.remove("cmp-pop");
   d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">Option '+(i+1)+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
     '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
     '<button type="button" class="np-x dp-x" aria-label="Fermer">×</button></div>'+
@@ -1381,10 +1474,11 @@ function majVoile(k){
 $("voile-valider").onclick=()=>{window.mesure("besoins_valides",{postes:VOILE_POSTES.filter(k=>S.need[k]>0).length});S.devoile=true;upd();$("t-res").scrollIntoView({behavior:"smooth",block:"start"})};
 $("voile-tout").onclick=()=>{window.mesure("offres_sans_besoins");S.devoile=true;upd()};
 function upd(){
-  const res=compute(); const box=$("offers"); box.innerHTML=""; voileOffres(false);
+  const res=compute(); const box=$("offers"); box.innerHTML=""; voileOffres(false); majVolet(false);
   $("more-offers").hidden=true;
   if(res.err){$("count").textContent=res.err;LAST=[];return}
   const list=res.fit; LAST=list;
+  S.cmp=S.cmp.filter(id=>list.some(x=>idOffre(x)===id));   // une offre qui n'est plus proposée sort de la comparaison
   // Mesure du parcours (Audit Google Ads, 19/11) : premières offres affichées, une fois par visite de page ; compté par Google
   // seulement si le visiteur a accepté les cookies
   if(list.length&&!window.__mesResultats){window.__mesResultats=1;window.mesure("comparateur_resultats",{offres:list.length})}
@@ -1412,7 +1506,7 @@ function upd(){
     const etoile=etoiles.has(i);
     o.setAttribute("aria-label","Option "+(i+1)+(etoile?", parmi les 3 plus proches de vos besoins au tarif le plus bas":""));
     o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Parmi les 3 offres les plus proches de vos besoins, au tarif le plus bas" aria-hidden="true">★</span>':'')+
-      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div></div>'+
+      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+boutonComparer(i,x)+'</div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
@@ -1423,9 +1517,11 @@ function upd(){
   });
   box.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>ouvrirDetail(+b.dataset.d));
   box.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>choose(+b.dataset.c));
+  box.querySelectorAll("[data-cmp]").forEach(b=>b.onclick=()=>basculerComparaison(+b.dataset.cmp));
   if(list.length>S.shown){$("more-offers").hidden=false;$("more-offers").textContent="Plus de résultats";}
   // Floutées jusqu'à « Valider » (curseurs sur le flou) ou « ou voir toutes les offres » (Fabrice, 25/11/2026)
   voileOffres(!S.devoile);
+  majVolet(!!S.devoile);
 }
 $("more-offers").onclick=()=>{S.shown=LAST.length;upd()};
 
