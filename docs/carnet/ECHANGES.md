@@ -579,6 +579,14 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Niveaux en vert et étoiles (Fabrice, 25/11 : « les infos contenu dans le comparateur … doivent ressortir propose moi des
+  modèle de couleur », « les tailles sont ok », planche de 6 modèles puis 2 ; « je t'ai juste demandé de changer / retire petit
+  onglet petit prix et ajoute une "étoile " sur les 3 mutuelles qui sont les plus proches de sa demande au tarif le moins
+  chère », « écriture verte et tu laisse le fond vert »)** (demande de fusion « etiquette-verte-etoiles », modèle montré à
+  Fabrice). Niveaux des offres en écriture verte sur fond vert clair (modèle F), tailles inchangées ; « Petit prix » retiré ;
+  étoile (★, sans texte) sur 3 offres : parmi celles qui atteignent les niveaux demandés, le moins de niveaux en trop sur les
+  postes demandés, puis le prix le plus bas ; sans besoin indiqué, aucune étoile. Point soumis à Fabrice : une offre moins
+  chère qui couvre plus que demandé n'a pas d'étoile avec cette règle.
 - **Curseurs sur le flou, puis « Valider » (Fabrice, 25/11, après la mise en ligne du flou : « Il y a un bug dans le
   foutage et le choix des besoins / Il suffit de cliquer sur le foutage pour ouvrir les garanties en plus elle ne sont pas a
   zéro / Tu cliquer sur une et cela sélectionne une autre garanties / Mon avis le sélecteur des besoins au dessus du foutage

@@ -356,6 +356,12 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-txt{display:flex;flex-direction:column;min-width:0}
 .o-col .lab{font-size:.76rem;line-height:1.25;color:var(--muted);overflow-wrap:anywhere}
 .o-col .pc{font-weight:700;font-size:.98rem;line-height:1.3;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+/* Niveaux en écriture verte sur fond vert clair (Fabrice, 25/11/2026, modèle F : « écriture verte et tu laisse le fond vert ») */
+.o-col .pc.pc-oui{color:#0f6b3a;background:#e3f5ea;border-radius:7px;padding:.05rem .45rem;width:max-content;max-width:100%}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .o-col .pc.pc-oui{color:#8fe0b0;background:#123a26}}
+:root[data-theme="dark"] .o-col .pc.pc-oui{color:#8fe0b0;background:#123a26}
+/* Étoile des 3 offres les plus proches de la demande, à la place de « Petit prix » */
+.o-badge.o-etoile{background:var(--star);color:#fff;font-size:1rem;line-height:1;padding:.22rem .5rem;min-width:1.9rem;text-align:center}
 .o-col .sub{display:flex;flex-direction:column;margin-top:.25rem;font-size:.72rem;color:var(--muted)}
 .o-col .sub b{color:var(--fg);font-size:.84rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .o-actions{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:auto}
@@ -1388,16 +1394,22 @@ function upd(){
   }
   const filtre=POSTES.some(p=>S.need[p.k]>0||p.more.some(f=>S.flt[f.id]&&f.ok));
   $("count").textContent=filtre?(list.length+" offre"+(list.length>1?"s":"")+" atteigne"+(list.length>1?"nt":"")+" vos niveaux, sur "+res.rows.length+" calculées pour votre profil."):(list.length+" offres calculées pour votre profil, de la moins chère à la plus chère.");
-  // « Petit prix » : la première offre, seulement si la liste va bien de la moins chère à la plus chère (un fait, pas un conseil)
-  const croissant=list.every((x,j)=>!j||list[j-1].total<=x.total);
+  // Étoile sur les 3 offres les plus proches de la demande, au tarif le moins cher (Fabrice, 25/11/2026 : « retire petit onglet
+  // petit prix et ajoute une "étoile " sur les 3 mutuelles qui sont les plus proches de sa demande au tarif le moins chère ») :
+  // parmi les offres qui atteignent ses niveaux, le moins de niveaux au-delà de ce qu'il a demandé, puis le prix le plus bas.
+  // Sans besoin indiqué, pas d'étoile (rien à comparer).
+  const demandes=POSTES.filter(p=>S.need[p.k]>0);
+  const etoiles=new Set(demandes.length?list.map((x,j)=>({j,ecart:demandes.reduce((t,p)=>t+x.st[p.k]-S.need[p.k],0),prix:x.total}))
+    .sort((a,b)=>a.ecart-b.ecart||a.prix-b.prix).slice(0,3).map(e=>e.j):[]);
   const cols=postesAffiches();
   list.slice(0,S.shown).forEach((x,i)=>{
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
-    o.setAttribute("aria-label","Option "+(i+1)+(i===0&&croissant?", petit prix":""));
-    o.innerHTML=(i===0&&croissant?'<span class="o-badge">Petit prix</span>':'')+
+    const etoile=etoiles.has(i);
+    o.setAttribute("aria-label","Option "+(i+1)+(etoile?", parmi les 3 plus proches de vos besoins au tarif le plus bas":""));
+    o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Parmi les 3 offres les plus proches de vos besoins, au tarif le plus bas" aria-hidden="true">★</span>':'')+
       '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div></div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
-        '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
+        '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
       (iaLien(i,x)?'<a class="o-ia" href="'+iaLien(i,x)+'" target="_blank" rel="noopener" aria-label="Posez vos questions à notre IA sur l\'option '+(i+1)+' (WhatsApp)"><span class="o-ia-txt"><span>Posez vos questions</span> <span>à notre IA</span></span><span class="o-ia-pic" aria-hidden="true">'+OISEAU_IA+WA_PICTO+'</span></a>':'')+
       '<div class="o-actions"><button type="button" class="btn" data-c="'+i+'" aria-label="Recevoir mon devis : option '+(i+1)+'">Recevoir mon devis</button>'+
