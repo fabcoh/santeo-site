@@ -322,8 +322,12 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .offres-zone.floue .offers,.offres-zone.floue #more-offers{filter:blur(7px);pointer-events:none;user-select:none}
 .voile-offres{position:absolute;inset:0;z-index:3;display:flex;justify-content:center;align-items:flex-start;padding:2.2rem 1rem 0}
 .voile-offres[hidden]{display:none}
-.voile-carte{width:100%;max-width:360px;background:var(--surface);color:var(--fg);border:2px solid var(--brand-1);border-radius:16px;box-shadow:0 14px 40px rgba(5,30,50,.25);padding:1.1rem 1.2rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.7rem;text-align:center}
-.voile-curseurs{width:170px;height:auto}
+.voile-carte{width:100%;background:var(--surface);color:var(--fg);border:2px solid var(--brand-1);border-radius:16px;box-shadow:0 14px 40px rgba(5,30,50,.25);padding:1.1rem 1.2rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.7rem;text-align:center}
+.offres-zone.floue{min-height:620px}
+.voile-carte{max-width:600px}
+.voile-grille .b-textes{padding-right:0}
+.voile-grille{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;width:100%;text-align:left}
+@media (max-width:519px){.voile-carte{padding:.9rem .7rem .8rem}.voile-grille{gap:.4rem}.voile-grille .cell{padding:.5rem .5rem .35rem}.voile-grille .b-ico{display:none}.voile-grille .b-nom{font-size:.9rem}.voile-grille .b-niv{font-size:.76rem;min-height:2.4em}.voile-grille .b-bornes{display:none}.voile-titre{font-size:1.05rem}}
 .voile-titre{margin:0;font-family:var(--f-display);font-weight:800;font-size:1.15rem;line-height:1.3;color:var(--brand-1)}
 .voile-carte .btn{min-height:44px;width:100%}
 .voile-tout{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.85rem;text-decoration:underline;cursor:pointer;padding:.2rem}
@@ -627,14 +631,9 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
     <button type="button" class="ghost" id="more-offers" hidden>Plus de résultats</button>
     <div class="voile-offres" id="voile-offres" hidden>
       <div class="voile-carte" role="region" aria-labelledby="voile-titre">
-        <svg class="voile-curseurs" viewBox="0 0 200 84" aria-hidden="true" focusable="false">
-          <g stroke-linecap="round"><line x1="14" y1="14" x2="186" y2="14" stroke="#cfdbe4" stroke-width="6"/><line x1="14" y1="14" x2="64" y2="14" stroke="#0a7aa5" stroke-width="6"/>
-          <line x1="14" y1="42" x2="186" y2="42" stroke="#cfdbe4" stroke-width="6"/><line x1="14" y1="42" x2="134" y2="42" stroke="#0a7aa5" stroke-width="6"/>
-          <line x1="14" y1="70" x2="186" y2="70" stroke="#cfdbe4" stroke-width="6"/><line x1="14" y1="70" x2="100" y2="70" stroke="#0a7aa5" stroke-width="6"/></g>
-          <g fill="#fff" stroke="#0e5883" stroke-width="4"><circle cx="64" cy="14" r="9"/><circle cx="134" cy="42" r="9"/><circle cx="100" cy="70" r="9"/></g>
-        </svg>
         <p class="voile-titre" id="voile-titre">Indiquez vos besoins pour dévoiler les offres</p>
-        <button type="button" class="btn" id="voile-besoins">Choisir mes besoins</button>
+        <div class="voile-grille" id="voile-grille"></div>
+        <button type="button" class="btn" id="voile-valider">Valider</button>
         <button type="button" class="voile-tout" id="voile-tout">ou voir toutes les offres</button>
       </div>
     </div>
@@ -1096,7 +1095,10 @@ function construireBesoins(){
       '<button type="button" class="precise" data-open="'+p.k+'"></button></div>';
     box.appendChild(d);
   });
-  box.querySelectorAll(".curseur").forEach(c=>{
+  box.querySelectorAll(".curseur").forEach(attacherCurseur);
+  box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{allumageStop();const k=b.dataset.open;S.open=(S.open===k)?null:k;renderNeeds()});
+}
+function attacherCurseur(c){
     c.addEventListener("input",()=>setNeed(c.dataset.k,+c.value));
     // Toucher le rail place le curseur au cran le plus proche (Safari sur iPhone ne le fait pas de lui-même) ; un clic sur le
     // nom du poste (son étiquette) est transmis au curseur : il est ignoré, car il n'a pas lieu sur le rail
@@ -1107,8 +1109,6 @@ function construireBesoins(){
       const v=Math.round(Math.min(Math.max(e.clientX-r.left-t/2,0),r.width-t)/(r.width-t)*5);
       if(v!==+c.value){c.value=v;setNeed(c.dataset.k,v)}
     });
-  });
-  box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{allumageStop();const k=b.dataset.open;S.open=(S.open===k)?null:k;renderNeeds()});
 }
 /* Met à jour la carte d'un poste : niveau affiché et lu par les lecteurs d'écran, remplissage du rail, lien « Précisez » */
 function majCarte(k){
@@ -1122,6 +1122,7 @@ function majCarte(k){
   const b=col.querySelector(".precise"); b.classList.toggle("has",!!n); b.setAttribute("aria-expanded",String(op));
   b.setAttribute("aria-label","Préciser "+p.nm+(n?" ("+n+" choisi"+(n>1?"s":"")+")":""));
   b.textContent=op?"(−) Fermer":"(+) Précisez"+(n?" · "+n:"");
+  majVoile(k);
 }
 /* Fermeture automatique du volet « Précisez » : 4 s sans action.
    En pause tant que la souris est sur le volet ou que l'on écrit dans « Autre ». */
@@ -1341,9 +1342,33 @@ function ouvrirDetail(i){
   d.querySelector(".dp-corps").scrollTop=0;
 }
 let LAST=[];
-function voileOffres(floue){const z=$("offres-zone");z.classList.toggle("floue",floue);$("voile-offres").hidden=!floue;$("offers").inert=floue;$("more-offers").inert=floue}
-$("voile-besoins").onclick=()=>{const t=$("t-besoins");t.scrollIntoView({behavior:"smooth",block:"start"});const c=document.querySelector("#needs input");if(c)setTimeout(()=>c.focus({preventScroll:true}),400)};
-$("voile-tout").onclick=()=>{S.devoile=true;upd()};
+function voileOffres(floue){if(floue)construireVoile();const z=$("offres-zone");z.classList.toggle("floue",floue);$("voile-offres").hidden=!floue;$("offers").inert=floue;$("more-offers").inert=floue}
+// Sur le flou, les curseurs des quatre postes principaux, dans l'ordre demandé par Fabrice (25/11/2026 : « dentaire optique /
+// Hospitalisation Honoraires / Avec un aperçu des niveaux… / Valider ») ; ils règlent les mêmes besoins que ceux du haut
+const VOILE_POSTES=["dent","opt","hosp","hono"];
+function construireVoile(){
+  const g=$("voile-grille"); if(!g||g.firstChild)return;
+  VOILE_POSTES.forEach(k=>{const p=POSTES.find(q=>q.k===k); const d=document.createElement("div"); d.className="col"; d.dataset.k=k;
+    d.innerHTML='<div class="cell"><div class="b-tete"><span class="b-ico" aria-hidden="true">'+picto(k)+'</span>'+
+      '<span class="b-textes"><label class="b-nom" for="v-cur-'+k+'">'+p.nm+'</label><span class="b-niv" aria-hidden="true"></span></span></div>'+
+      '<div class="b-piste"><span class="b-rail" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>'+
+      '<input type="range" class="curseur" id="v-cur-'+k+'" data-k="'+k+'" min="0" max="5" step="1" value="'+S.need[k]+'"></div>'+
+      '<div class="b-bornes" aria-hidden="true"><span>Pas de besoin</span><span>'+MAXI[k]+'</span></div></div>';
+    g.appendChild(d); attacherCurseur(d.querySelector(".curseur"))});
+  VOILE_POSTES.forEach(majVoile);
+}
+function majVoile(k){
+  const col=document.querySelector('#voile-grille .col[data-k="'+k+'"]'); if(!col)return;
+  const v=S.need[k], lib=NIVEAUX[k][v], c=col.querySelector(".curseur");
+  if(+c.value!==v)c.value=String(v); c.setAttribute("aria-valuetext",lib);
+  col.querySelector(".cell").classList.toggle("actif",v>0); col.style.setProperty("--p",String(v/5));
+  col.querySelectorAll(".b-rail i").forEach((i,j)=>i.classList.toggle("on",v>0&&j<=v));
+  const nv=col.querySelector(".b-niv"); nv.textContent=lib; nv.classList.toggle("zero",!v);
+}
+// Compteurs Google (Fabrice, 25/11/2026 : « VALID2 ») : combien valident leurs besoins, combien passent par « voir toutes les
+// offres » ; comptés seulement si le visiteur a accepté les cookies, comme les autres mesures du parcours
+$("voile-valider").onclick=()=>{window.mesure("besoins_valides",{postes:VOILE_POSTES.filter(k=>S.need[k]>0).length});S.devoile=true;upd();$("t-res").scrollIntoView({behavior:"smooth",block:"start"})};
+$("voile-tout").onclick=()=>{window.mesure("offres_sans_besoins");S.devoile=true;upd()};
 function upd(){
   const res=compute(); const box=$("offers"); box.innerHTML=""; voileOffres(false);
   $("more-offers").hidden=true;
@@ -1382,8 +1407,7 @@ function upd(){
   box.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>ouvrirDetail(+b.dataset.d));
   box.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>choose(+b.dataset.c));
   if(list.length>S.shown){$("more-offers").hidden=false;$("more-offers").textContent="Plus de résultats";}
-  // Floutées jusqu'au premier besoin indiqué (curseur ou précision), ou jusqu'au clic sur « ou voir toutes les offres »
-  if(filtre)S.devoile=true;
+  // Floutées jusqu'à « Valider » (curseurs sur le flou) ou « ou voir toutes les offres » (Fabrice, 25/11/2026)
   voileOffres(!S.devoile);
 }
 $("more-offers").onclick=()=>{S.shown=LAST.length;upd()};

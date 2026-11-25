@@ -579,6 +579,18 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Curseurs sur le flou, puis « Valider » (Fabrice, 25/11, après la mise en ligne du flou : « Il y a un bug dans le
+  foutage et le choix des besoins / Il suffit de cliquer sur le foutage pour ouvrir les garanties en plus elle ne sont pas a
+  zéro / Tu cliquer sur une et cela sélectionne une autre garanties / Mon avis le sélecteur des besoins au dessus du foutage
+  devrait être pro actif / … Curseur / dentaire optique / Hospitalisation Honoraires / Avec un aperçu des niveaux de pour
+  chaque poste modifie depuis le curseur / Valider »)** (demande de fusion « besoins-sur-le-flou », modèle montré à
+  Fabrice). Sur le flou : les curseurs Dentaire, Optique, Hospitalisation, Honoraires (2 × 2, aussi sur téléphone), le niveau
+  de chaque poste écrit au-dessus de son curseur, reliés aux curseurs du haut ; *Valider* dévoile les offres et remonte à
+  leur titre ; *ou voir toutes les offres* gardé. Les offres ne se dévoilent plus d'elles-mêmes au premier curseur. Bugs
+  signalés : non reproduits sur iPhone et PC simulés (toucher le flou n'ouvre rien ; curseurs à zéro au départ ; toucher le
+  rail dentaire règle le dentaire seul) ; à vérifier par Fabrice sur son téléphone avec la nouvelle version.
+  Avis demandé par Fabrice : mise en ligne avec mesure (Mon idée) ; « VALID2 » : compteurs Google `besoins_valides` (nombre de
+  postes réglés) et `offres_sans_besoins`, seulement après accord aux cookies ; à relire dans deux semaines.
 - **Offres floutées tant qu'aucun besoin n'est indiqué (Fabrice, 25/11 : « TU DOIS FLOUTER LES RESULTATS ET SUR LE FLOU
   DEMANDER / Indiquer vos besoins pour dévoiler les offres avec la photo des curseur »)** (demande de fusion
   « offres-floues », modèle montré à Fabrice). Les offres et « Plus de résultats » sont floutées et inactives ; au-dessus,
