@@ -587,6 +587,9 @@ mieux référencer le site »
   étoile (★, sans texte) sur 3 offres : parmi celles qui atteignent les niveaux demandés, le moins de niveaux en trop sur les
   postes demandés, puis le prix le plus bas ; sans besoin indiqué, aucune étoile. Point soumis à Fabrice : une offre moins
   chère qui couvre plus que demandé n'a pas d'étoile avec cette règle.
+  Puis (Fabrice, 25/11) : « les libellés, c'est juste les libellés que tu mets en vert » (noms des postes en vert),
+  « retire le fond vert et met les textes des % en vert », « réduit la taille de cotisation » (1,4 rem au lieu de 1,75 ;
+  « /mois » était déjà là).
 - **Curseurs sur le flou, puis « Valider » (Fabrice, 25/11, après la mise en ligne du flou : « Il y a un bug dans le
   foutage et le choix des besoins / Il suffit de cliquer sur le foutage pour ouvrir les garanties en plus elle ne sont pas a
   zéro / Tu cliquer sur une et cela sélectionne une autre garanties / Mon avis le sélecteur des besoins au dessus du foutage

@@ -346,7 +346,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-ia-pic>svg{position:absolute;right:-4px;bottom:-4px;width:16px;height:16px}
 .o-name{font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .o-real{align-self:flex-start;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
-.o-price{font-family:var(--f-display);font-weight:800;font-size:1.75rem;line-height:1.15;color:var(--brand-1);font-variant-numeric:tabular-nums;white-space:nowrap}
+.o-price{font-family:var(--f-display);font-weight:800;font-size:1.4rem;line-height:1.15;color:var(--brand-1);font-variant-numeric:tabular-nums;white-space:nowrap}
 .o-price small{font-family:var(--f-body);font-weight:600;font-size:.85rem;color:var(--muted)}
 .o-gar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem .6rem;align-items:start;border-top:1px solid var(--line);padding-top:.75rem}
 .o-col{display:flex;align-items:flex-start;gap:.45rem;min-width:0}
@@ -356,10 +356,10 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-txt{display:flex;flex-direction:column;min-width:0}
 .o-col .lab{font-size:.76rem;line-height:1.25;color:var(--muted);overflow-wrap:anywhere}
 .o-col .pc{font-weight:700;font-size:.98rem;line-height:1.3;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-/* Niveaux en écriture verte sur fond vert clair (Fabrice, 25/11/2026, modèle F : « écriture verte et tu laisse le fond vert ») */
-.o-col .pc.pc-oui{color:#0f6b3a;background:#e3f5ea;border-radius:7px;padding:.05rem .45rem;width:max-content;max-width:100%}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .o-col .pc.pc-oui{color:#8fe0b0;background:#123a26}}
-:root[data-theme="dark"] .o-col .pc.pc-oui{color:#8fe0b0;background:#123a26}
+/* Niveaux en écriture verte, sans fond (Fabrice, 25/11/2026 : « retire le fond vert et met les textes des % en vert ») */
+.o-col .pc.pc-oui{color:#0f6b3a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .o-col .pc.pc-oui{color:#8fe0b0}}
+:root[data-theme="dark"] .o-col .pc.pc-oui{color:#8fe0b0}
 /* Noms des postes (Hospitalisation, Honoraires, Dentaire, Optique…) en écriture verte (Fabrice, 25/11/2026 : « mettre les titres,
    les libellés, hospitalisation, honoraires, dentaires et optiques en vert ») */
 .o-col .lab{color:#0f7a40}
@@ -429,7 +429,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-detail dd{margin:0;font-variant-numeric:tabular-nums}
 .chosen{background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
 .empty{padding:1rem;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
-@media (min-width:900px){.o-price{font-size:1.65rem}}
+@media (min-width:900px){.o-price{font-size:1.35rem}}
 }
 }
 
