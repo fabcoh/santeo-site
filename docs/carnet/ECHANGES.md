@@ -579,6 +579,18 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Comparer cette offre (Fabrice, 25/11, par la relais : « on a va ajouter comparer cette offre avec une autre … il pourra
+  selectionner jusqu'a 3 offres … tarif le mois cher au plus cher », « Comparer cette offre / un volet a doite avec les offres
+  qui s'affiche » ; puis ici : « je crois que les étoiles pourrait mieux servir a comparer / tu écris comparer cette offre et
+  l'étoile se place au dessus »)** (demande de fusion « comparer-offres », qui reprend aussi les cartes de la demande n° 74,
+  fermée). Sous le prix de chaque carte : *☆ Comparer cette offre* ; choisie, l'étoile ★ se place au-dessus de la carte et le
+  bouton devient *★ À comparer · retirer* ; 3 au plus (les autres boutons : *3 offres au maximum : retirez-en une*). Volet à
+  droite (en bas sur téléphone) : les offres choisies (Option N et prix, sans nom d'assureur, comme sur les cartes), une croix
+  pour chacune, *Comparer les garanties* (dès 2 offres). Fenêtre *Détail des garanties* : une colonne par offre, de la moins
+  chère à la plus chère, les mêmes lignes que le détail d'une offre, *Cette offre m'intéresse* en tête de chaque colonne
+  (circuit existant). Une offre qui n'est plus proposée (profil ou besoins changés) sort de la comparaison. Les étoiles
+  automatiques « les plus proches de la demande » sont retirées. Non fait : la meilleure valeur de chaque ligne mise en avant
+  (proposition de la relais, non demandée par Fabrice).
 - **Niveaux en vert et étoiles (Fabrice, 25/11 : « les infos contenu dans le comparateur … doivent ressortir propose moi des
   modèle de couleur », « les tailles sont ok », planche de 6 modèles puis 2 ; « je t'ai juste demandé de changer / retire petit
   onglet petit prix et ajoute une "étoile " sur les 3 mutuelles qui sont les plus proches de sa demande au tarif le moins

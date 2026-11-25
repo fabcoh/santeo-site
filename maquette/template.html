@@ -404,7 +404,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .gar-cmp .g-poste th,.gar-cmp .g-poste td{font-weight:700;background:var(--accent-soft)}
 .gar-cmp th:first-child,.gar-cmp td:first-child{position:sticky;left:0;background:var(--surface);min-width:8rem}
 .gar-cmp .g-poste th:first-child{background:var(--accent-soft)}
-@media (max-width:599px){.gar-cmp{font-size:.74rem;table-layout:fixed}.gar-cmp th,.gar-cmp td{padding:.3rem .25rem;overflow-wrap:anywhere}.gar-cmp .cmp-col{min-width:0}.gar-cmp th:first-child,.gar-cmp td:first-child{min-width:0;width:31%;position:static}.gar-cmp .cmp-col b{font-size:.85rem}.gar-cmp .cmp-col .btn{font-size:.7rem;padding:.3rem .3rem;min-height:34px;width:100%}.cmp-pop .dp-tete h3{font-size:1rem}.cmp-pop .dp-corps{padding-left:.5rem;padding-right:.5rem}}
+@media (max-width:599px){.gar-cmp{font-size:.74rem;table-layout:fixed}.gar-cmp th,.gar-cmp td{padding:.3rem .25rem;overflow-wrap:anywhere}.gar-cmp .cmp-col{min-width:0}.gar-cmp th:first-child,.gar-cmp td:first-child{min-width:0;width:31%;position:static}.gar-cmp .cmp-col b{font-size:.85rem}.gar-cmp .cmp-col .btn{font-size:.66rem;padding:.3rem .2rem;min-height:34px;width:100%;overflow-wrap:normal;word-break:normal}.cmp-pop .dp-tete h3{font-size:1rem}.cmp-pop .dp-corps{padding-left:.5rem;padding-right:.5rem}}
 .dp-tete{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;padding:1rem 1.1rem .7rem;border-bottom:1px solid var(--line);background:var(--accent-soft)}
 .dp-tete h3{margin:0;font-family:var(--f-display);font-size:1.2rem;color:var(--brand-1);display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .7rem}
 .dp-prix{font-size:1.15rem;color:var(--fg)}
@@ -1394,7 +1394,7 @@ const idOffre=x=>x.key+"|"+x.fi;
 function boutonComparer(i,x){
   const pris=S.cmp.includes(idOffre(x)), plein=!pris&&S.cmp.length>=CMP_MAX;
   return '<button type="button" class="o-cmp" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+'>'+
-    (pris?'✓ À comparer · retirer':plein?'3 offres au maximum : retirez-en une':'Comparer cette offre')+'</button>';
+    (pris?'★ À comparer · retirer':plein?'3 offres au maximum : retirez-en une':'☆ Comparer cette offre')+'</button>';
 }
 function basculerComparaison(i){
   const x=LAST[i]; if(!x)return; const id=idOffre(x), j=S.cmp.indexOf(id);
@@ -1493,19 +1493,14 @@ function upd(){
   }
   const filtre=POSTES.some(p=>S.need[p.k]>0||p.more.some(f=>S.flt[f.id]&&f.ok));
   $("count").textContent=filtre?(list.length+" offre"+(list.length>1?"s":"")+" atteigne"+(list.length>1?"nt":"")+" vos niveaux, sur "+res.rows.length+" calculées pour votre profil."):(list.length+" offres calculées pour votre profil, de la moins chère à la plus chère.");
-  // Étoile sur les 3 offres les plus proches de la demande, au tarif le moins cher (Fabrice, 25/11/2026 : « retire petit onglet
-  // petit prix et ajoute une "étoile " sur les 3 mutuelles qui sont les plus proches de sa demande au tarif le moins chère ») :
-  // parmi les offres qui atteignent ses niveaux, le moins de niveaux au-delà de ce qu'il a demandé, puis le prix le plus bas.
-  // Sans besoin indiqué, pas d'étoile (rien à comparer).
-  const demandes=POSTES.filter(p=>S.need[p.k]>0);
-  const etoiles=new Set(demandes.length?list.map((x,j)=>({j,ecart:demandes.reduce((t,p)=>t+x.st[p.k]-S.need[p.k],0),prix:x.total}))
-    .sort((a,b)=>a.ecart-b.ecart||a.prix-b.prix).slice(0,3).map(e=>e.j):[]);
+  // Étoile au-dessus des offres choisies pour la comparaison (Fabrice, 25/11/2026 : « je crois que les étoiles pourrait mieux
+  // servir a comparer / tu écris comparer cette offre et l'étoile se place au dessus ») ; 3 au plus
   const cols=postesAffiches();
   list.slice(0,S.shown).forEach((x,i)=>{
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
-    const etoile=etoiles.has(i);
-    o.setAttribute("aria-label","Option "+(i+1)+(etoile?", parmi les 3 plus proches de vos besoins au tarif le plus bas":""));
-    o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Parmi les 3 offres les plus proches de vos besoins, au tarif le plus bas" aria-hidden="true">★</span>':'')+
+    const etoile=S.cmp.includes(idOffre(x));
+    o.setAttribute("aria-label","Option "+(i+1)+(etoile?", choisie pour la comparaison":""));
+    o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Choisie pour la comparaison" aria-hidden="true">★</span>':'')+
       '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+boutonComparer(i,x)+'</div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+

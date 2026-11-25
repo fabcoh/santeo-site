@@ -439,16 +439,26 @@ async function remplir(p) {
     await q.waitForTimeout(200);
     const touche = await q.$eval('#cur-hono', e => e.value + ' ' + e.getAttribute('aria-valuetext')), apres = await q.textContent('#count');
     doit(touche === '3 Au moins 180 %' && apres !== avant && /atteignent vos niveaux/.test(apres), nom + ' : curseur au toucher : ' + touche + ' | ' + apres);
-    // Étoile sur les 3 offres les plus proches de la demande (honoraires au moins 3), au tarif le plus bas : les moins d'écart au
-    // niveau demandé, puis les moins chères ; recalculé ici à partir des niveaux de toutes les offres affichées
-    { for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
-      const et = await q.evaluate(() => { const offres = [...document.querySelectorAll('#offers article.offer')];
-        return { etoiles: offres.map((o, i) => o.querySelector('.o-etoile') ? i : -1).filter(i => i >= 0), textes: [...document.querySelectorAll('#offers .o-badge')].map(e => e.textContent),
-          hono: offres.map(o => { const c = [...o.querySelectorAll('.o-col')].find(c => c.querySelector('.lab').textContent === 'Honoraires'); return c ? c.querySelector('.pc').textContent : ''; }),
-          prix: offres.map(o => parseFloat(o.querySelector('.o-price').textContent.replace(/\s/g, '').replace(',', '.'))) }; });
-      const niv = s => { const n = parseFloat(String(s).replace(',', '.')); return isNaN(n) ? 0 : n >= 400 ? 5 : n >= 300 ? 4 : n >= 180 ? 3 : n >= 130 ? 2 : n >= 100 ? 1 : 0; };
-      const attendu = et.prix.map((p, i) => ({ i, e: niv(et.hono[i]) - 3, p })).sort((a, b) => a.e - b.e || a.p - b.p).slice(0, 3).map(x => x.i).sort((a, b) => a - b);
-      doit(et.etoiles.length === 3 && et.textes.every(t => t === '★') && et.etoiles.join() === attendu.join(), nom + ' : étoiles ' + JSON.stringify(et.etoiles) + ', attendu ' + JSON.stringify(attendu)); }
+    // Comparer cette offre (Fabrice, 25/11/2026) : l'étoile se place au-dessus des offres choisies, 3 au plus, volet à droite,
+    // tableau des offres choisies de la moins chère à la plus chère
+    { await devoiler(q);
+      for (const i of [2, 0, 4]) { await q.click('[data-cmp="' + i + '"]'); await q.waitForTimeout(150); }
+      const c1 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('.o-etoile') ? i : -1).filter(i => i >= 0),
+        volet: !document.getElementById('cmp-volet').hidden, liste: [...document.querySelectorAll('#cmp-liste li b')].map(e => e.textContent),
+        gris: [...document.querySelectorAll('.o-cmp')].filter(b => b.disabled).length, total: document.querySelectorAll('.o-cmp').length,
+        voletDansEcran: (r => r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight)(document.getElementById('cmp-volet').getBoundingClientRect()) }));
+      doit(c1.etoiles.join() === '0,2,4' && c1.volet && c1.liste.join() === 'Option 1,Option 3,Option 5' && c1.gris === c1.total - 3 && c1.voletDansEcran,
+        nom + ' : comparer 3 offres : ' + JSON.stringify(c1));
+      await q.click('#cmp-liste [data-retirer="2"]'); await q.waitForTimeout(150);
+      const c2 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('.o-etoile') ? i : -1).filter(i => i >= 0), gris: [...document.querySelectorAll('.o-cmp')].filter(b => b.disabled).length }));
+      doit(c2.etoiles.join() === '0,4' && c2.gris === 0, nom + ' : retirer une offre du volet : ' + JSON.stringify(c2));
+      await q.click('#cmp-go'); await q.waitForTimeout(300);
+      const c3 = await q.evaluate(() => { const c = document.querySelector('.cmp-pop .dp-corps'); return { cols: [...document.querySelectorAll('.gar-cmp thead .cmp-col b')].map(e => e.textContent),
+        prix: [...document.querySelectorAll('.gar-cmp thead .cmp-col span')].map(e => parseFloat(e.textContent.replace(/\s/g, '').replace(',', '.'))), deborde: c.scrollWidth > c.clientWidth + 1 }; });
+      doit(c3.cols.join() === 'Option 1,Option 5' && c3.prix[0] <= c3.prix[1] && !c3.deborde, nom + ' : tableau de comparaison : ' + JSON.stringify(c3));
+      await q.click('.cmp-pop .dp-fermer'); await q.waitForTimeout(200);
+      for (const i of [0, 4]) { await q.click('[data-cmp="' + i + '"]'); await q.waitForTimeout(120); }
+      doit(await q.evaluate(() => document.getElementById('cmp-volet').hidden), nom + ' : le volet se ferme quand aucune offre n\'est choisie'); }
     // L'offre choisie reste mise en évidence ; le formulaire s'ouvre
     await devoiler(q); await q.click('[data-c="1"]'); await q.waitForTimeout(500);
     const choisie = await q.$$eval('#offers article.offer', l => l.map((o, i) => o.classList.contains('chosen') ? i : -1).filter(i => i >= 0));
