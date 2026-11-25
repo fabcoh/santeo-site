@@ -589,6 +589,8 @@ mieux référencer le site »
   leur titre ; *ou voir toutes les offres* gardé. Les offres ne se dévoilent plus d'elles-mêmes au premier curseur. Bugs
   signalés : non reproduits sur iPhone et PC simulés (toucher le flou n'ouvre rien ; curseurs à zéro au départ ; toucher le
   rail dentaire règle le dentaire seul) ; à vérifier par Fabrice sur son téléphone avec la nouvelle version.
+  Avis demandé par Fabrice : mise en ligne avec mesure (Mon idée) ; « VALID2 » : compteurs Google `besoins_valides` (nombre de
+  postes réglés) et `offres_sans_besoins`, seulement après accord aux cookies ; à relire dans deux semaines.
 - **Offres floutées tant qu'aucun besoin n'est indiqué (Fabrice, 25/11 : « TU DOIS FLOUTER LES RESULTATS ET SUR LE FLOU
   DEMANDER / Indiquer vos besoins pour dévoiler les offres avec la photo des curseur »)** (demande de fusion
   « offres-floues », modèle montré à Fabrice). Les offres et « Plus de résultats » sont floutées et inactives ; au-dessus,

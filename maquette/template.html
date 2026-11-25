@@ -1365,8 +1365,10 @@ function majVoile(k){
   col.querySelectorAll(".b-rail i").forEach((i,j)=>i.classList.toggle("on",v>0&&j<=v));
   const nv=col.querySelector(".b-niv"); nv.textContent=lib; nv.classList.toggle("zero",!v);
 }
-$("voile-valider").onclick=()=>{S.devoile=true;upd();$("t-res").scrollIntoView({behavior:"smooth",block:"start"})};
-$("voile-tout").onclick=()=>{S.devoile=true;upd()};
+// Compteurs Google (Fabrice, 25/11/2026 : « VALID2 ») : combien valident leurs besoins, combien passent par « voir toutes les
+// offres » ; comptés seulement si le visiteur a accepté les cookies, comme les autres mesures du parcours
+$("voile-valider").onclick=()=>{window.mesure("besoins_valides",{postes:VOILE_POSTES.filter(k=>S.need[k]>0).length});S.devoile=true;upd();$("t-res").scrollIntoView({behavior:"smooth",block:"start"})};
+$("voile-tout").onclick=()=>{window.mesure("offres_sans_besoins");S.devoile=true;upd()};
 function upd(){
   const res=compute(); const box=$("offers"); box.innerHTML=""; voileOffres(false);
   $("more-offers").hidden=true;

@@ -157,7 +157,10 @@ const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.cl
         niv: document.querySelector('#voile-grille .col[data-k="dent"] .b-niv').textContent, autres: ['opt', 'hosp', 'hono'].map(k => document.getElementById('cur-' + k).value).join('') }));
       if (!v1.visible || v1.haut !== '2' || v1.niv !== 'Au moins 130 %' || v1.autres !== '000')
         errs.push('calme 320 : le curseur dentaire du flou doit régler le dentaire seul, afficher son niveau et garder le flou (' + JSON.stringify(v1) + ')');
+      await p.evaluate(() => { window.__mes = []; const m = window.mesure; window.mesure = (n, d) => { window.__mes.push(n + ':' + JSON.stringify(d || {})); return m && m(n, d); }; });
       await p.click('#voile-valider'); await p.waitForTimeout(200);
+      const mes = await p.evaluate(() => window.__mes.join('|'));
+      if (!/^besoins_valides:\{"postes":1\}/.test(mes)) errs.push('calme 320 : « Valider » doit être compté (' + mes + ')');
       const v2 = await p.evaluate(() => ({ visible: !document.getElementById('voile-offres').hidden, inert: document.getElementById('offers').inert }));
       if (v2.visible || v2.inert) errs.push('calme 320 : « Valider » doit dévoiler les offres (' + JSON.stringify(v2) + ')'); }
     if (await p.$('#needs .cell.allumage')) errs.push('calme 320 : pas d\'allumage quand le visiteur a demandé moins d\'animations');
