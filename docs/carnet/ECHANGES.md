@@ -579,6 +579,17 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **« Comparer » sous le badge de l'IA (Fabrice, 25/11 : « Comparer doit etre place en dessous du badge léger contour / Fait
+  moi un modèle », puis « Occasion d'espace les badges », compris comme : plus d'espace entre les badges)** (demande de fusion
+  « comparer-sous-badge », modèle montré à Fabrice). En haut à droite de chaque carte, l'un sous l'autre et espacés : le badge
+  *Posez vos questions à notre IA*, puis le bouton *☆ Comparer cette offre* au contour fin et léger ; au-delà de 3 offres,
+  *3 au maximum*. Test : bouton sous le badge, aligné à droite, sans toucher le prix.
+  Puis « Verticalement » : écart vertical porté à 1,1 rem.
+  Puis (Fabrice, 25/11) : « Tu dois te contenter de faire ce que je te demande / tu expliques / Pour comparer jusqu'à 3 offres
+  cliquez sur logo transparent de l'étoile / Tu ajoutes des étoiles sans fond au dessus de chaque badges qui devient jaune a la
+  sélection » : phrase *Pour comparer jusqu'à 3 offres, cliquez sur le logo transparent de l'étoile ☆* (Vos mots) sous le lien
+  du simulateur ; une étoile vide sans fond au-dessus de chaque offre, jaune une fois choisie ; elle remplace le bouton texte
+  « Comparer cette offre » ; 3 au plus (les autres étoiles pâlissent).
 - **Comparer cette offre (Fabrice, 25/11, par la relais : « on a va ajouter comparer cette offre avec une autre … il pourra
   selectionner jusqu'a 3 offres … tarif le mois cher au plus cher », « Comparer cette offre / un volet a doite avec les offres
   qui s'affiche » ; puis ici : « je crois que les étoiles pourrait mieux servir a comparer / tu écris comparer cette offre et
