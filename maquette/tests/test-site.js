@@ -422,8 +422,8 @@ async function remplir(p) {
       nom + ' : cartes d\'offres : ' + parLigne + ' par ligne attendues ' + JSON.stringify({ n: m1.n, lignes: m1.lignes, premiereLigne: m1.premiereLigne, largeur: m1.largeur, deborde: m1.deborde, hs: m1.hs }));
     doit(m1.besoinsLignes === lignesBesoins && m1.curseurs.length === 5 && m1.curseurs.every(h => h >= 44), nom + ' : cartes des besoins : ' + m1.besoinsLignes + ' lignes (attendu ' + lignesBesoins + '), curseurs ' + m1.curseurs.join(','));
     // « Petit prix » retiré ; sans besoin indiqué, aucune étoile (Fabrice, 25/11/2026) ; niveaux en écriture verte sur fond vert
-    const vert = await q.evaluate(() => { const e = document.querySelector('#offers .pc.pc-oui'), z = document.querySelector('#offers .pc:not(.pc-oui)'); return e ? [getComputedStyle(e).color, getComputedStyle(e).backgroundColor, z ? z.textContent : ''] : null; });
-    doit(m1.croissant && !m1.badges.length && vert && vert[0] === 'rgb(15, 107, 58)' && vert[1] === 'rgb(227, 245, 234)' && (!vert[2] || /—|n\.c\./.test(vert[2])),
+    const vert = await q.evaluate(() => { const e = document.querySelector('#offers .pc.pc-oui'), z = document.querySelector('#offers .pc:not(.pc-oui)'); return e ? [getComputedStyle(e).color, getComputedStyle(e).backgroundColor, z ? z.textContent : '', getComputedStyle(document.querySelector('#offers .o-col .lab')).color] : null; });
+    doit(m1.croissant && !m1.badges.length && vert && vert[0] === 'rgb(15, 107, 58)' && vert[1] === 'rgb(227, 245, 234)' && vert[3] === 'rgb(15, 122, 64)' && (!vert[2] || /—|n\.c\./.test(vert[2])),
       nom + ' : sans besoin, ni « Petit prix » ni étoile ; niveaux en vert sur fond vert ' + JSON.stringify([m1.badges, vert]));
     // Toutes les offres (APRIL et API Santé comprises) : aucun nom d'assureur, de gamme ni de formule, aucune promesse
     for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }

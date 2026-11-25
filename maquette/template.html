@@ -360,6 +360,11 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-col .pc.pc-oui{color:#0f6b3a;background:#e3f5ea;border-radius:7px;padding:.05rem .45rem;width:max-content;max-width:100%}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .o-col .pc.pc-oui{color:#8fe0b0;background:#123a26}}
 :root[data-theme="dark"] .o-col .pc.pc-oui{color:#8fe0b0;background:#123a26}
+/* Noms des postes (Hospitalisation, Honoraires, Dentaire, Optique…) en écriture verte (Fabrice, 25/11/2026 : « mettre les titres,
+   les libellés, hospitalisation, honoraires, dentaires et optiques en vert ») */
+.o-col .lab{color:#0f7a40}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .o-col .lab{color:#8fe0b0}}
+:root[data-theme="dark"] .o-col .lab{color:#8fe0b0}
 /* Étoile des 3 offres les plus proches de la demande, à la place de « Petit prix » */
 .o-badge.o-etoile{background:var(--star);color:#fff;font-size:1rem;line-height:1;padding:.22rem .5rem;min-width:1.9rem;text-align:center}
 .o-col .sub{display:flex;flex-direction:column;margin-top:.25rem;font-size:.72rem;color:var(--muted)}
