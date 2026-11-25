@@ -144,17 +144,22 @@ const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.cl
     p.on('pageerror', e => errs.push('calme: ' + e.message));
     await p.goto('file://' + S + '/comparateur-santeo.html'); await p.waitForTimeout(300); await mascotte(p, 'calme 320', 0);
     await p.fill('#age','21/07/1981'); await p.fill('#cp','75012'); await p.waitForTimeout(600);
-    // Offres floutées tant qu'aucun besoin n'est indiqué, avec « Indiquez vos besoins pour dévoiler les offres » (Fabrice, 25/11/2026)
+    // Offres floutées jusqu'à « Valider », avec les curseurs dentaire, optique, hospitalisation et honoraires sur le flou (Fabrice, 25/11/2026)
     { const v0 = await p.evaluate(() => { const v = document.getElementById('voile-offres'), c = v.querySelector('.voile-carte').getBoundingClientRect(), z = document.getElementById('offres-zone').getBoundingClientRect();
-        return { visible: !v.hidden, texte: v.textContent.replace(/\s+/g, ' ').trim(), flou: getComputedStyle(document.getElementById('offers')).filter, inert: document.getElementById('offers').inert,
-          offres: document.querySelectorAll('#offers article.offer').length, dedans: c.left >= z.left - 1 && c.right <= z.right + 1, curseurs: !!document.querySelector('.voile-curseurs') }; });
-      if (!v0.visible || !/Indiquez vos besoins pour dévoiler les offres/.test(v0.texte) || !/blur/.test(v0.flou) || !v0.inert || !v0.offres || !v0.dedans || !v0.curseurs)
-        errs.push('calme 320 : avant tout besoin, les offres doivent être floutées sous « Indiquez vos besoins… » (' + JSON.stringify(v0) + ')');
-      await regler(p, 'hosp', 1); await p.waitForTimeout(150);
-      const v1 = await p.evaluate(() => ({ visible: !document.getElementById('voile-offres').hidden, inert: document.getElementById('offers').inert }));
-      await regler(p, 'hosp', 0); await p.waitForTimeout(150);
-      const v2 = await p.evaluate(() => !document.getElementById('voile-offres').hidden);
-      if (v1.visible || v1.inert || v2) errs.push('calme 320 : un premier besoin doit dévoiler les offres pour de bon (' + JSON.stringify(v1) + ' ' + v2 + ')'); }
+        return { visible: !v.hidden, texte: v.querySelector('.voile-titre').textContent, flou: getComputedStyle(document.getElementById('offers')).filter, inert: document.getElementById('offers').inert,
+          offres: document.querySelectorAll('#offers article.offer').length, dedans: c.left >= z.left - 1 && c.right <= z.right + 1,
+          curseurs: [...document.querySelectorAll('#voile-grille .curseur')].map(e => e.dataset.k + '=' + e.value).join(','), noms: [...document.querySelectorAll('#voile-grille .b-nom')].map(e => e.textContent).join(',') }; });
+      if (!v0.visible || !/Indiquez vos besoins pour dévoiler les offres/.test(v0.texte) || !/blur/.test(v0.flou) || !v0.inert || !v0.offres || !v0.dedans
+        || v0.curseurs !== 'dent=0,opt=0,hosp=0,hono=0' || v0.noms !== 'Dentaire,Optique,Hospitalisation,Honoraires')
+        errs.push('calme 320 : avant « Valider », les offres doivent être floutées sous les quatre curseurs à zéro (' + JSON.stringify(v0) + ')');
+      await p.$eval('#v-cur-dent', e => { e.value = '2'; e.dispatchEvent(new Event('input', { bubbles: true })); }); await p.waitForTimeout(150);
+      const v1 = await p.evaluate(() => ({ visible: !document.getElementById('voile-offres').hidden, haut: document.getElementById('cur-dent').value,
+        niv: document.querySelector('#voile-grille .col[data-k="dent"] .b-niv').textContent, autres: ['opt', 'hosp', 'hono'].map(k => document.getElementById('cur-' + k).value).join('') }));
+      if (!v1.visible || v1.haut !== '2' || v1.niv !== 'Au moins 130 %' || v1.autres !== '000')
+        errs.push('calme 320 : le curseur dentaire du flou doit régler le dentaire seul, afficher son niveau et garder le flou (' + JSON.stringify(v1) + ')');
+      await p.click('#voile-valider'); await p.waitForTimeout(200);
+      const v2 = await p.evaluate(() => ({ visible: !document.getElementById('voile-offres').hidden, inert: document.getElementById('offers').inert }));
+      if (v2.visible || v2.inert) errs.push('calme 320 : « Valider » doit dévoiler les offres (' + JSON.stringify(v2) + ')'); }
     if (await p.$('#needs .cell.allumage')) errs.push('calme 320 : pas d\'allumage quand le visiteur a demandé moins d\'animations');
     await p.close();
   }
