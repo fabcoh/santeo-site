@@ -1,4 +1,6 @@
 const { chromium } = require('playwright');
+// Offres floutées tant qu'aucun besoin n'est indiqué (Fabrice, 25/11/2026) : les tests qui cliquent une offre les dévoilent d'abord
+const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.click('#voile-tout'); await q.waitForTimeout(200); } };
 (async () => {
   const S = process.argv[2]; const b = await chromium.launch(); const errs = [];
   // La mascotte : 4 calques de même taille, bien chargés ; elle bouge (4 animations), sauf si la personne a demandé moins d'animations.
@@ -85,7 +87,8 @@ const { chromium } = require('playwright');
     // Le curseur filtre comme les étoiles : liste de référence (toutes les offres, avec leurs garanties), puis chaque poste à chaque niveau
     if (name === 'pc') {
       await p.click('.precise[data-open="autres"]'); await p.fill('#f-autre', 'essai'); await p.press('#f-autre', 'Tab'); await p.keyboard.press('Escape'); await p.waitForTimeout(100);   // « Autres » affiché sans rien filtrer
-      for (let k = 0; k < 20 && await p.isVisible('#more-offers'); k++) { await p.click('#more-offers'); await p.waitForTimeout(80); }
+      await devoiler(p);
+      for (let k = 0; k < 20 && await p.isVisible('#more-offers'); k++) { await devoiler(p); await p.click('#more-offers'); await p.waitForTimeout(80); }
       const ref = await p.$$eval('#offers article.offer', l => l.map(o => ({ id: o.querySelector('.o-real').textContent + ' ' + o.querySelector('.o-price').textContent,
         v: Object.fromEntries([...o.querySelectorAll('.o-col')].map(c => [c.querySelector('.lab').textContent, c.querySelector('.pc').textContent])) })));
       if (ref.length < 20 || !ref.every(o => Object.keys(o.v).length === 5)) errs.push('pc : liste de référence incomplète (' + ref.length + ' offres)');
@@ -94,7 +97,7 @@ const { chromium } = require('playwright');
         const attendu = ref.filter(o => Object.entries(reglage).every(([k, n]) => NIVEAU[k](o.v[NOMS[k]]) >= n));
         const compte = await p.textContent('#count'), n = attendu.length ? +(compte.match(/^\d+/) || [-1])[0] : 0;
         const vus = await p.$$eval('#offers article.offer', l => l.map(o => o.querySelector('.o-real').textContent + ' ' + o.querySelector('.o-price').textContent));
-        const ok = attendu.length ? n === attendu.length && vus.join('|') === attendu.slice(0, vus.length).map(o => o.id).join('|') && vus.length === Math.min(5, attendu.length)
+        const ok = attendu.length ? n === attendu.length && vus.join('|') === attendu.slice(0, vus.length).map(o => o.id).join('|') && vus.length === Math.min(6, attendu.length)
           : /^Aucune offre/.test(compte) && /Baissez un curseur/.test(await p.textContent('#offers'));
         if (!ok) errs.push('pc : ' + quoi + ' : ' + compte + ' ; attendu ' + attendu.length + ' offres');
         return attendu.length;
@@ -128,7 +131,7 @@ const { chromium } = require('playwright');
     await p.click('.precise[data-open="dent"]'); await regler(p, 'hosp', 1);
     if (await p.isVisible('#needpanel .needpanel') || (await p.textContent('#needs .col:nth-child(3) .precise')) !== '(+) Précisez · 3') errs.push(name + ' : un autre curseur doit fermer la fenêtre « Précisez »');
     await regler(p, 'hosp', 0);
-    await p.click('[data-c="0"]');
+    await devoiler(p); await p.click('[data-c="0"]');
     const chosen = await p.textContent('#chosen-box');
     const hs = await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
     if (hs) errs.push(name + ' : défilement de côté');
@@ -141,6 +144,17 @@ const { chromium } = require('playwright');
     p.on('pageerror', e => errs.push('calme: ' + e.message));
     await p.goto('file://' + S + '/comparateur-santeo.html'); await p.waitForTimeout(300); await mascotte(p, 'calme 320', 0);
     await p.fill('#age','21/07/1981'); await p.fill('#cp','75012'); await p.waitForTimeout(600);
+    // Offres floutées tant qu'aucun besoin n'est indiqué, avec « Indiquez vos besoins pour dévoiler les offres » (Fabrice, 25/11/2026)
+    { const v0 = await p.evaluate(() => { const v = document.getElementById('voile-offres'), c = v.querySelector('.voile-carte').getBoundingClientRect(), z = document.getElementById('offres-zone').getBoundingClientRect();
+        return { visible: !v.hidden, texte: v.textContent.replace(/\s+/g, ' ').trim(), flou: getComputedStyle(document.getElementById('offers')).filter, inert: document.getElementById('offers').inert,
+          offres: document.querySelectorAll('#offers article.offer').length, dedans: c.left >= z.left - 1 && c.right <= z.right + 1, curseurs: !!document.querySelector('.voile-curseurs') }; });
+      if (!v0.visible || !/Indiquez vos besoins pour dévoiler les offres/.test(v0.texte) || !/blur/.test(v0.flou) || !v0.inert || !v0.offres || !v0.dedans || !v0.curseurs)
+        errs.push('calme 320 : avant tout besoin, les offres doivent être floutées sous « Indiquez vos besoins… » (' + JSON.stringify(v0) + ')');
+      await regler(p, 'hosp', 1); await p.waitForTimeout(150);
+      const v1 = await p.evaluate(() => ({ visible: !document.getElementById('voile-offres').hidden, inert: document.getElementById('offers').inert }));
+      await regler(p, 'hosp', 0); await p.waitForTimeout(150);
+      const v2 = await p.evaluate(() => !document.getElementById('voile-offres').hidden);
+      if (v1.visible || v1.inert || v2) errs.push('calme 320 : un premier besoin doit dévoiler les offres pour de bon (' + JSON.stringify(v1) + ' ' + v2 + ')'); }
     if (await p.$('#needs .cell.allumage')) errs.push('calme 320 : pas d\'allumage quand le visiteur a demandé moins d\'animations');
     await p.close();
   }

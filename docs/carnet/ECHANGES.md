@@ -579,6 +579,18 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Offres floutées tant qu'aucun besoin n'est indiqué (Fabrice, 25/11 : « TU DOIS FLOUTER LES RESULTATS ET SUR LE FLOU
+  DEMANDER / Indiquer vos besoins pour dévoiler les offres avec la photo des curseur »)** (demande de fusion
+  « offres-floues », modèle montré à Fabrice). Les offres et « Plus de résultats » sont floutées et inactives ; au-dessus,
+  une carte avec un dessin de trois curseurs, *Indiquez vos besoins pour dévoiler les offres* (Vos mots), un bouton
+  *Choisir mes besoins* qui ramène aux curseurs, et *ou voir toutes les offres* (Mon idée, pour ne pas bloquer un visiteur
+  sans besoin particulier). Le premier curseur poussé ou la première précision dévoile les offres pour toute la visite.
+  Tests : les tests qui cliquent une offre la dévoilent d'abord ; nouveau test du flou (en échec sans la modification).
+  Trouvé en passant : `test-comparateur.js` lit la page `maquette/comparateur-santeo.html`, qui n'est pas dans le dépôt et
+  n'est reconstruite que par `build.py` sans `--site` ; depuis le 22/11 je ne la reconstruisais pas, donc ses
+  « ERREURS: aucune » des demandes n° 67 à 71 portaient sur une page ancienne. Reconstruite, la suite signalait une attente
+  dépassée (5 offres affichées au lieu de 6 depuis le comparateur à curseurs) : corrigée ici. Désormais : reconstruire la
+  maquette avant chaque passage de `test-comparateur.js`.
 - **Icône « Posez vos questions à notre IA » (Fabrice, 25/11 : « a l'emplacement de la croix rouge mettre une icone sympa
   type oiseaux sur icone whatsapp / Posez vos questions à notre IA / fait moi un modèle », puis « petit par trop gros »)**
   (demande de fusion « icone-ia »). Chaque offre : en haut à droite, l'oiseau (immobile, 34 px) avec une petite pastille
