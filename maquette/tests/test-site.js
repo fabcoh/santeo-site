@@ -4,6 +4,8 @@
 // envoyer sur Internet : l'adresse du CRM est simulée, la demande envoyée est relue et vérifiée.
 // Coordonnées inventées seulement (règle 7).
 const { chromium, devices } = require('playwright');
+// Offres floutées tant qu'aucun besoin n'est indiqué (Fabrice, 25/11/2026) : les tests qui cliquent une offre les dévoilent d'abord
+const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.click('#voile-tout'); await q.waitForTimeout(200); } };
 const { execFileSync } = require('child_process');
 const fs = require('fs'), os = require('os'), path = require('path');
 const S = process.argv[2], R = process.argv[3];
@@ -54,7 +56,7 @@ async function servir(ctx, base, dir) {
 
 async function remplir(p) {
   await p.fill('#age', '21/07/1981'); await p.fill('#cp', '75012'); await p.waitForTimeout(250);
-  await p.click('[data-c="0"]'); await p.waitForTimeout(700);
+  await devoiler(p); await p.click('[data-c="0"]'); await p.waitForTimeout(700);
   await p.selectOption('#civ', 'Madame'); await p.fill('#prenom', 'Camille'); await p.fill('#nom', 'Essai');
   await p.fill('#tel', '06 12 34 56 78'); await p.fill('#mail', 'camille.essai@exemple.fr');
 }
@@ -308,7 +310,7 @@ async function remplir(p) {
     q.on('pageerror', e => err(nom + ' api santé : ' + e.message));
     await q.goto('https://www.santeo.net/'); await q.waitForTimeout(300);
     await q.fill('#cp', '75012'); await q.type('#age', '21071966', { delay: 30 }); await q.waitForTimeout(1500);
-    const toutes = async () => { for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(150); }
+    const toutes = async () => { for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(150); }
       return q.$$eval('#offers article.offer', l => l.map((o, i) => ({ i, nom: (o.querySelector('.o-real') || {}).textContent || '', prix: (o.querySelector('.o-price') || {}).textContent || '' }))); };
     const liste = await toutes(), api = liste.filter(o => /API SANT/i.test(o.nom));
     doit(appelsApicil.length === 1, nom + ' : un seul appel au relais API Santé attendu (' + appelsApicil.length + ')');
@@ -317,7 +319,7 @@ async function remplir(p) {
     doit(api.length === 3 && api.some(o => /85,52/.test(o.prix)), nom + ' : offres API Santé affichées ' + JSON.stringify(api));
     // Choisir une offre API Santé, puis changer un curseur : l'option choisie suit (ou se retire), jamais une autre offre à sa place
     if (api.length) {
-      await q.click('[data-c="' + api[0].i + '"]'); await q.waitForTimeout(400);
+      await devoiler(q); await q.click('[data-c="' + api[0].i + '"]'); await q.waitForTimeout(400);
       const lire = () => q.$eval('#chosen-box', e => ({ opt: (e.querySelector('strong') || {}).textContent || '', prix: (e.querySelector('.ch-prix') || {}).textContent || '' }));
       const avant = await lire();
       await q.$eval('#cur-hosp', e => { e.value = String(+e.value + 1); e.dispatchEvent(new Event('input', { bubbles: true })); }); await q.waitForTimeout(400);   // un cran de plus au curseur : la liste change
@@ -340,7 +342,7 @@ async function remplir(p) {
     const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.tchat); const q = await c.newPage();
     q.on('pageerror', e => err(nom + ' réglages : ' + e.message));
     const etat = async () => { await q.fill('#cp', '75012'); await q.fill('#age', '21/07/1966'); await q.waitForTimeout(1300);
-      for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(120); }
+      for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
       return q.evaluate(() => ({ mcci: [...document.querySelectorAll('#offers .o-real')].filter(e => /MCCINOVA|FLEXIA|SOLENCIA/.test(e.textContent)).length,
         offres: document.querySelectorAll('#offers article.offer').length, logoMcci: !document.querySelector('.logo-box[data-co="MCCI"]').hidden,
         tchat: !document.getElementById('tchat').hidden })); };
@@ -377,7 +379,7 @@ async function remplir(p) {
     const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
     q.on('pageerror', e => err(nom + ' april : ' + e.message));
     await q.goto('https://www.santeo.net/?controle=1'); await q.fill('#cp', '75012'); await q.type('#age', '21071966', { delay: 30 }); await q.waitForTimeout(1800);
-    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(120); }
+    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
     const april = await q.$$eval('#offers article.offer', l => l.map(o => o.querySelector('.o-real').textContent + ' ' + o.querySelector('.o-price').textContent).filter(t => /APRIL/.test(t)));
     const a0 = appelsApril[0] || {};
     doit(appelsApril.length === 1 && JSON.stringify(a0.produits) === '["SanteMix","SimplySante"]' && a0.regime === 'SS' && a0.cp === '75012' && a0.assures && a0.assures[0].naissance === '1966-07-21' && a0.remise === false,
@@ -421,7 +423,7 @@ async function remplir(p) {
     doit(m1.besoinsLignes === lignesBesoins && m1.curseurs.length === 5 && m1.curseurs.every(h => h >= 44), nom + ' : cartes des besoins : ' + m1.besoinsLignes + ' lignes (attendu ' + lignesBesoins + '), curseurs ' + m1.curseurs.join(','));
     doit(m1.croissant && m1.badges.join() === '0:Petit prix', nom + ' : « Petit prix » sur la première offre seulement ' + JSON.stringify(m1.badges));
     // Toutes les offres (APRIL et API Santé comprises) : aucun nom d'assureur, de gamme ni de formule, aucune promesse
-    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await q.click('#more-offers'); await q.waitForTimeout(120); }
+    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
     const m2 = await mesure();
     doit(appelsApril.length === 1 && appelsApicil.length === 1 && m2.n > 40 && !ASSUREURS.test(m2.textes) && !/recommand|offert|gratuit|meilleur/i.test(m2.textes) && m2.nomsVisibles === 0,
       nom + ' : nom d\'assureur ou promesse dans les cartes : ' + ((m2.textes.match(ASSUREURS) || m2.textes.match(/recommand|offert|gratuit|meilleur/i) || [''])[0]) + ' (' + m2.n + ' offres, ' + m2.nomsVisibles + ' noms visibles)');
@@ -435,7 +437,7 @@ async function remplir(p) {
     const touche = await q.$eval('#cur-hono', e => e.value + ' ' + e.getAttribute('aria-valuetext')), apres = await q.textContent('#count');
     doit(touche === '3 Au moins 180 %' && apres !== avant && /atteignent vos niveaux/.test(apres), nom + ' : curseur au toucher : ' + touche + ' | ' + apres);
     // L'offre choisie reste mise en évidence ; le formulaire s'ouvre
-    await q.click('[data-c="1"]'); await q.waitForTimeout(500);
+    await devoiler(q); await q.click('[data-c="1"]'); await q.waitForTimeout(500);
     const choisie = await q.$$eval('#offers article.offer', l => l.map((o, i) => o.classList.contains('chosen') ? i : -1).filter(i => i >= 0));
     doit(choisie.join() === '1' && await q.isVisible('#form-panel'), nom + ' : offre choisie ' + JSON.stringify(choisie));
     console.log(nom, '| cartes :', m1.premiereLigne, 'par ligne,', m1.lignes, 'lignes pour', m1.n, 'offres | besoins sur', m1.besoinsLignes, 'ligne(s) | toutes les offres :', m2.n, '| toucher :', touche, '|', apres);
