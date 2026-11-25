@@ -334,7 +334,9 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .voile-tout:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* Petite icône « Posez vos questions à notre IA » en haut à droite de chaque offre : l'oiseau sur l'icône WhatsApp
    (Fabrice, 25/11/2026 : « une icone sympa type oiseaux sur icone whatsapp / Posez vos questions à notre IA », « petit pas trop gros ») */
-.o-ia{position:absolute;top:.55rem;right:.6rem;display:flex;align-items:center;gap:.35rem;text-decoration:none;color:var(--brand-1);font-size:.68rem;font-weight:700;line-height:1.15;text-align:right}
+.o-tete{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem}
+.o-droite{display:flex;flex-direction:column;align-items:flex-end;gap:.55rem;flex:none}
+.o-ia{display:flex;align-items:center;gap:.35rem;text-decoration:none;color:var(--brand-1);font-size:.68rem;font-weight:700;line-height:1.15;text-align:right}
 .o-ia-txt>span{display:block;white-space:nowrap}
 .o-ia:hover .o-ia-txt,.o-ia:focus-visible .o-ia-txt{text-decoration:underline}
 .o-ia:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
@@ -377,9 +379,12 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .det-pop[open]{display:flex;flex-direction:column;animation:pop-in .16s ease-out}
 .det-pop::backdrop{background:rgba(8,30,45,.45)}
 /* Comparer cette offre : bouton sous le prix, volet à droite, tableau des offres choisies (Fabrice, 25/11/2026) */
-.o-cmp{align-self:flex-start;margin-top:.3rem;border:1.5px solid var(--accent);background:var(--surface);color:var(--accent);border-radius:99px;font:inherit;font-size:.8rem;font-weight:700;padding:.22rem .7rem;cursor:pointer;min-height:32px}
-.o-cmp[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
-.o-cmp:disabled{border-color:var(--line);color:var(--muted);cursor:not-allowed;font-weight:600}
+/* Sous le badge « Posez vos questions à notre IA », contour léger (Fabrice, 25/11/2026 : « Comparer doit etre place en dessous du
+   badge léger contour ») */
+.o-cmp{border:1px solid var(--line);background:var(--surface);color:var(--brand-1);border-radius:99px;font:inherit;font-size:.72rem;font-weight:600;line-height:1.2;padding:.2rem .6rem;cursor:pointer;min-height:28px;white-space:nowrap}
+.o-cmp:hover{border-color:var(--accent)}
+.o-cmp[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.o-cmp:disabled{color:var(--muted);cursor:not-allowed;font-weight:500}
 .o-cmp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cmp-volet{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:55;width:250px;background:var(--surface);color:var(--fg);border:2px solid var(--brand-1);border-radius:14px;box-shadow:0 14px 40px rgba(5,30,50,.28);padding:.8rem .85rem;display:flex;flex-direction:column;gap:.55rem}
 .cmp-volet[hidden]{display:none}
@@ -1394,7 +1399,7 @@ const idOffre=x=>x.key+"|"+x.fi;
 function boutonComparer(i,x){
   const pris=S.cmp.includes(idOffre(x)), plein=!pris&&S.cmp.length>=CMP_MAX;
   return '<button type="button" class="o-cmp" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+'>'+
-    (pris?'★ À comparer · retirer':plein?'3 offres au maximum : retirez-en une':'☆ Comparer cette offre')+'</button>';
+    (pris?'★ À comparer · retirer':plein?'3 au maximum':'☆ Comparer cette offre')+'</button>';
 }
 function basculerComparaison(i){
   const x=LAST[i]; if(!x)return; const id=idOffre(x), j=S.cmp.indexOf(id);
@@ -1501,11 +1506,11 @@ function upd(){
     const etoile=S.cmp.includes(idOffre(x));
     o.setAttribute("aria-label","Option "+(i+1)+(etoile?", choisie pour la comparaison":""));
     o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Choisie pour la comparaison" aria-hidden="true">★</span>':'')+
-      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+boutonComparer(i,x)+'</div>'+
+      '<div class="o-tete"><div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div></div>'+
+      '<div class="o-droite">'+(iaLien(i,x)?'<a class="o-ia" href="'+iaLien(i,x)+'" target="_blank" rel="noopener" aria-label="Posez vos questions à notre IA sur l\'option '+(i+1)+' (WhatsApp)"><span class="o-ia-txt"><span>Posez vos questions</span> <span>à notre IA</span></span><span class="o-ia-pic" aria-hidden="true">'+OISEAU_IA+WA_PICTO+'</span></a>':'')+boutonComparer(i,x)+'</div></div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
-      (iaLien(i,x)?'<a class="o-ia" href="'+iaLien(i,x)+'" target="_blank" rel="noopener" aria-label="Posez vos questions à notre IA sur l\'option '+(i+1)+' (WhatsApp)"><span class="o-ia-txt"><span>Posez vos questions</span> <span>à notre IA</span></span><span class="o-ia-pic" aria-hidden="true">'+OISEAU_IA+WA_PICTO+'</span></a>':'')+
       '<div class="o-actions"><button type="button" class="btn" data-c="'+i+'" aria-label="Recevoir mon devis : option '+(i+1)+'">Recevoir mon devis</button>'+
       '<button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog" aria-label="Détails de l\'option '+(i+1)+'">(+) Détails</button></div>';
     box.appendChild(o);

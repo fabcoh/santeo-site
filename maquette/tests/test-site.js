@@ -446,8 +446,10 @@ async function remplir(p) {
       const c1 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('.o-etoile') ? i : -1).filter(i => i >= 0),
         volet: !document.getElementById('cmp-volet').hidden, liste: [...document.querySelectorAll('#cmp-liste li b')].map(e => e.textContent),
         gris: [...document.querySelectorAll('.o-cmp')].filter(b => b.disabled).length, total: document.querySelectorAll('.o-cmp').length,
-        voletDansEcran: (r => r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight)(document.getElementById('cmp-volet').getBoundingClientRect()) }));
-      doit(c1.etoiles.join() === '0,2,4' && c1.volet && c1.liste.join() === 'Option 1,Option 3,Option 5' && c1.gris === c1.total - 3 && c1.voletDansEcran,
+        voletDansEcran: (r => r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight)(document.getElementById('cmp-volet').getBoundingClientRect()),
+        sousBadge: [...document.querySelectorAll('#offers article.offer')].every(o => { const a = o.querySelector('.o-ia').getBoundingClientRect(), b = o.querySelector('.o-cmp').getBoundingClientRect(), c = o.getBoundingClientRect(), p = o.querySelector('.o-price').getBoundingClientRect();
+          return b.top >= a.bottom - 1 && b.right <= c.right && Math.abs(b.right - a.right) < 3 && (b.left >= p.right || b.top >= p.bottom || b.bottom <= p.top); }) }));
+      doit(c1.etoiles.join() === '0,2,4' && c1.volet && c1.liste.join() === 'Option 1,Option 3,Option 5' && c1.gris === c1.total - 3 && c1.voletDansEcran && c1.sousBadge,
         nom + ' : comparer 3 offres : ' + JSON.stringify(c1));
       await q.click('#cmp-liste [data-retirer="2"]'); await q.waitForTimeout(150);
       const c2 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('.o-etoile') ? i : -1).filter(i => i >= 0), gris: [...document.querySelectorAll('.o-cmp')].filter(b => b.disabled).length }));
