@@ -316,6 +316,18 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .offer.chosen{border-color:var(--accent)}
 .o-badge{position:absolute;top:0;left:.95rem;transform:translateY(-50%);background:var(--accent);color:var(--accent-fg);font-size:.74rem;font-weight:700;line-height:1;letter-spacing:.02em;border-radius:99px;padding:.32rem .65rem;white-space:nowrap}
 .o-left{display:flex;flex-direction:column;gap:.1rem;min-width:0}
+/* Petite icône « Posez vos questions à notre IA » en haut à droite de chaque offre : l'oiseau sur l'icône WhatsApp
+   (Fabrice, 25/11/2026 : « une icone sympa type oiseaux sur icone whatsapp / Posez vos questions à notre IA », « petit pas trop gros ») */
+.o-ia{position:absolute;top:.55rem;right:.6rem;display:flex;align-items:center;gap:.35rem;text-decoration:none;color:var(--brand-1);font-size:.68rem;font-weight:700;line-height:1.15;text-align:right}
+.o-ia-txt>span{display:block;white-space:nowrap}
+.o-ia:hover .o-ia-txt,.o-ia:focus-visible .o-ia-txt{text-decoration:underline}
+.o-ia:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.o-ia-pic{position:relative;flex:none;width:34px;height:34px;border-radius:50%;background:var(--accent-soft);border:1px solid var(--line);display:grid;place-items:center}
+.o-ia-pic .m-ia{position:relative;display:block;width:112%;transform:translate(2%,3%)}
+.o-ia-pic .m-ia img{position:absolute;left:0;top:0;width:100%;height:100%}
+.o-ia-pic .m-ia .m-corps{position:relative;height:auto}
+.o-ia-pic .m-ia img{animation:none}
+.o-ia-pic>svg{position:absolute;right:-4px;bottom:-4px;width:16px;height:16px}
 .o-name{font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .o-real{align-self:flex-start;font-size:.72rem;color:var(--warn);background:var(--warn-soft);border:1px dashed var(--warn);border-radius:4px;padding:0 .35rem}
 .o-price{font-family:var(--f-display);font-weight:800;font-size:1.75rem;line-height:1.15;color:var(--brand-1);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -1332,6 +1344,7 @@ function upd(){
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
+      (iaLien(i,x)?'<a class="o-ia" href="'+iaLien(i,x)+'" target="_blank" rel="noopener" aria-label="Posez vos questions à notre IA sur l\'option '+(i+1)+' (WhatsApp)"><span class="o-ia-txt"><span>Posez vos questions</span> <span>à notre IA</span></span><span class="o-ia-pic" aria-hidden="true">'+OISEAU_IA+WA_PICTO+'</span></a>':'')+
       '<div class="o-actions"><button type="button" class="btn" data-c="'+i+'" aria-label="Recevoir mon devis : option '+(i+1)+'">Recevoir mon devis</button>'+
       '<button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog" aria-label="Détails de l\'option '+(i+1)+'">(+) Détails</button></div>';
     box.appendChild(o);
@@ -1467,6 +1480,10 @@ $("adm-reset").onclick=()=>{CFG=CFG_DEPART();garder();renderAdmin();appliquerLog
 /* ---------- WhatsApp (ligne 86 46) ---------- */
 const WA_NUMERO="33153198646";   // ligne 86 46 : 01 53 19 86 46 (Fabrice, 09/11/2026 : « 0153198646 »), au format international sans « + »
 function waLien(texte){return WA_NUMERO?("https://wa.me/"+WA_NUMERO+"?text="+encodeURIComponent(texte)):null}
+// Icône de chaque offre : WhatsApp avec l'option et son prix déjà écrits
+function iaLien(i,x){return waLien("Bonjour, je viens du comparateur du site Santéo. J'ai une question sur l'option "+(i+1)+" à "+eur(x.total)+" par mois.")}
+const WA_PICTO='<svg viewBox="0 0 32 32" focusable="false"><circle cx="16" cy="16" r="15" fill="#25d366" stroke="#fff" stroke-width="2"/><path fill="#fff" d="M11.6 9.6c.3 0 .6 0 .8.5l1.2 2.8c.1.3.1.6-.1.8l-.8 1c-.2.2-.2.5 0 .8.9 1.5 2.2 2.7 3.8 3.5.3.1.6.1.8-.1l1-1.2c.2-.3.5-.3.8-.2l2.7 1.3c.4.2.5.5.4.9-.2 1.4-1.5 2.4-2.9 2.4-4.6-.4-8.5-4.2-8.9-8.8 0-1.4.9-2.6 2.2-2.9z"/></svg>';
+const OISEAU_IA=(()=>{const m=document.querySelector(".mascotte");if(!m)return "";const c=m.cloneNode(true);c.className="m-ia";c.removeAttribute("aria-hidden");return c.outerHTML})();
 function majWhatsApp(){
   const x=(S.chosen!=null&&LAST[S.chosen])?LAST[S.chosen]:null;
   const base="Bonjour, je viens du comparateur du site Santéo.";

@@ -579,6 +579,13 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Icône « Posez vos questions à notre IA » (Fabrice, 25/11 : « a l'emplacement de la croix rouge mettre une icone sympa
+  type oiseaux sur icone whatsapp / Posez vos questions à notre IA / fait moi un modèle », puis « petit par trop gros »)**
+  (demande de fusion « icone-ia »). Chaque offre : en haut à droite, l'oiseau (immobile, 34 px) avec une petite pastille
+  WhatsApp et *Posez vos questions / à notre IA* (Vos mots) ; le lien ouvre WhatsApp vers la ligne 86 46 avec *Bonjour, je
+  viens du comparateur du site Santéo. J'ai une question sur l'option N à X € par mois.* (Mon idée). Deux suites « ERREURS:
+  aucune ». Délégué à la protection des données : Fabrice, 25/11 : « il ne faut pas rendre public le numéro de dpo » ; rien
+  n'est publié sur le site à ce sujet.
 - **Article du jour, 23/11 : au-delà des remboursements, téléconsultation, assistance, réseaux de soins** (demande de fusion
   « article-teleconsultation », chapitre « Choisir sa mutuelle » ; dernier sujet de la semaine « la mutuelle et ce qu'elle
   apporte » ; texte : Mon idée, rédigé par un agent, relu par Claude). Vérifié sur Service-Public : F34696 (27/06/2026 :
