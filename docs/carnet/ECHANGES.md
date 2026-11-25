@@ -585,6 +585,11 @@ mieux référencer le site »
   *Posez vos questions à notre IA*, puis le bouton *☆ Comparer cette offre* au contour fin et léger ; au-delà de 3 offres,
   *3 au maximum*. Test : bouton sous le badge, aligné à droite, sans toucher le prix.
   Puis « Verticalement » : écart vertical porté à 1,1 rem.
+  Puis (Fabrice, 25/11) : « Tu dois te contenter de faire ce que je te demande / tu expliques / Pour comparer jusqu'à 3 offres
+  cliquez sur logo transparent de l'étoile / Tu ajoutes des étoiles sans fond au dessus de chaque badges qui devient jaune a la
+  sélection » : phrase *Pour comparer jusqu'à 3 offres, cliquez sur le logo transparent de l'étoile ☆* (Vos mots) sous le lien
+  du simulateur ; une étoile vide sans fond au-dessus de chaque offre, jaune une fois choisie ; elle remplace le bouton texte
+  « Comparer cette offre » ; 3 au plus (les autres étoiles pâlissent).
 - **Comparer cette offre (Fabrice, 25/11, par la relais : « on a va ajouter comparer cette offre avec une autre … il pourra
   selectionner jusqu'a 3 offres … tarif le mois cher au plus cher », « Comparer cette offre / un volet a doite avec les offres
   qui s'affiche » ; puis ici : « je crois que les étoiles pourrait mieux servir a comparer / tu écris comparer cette offre et
