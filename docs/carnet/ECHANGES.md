@@ -579,6 +579,9 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Conjoint sans fond rose (Fabrice, 26/11 : « pas de fond rouge sur le conjoint le champs n'est pas obligatoire »)** (demande
+  de fusion n° 80, correction fusionnée par Claude). La case du conjoint reste neutre quand elle est vide ; rose seulement si
+  une date est commencée sans être complète. Test en échec avant la correction ; en ligne, vérifié sur PC et téléphone.
 - **Effet sur « Comparer cette offre » (Fabrice, 26/11 : « tu peux créer un effet comparer cet offre donne moi des idee », puis
   « il faut qu'il puisse voir ...commparer cette offre »)** (demande de fusion « effet-comparer », modèle montré à Fabrice ; Mon
   idée). Halo doré qui pulse deux fois sur les boutons des 3 premières offres quand elles apparaissent, une seule fois par

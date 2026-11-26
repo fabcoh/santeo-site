@@ -1115,7 +1115,9 @@ function allumageLancer(){
   };
   ALLUMAGE.minuteur=setTimeout(pas,250);
 }
-function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=!champComplet(id);el.classList.toggle("a-remplir",vide);const m=el.closest(".masque");if(m)m.classList.toggle("a-remplir",vide)});
+// La date du conjoint n'est pas obligatoire : rose seulement si elle est commencée sans être complète (Fabrice, 26/11/2026 :
+// « pas de fond rouge sur le conjoint le champs n'est pas obligatoire »)
+function marquerChamps(){["age","cp","cnj"].forEach(id=>{const el=$(id),vide=id==="cnj"?(el.value.replace(/[^0-9]/g,"")!==""&&!champComplet(id)):!champComplet(id);el.classList.toggle("a-remplir",vide);const m=el.closest(".masque");if(m)m.classList.toggle("a-remplir",vide)});
   $("reg").classList.toggle("a-remplir",!$("reg").dataset.vu);
   if(champComplet("age")&&champComplet("cp"))allumageLancer()}
 /* Régime : rouge pâle aussi, jusqu'à ce que le visiteur l'ait touché (ouvert ou changé) */

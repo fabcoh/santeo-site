@@ -143,6 +143,10 @@ const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.cl
     const p = await b.newPage({viewport: {width: 320, height: 700}, deviceScaleFactor: 1, reducedMotion: 'reduce'});
     p.on('pageerror', e => errs.push('calme: ' + e.message));
     await p.goto('file://' + S + '/comparateur-santeo.html'); await p.waitForTimeout(300); await mascotte(p, 'calme 320', 0);
+    // Conjoint facultatif : pas de rose quand la case est vide, rose seulement si la date est commencée (Fabrice, 26/11/2026)
+    { const rose = () => p.evaluate(() => ({ age: document.getElementById('age').classList.contains('a-remplir'), cnj: document.getElementById('cnj').classList.contains('a-remplir') }));
+      const r0 = await rose(); await p.fill('#cnj', '10/0'); const r1 = await rose(); await p.fill('#cnj', ''); const r2 = await rose();
+      if (!r0.age || r0.cnj || !r1.cnj || r2.cnj) errs.push('calme 320 : conjoint en rose à tort ' + JSON.stringify([r0, r1, r2])); }
     await p.fill('#age','21/07/1981'); await p.fill('#cp','75012'); await p.waitForTimeout(600);
     // Offres floutées jusqu'à « Valider », avec les curseurs dentaire, optique, hospitalisation et honoraires sur le flou (Fabrice, 25/11/2026)
     { const v0 = await p.evaluate(() => { const v = document.getElementById('voile-offres'), c = v.querySelector('.voile-carte').getBoundingClientRect(), z = document.getElementById('offres-zone').getBoundingClientRect();
