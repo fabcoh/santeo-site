@@ -588,6 +588,7 @@ mieux référencer le site »
   visite ; étoile qui s'allume en jaune et tourne au survol ; une fois choisie, fond jaune clair, étoile jaune avec un petit
   « pop ». Rien ne bouge pour les visiteurs qui ont demandé moins d'animations.
   Puis « il faut le mettre dans une couleur pastelle beige » : bouton beige pastel (fond #f6eedf, texte brun, contraste 6,2).
+  Puis « non pas terrible retire jsute le contour pour voir » : contour retiré.
 - **Conjoint et enfants mineurs toujours visibles ; phrase du simulateur retirée (Fabrice, 26/11 : « il faut une case Conjoint
   date de naissance et nombre d'enfant mineurs ( 1, 2,3 ...) / fait moi une présentation » ; « Combien vous serait remboursé un
   soin ? Accéder au simulateur de remboursement Sécu / retire cette phrase de cet emplacmenet »)** (demande de fusion
