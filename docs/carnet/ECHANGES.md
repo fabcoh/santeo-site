@@ -590,6 +590,8 @@ mieux référencer le site »
   Puis « il faut le mettre dans une couleur pastelle beige » : bouton beige pastel (fond #f6eedf, texte brun, contraste 6,2).
   Puis « non pas terrible retire jsute le contour pour voir » : contour retiré.
   Puis « Retire le fond également » : ni fond ni contour, texte brun et étoile seuls.
+  Puis « Je veux comparer cette offre au niveau de l'étoile en haut / ___☆ comparer ___ / Badges » : *☆ Comparer* posé sur le
+  trait du haut de chaque carte, à la place de l'étoile ; choisie : *★ À comparer* en jaune ; au-delà de 3 : *☆ 3 au maximum*.
 - **Conjoint et enfants mineurs toujours visibles ; phrase du simulateur retirée (Fabrice, 26/11 : « il faut une case Conjoint
   date de naissance et nombre d'enfant mineurs ( 1, 2,3 ...) / fait moi une présentation » ; « Combien vous serait remboursé un
   soin ? Accéder au simulateur de remboursement Sécu / retire cette phrase de cet emplacmenet »)** (demande de fusion

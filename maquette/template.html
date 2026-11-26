@@ -386,7 +386,11 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 /* Effet (Fabrice, 26/11/2026 : « tu peux créer un effet comparer cet offre », « il faut qu'il puisse voir ...commparer cette offre ») :
    halo doré deux fois à la première apparition des offres, étoile qui s'allume au survol, jaune et « pop » une fois choisie */
 /* Beige pastel (Fabrice, 26/11/2026 : « il faut le mettre dans une couleur pastelle beige ») */
-.o-cmp:not([aria-pressed="true"]):not(:disabled){background:transparent;border-color:transparent;color:#6b5435;padding-left:0}
+/* En haut de la carte, posé sur le trait du cadre, à la place de l'étoile (Fabrice, 26/11/2026 : « Je veux comparer cette offre
+   au niveau de l'étoile en haut / ___☆ comparer ___ ») ; le fond de la carte coupe le trait */
+.o-cmp{position:absolute;top:0;left:.8rem;transform:translateY(-50%);margin:0;min-height:30px;padding:.15rem .55rem;z-index:1}
+.o-cmp:not([aria-pressed="true"]):not(:disabled){background:var(--surface);border-color:transparent;color:#6b5435}
+.o-cmp:disabled{background:var(--surface);border-color:transparent}
 .o-cmp .cmp-et{display:inline-block;transition:transform .2s,color .2s}
 .o-cmp[aria-pressed="true"]{background:#fff4d6;color:#7a5600;border-color:var(--star)}
 .o-cmp[aria-pressed="true"] .cmp-et{color:var(--star)}
@@ -1416,8 +1420,10 @@ function boutonComparer(i,x){
   const pris=S.cmp.includes(idOffre(x)), plein=!pris&&S.cmp.length>=CMP_MAX;
   // Halo : les boutons des 3 premières offres pulsent deux fois à la première apparition des offres, une seule fois par visite
   const attire=!window.__cmpVu&&i<3&&!pris&&!plein;
-  return '<button type="button" class="o-cmp'+(attire?' attire':'')+'" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+'>'+
-    (pris?'<span class="cmp-et" aria-hidden="true">★</span> À comparer · retirer':plein?'3 offres au maximum : retirez-en une':'<span class="cmp-et" aria-hidden="true">☆</span> Comparer cette offre')+'</button>';
+  return '<button type="button" class="o-cmp'+(attire?' attire':'')+'" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+
+    ' aria-label="'+(pris?'Retirer l\'option '+(i+1)+' de la comparaison':plein?'3 offres au maximum : retirez-en une':'Comparer l\'option '+(i+1))+'"'+
+    ' title="'+(pris?'Retirer de la comparaison':plein?'3 offres au maximum : retirez-en une':'Comparer cette offre')+'">'+
+    (pris?'<span class="cmp-et" aria-hidden="true">★</span> À comparer':plein?'<span class="cmp-et" aria-hidden="true">☆</span> 3 au maximum':'<span class="cmp-et" aria-hidden="true">☆</span> Comparer')+'</button>';
 }
 function basculerComparaison(i){
   const x=LAST[i]; if(!x)return; const id=idOffre(x), j=S.cmp.indexOf(id);
@@ -1523,8 +1529,8 @@ function upd(){
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
     const etoile=S.cmp.includes(idOffre(x));
     o.setAttribute("aria-label","Option "+(i+1)+(etoile?", choisie pour la comparaison":""));
-    o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Choisie pour la comparaison" aria-hidden="true">★</span>':'')+
-      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+(isFinite(x.prix2027)?'<div class="o-2027">('+eur(x.prix2027)+' en 2027)</div>':'<div class="o-2027 vide" aria-hidden="true">&nbsp;</div>')+boutonComparer(i,x)+'</div>'+
+    o.innerHTML=boutonComparer(i,x)+
+      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+(isFinite(x.prix2027)?'<div class="o-2027">('+eur(x.prix2027)+' en 2027)</div>':'<div class="o-2027 vide" aria-hidden="true">&nbsp;</div>')+'</div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+

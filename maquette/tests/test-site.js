@@ -447,14 +447,15 @@ async function remplir(p) {
     // tableau des offres choisies de la moins chère à la plus chère
     { await devoiler(q);
       for (const i of [2, 0, 4]) { await q.click('[data-cmp="' + i + '"]'); await q.waitForTimeout(150); }
-      const c1 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('.o-etoile') ? i : -1).filter(i => i >= 0),
+      const c1 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('[data-cmp][aria-pressed="true"]') ? i : -1).filter(i => i >= 0),
         volet: !document.getElementById('cmp-volet').hidden, liste: [...document.querySelectorAll('#cmp-liste li b')].map(e => e.textContent),
-        gris: [...document.querySelectorAll('.o-cmp')].filter(b => b.disabled).length, total: document.querySelectorAll('.o-cmp').length,
-        voletDansEcran: (r => r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight)(document.getElementById('cmp-volet').getBoundingClientRect()) }));
-      doit(c1.etoiles.join() === '0,2,4' && c1.volet && c1.liste.join() === 'Option 1,Option 3,Option 5' && c1.gris === c1.total - 3 && c1.voletDansEcran,
+        gris: [...document.querySelectorAll('#offers [data-cmp]')].filter(b => b.disabled).length, total: document.querySelectorAll('#offers [data-cmp]').length,
+        voletDansEcran: (r => r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight)(document.getElementById('cmp-volet').getBoundingClientRect()),
+        enHaut: [...document.querySelectorAll('#offers article.offer')].every(o => { const b = o.querySelector('[data-cmp]').getBoundingClientRect(), c = o.getBoundingClientRect(); return b.top < c.top && b.bottom > c.top; }) }));
+      doit(c1.etoiles.join() === '0,2,4' && c1.volet && c1.liste.join() === 'Option 1,Option 3,Option 5' && c1.gris === c1.total - 3 && c1.voletDansEcran && c1.enHaut,
         nom + ' : comparer 3 offres : ' + JSON.stringify(c1));
       await q.click('#cmp-liste [data-retirer="2"]'); await q.waitForTimeout(150);
-      const c2 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('.o-etoile') ? i : -1).filter(i => i >= 0), gris: [...document.querySelectorAll('.o-cmp')].filter(b => b.disabled).length }));
+      const c2 = await q.evaluate(() => ({ etoiles: [...document.querySelectorAll('#offers article.offer')].map((o, i) => o.querySelector('[data-cmp][aria-pressed="true"]') ? i : -1).filter(i => i >= 0), gris: [...document.querySelectorAll('#offers [data-cmp]')].filter(b => b.disabled).length }));
       doit(c2.etoiles.join() === '0,4' && c2.gris === 0, nom + ' : retirer une offre du volet : ' + JSON.stringify(c2));
       await q.click('#cmp-go'); await q.waitForTimeout(300);
       const c3 = await q.evaluate(() => { const c = document.querySelector('.cmp-pop .dp-corps'); return { cols: [...document.querySelectorAll('.gar-cmp thead .cmp-col b')].map(e => e.textContent),
