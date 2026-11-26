@@ -579,6 +579,11 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Effet sur « Comparer cette offre » (Fabrice, 26/11 : « tu peux créer un effet comparer cet offre donne moi des idee », puis
+  « il faut qu'il puisse voir ...commparer cette offre »)** (demande de fusion « effet-comparer », modèle montré à Fabrice ; Mon
+  idée). Halo doré qui pulse deux fois sur les boutons des 3 premières offres quand elles apparaissent, une seule fois par
+  visite ; étoile qui s'allume en jaune et tourne au survol ; une fois choisie, fond jaune clair, étoile jaune avec un petit
+  « pop ». Rien ne bouge pour les visiteurs qui ont demandé moins d'animations.
 - **Conjoint et enfants mineurs toujours visibles ; phrase du simulateur retirée (Fabrice, 26/11 : « il faut une case Conjoint
   date de naissance et nombre d'enfant mineurs ( 1, 2,3 ...) / fait moi une présentation » ; « Combien vous serait remboursé un
   soin ? Accéder au simulateur de remboursement Sécu / retire cette phrase de cet emplacmenet »)** (demande de fusion
