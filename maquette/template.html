@@ -383,6 +383,25 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-cmp[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
 .o-cmp:disabled{border-color:var(--line);color:var(--muted);cursor:not-allowed;font-weight:600}
 .o-cmp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* Effet (Fabrice, 26/11/2026 : « tu peux créer un effet comparer cet offre », « il faut qu'il puisse voir ...commparer cette offre ») :
+   halo doré deux fois à la première apparition des offres, étoile qui s'allume au survol, jaune et « pop » une fois choisie */
+/* Beige pastel (Fabrice, 26/11/2026 : « il faut le mettre dans une couleur pastelle beige ») */
+/* En haut de la carte, posé sur le trait du cadre, à la place de l'étoile (Fabrice, 26/11/2026 : « Je veux comparer cette offre
+   au niveau de l'étoile en haut / ___☆ comparer ___ ») ; le fond de la carte coupe le trait */
+.o-cmp{position:absolute;top:0;left:.8rem;transform:translateY(-50%);margin:0;min-height:30px;padding:.15rem .55rem;z-index:1}
+.o-cmp:not([aria-pressed="true"]):not(:disabled){background:var(--surface);border-color:transparent;color:#6b5435}
+.o-cmp:disabled{background:var(--surface);border-color:transparent}
+.o-cmp .cmp-et{display:inline-block;transition:transform .2s,color .2s}
+.o-cmp[aria-pressed="true"]{background:#fff4d6;color:#7a5600;border-color:var(--star)}
+.o-cmp[aria-pressed="true"] .cmp-et{color:var(--star)}
+.o-cmp:not(:disabled):hover .cmp-et{color:var(--star)}
+@media (prefers-reduced-motion: no-preference){
+  .o-cmp.attire{animation:cmp-halo 1.4s ease-out .6s 2}
+  .o-cmp:not(:disabled):hover .cmp-et{transform:rotate(-18deg) scale(1.25)}
+  .o-cmp.pop .cmp-et{animation:cmp-pop .4s ease-out}
+}
+@keyframes cmp-halo{0%{box-shadow:0 0 0 0 rgba(217,154,0,.6)}70%{box-shadow:0 0 0 11px rgba(217,154,0,0)}100%{box-shadow:0 0 0 0 rgba(217,154,0,0)}}
+@keyframes cmp-pop{0%{transform:scale(1)}45%{transform:scale(1.7) rotate(15deg)}100%{transform:scale(1)}}
 .cmp-volet{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:55;width:250px;background:var(--surface);color:var(--fg);border:2px solid var(--brand-1);border-radius:14px;box-shadow:0 14px 40px rgba(5,30,50,.28);padding:.8rem .85rem;display:flex;flex-direction:column;gap:.55rem}
 .cmp-volet[hidden]{display:none}
 .cmp-tete{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
@@ -1399,13 +1418,17 @@ const CMP_MAX=3;
 const idOffre=x=>x.key+"|"+x.fi;
 function boutonComparer(i,x){
   const pris=S.cmp.includes(idOffre(x)), plein=!pris&&S.cmp.length>=CMP_MAX;
-  return '<button type="button" class="o-cmp" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+'>'+
-    (pris?'★ À comparer · retirer':plein?'3 offres au maximum : retirez-en une':'☆ Comparer cette offre')+'</button>';
+  // Halo : les boutons des 3 premières offres pulsent deux fois à la première apparition des offres, une seule fois par visite
+  const attire=!window.__cmpVu&&i<3&&!pris&&!plein;
+  return '<button type="button" class="o-cmp'+(attire?' attire':'')+'" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+
+    ' aria-label="'+(pris?'Retirer l\'option '+(i+1)+' de la comparaison':plein?'3 offres au maximum : retirez-en une':'Comparer l\'option '+(i+1))+'"'+
+    ' title="'+(pris?'Retirer de la comparaison':plein?'3 offres au maximum : retirez-en une':'Comparer cette offre')+'">'+
+    (pris?'<span class="cmp-et" aria-hidden="true">★</span> À comparer':plein?'<span class="cmp-et" aria-hidden="true">☆</span> 3 au maximum':'<span class="cmp-et" aria-hidden="true">☆</span> Comparer')+'</button>';
 }
 function basculerComparaison(i){
   const x=LAST[i]; if(!x)return; const id=idOffre(x), j=S.cmp.indexOf(id);
   if(j>=0)S.cmp.splice(j,1); else if(S.cmp.length<CMP_MAX)S.cmp.push(id);
-  upd(); const b=document.querySelector('[data-cmp="'+i+'"]'); if(b)b.focus({preventScroll:true});
+  window.__cmpVu=true; upd(); const b=document.querySelector('[data-cmp="'+i+'"]'); if(b){b.focus({preventScroll:true});if(b.getAttribute("aria-pressed")==="true")b.classList.add("pop")}
 }
 function offresComparees(){return S.cmp.map(id=>{const i=LAST.findIndex(x=>idOffre(x)===id);return i<0?null:{i,x:LAST[i]}}).filter(Boolean).sort((a,b)=>a.x.total-b.x.total)}
 function majVolet(visible){
@@ -1506,8 +1529,8 @@ function upd(){
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
     const etoile=S.cmp.includes(idOffre(x));
     o.setAttribute("aria-label","Option "+(i+1)+(etoile?", choisie pour la comparaison":""));
-    o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Choisie pour la comparaison" aria-hidden="true">★</span>':'')+
-      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+(isFinite(x.prix2027)?'<div class="o-2027">('+eur(x.prix2027)+' en 2027)</div>':'<div class="o-2027 vide" aria-hidden="true">&nbsp;</div>')+boutonComparer(i,x)+'</div>'+
+    o.innerHTML=boutonComparer(i,x)+
+      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+(isFinite(x.prix2027)?'<div class="o-2027">('+eur(x.prix2027)+' en 2027)</div>':'<div class="o-2027 vide" aria-hidden="true">&nbsp;</div>')+'</div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
@@ -1523,6 +1546,7 @@ function upd(){
   // Floutées jusqu'à « Valider » (curseurs sur le flou) ou « ou voir toutes les offres » (Fabrice, 25/11/2026)
   voileOffres(!S.devoile);
   majVolet(!!S.devoile);
+  if(S.devoile&&list.length&&!window.__cmpVu&&!window.__cmpMinuteur)window.__cmpMinuteur=setTimeout(()=>{window.__cmpVu=true},4000);
 }
 $("more-offers").onclick=()=>{S.shown=LAST.length;upd()};
 

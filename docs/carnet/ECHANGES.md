@@ -582,6 +582,16 @@ mieux référencer le site »
 - **Conjoint sans fond rose (Fabrice, 26/11 : « pas de fond rouge sur le conjoint le champs n'est pas obligatoire »)** (demande
   de fusion n° 80, correction fusionnée par Claude). La case du conjoint reste neutre quand elle est vide ; rose seulement si
   une date est commencée sans être complète. Test en échec avant la correction ; en ligne, vérifié sur PC et téléphone.
+- **Effet sur « Comparer cette offre » (Fabrice, 26/11 : « tu peux créer un effet comparer cet offre donne moi des idee », puis
+  « il faut qu'il puisse voir ...commparer cette offre »)** (demande de fusion « effet-comparer », modèle montré à Fabrice ; Mon
+  idée). Halo doré qui pulse deux fois sur les boutons des 3 premières offres quand elles apparaissent, une seule fois par
+  visite ; étoile qui s'allume en jaune et tourne au survol ; une fois choisie, fond jaune clair, étoile jaune avec un petit
+  « pop ». Rien ne bouge pour les visiteurs qui ont demandé moins d'animations.
+  Puis « il faut le mettre dans une couleur pastelle beige » : bouton beige pastel (fond #f6eedf, texte brun, contraste 6,2).
+  Puis « non pas terrible retire jsute le contour pour voir » : contour retiré.
+  Puis « Retire le fond également » : ni fond ni contour, texte brun et étoile seuls.
+  Puis « Je veux comparer cette offre au niveau de l'étoile en haut / ___☆ comparer ___ / Badges » : *☆ Comparer* posé sur le
+  trait du haut de chaque carte, à la place de l'étoile ; choisie : *★ À comparer* en jaune ; au-delà de 3 : *☆ 3 au maximum*.
 - **Conjoint et enfants mineurs toujours visibles ; phrase du simulateur retirée (Fabrice, 26/11 : « il faut une case Conjoint
   date de naissance et nombre d'enfant mineurs ( 1, 2,3 ...) / fait moi une présentation » ; « Combien vous serait remboursé un
   soin ? Accéder au simulateur de remboursement Sécu / retire cette phrase de cet emplacmenet »)** (demande de fusion
