@@ -579,6 +579,12 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Tarif 2027 sous le tarif (Fabrice, 26/11 : « il faut vraiment réduite les tarifs … il fait ajouter en plus petit et gris
+  le tarif en dessous (55,05€ en 2027) », puis « tu n'endiques que les tarifs que tu as »)** (demande de fusion « tarif-2027 »,
+  modèle montré à Fabrice). Sous le tarif 2026 de chaque offre qui a une grille 2027 (Avenir Mutuelle seulement au 26/11 :
+  5 gammes, tarifs du moteur `fabcoh/santeo-tarifs`, option `prix2027`, âge atteint en 2027) : *(81,42 € en 2027)* en petit
+  et gris ; rien sur les autres offres. Sa capture montrait l'ancienne version (gros tarif, « Petit prix ») : le site en ligne
+  avait déjà la cotisation réduite (PR n° 75) ; probable copie gardée par son navigateur.
 - **Comparer cette offre (Fabrice, 25/11, par la relais : « on a va ajouter comparer cette offre avec une autre … il pourra
   selectionner jusqu'a 3 offres … tarif le mois cher au plus cher », « Comparer cette offre / un volet a doite avec les offres
   qui s'affiche » ; puis ici : « je crois que les étoiles pourrait mieux servir a comparer / tu écris comparer cette offre et

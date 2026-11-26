@@ -428,6 +428,10 @@ async function remplir(p) {
     // Toutes les offres (APRIL et API Santé comprises) : aucun nom d'assureur, de gamme ni de formule, aucune promesse
     for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
     const m2 = await mesure();
+    // Tarif 2027 en petit et gris sous le tarif, seulement sur les offres qui en ont un (Fabrice, 26/11/2026)
+    const t27 = await q.evaluate(() => { const e = [...document.querySelectorAll('#offers .o-2027')]; return { n: e.length, offres: document.querySelectorAll('#offers article.offer').length,
+      format: e.every(x => /^\(\d{1,3},\d{2}\s€ en 2027\)$/.test(x.textContent)), gris: e.length ? getComputedStyle(e[0]).color : '', petit: e.length ? parseFloat(getComputedStyle(e[0]).fontSize) < parseFloat(getComputedStyle(e[0].closest('article').querySelector('.o-price')).fontSize) : false }; });
+    doit(t27.n > 0 && t27.n < t27.offres && t27.format && t27.gris === 'rgb(82, 107, 119)' && t27.petit, nom + ' : tarif 2027 sous le prix ' + JSON.stringify(t27));
     doit(appelsApril.length === 1 && appelsApicil.length === 1 && m2.n > 40 && !ASSUREURS.test(m2.textes) && !/recommand|offert|gratuit|meilleur/i.test(m2.textes) && m2.nomsVisibles === 0,
       nom + ' : nom d\'assureur ou promesse dans les cartes : ' + ((m2.textes.match(ASSUREURS) || m2.textes.match(/recommand|offert|gratuit|meilleur/i) || [''])[0]) + ' (' + m2.n + ' offres, ' + m2.nomsVisibles + ' noms visibles)');
     doit(!m2.badges.length && m2.croissant && !m2.hs && !m2.deborde.length, nom + ' : toutes les offres : badge ' + JSON.stringify(m2.badges) + ', débordement ' + JSON.stringify(m2.deborde));

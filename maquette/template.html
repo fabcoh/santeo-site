@@ -316,6 +316,9 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .offer.chosen{border-color:var(--accent)}
 .o-badge{position:absolute;top:0;left:.95rem;transform:translateY(-50%);background:var(--accent);color:var(--accent-fg);font-size:.74rem;font-weight:700;line-height:1;letter-spacing:.02em;border-radius:99px;padding:.32rem .65rem;white-space:nowrap}
 .o-left{display:flex;flex-direction:column;gap:.1rem;min-width:0}
+/* Tarif 2027 en petit et gris sous le tarif (Fabrice, 26/11/2026 : « il fait ajouter en plus petit et gris le tarif en dessous
+   (55,05€ en 2027) ») */
+.o-2027{font-size:.74rem;color:var(--muted);font-variant-numeric:tabular-nums}
 /* Offres floutées tant que le visiteur n'a pas indiqué de besoin (Fabrice, 25/11/2026 : « TU DOIS FLOUTER LES RESULTATS ET
    SUR LE FLOU DEMANDER / Indiquer vos besoins pour dévoiler les offres avec la photo des curseur ») */
 .offres-zone{position:relative}
@@ -1342,7 +1345,8 @@ function compute(){
   if(!Object.values(SEL).some(v=>v)) return {err:"Aucune gamme n'est affichée : cochez-en au moins une dans « Gestion des compagnies », en bas de la page."};
   const apicil=SEL.APICIL?apicilPourCalcul(cpv,dept,reg,hasCnj):{};
   const april=aprilPourCalcul(cpv,dept,reg,hasCnj); SEL.APRIL=april.etat==="ok";
-  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null,apicil,april});
+  // Tarif 2027 entre parenthèses sous le tarif 2026, quand la grille 2027 existe (Avenir Mutuelle seulement au 26/11/2026)
+  const r=Moteur.calculer({D,F:G,sel:SEL,age,cnjAge,hasCnj,kids:S.kids,reg,dept,zone:ZONES[dept]||null,apicil,april,prix2027:true});
   const rows=r.rows.filter(x=>!x.incomplete&&x.total>0).map(x=>{
     const st={}; POSTES.forEach(p=>st[p.k]=p.st(x)); return Object.assign({},x,{st});
   });
@@ -1501,7 +1505,7 @@ function upd(){
     const etoile=S.cmp.includes(idOffre(x));
     o.setAttribute("aria-label","Option "+(i+1)+(etoile?", choisie pour la comparaison":""));
     o.innerHTML=(etoile?'<span class="o-badge o-etoile" title="Choisie pour la comparaison" aria-hidden="true">★</span>':'')+
-      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+boutonComparer(i,x)+'</div>'+
+      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+(isFinite(x.prix2027)?'<div class="o-2027">('+eur(x.prix2027)+' en 2027)</div>':'')+boutonComparer(i,x)+'</div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
