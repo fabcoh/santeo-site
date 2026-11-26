@@ -385,6 +385,8 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-cmp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* Effet (Fabrice, 26/11/2026 : « tu peux créer un effet comparer cet offre », « il faut qu'il puisse voir ...commparer cette offre ») :
    halo doré deux fois à la première apparition des offres, étoile qui s'allume au survol, jaune et « pop » une fois choisie */
+/* Beige pastel (Fabrice, 26/11/2026 : « il faut le mettre dans une couleur pastelle beige ») */
+.o-cmp:not([aria-pressed="true"]):not(:disabled){background:#f6eedf;border-color:#e3d3b5;color:#6b5435}
 .o-cmp .cmp-et{display:inline-block;transition:transform .2s,color .2s}
 .o-cmp[aria-pressed="true"]{background:#fff4d6;color:#7a5600;border-color:var(--star)}
 .o-cmp[aria-pressed="true"] .cmp-et{color:var(--star)}
