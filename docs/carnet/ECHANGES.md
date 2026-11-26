@@ -585,6 +585,8 @@ mieux référencer le site »
   5 gammes, tarifs du moteur `fabcoh/santeo-tarifs`, option `prix2027`, âge atteint en 2027) : *(81,42 € en 2027)* en petit
   et gris ; rien sur les autres offres. Sa capture montrait l'ancienne version (gros tarif, « Petit prix ») : le site en ligne
   avait déjà la cotisation réduite (PR n° 75) ; probable copie gardée par son navigateur.
+  Puis « il faut laisser l'espacé de la ligne pour le tarifs meme si il est abs pour pour cohésion » : la ligne garde sa place,
+  vide, sur les offres sans tarif 2027.
 - **Comparer cette offre (Fabrice, 25/11, par la relais : « on a va ajouter comparer cette offre avec une autre … il pourra
   selectionner jusqu'a 3 offres … tarif le mois cher au plus cher », « Comparer cette offre / un volet a doite avec les offres
   qui s'affiche » ; puis ici : « je crois que les étoiles pourrait mieux servir a comparer / tu écris comparer cette offre et
