@@ -555,6 +555,10 @@ async function remplir(p) {
     doit(tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100) === '28 37 43 58 73 88 98', 'simulateur : OPTAM ' + tot({ br: 30, taux: .7, retenue: 2, garantie: 'pct', optam: true }, 100));
     doit(tot({ br: 0, taux: 0, garantie: 'eur', forfaits: [50, 100] }, 60) === '50 60', 'simulateur : forfait en euros');
     doit(tot({ br: 100, taux: .6, garantie: '100s', plafond: 500 }, 500) === '500' && tot({ br: 100, taux: .6, garantie: '100s', plafond: 500 }, 600) === '500', 'simulateur : 100 % Santé');
+    // transport sanitaire (Service-Public F2951) : taxi conventionné à 60 €, 55 % = 33 € moins la franchise de 4 € -> 29 € Sécu ;
+    // le contrat responsable rembourse le ticket modérateur (27 €) ; il reste la franchise de 4 €
+    { const tr = SIM.rubriques.find(r => r.nom === 'Transport sanitaire'); const taxi = tr && tr.actes.find(a => /^Taxi conventionné/.test(a.nom)); const c = taxi && SC.calculer(taxi, 60);
+      doit(tr && tr.actes.length === 3 && c && c.secu === 29 && c.lignes[0].mutuelle === 27 && c.lignes[0].reste === 4 && taxi.sources.includes('F2951'), 'simulateur : transport ' + JSON.stringify(c && c.lignes[0])); }
     let nActes = 0;
     for (const r of SIM.rubriques) for (const a of r.actes) {
       nActes++;

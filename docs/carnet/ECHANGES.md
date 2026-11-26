@@ -579,6 +579,12 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Simulateur : transport sanitaire** (lot prévu le 24/11, reporté par les demandes de Fabrice sur le comparateur ; demande de
+  fusion « simulateur-transports », modèle montré à Fabrice). Nouveau type d'acte *Transport sanitaire* : taxi conventionné, VSL,
+  ambulance (un trajet), montant d'exemple à remplacer ; 55 % du montant par la Sécurité sociale, franchise de 4 € par trajet
+  (8 € par jour au plus), 100 % dans certains cas (ALD, à partir du 6e mois de grossesse, C2S…), prescription médicale
+  nécessaire : Service-Public F2951 (vérifié le 01/10/2026). Le montant réglé sert de base (dans la limite des tarifs de la
+  Sécurité sociale) : un dépassement de ces tarifs n'est pas simulé. Test : taxi à 60 € → 29 € Sécu, 27 € mutuelle, 4 € à payer.
 - **Titre des offres (Fabrice, 26/11 : « Remplace Les offres pour vous / 74 offres atteignent vos niveaux, sur 84 calculées pour
   votre profil. / Par ce seul texte … Comparez jusqu'à 3 offres entre elles (icone étoiles) »)** (demande de fusion
   « titre-comparez », modèle montré à Fabrice). Titre de l'étape 3 : *Comparez jusqu'à 3 offres entre elles ☆* (Vos mots, étoile

@@ -1,6 +1,6 @@
 {
  "_explication": "Données du simulateur de remboursement (Fabrice, 12/11/2026). br : base de remboursement ; taux : part de la Sécurité sociale ; retenue : participation forfaitaire ou franchise (jamais remboursée par un contrat responsable) ; prix : montant affiché au départ (exemple: true = montant d'exemple, à remplacer par le visiteur) ; garantie : pct (en % de la base), eur (forfaits en euros), 100s (100 % Santé), integral ; plafond : prix limite ou plafond du contrat responsable. Chaque valeur vient des sources citées (pages officielles téléchargées et relues le 12/11/2026). À remettre à jour chaque année.",
- "maj": "2026-11-12",
+ "maj": "2026-11-26",
  "sources": {
   "F1069": {
    "titre": "Service-Public : Remboursement d'une consultation médicale",
@@ -86,6 +86,11 @@
    "titre": "Assurance maladie : Consultation et traitement de la gingivite et de la parodontite",
    "url": "https://www.ameli.fr/assure/sante/themes/maladie-gencives/consultation-traitement-gingivite-parodontite",
    "date": "consulté par recherche le 13/11/2026"
+  },
+  "F2951": {
+   "titre": "Service-Public : Transport sanitaire (prise en charge des frais de transport)",
+   "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2951",
+   "date": "vérifié le 01/10/2026"
   }
  },
  "rubriques": [
@@ -572,6 +577,56 @@
      "plafond": 1700,
      "note": "Un contrat responsable rembourse au plus 1 700 € par aide auditive, Sécurité sociale comprise",
      "exemple": true
+    }
+   ]
+  },
+  {
+   "nom": "Transport sanitaire",
+   "actes": [
+    {
+     "garantie": "pct",
+     "sources": [
+      "F2951",
+      "F20314"
+     ],
+     "br_egal_prix": true,
+     "taux": 0.55,
+     "retenue": 4,
+     "retenue_lib": "Franchise (par trajet)",
+     "exemple": true,
+     "note": "Prescription médicale nécessaire ; pris en charge à 100 % dans certains cas (affection de longue durée, à partir du 6e mois de grossesse, complémentaire santé solidaire) ; franchise limitée à 8 € par jour",
+     "nom": "Taxi conventionné (un trajet)",
+     "prix": 60
+    },
+    {
+     "garantie": "pct",
+     "sources": [
+      "F2951",
+      "F20314"
+     ],
+     "br_egal_prix": true,
+     "taux": 0.55,
+     "retenue": 4,
+     "retenue_lib": "Franchise (par trajet)",
+     "exemple": true,
+     "note": "Prescription médicale nécessaire ; pris en charge à 100 % dans certains cas (affection de longue durée, à partir du 6e mois de grossesse, complémentaire santé solidaire) ; franchise limitée à 8 € par jour",
+     "nom": "Véhicule sanitaire léger, VSL (un trajet)",
+     "prix": 50
+    },
+    {
+     "garantie": "pct",
+     "sources": [
+      "F2951",
+      "F20314"
+     ],
+     "br_egal_prix": true,
+     "taux": 0.55,
+     "retenue": 4,
+     "retenue_lib": "Franchise (par trajet)",
+     "exemple": true,
+     "note": "Prescription médicale nécessaire ; pris en charge à 100 % dans certains cas (affection de longue durée, à partir du 6e mois de grossesse, complémentaire santé solidaire) ; franchise limitée à 8 € par jour",
+     "nom": "Ambulance (un trajet)",
+     "prix": 120
     }
    ]
   },
