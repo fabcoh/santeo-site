@@ -579,6 +579,9 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Conjoint sans fond rose (Fabrice, 26/11 : « pas de fond rouge sur le conjoint le champs n'est pas obligatoire »)** (demande
+  de fusion n° 80, correction fusionnée par Claude). La case du conjoint reste neutre quand elle est vide ; rose seulement si
+  une date est commencée sans être complète. Test en échec avant la correction ; en ligne, vérifié sur PC et téléphone.
 - **Conjoint et enfants mineurs toujours visibles ; phrase du simulateur retirée (Fabrice, 26/11 : « il faut une case Conjoint
   date de naissance et nombre d'enfant mineurs ( 1, 2,3 ...) / fait moi une présentation » ; « Combien vous serait remboursé un
   soin ? Accéder au simulateur de remboursement Sécu / retire cette phrase de cet emplacmenet »)** (demande de fusion
