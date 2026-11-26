@@ -579,6 +579,13 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Conjoint et enfants mineurs toujours visibles ; phrase du simulateur retirée (Fabrice, 26/11 : « il faut une case Conjoint
+  date de naissance et nombre d'enfant mineurs ( 1, 2,3 ...) / fait moi une présentation » ; « Combien vous serait remboursé un
+  soin ? Accéder au simulateur de remboursement Sécu / retire cette phrase de cet emplacmenet »)** (demande de fusion
+  « conjoint-enfants », modèle montré à Fabrice). Étape 1 : *Naissance du conjoint* (téléphone : *Conjoint*) et *Enfants
+  mineurs* (téléphone : *Enfants*, 0 à 6) visibles d'emblée, à la place des liens « Conjoint (+) » et « Enfant (+) » ; largeurs
+  revues pour tenir sur une ligne dès 1 060 px. La phrase au-dessus des offres est retirée ; le simulateur reste dans le pied
+  de page.
 - **Tarif 2027 sous le tarif (Fabrice, 26/11 : « il faut vraiment réduite les tarifs … il fait ajouter en plus petit et gris
   le tarif en dessous (55,05€ en 2027) », puis « tu n'endiques que les tarifs que tu as »)** (demande de fusion « tarif-2027 »,
   modèle montré à Fabrice). Sous le tarif 2026 de chaque offre qui a une grille 2027 (Avenir Mutuelle seulement au 26/11 :

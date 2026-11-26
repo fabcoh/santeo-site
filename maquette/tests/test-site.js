@@ -511,7 +511,9 @@ async function remplir(p) {
     }
     doit(n >= 30 && fs.existsSync(d + '/images/oiseau.webp'), 'guide : ' + n + ' articles vérifiés, avatar ' + fs.existsSync(d + '/images/oiseau.webp'));
     // Comparateur -> simulateur, et simulateur -> tarificateur (Fabrice, 13/11/2026)
-    doit(/<p class="lien-simu">[^<]*<a href="simulateur-remboursement\/">Accéder au simulateur de remboursement Sécu<\/a>/.test(fs.readFileSync(d + '/index.html', 'utf8')), 'accueil : accès au simulateur absent');
+    // La phrase au-dessus des offres est retirée (Fabrice, 26/11/2026) ; le simulateur reste dans le pied de page
+    { const h = fs.readFileSync(d + '/index.html', 'utf8');
+      doit(!h.includes('class="lien-simu"') && /<footer class="pied">.*?<a href="simulateur-remboursement\/">Simulateur de remboursement<\/a>/s.test(h), 'accueil : phrase du simulateur au-dessus des offres, ou lien du pied de page absent'); }
     doit(/<aside class="s-acces">.*?<a class="btn" href="\.\.\/">Accéder au tarificateur<\/a>/s.test(fs.readFileSync(d + '/simulateur-remboursement/index.html', 'utf8')), 'simulateur : accès au tarificateur absent');
   }
   // Garanties APRIL : celles de garanties.json, section « april » (publiée le 14/11/2026), sont celles que le site affiche
