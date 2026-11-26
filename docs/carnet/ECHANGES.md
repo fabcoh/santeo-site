@@ -579,6 +579,11 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Titre des offres (Fabrice, 26/11 : « Remplace Les offres pour vous / 74 offres atteignent vos niveaux, sur 84 calculées pour
+  votre profil. / Par ce seul texte … Comparez jusqu'à 3 offres entre elles (icone étoiles) »)** (demande de fusion
+  « titre-comparez », modèle montré à Fabrice). Titre de l'étape 3 : *Comparez jusqu'à 3 offres entre elles ☆* (Vos mots, étoile
+  jaune) ; le nombre d'offres n'est plus affiché quand les offres sont là (gardé pour les lecteurs d'écran) ; les messages
+  « Indiquez votre date de naissance… » et « Aucune offre… » restent visibles.
 - **Étoiles de « Comparer » qui s'allument l'une après l'autre (Fabrice, 26/11 : « Les étoiles de comparer doivent s'allumer
   lentement chacun son tour sans arret tu comprend »)** (demande de fusion « etoiles-vague », modèle montré en vidéo). Sur les
   offres non choisies, l'étoile passe au jaune et grossit un peu, une offre par seconde, cycle de 6 s, sans fin ; rien ne bouge

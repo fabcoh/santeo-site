@@ -222,6 +222,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .panel.slim{padding:.7rem .8rem;gap:.55rem}
 .slim-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .6rem}
 .slim-head h2{font-size:1.05rem}
+.t-etoile{color:var(--star);font-size:1.1em}
 /* Vos besoins : un curseur par poste (Fabrice, 22/11/2026, d'après le comparateur de son CRM ; remplace les étoiles).
    Carte : pictogramme, nom, niveau en couleur, curseur 0 à 5, bornes « Pas de besoin » / maximum, lien « (+) Précisez ».
    Téléphone : une carte par ligne ; 600 à 899 px : deux ; 900 à 1059 px : 3 puis 2 ; ordinateur : les 5 sur une ligne. */
@@ -692,7 +693,7 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
   </section>
 
   <section aria-labelledby="t-res" style="display:flex;flex-direction:column;gap:.6rem">
-    <div class="slim-head"><div class="step"><b>3</b><h2 id="t-res">Les offres pour vous</h2></div><span class="count" id="count" aria-live="polite"></span></div>
+    <div class="slim-head"><div class="step"><b>3</b><h2 id="t-res">Comparez jusqu'à 3 offres entre elles <span class="t-etoile" aria-hidden="true">☆</span></h2></div><span class="count" id="count" aria-live="polite"></span></div>
     <!-- « Combien vous serait remboursé un soin ? » retiré d'ici (Fabrice, 26/11/2026 : « retire cette phrase de cet emplacmenet ») ; le simulateur reste dans le pied de page -->
     <div class="offres-zone" id="offres-zone">
     <div class="offers" id="offers"></div>
@@ -1511,6 +1512,9 @@ $("voile-tout").onclick=()=>{window.mesure("offres_sans_besoins");S.devoile=true
 function upd(){
   const res=compute(); const box=$("offers"); box.innerHTML=""; voileOffres(false); majVolet(false);
   $("more-offers").hidden=true;
+  // Titre « Comparez jusqu'à 3 offres entre elles ☆ » seul quand les offres s'affichent (Fabrice, 26/11/2026) : le compte reste
+  // lu par les lecteurs d'écran ; les messages d'erreur et « Aucune offre » restent visibles
+  $("count").classList.remove("cache-visuel");
   if(res.err){$("count").textContent=res.err;LAST=[];return}
   const list=res.fit; LAST=list;
   S.cmp=S.cmp.filter(id=>list.some(x=>idOffre(x)===id));   // une offre qui n'est plus proposée sort de la comparaison
@@ -1527,6 +1531,7 @@ function upd(){
     return;
   }
   const filtre=POSTES.some(p=>S.need[p.k]>0||p.more.some(f=>S.flt[f.id]&&f.ok));
+  $("count").classList.add("cache-visuel");
   $("count").textContent=filtre?(list.length+" offre"+(list.length>1?"s":"")+" atteigne"+(list.length>1?"nt":"")+" vos niveaux, sur "+res.rows.length+" calculées pour votre profil."):(list.length+" offres calculées pour votre profil, de la moins chère à la plus chère.");
   // Étoile au-dessus des offres choisies pour la comparaison (Fabrice, 25/11/2026 : « je crois que les étoiles pourrait mieux
   // servir a comparer / tu écris comparer cette offre et l'étoile se place au dessus ») ; 3 au plus
