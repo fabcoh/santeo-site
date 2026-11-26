@@ -401,6 +401,12 @@ button{font:inherit;cursor:pointer;border-radius:8px}
   .o-cmp.pop .cmp-et{animation:cmp-pop .4s ease-out}
 }
 @keyframes cmp-halo{0%{box-shadow:0 0 0 0 rgba(217,154,0,.6)}70%{box-shadow:0 0 0 11px rgba(217,154,0,0)}100%{box-shadow:0 0 0 0 rgba(217,154,0,0)}}
+/* Les étoiles s'allument doucement, une offre après l'autre, sans arrêt (Fabrice, 26/11/2026 : « Les étoiles de comparer doivent
+   s'allumer lentement chacun son tour sans arret ») : une toutes les secondes, cycle de 6 s */
+@media (prefers-reduced-motion: no-preference){
+  .o-cmp:not([aria-pressed="true"]):not(:disabled) .cmp-et{animation:cmp-allume 6s ease-in-out infinite;animation-delay:calc(var(--i,0) * 1s)}
+}
+@keyframes cmp-allume{0%,22%,100%{color:inherit;transform:none;text-shadow:none}10%{color:#d99a00;transform:scale(1.35);text-shadow:0 0 8px rgba(217,154,0,.75)}}
 @keyframes cmp-pop{0%{transform:scale(1)}45%{transform:scale(1.7) rotate(15deg)}100%{transform:scale(1)}}
 .cmp-volet{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:55;width:250px;background:var(--surface);color:var(--fg);border:2px solid var(--brand-1);border-radius:14px;box-shadow:0 14px 40px rgba(5,30,50,.28);padding:.8rem .85rem;display:flex;flex-direction:column;gap:.55rem}
 .cmp-volet[hidden]{display:none}
@@ -1420,7 +1426,7 @@ function boutonComparer(i,x){
   const pris=S.cmp.includes(idOffre(x)), plein=!pris&&S.cmp.length>=CMP_MAX;
   // Halo : les boutons des 3 premières offres pulsent deux fois à la première apparition des offres, une seule fois par visite
   const attire=!window.__cmpVu&&i<3&&!pris&&!plein;
-  return '<button type="button" class="o-cmp'+(attire?' attire':'')+'" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+
+  return '<button type="button" class="o-cmp'+(attire?' attire':'')+'" style="--i:'+(i%6)+'" data-cmp="'+i+'" aria-pressed="'+pris+'"'+(plein?' disabled':'')+
     ' aria-label="'+(pris?'Retirer l\'option '+(i+1)+' de la comparaison':plein?'3 offres au maximum : retirez-en une':'Comparer l\'option '+(i+1))+'"'+
     ' title="'+(pris?'Retirer de la comparaison':plein?'3 offres au maximum : retirez-en une':'Comparer cette offre')+'">'+
     (pris?'<span class="cmp-et" aria-hidden="true">★</span> À comparer':plein?'<span class="cmp-et" aria-hidden="true">☆</span> 3 au maximum':'<span class="cmp-et" aria-hidden="true">☆</span> Comparer')+'</button>';
