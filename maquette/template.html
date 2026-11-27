@@ -419,6 +419,10 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .cmp-liste{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.35rem}
 .cmp-liste li{display:flex;align-items:center;justify-content:space-between;gap:.4rem;border:1px solid var(--line);border-radius:10px;padding:.3rem .3rem .3rem .6rem;font-size:.88rem}
 .cmp-liste li b{color:var(--brand-1)}
+.cmp-l{display:flex;flex-direction:column;align-items:flex-start;gap:.1rem;min-width:0}
+.cmp-devis{border:0;background:none;padding:.1rem 0;color:var(--accent);font:inherit;font-size:.78rem;font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer;text-align:left}
+.cmp-dc{display:none}
+@media (max-width:599px){.cmp-dl{display:none}.cmp-dc{display:inline}.cmp-devis{font-size:.72rem}}
 .cmp-retirer{flex:none;width:32px;height:32px;border:0;border-radius:8px;background:var(--accent-soft);color:var(--brand-1);font-size:1.2rem;line-height:1;cursor:pointer}
 .cmp-volet .btn{min-height:44px;width:100%}
 .cmp-volet .btn:disabled{opacity:.55;cursor:not-allowed}
@@ -460,10 +464,42 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .chosen{background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
 .empty{padding:1rem;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
 @media (min-width:900px){.o-price{font-size:1.1rem}}
-}
-}
 
 /* Formulaire */
+/* La demande de devis s'ouvre en fenêtre (Fabrice, 27/11/2026) */
+.devis-pop{border:0;border-radius:16px;margin:auto!important;width:min(31rem,calc(100vw - 2rem))!important;max-width:none;max-height:calc(100vh - 2rem);overflow:auto;color:var(--fg)}
+.devis-pop:not([open]){display:none}
+.devis-pop[open]{display:flex;flex-direction:column;animation:pop-in .16s ease-out}
+.devis-pop::backdrop{background:rgba(8,30,45,.45)}
+#form-panel .step{justify-content:space-between}
+.dv-x{flex:none}
+#form-panel .chosen-box{padding:.5rem .75rem;gap:.3rem}
+/* Fenêtre plus petite (Fabrice, 27/11/2026 : « EN PLUS PETIT LE POPUP ») */
+#form-panel{padding:.85rem .9rem .95rem!important;gap:.55rem!important}
+#form-panel h2{font-size:1.1rem!important}
+#form-panel .form-intro{font-size:.85rem}
+#form-panel .ch-titre .ch-lib{font-size:.68rem}
+#form-panel .ch-titre strong{font-size:.92rem}
+#form-panel .ch-titre .ch-prix{font-size:1.02rem}
+#form-panel .ch-gar span{font-size:.74rem;padding:.08rem .45rem}
+#form-panel #lead .fields{gap:.45rem .6rem}
+#form-panel #lead label.f{font-size:.8rem;gap:.18rem}
+#form-panel #lead input[type=text],#form-panel #lead input[type=tel],#form-panel #lead input[type=email],#form-panel #lead select{font-size:.9rem;min-height:2.3rem;padding:.4rem .6rem;border-radius:8px}
+#form-panel #send{font-size:.92rem;padding:.6rem 1.1rem}
+#form-panel .wa-btn{font-size:.85rem}
+#form-panel .wa{margin-top:.5rem!important}
+#form-panel .consent label,#form-panel .accords p.small,#form-panel .votre-accord summary,#form-panel .votre-accord p{font-size:.66rem!important}
+/* Infos légales : en petit, très léger */
+#form-panel .accords{border:0;padding:0;gap:.25rem}
+#form-panel .accords p.small{font-weight:400!important;color:var(--muted)!important;font-size:.72rem}
+#form-panel .consent label{font-size:.72rem;color:var(--muted);line-height:1.35}
+#form-panel .consent input{margin-top:.1rem;width:.85rem;height:.85rem}
+#form-panel .votre-accord{margin-top:0}
+#form-panel .votre-accord summary{font-size:.72rem;color:var(--muted)}
+#form-panel .votre-accord p{font-size:.72rem;color:var(--muted)}
+#form-panel .consent{margin-top:.6rem!important}
+@media (min-width:700px){#lead .fields{grid-template-columns:4.6rem 1fr 1fr!important}#lead label[for=tel]{grid-column:1 / span 2}#lead label[for=mail]{grid-column:auto!important}}
+@media (max-width:599px){.devis-pop{width:calc(100vw - 1rem)!important;max-height:calc(100vh - 1rem);padding:.9rem .8rem 1rem}#form-panel #lead .fields{grid-template-columns:3.9rem 1fr 1fr;gap:.4rem .45rem}#lead label[for=tel],#lead label[for=mail]{grid-column:1 / -1}#form-panel .form-intro{display:none}#form-panel .ch-gar{display:none}#form-panel h2{font-size:1.15rem}#lead input[type=text],#lead input[type=tel],#lead input[type=email],#lead select{min-height:2.7rem;padding:.6rem .7rem}}
 .chosen-box{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:.75rem .9rem;display:flex;flex-direction:column;gap:.45rem}
 /* Formulaire mis en avant : cadre de couleur, champs plus grands, gros bouton */
 #form-panel{border:2px solid var(--accent);box-shadow:var(--form-shadow);background:linear-gradient(180deg,var(--accent-soft) 0,var(--accent-soft) 4.2rem,var(--surface) 9rem);padding:1.15rem 1.1rem 1.3rem;gap:.9rem;scroll-margin-top:.8rem}
@@ -718,21 +754,23 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
     <p class="legal">Offres de nos assureurs partenaires (comparaison non exhaustive), classées de la moins chère à la plus chère parmi celles qui atteignent vos niveaux. Tarifs indicatifs par mois, à confirmer par un conseiller. Le nom de l'assureur, sa fiche d'information (IPID) et notre conseil vous sont remis avec votre devis.</p>
   </section>
 
-  <section class="panel" id="form-panel" aria-labelledby="t-form" hidden>
-    <div class="step"><b>4</b><h2 id="t-form">Recevoir mon devis</h2></div>
-    <p class="form-intro">Indiquez vos coordonnées : un conseiller Santéo vous envoie le devis de cette offre. Tous les champs sont obligatoires.</p>
+  <!-- Demande de devis en fenêtre, ouverte par « Recevoir mon devis » (Fabrice, 27/11/2026 : « tu ouvres un popup pour remplir ses
+       infos… tu masques la demande du bas, mais tu ajoutes les infos légales en petit, il faut que ce soit très léger ») -->
+  <dialog class="panel devis-pop" id="form-panel" aria-labelledby="t-form">
+    <div class="step"><h2 id="t-form">Recevoir mon devis par mail</h2><button type="button" class="np-x dv-x" id="devis-x" aria-label="Fermer">×</button></div>
+    <p class="form-intro">Un conseiller Santéo vous envoie le devis de cette offre par e-mail.</p>
     <div class="chosen-box" id="chosen-box"></div>
     <form id="lead" novalidate>
       <label class="piege" aria-hidden="true">Ne pas remplir <input id="site_web" type="text" tabindex="-1" autocomplete="off"></label>
       <div class="fields">
         <label class="f" for="civ">Civilité
-          <select id="civ"><option value="">Choisir</option><option>Madame</option><option>Monsieur</option></select></label>
+          <select id="civ"><option value="">—</option><option value="Madame">Mme</option><option value="Monsieur">M.</option></select></label>
         <label class="f" for="prenom">Prénom
           <input id="prenom" type="text" autocomplete="given-name" placeholder="Votre prénom"></label>
         <label class="f" for="nom">Nom
           <input id="nom" type="text" autocomplete="family-name" placeholder="Votre nom"></label>
-        <label class="f" for="tel">Téléphone mobile
-          <input id="tel" type="tel" autocomplete="tel" placeholder="Votre numéro de mobile"></label>
+        <label class="f" for="tel">Téléphone
+          <input id="tel" type="tel" autocomplete="tel" placeholder="Votre mobile"></label>
         <label class="f" for="mail">E-mail
           <input id="mail" type="email" autocomplete="email" placeholder="Votre adresse e-mail"></label>
       </div>
@@ -750,12 +788,12 @@ html.controle body::before{content:"Vue de contrôle : compagnie et formule affi
       </div>
       <p class="small" id="form-err" role="alert" style="color:var(--warn);margin-top:.6rem"></p>
       <div class="wa" style="margin-top:.8rem">
-        <button type="submit" class="btn" id="send">Recevoir mon devis</button>
+        <button type="submit" class="btn" id="send">Recevoir mon devis par mail</button>
         <a class="wa-btn" id="wa-form" href="#" target="_blank" rel="noopener"><svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span>Continuer sur WhatsApp</span></a>
       </div>
     </form>
     <div class="done" id="done" hidden></div>
-  </section>
+  </dialog>
 
   <details class="notes admin" id="admin">
     <summary>Gestion des compagnies (réservé à Santéo)</summary>
@@ -1452,15 +1490,16 @@ function majVolet(visible){
   document.documentElement.style.setProperty("--cmp-h",montre&&matchMedia("(max-width:599px)").matches?(v.offsetHeight+8)+"px":"0px");
   if(!montre)return;
   $("cmp-n").textContent=o.length+" sur "+CMP_MAX;
-  $("cmp-liste").innerHTML=o.map(e=>'<li><span><b>Option '+(e.i+1)+'</b> · '+eur(e.x.total)+'</span><button type="button" class="cmp-retirer" data-retirer="'+e.i+'" aria-label="Retirer l\'option '+(e.i+1)+' de la comparaison">×</button></li>').join("");
+  $("cmp-liste").innerHTML=o.map(e=>'<li><span class="cmp-l"><span><b>Option '+(e.i+1)+'</b> · '+eur(e.x.total)+'</span><button type="button" class="cmp-devis" data-devis="'+e.i+'" aria-label="Recevoir mon devis par mail : option '+(e.i+1)+'">✉ <span class="cmp-dl">Recevoir mon devis par mail</span><span class="cmp-dc">Devis par mail</span></button></span><button type="button" class="cmp-retirer" data-retirer="'+e.i+'" aria-label="Retirer l\'option '+(e.i+1)+' de la comparaison">×</button></li>').join("");
   $("cmp-liste").querySelectorAll("[data-retirer]").forEach(b=>b.onclick=()=>basculerComparaison(+b.dataset.retirer));
+  $("cmp-liste").querySelectorAll("[data-devis]").forEach(b=>b.onclick=()=>choose(+b.dataset.devis));
   const go=$("cmp-go"); go.disabled=o.length<2; go.textContent=o.length<2?"Choisissez une 2e offre":"Comparer les garanties";
   document.documentElement.style.setProperty("--cmp-h",matchMedia("(max-width:599px)").matches?(v.offsetHeight+8)+"px":"0px");
 }
 function ouvrirComparaison(){
   const o=offresComparees(), d=$("det-pop"); if(o.length<2)return;
   const L=o.map(e=>lignesDetail(e.x));
-  const tete='<thead><tr><th scope="col">Garantie</th>'+o.map(e=>'<th scope="col" class="cmp-col"><b>Option '+(e.i+1)+'</b><span>'+eur(e.x.total)+' /mois</span><button type="button" class="btn" data-cmp-choisir="'+e.i+'">Cette offre m\'intéresse</button></th>').join("")+'</tr></thead>';
+  const tete='<thead><tr><th scope="col">Garantie</th>'+o.map(e=>'<th scope="col" class="cmp-col"><b>Option '+(e.i+1)+'</b><span>'+eur(e.x.total)+' /mois</span><button type="button" class="btn" data-cmp-choisir="'+e.i+'">Recevoir mon devis par mail</button></th>').join("")+'</tr></thead>';
   const corps=L[0].map((g,gi)=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th>'+L.map(l=>'<td>'+l[gi][1]+'</td>').join("")+'</tr>'+
     g[2].map((s,si)=>'<tr class="g-sous"><td>'+s[0]+'</td>'+L.map(l=>'<td>'+l[gi][2][si][1]+'</td>').join("")+'</tr>').join("")+'</tbody>').join("");
   d.classList.add("cmp-pop");
@@ -1475,6 +1514,8 @@ function ouvrirComparaison(){
   d.querySelector(".dp-corps").scrollTop=0;
 }
 $("cmp-go").onclick=ouvrirComparaison;
+$("devis-x").onclick=()=>{const f=$("form-panel");if(f.close)f.close();else f.removeAttribute("open")};
+$("form-panel").addEventListener("click",e=>{const f=$("form-panel");if(e.target===f){if(f.close)f.close();else f.removeAttribute("open")}});
 function ouvrirDetail(i){
   const x=LAST[i], d=$("det-pop"); if(!x)return; d.classList.remove("cmp-pop");
   d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">Option '+(i+1)+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
@@ -1583,13 +1624,11 @@ function afficherChoix(i){
 function choose(i){
   if(!window.__mesFormulaire){window.__mesFormulaire=1;window.mesure("formulaire_ouvert",{option:i+1})}
   S.chosen=i; S.choixId=LAST[i].key+"|"+LAST[i].fi; afficherChoix(i);
-  $("form-panel").hidden=false; $("done").hidden=true; $("lead").hidden=false;
-  document.querySelector("#form-panel .form-intro").hidden=false; $("t-form").textContent="Recevoir mon devis";
+  $("done").hidden=true; $("lead").hidden=false;
+  document.querySelector("#form-panel .form-intro").hidden=false; $("t-form").textContent="Recevoir mon devis par mail";
   upd(); majWhatsApp();
-  const fp=$("form-panel"), doux=!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
-  fp.scrollIntoView({behavior:doux?"smooth":"auto",block:"start"});
-  fp.classList.remove("attire"); void fp.offsetWidth; fp.classList.add("attire");
-  setTimeout(()=>{const c=$("civ"); if(c&&!c.value)c.focus({preventScroll:true})},doux?650:0);
+  const fp=$("form-panel"); if(!fp.open){if(fp.showModal)fp.showModal();else fp.setAttribute("open","")}
+  const c=$("civ"); if(c&&!c.value)c.focus({preventScroll:true});
 }
 $("lead").addEventListener("submit",e=>{
   e.preventDefault();
