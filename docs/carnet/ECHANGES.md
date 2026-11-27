@@ -579,6 +579,15 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Article du jour, 27/11 : la prévention et le dépistage remboursés** (demande de fusion « article-prevention », chapitre
+  « Comprendre les remboursements » ; texte : Mon idée, rédigé par un agent, relu par Claude ; reprise de l'article du jour à la
+  demande de Fabrice du 26/11). Vérifié sur Service-Public, lu directement le 27/11 : F218 (sein 50 à 74 ans tous les 2 ans à
+  100 % sans avance de frais, côlon-rectum 50 à 74 ans tous les 2 ans, col de l'utérus 25 à 65 ans à 100 %, ostéodensitométrie
+  70 % de 39,96 €), A17677 (Mon bilan prévention à 18-25, 45-50, 60-65 et 70-75 ans, 100 % sans avance de frais,
+  kinésithérapeutes depuis le 01/10/2026), F704 (vaccin DTP 65 % sur prescription), F243 (M'T dents de 3 à 24 ans), F714, F700,
+  F723, F767, F724, F33924, F170, F707, F20314, F165. Rien de ameli.fr, Légifrance ni sante.gouv.fr. Non écrit faute de source :
+  ROR à 100 % jusqu'à 17 ans, rythme du dépistage du col, « forfait prévention » des complémentaires. Dossier Dropbox des
+  supports : toujours les 4 fichiers vides du 18/11.
 - **Date de naissance avec une année impossible (Fabrice, 27/11, capture de son téléphone : « 21/04/5966 », « Bug »)** (demande
   de fusion « date-annee », correction fusionnée par Claude). Le site refusait bien la date mais disait « vérifiez le jour et le
   mois », en petit gris à côté du titre. Désormais : *L'année 5966 n'est pas possible : vérifiez l'année de votre date de
