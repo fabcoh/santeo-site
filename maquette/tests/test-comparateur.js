@@ -133,6 +133,7 @@ const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.cl
     await regler(p, 'hosp', 0);
     await devoiler(p); await p.click('[data-c="0"]');
     const chosen = await p.textContent('#chosen-box');
+    await p.keyboard.press('Escape'); await p.waitForTimeout(150);   // demande de devis en fenêtre (27/11/2026)
     const hs = await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
     if (hs) errs.push(name + ' : défilement de côté');
     console.log(name, '| départ:', c0, '| dentaire', name === 'tel' ? 2 : 3, ':', c1, '| cases:', boxes.join(' / '), '| curseurs dans la case:', starsInPanel, '| implants:', c2, '| + parodontie + autre:', c3, '| case:', lab, '| choisi:', chosen, '| défilement:', hs);

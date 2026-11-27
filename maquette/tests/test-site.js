@@ -322,6 +322,7 @@ async function remplir(p) {
       await devoiler(q); await q.click('[data-c="' + api[0].i + '"]'); await q.waitForTimeout(400);
       const lire = () => q.$eval('#chosen-box', e => ({ opt: (e.querySelector('strong') || {}).textContent || '', prix: (e.querySelector('.ch-prix') || {}).textContent || '' }));
       const avant = await lire();
+      await q.keyboard.press('Escape'); await q.waitForTimeout(150);   // la demande de devis s'ouvre en fenêtre (27/11/2026) : on la ferme
       await q.$eval('#cur-hosp', e => { e.value = String(+e.value + 1); e.dispatchEvent(new Event('input', { bubbles: true })); }); await q.waitForTimeout(400);   // un cran de plus au curseur : la liste change
       const apres = await lire(), liste2 = await toutes(), n = +(apres.opt.match(/\d+/) || [0])[0];
       const ligne = liste2[n - 1];
@@ -461,13 +462,25 @@ async function remplir(p) {
       const c3 = await q.evaluate(() => { const c = document.querySelector('.cmp-pop .dp-corps'); return { cols: [...document.querySelectorAll('.gar-cmp thead .cmp-col b')].map(e => e.textContent),
         prix: [...document.querySelectorAll('.gar-cmp thead .cmp-col span')].map(e => parseFloat(e.textContent.replace(/\s/g, '').replace(',', '.'))), deborde: c.scrollWidth > c.clientWidth + 1 }; });
       doit(c3.cols.join() === 'Option 1,Option 5' && c3.prix[0] <= c3.prix[1] && !c3.deborde, nom + ' : tableau de comparaison : ' + JSON.stringify(c3));
+      const boutonsTable = await q.$$eval('.gar-cmp [data-cmp-choisir]', l => l.map(b => b.textContent));
+      doit(boutonsTable.length === 2 && boutonsTable.every(t => t === 'Recevoir mon devis par mail'), nom + ' : boutons du tableau ' + JSON.stringify(boutonsTable));
       await q.click('.cmp-pop .dp-fermer'); await q.waitForTimeout(200);
+      // « Recevoir mon devis par mail » dans le volet : ouvre la fenêtre de devis sur la bonne offre (Fabrice, 27/11/2026)
+      await q.click('#cmp-liste [data-devis="4"]'); await q.waitForTimeout(300);
+      const dv = await q.evaluate(() => ({ open: document.getElementById('form-panel').open, opt: (document.querySelector('#chosen-box strong') || {}).textContent }));
+      doit(dv.open && dv.opt === 'Option 5', nom + ' : devis depuis le volet ' + JSON.stringify(dv));
+      await q.keyboard.press('Escape'); await q.waitForTimeout(150);
       for (const i of [0, 4]) { await q.click('[data-cmp="' + i + '"]'); await q.waitForTimeout(120); }
       doit(await q.evaluate(() => document.getElementById('cmp-volet').hidden), nom + ' : le volet se ferme quand aucune offre n\'est choisie'); }
     // L'offre choisie reste mise en évidence ; le formulaire s'ouvre
     await devoiler(q); await q.click('[data-c="1"]'); await q.waitForTimeout(500);
     const choisie = await q.$$eval('#offers article.offer', l => l.map((o, i) => o.classList.contains('chosen') ? i : -1).filter(i => i >= 0));
     doit(choisie.join() === '1' && await q.isVisible('#form-panel'), nom + ' : offre choisie ' + JSON.stringify(choisie));
+    // Demande de devis en fenêtre (Fabrice, 27/11/2026) : ouverte en fenêtre, infos légales en petit ; fermée, plus rien en bas de page
+    { const f = await q.evaluate(() => { const d = document.getElementById('form-panel'); return { open: d.open, modale: d.matches(':modal'), titre: document.getElementById('t-form').textContent,
+        legal: parseFloat(getComputedStyle(document.querySelector('#form-panel .consent label')).fontSize), large: d.getBoundingClientRect().width <= innerWidth }; });
+      await q.click('#devis-x'); await q.waitForTimeout(150); const ferme = await q.isVisible('#form-panel');
+      doit(f.open && f.modale && f.titre === 'Recevoir mon devis par mail' && f.legal <= 12 && f.large && !ferme, nom + ' : fenêtre de devis ' + JSON.stringify([f, ferme])); }
     console.log(nom, '| cartes :', m1.premiereLigne, 'par ligne,', m1.lignes, 'lignes pour', m1.n, 'offres | besoins sur', m1.besoinsLignes, 'ligne(s) | toutes les offres :', m2.n, '| toucher :', touche, '|', apres);
     await c.close();
   }
