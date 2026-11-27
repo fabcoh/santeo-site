@@ -1,0 +1,33 @@
+{
+ "slug": "pourquoi-santeo",
+ "chapitre": "choisir",
+ "lien": "Pourquoi Santéo",
+ "ordre": 43,
+ "publie": "2026-11-27",
+ "maj": "2026-11-27",
+ "titre_page": "Pourquoi Santéo : courtier en mutuelle depuis 1992",
+ "description": "Qui est Santéo, pourquoi notre comparateur, comment nous comparons et comment nous vous contactons par WhatsApp sans vous déranger.",
+ "h1": "Pourquoi Santéo : un courtier en mutuelle depuis 1992, et un comparateur fait pour vous",
+ "faq": [
+  {
+   "q": "Depuis quand Santéo existe-t-il ?",
+   "r": "Santéo conseille des particuliers sur leur complémentaire santé depuis 1992. C'est la marque de CAPI FINANCE, courtier en assurance immatriculé à l'ORIAS sous le numéro 07 001 983."
+  },
+  {
+   "q": "Faut-il donner son nom ou son téléphone pour voir les tarifs ?",
+   "r": "Non. La date de naissance, le code postal et le régime suffisent. Vos coordonnées ne sont demandées que si vous voulez recevoir le devis d'une offre."
+  },
+  {
+   "q": "Le comparateur présente-t-il toutes les mutuelles ?",
+   "r": "Non. Il présente les offres de nos assureurs partenaires et n'est pas exhaustif. Aucun assureur ne paie pour être mieux classé, et les tarifs sont confirmés par un conseiller."
+  },
+  {
+   "q": "Vais-je être appelé si je demande un devis ?",
+   "r": "Seulement si vous cochez la case facultative qui l'autorise, et alors du lundi au vendredi, entre 10 h et 13 h ou entre 14 h et 20 h, pendant 3 mois. Sans cette case, vous recevez seulement votre devis par e-mail."
+  },
+  {
+   "q": "Combien coûtent le devis et le conseil ?",
+   "r": "Rien. Santéo est rémunéré par une commission versée par l'assureur et comprise dans la cotisation, sans frais de devis ni de conseil."
+  }
+ ]
+}
