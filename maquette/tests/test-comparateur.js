@@ -143,6 +143,12 @@ const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.cl
     const p = await b.newPage({viewport: {width: 320, height: 700}, deviceScaleFactor: 1, reducedMotion: 'reduce'});
     p.on('pageerror', e => errs.push('calme: ' + e.message));
     await p.goto('file://' + S + '/comparateur-santeo.html'); await p.waitForTimeout(300); await mascotte(p, 'calme 320', 0);
+    // Année impossible (Fabrice, 27/11/2026 : « 21/04/5966 ») : message sur l'année, en rouge ; jour ou mois impossible : message sur le jour et le mois
+    { await p.fill('#age', '21/04/5966'); await p.fill('#cp', '75'); await p.waitForTimeout(150);
+      const m1 = await p.evaluate(() => ({ t: document.getElementById('count').textContent, rouge: document.getElementById('count').classList.contains('count-err') }));
+      await p.fill('#age', '12/13/1966'); await p.waitForTimeout(150); const m2 = await p.textContent('#count');
+      await p.fill('#age', ''); await p.fill('#cp', ''); await p.waitForTimeout(150); const m3 = await p.evaluate(() => document.getElementById('count').classList.contains('count-err'));
+      if (!/L'année 5966 n'est pas possible/.test(m1.t) || !m1.rouge || !/vérifiez le jour et le mois/.test(m2) || m3) errs.push('calme 320 : messages de date ' + JSON.stringify([m1, m2, m3])); }
     // Conjoint facultatif : pas de rose quand la case est vide, rose seulement si la date est commencée (Fabrice, 26/11/2026)
     { const rose = () => p.evaluate(() => ({ age: document.getElementById('age').classList.contains('a-remplir'), cnj: document.getElementById('cnj').classList.contains('a-remplir') }));
       const r0 = await rose(); await p.fill('#cnj', '10/0'); const r1 = await rose(); await p.fill('#cnj', ''); const r2 = await rose();
