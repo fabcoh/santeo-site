@@ -467,13 +467,28 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 
 /* Formulaire */
 /* La demande de devis s'ouvre en fenêtre (Fabrice, 27/11/2026) */
-.devis-pop{border:0;border-radius:16px;margin:auto!important;width:min(40rem,calc(100vw - 2rem))!important;max-width:none;max-height:calc(100vh - 2rem);overflow:auto;color:var(--fg)}
+.devis-pop{border:0;border-radius:16px;margin:auto!important;width:min(31rem,calc(100vw - 2rem))!important;max-width:none;max-height:calc(100vh - 2rem);overflow:auto;color:var(--fg)}
 .devis-pop:not([open]){display:none}
 .devis-pop[open]{display:flex;flex-direction:column;animation:pop-in .16s ease-out}
 .devis-pop::backdrop{background:rgba(8,30,45,.45)}
 #form-panel .step{justify-content:space-between}
 .dv-x{flex:none}
 #form-panel .chosen-box{padding:.5rem .75rem;gap:.3rem}
+/* Fenêtre plus petite (Fabrice, 27/11/2026 : « EN PLUS PETIT LE POPUP ») */
+#form-panel{padding:.85rem .9rem .95rem!important;gap:.55rem!important}
+#form-panel h2{font-size:1.1rem!important}
+#form-panel .form-intro{font-size:.85rem}
+#form-panel .ch-titre .ch-lib{font-size:.68rem}
+#form-panel .ch-titre strong{font-size:.92rem}
+#form-panel .ch-titre .ch-prix{font-size:1.02rem}
+#form-panel .ch-gar span{font-size:.74rem;padding:.08rem .45rem}
+#form-panel #lead .fields{gap:.45rem .6rem}
+#form-panel #lead label.f{font-size:.8rem;gap:.18rem}
+#form-panel #lead input[type=text],#form-panel #lead input[type=tel],#form-panel #lead input[type=email],#form-panel #lead select{font-size:.9rem;min-height:2.3rem;padding:.4rem .6rem;border-radius:8px}
+#form-panel #send{font-size:.92rem;padding:.6rem 1.1rem}
+#form-panel .wa-btn{font-size:.85rem}
+#form-panel .wa{margin-top:.5rem!important}
+#form-panel .consent label,#form-panel .accords p.small,#form-panel .votre-accord summary,#form-panel .votre-accord p{font-size:.66rem!important}
 /* Infos légales : en petit, très léger */
 #form-panel .accords{border:0;padding:0;gap:.25rem}
 #form-panel .accords p.small{font-weight:400!important;color:var(--muted)!important;font-size:.72rem}
@@ -483,8 +498,8 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 #form-panel .votre-accord summary{font-size:.72rem;color:var(--muted)}
 #form-panel .votre-accord p{font-size:.72rem;color:var(--muted)}
 #form-panel .consent{margin-top:.6rem!important}
-@media (min-width:700px){#lead .fields{grid-template-columns:5.5rem 1fr 1fr!important}#lead label[for=tel]{grid-column:1 / span 2}#lead label[for=mail]{grid-column:auto!important}}
-@media (max-width:599px){.devis-pop{width:calc(100vw - 1rem)!important;max-height:calc(100vh - 1rem);padding:.9rem .8rem 1rem}#lead .fields{grid-template-columns:5rem 1fr;gap:.6rem}#lead label[for=nom],#lead label[for=tel],#lead label[for=mail]{grid-column:1 / -1}#form-panel h2{font-size:1.15rem}#lead input[type=text],#lead input[type=tel],#lead input[type=email],#lead select{min-height:2.7rem;padding:.6rem .7rem}}
+@media (min-width:700px){#lead .fields{grid-template-columns:4.6rem 1fr 1fr!important}#lead label[for=tel]{grid-column:1 / span 2}#lead label[for=mail]{grid-column:auto!important}}
+@media (max-width:599px){.devis-pop{width:calc(100vw - 1rem)!important;max-height:calc(100vh - 1rem);padding:.9rem .8rem 1rem}#form-panel #lead .fields{grid-template-columns:3.9rem 1fr 1fr;gap:.4rem .45rem}#lead label[for=tel],#lead label[for=mail]{grid-column:1 / -1}#form-panel .form-intro{display:none}#form-panel .ch-gar{display:none}#form-panel h2{font-size:1.15rem}#lead input[type=text],#lead input[type=tel],#lead input[type=email],#lead select{min-height:2.7rem;padding:.6rem .7rem}}
 .chosen-box{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:.75rem .9rem;display:flex;flex-direction:column;gap:.45rem}
 /* Formulaire mis en avant : cadre de couleur, champs plus grands, gros bouton */
 #form-panel{border:2px solid var(--accent);box-shadow:var(--form-shadow);background:linear-gradient(180deg,var(--accent-soft) 0,var(--accent-soft) 4.2rem,var(--surface) 9rem);padding:1.15rem 1.1rem 1.3rem;gap:.9rem;scroll-margin-top:.8rem}
