@@ -1,0 +1,33 @@
+{
+ "slug": "prevention-depistage-rembourses",
+ "chapitre": "comprendre",
+ "lien": "Prévention et dépistage remboursés",
+ "ordre": 42,
+ "publie": "2026-11-27",
+ "maj": "2026-11-27",
+ "titre_page": "Prévention et dépistage remboursés : vaccins, examens",
+ "description": "Vaccins, dépistages des cancers, Mon bilan prévention, M'T dents : ce que rembourse l'Assurance maladie, ce qui reste à payer, le rôle de la mutuelle.",
+ "h1": "Prévention et dépistage : ce qui est remboursé (vaccins, examens)",
+ "faq": [
+  {
+   "q": "Les vaccins sont-ils remboursés par la Sécurité sociale ?",
+   "r": "Beaucoup le sont, par exemple le DTP et le vaccin contre le papillomavirus, à 65 % sur prescription. Le BCG est pris en charge totalement. Le vaccin contre la grippe est gratuit pour les personnes à qui il est recommandé."
+  },
+  {
+   "q": "La mammographie de dépistage est-elle gratuite ?",
+   "r": "Oui, dans le cadre du dépistage organisé, pour les femmes de 50 à 74 ans, tous les 2 ans : elle est prise en charge à 100 %, sans avance de frais. Les examens complémentaires éventuels sont remboursés dans les conditions habituelles."
+  },
+  {
+   "q": "Qu'est-ce que Mon bilan prévention ?",
+   "r": "Un rendez-vous de prévention avec un professionnel de santé, proposé entre 18 et 25 ans, 45 et 50 ans, 60 et 65 ans, et 70 et 75 ans. Il est pris en charge à 100 %, une fois par tranche d'âge."
+  },
+  {
+   "q": "Qui paie l'examen M'T dents ?",
+   "r": "L'Assurance maladie à 60 % et la complémentaire santé à 40 %, sans avance de frais. Sans complémentaire, l'Assurance maladie prend tout en charge."
+  },
+  {
+   "q": "Ma mutuelle rembourse-t-elle les vaccins non remboursés ?",
+   "r": "Certains contrats le prévoient, en tout ou en partie. Vérifiez votre tableau de garanties ou demandez à votre complémentaire."
+  }
+ ]
+}
