@@ -302,6 +302,8 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 /* Résultats */
 .legal{font-size:.8rem;color:var(--muted)}
 .count{font-size:.92rem;color:var(--muted)}
+/* Une saisie à corriger : message en rouge, bien visible (Fabrice, 27/11/2026) */
+.count.count-err{color:#c0392b;font-weight:700}
 /* Accès au simulateur de remboursement depuis le comparateur (Fabrice, 13/11/2026) */
 /* Les offres en cartes (Fabrice, 22/11/2026, d'après le comparateur de son CRM) : 3 par ligne sur ordinateur, 2 de 600 à
    899 px, 1 sur téléphone. Carte : « Petit prix » sur la première quand la liste va de la moins chère à la plus chère (un
@@ -1357,18 +1359,24 @@ async function aprilCharge(profil,cle){
 }
 
 /* ---------- Calcul ---------- */
+// Date refusée : l'année hors des années possibles est signalée comme telle (Fabrice, 27/11/2026 : « 21/04/5966 », message
+// « vérifiez le jour et le mois » trompeur)
+function motifDate(v,qui){const c=v.replace(/\D/g,"");if(c.length!==8)return "Indiquez "+qui+" complète (jour, mois, année).";
+  const a=+c.slice(4),an=new Date().getFullYear();
+  if(a<1900||a>an)return "L'année "+c.slice(4)+" n'est pas possible : vérifiez l'année de "+qui.replace(/^la date de /,"")+".";
+  return "Cette date n'existe pas : vérifiez le jour et le mois de "+qui.replace(/^la date de /,"")+".";}
 function compute(){
   const age=ageDeDate($("age").value);
   const dept=Moteur.departement($("cp").value);
   const reg=$("reg").value;
   if(!$("age").value.trim()&&!$("cp").value.trim()) return {err:"Indiquez votre date de naissance et votre code postal : les offres s'affichent aussitôt."};
-  if(age==null) return {err:$("age").value.replace(/\D/g,"").length===8?"Cette date de naissance n'existe pas : vérifiez le jour et le mois.":"Indiquez votre date de naissance complète (jour, mois, année)."};
+  if(age==null) return {err:motifDate($("age").value,"votre date de naissance")};
   if(age<16) return {err:"L'assuré principal doit avoir au moins 16 ans."};
   const cpv=$("cp").value.trim().toUpperCase();
   if(cpv==="97") return {err:"Outre-mer : indiquez les 3 chiffres du département (971 à 976) ou le code postal complet."};
   if(!dept||!/^(\d{2}|\d{5}|2A|2B|97[1-6])$/.test(cpv)) return {err:"Indiquez votre département (2 chiffres) ou votre code postal (5 chiffres)."};
   const hasCnj=S.cnj!==null; const cnjAge=hasCnj?ageDeDate(S.cnj):null;
-  if(hasCnj&&cnjAge==null) return {err:S.cnj.replace(/\D/g,"").length===8?"La date de naissance du conjoint n'existe pas : vérifiez le jour et le mois.":"Indiquez la date de naissance complète du conjoint (jour, mois, année)."};
+  if(hasCnj&&cnjAge==null) return {err:motifDate(S.cnj,"la date de naissance du conjoint")};
   const SEL=Object.assign({},CFG.gammes);
   if(!Object.values(SEL).some(v=>v)) return {err:"Aucune gamme n'est affichée : cochez-en au moins une dans « Gestion des compagnies », en bas de la page."};
   const apicil=SEL.APICIL?apicilPourCalcul(cpv,dept,reg,hasCnj):{};
@@ -1515,6 +1523,7 @@ function upd(){
   // Titre « Comparez jusqu'à 3 offres entre elles ☆ » seul quand les offres s'affichent (Fabrice, 26/11/2026) : le compte reste
   // lu par les lecteurs d'écran ; les messages d'erreur et « Aucune offre » restent visibles
   $("count").classList.remove("cache-visuel");
+  $("count").classList.toggle("count-err",!!res.err&&!/^Indiquez votre date de naissance et votre code postal/.test(res.err));
   if(res.err){$("count").textContent=res.err;LAST=[];return}
   const list=res.fit; LAST=list;
   S.cmp=S.cmp.filter(id=>list.some(x=>idOffre(x)===id));   // une offre qui n'est plus proposée sort de la comparaison

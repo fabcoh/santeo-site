@@ -579,6 +579,13 @@ mieux référencer le site »
   range dans le tchat qu'une réponse WhatsApp qui cite le message (« Répondre ») ou commence par « #12 » ; sinon elle part
   dans le fil « Claude ». Fabrice : « j'ai compris qu'il faut faire réponrdre au message pour faire partir la réponse et ce
   n'est pas évident ». Côté CRM (conversation pilote) : transmis le 22/11.
+- **Date de naissance avec une année impossible (Fabrice, 27/11, capture de son téléphone : « 21/04/5966 », « Bug »)** (demande
+  de fusion « date-annee », correction fusionnée par Claude). Le site refusait bien la date mais disait « vérifiez le jour et le
+  mois », en petit gris à côté du titre. Désormais : *L'année 5966 n'est pas possible : vérifiez l'année de votre date de
+  naissance.* (même chose pour le conjoint), et tout message de saisie à corriger s'affiche en rouge gras. Repéré, laissé tel
+  quel : une date comme le 31/02 est acceptée (le calcul de l'âge ne vérifie pas le nombre de jours du mois) ; à corriger dans
+  un lot à part si Fabrice le souhaite. Sa capture montre aussi la page en mode « ordinateur » sur son téléphone (largeur
+  coupée à droite) : à vérifier par lui (réglage « version ordinateur » du navigateur).
 - **Titre des offres (Fabrice, 26/11 : « Remplace Les offres pour vous / 74 offres atteignent vos niveaux, sur 84 calculées pour
   votre profil. / Par ce seul texte … Comparez jusqu'à 3 offres entre elles (icone étoiles) »)** (demande de fusion
   « titre-comparez », modèle montré à Fabrice). Titre de l'étape 3 : *Comparez jusqu'à 3 offres entre elles ☆* (Vos mots, étoile
