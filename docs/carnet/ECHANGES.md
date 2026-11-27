@@ -725,6 +725,12 @@ mieux référencer le site »
   le site et nos logiciels de gestion » ; paragraphe « Pourquoi WhatsApp ? » (Mon idée : tranquillité, réponse quand on veut,
   trace écrite, documents en photo, « STOP ») ; date de mise à jour au 22/11/2026. Point ouvert : l'hébergeur du CRM qui reçoit
   les demandes (Manus) n'a pas de coordonnées vérifiées ; s'il garde les données hors de l'Union européenne, il faudra le dire.
+- **Bandeau des cookies plus discret (Fabrice, 21/11 vers 18 h 12, transmis par CRM Santeo : « les cookies tu peux les
+  mettres plus discrets »)** (demande de fusion « cookies-discrets ») : le bandeau pleine largeur devient une petite carte en
+  bas à gauche sur ordinateur (340 px de large, environ 4 % de l'écran au lieu de 9 %) et une carte en bas de l'écran sur
+  téléphone (environ 16 % au lieu de 28 %) ; texte raccourci (Mon idée), lien « En savoir plus » gardé ; « Refuser » et
+  « Accepter » toujours identiques (CNIL). La bulle du tchat ne monte que si la carte est sous elle (téléphone). Test : bulle
+  et carte ne se recouvrent pas, carte de 6 % de l'écran au plus sur PC et 20 % sur téléphone.
 - **Décision de Fabrice (21/11, vers 10 h 40)** : « pourquoi tu ne fusionne pas directement claude cRM whatsapp le fait
   dircetemenyt », puis « validé » à « Voulez-vous que je fusionne moi-même mes demandes à partir de maintenant ? ». Claude
   fusionne désormais ses demandes après les vérifications (règle notée dans `CLAUDE.md` et dans la procédure de l'article du

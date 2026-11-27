@@ -278,8 +278,13 @@ async function remplir(p) {
     const bt = await q.$$eval('.cookies-choix button', l => l.map(x => [x.textContent, getComputedStyle(x).backgroundColor, getComputedStyle(x).fontSize, x.offsetWidth]));
     doit(await q.isVisible('#cookies') && gtm.length === 0, nom + ' : bandeau visible et rien de Google avant le choix (' + gtm.join(' ') + ')');
     doit(bt.length === 2 && bt[0][0] === 'Refuser' && bt[1][0] === 'Accepter' && bt[0][1] === bt[1][1] && bt[0][2] === bt[1][2] && Math.abs(bt[0][3] - bt[1][3]) <= 2, nom + ' : « Refuser » et « Accepter » doivent se ressembler ' + JSON.stringify(bt));
-    const tchatBas = await q.$eval('#tchat', x => x.getBoundingClientRect().bottom), bandeauHaut = await q.$eval('#cookies', x => x.getBoundingClientRect().top);
-    doit(tchatBas <= bandeauHaut + 1, nom + ' : la bulle du tchat ne doit pas être cachée par le bandeau (' + tchatBas + ' > ' + bandeauHaut + ')');
+    // La bulle du tchat et la carte des cookies ne se recouvrent pas (carte en bas à gauche sur ordinateur, en bas sur téléphone)
+    const rT = await q.$eval('#tchat-bouton', x => { const r = x.getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom] });
+    const rC = await q.$eval('#cookies', x => { const r = x.getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom] });
+    const recouvre = rT[0] < rC[2] - 1 && rC[0] < rT[2] - 1 && rT[1] < rC[3] - 1 && rC[1] < rT[3] - 1;
+    doit(!recouvre, nom + ' : la bulle du tchat ne doit pas être cachée par la carte des cookies (' + rT.map(Math.round) + ' / ' + rC.map(Math.round) + ')');
+    const part = await q.$eval('#cookies', x => { const r = x.getBoundingClientRect(); return r.width * r.height / (innerWidth * innerHeight) });
+    doit(part <= (nom === 'pc' ? 0.06 : 0.2), nom + ' : la carte des cookies doit rester discrète (' + Math.round(part * 100) + ' % de l\'écran)');
     await q.click('#cookies-non'); await q.waitForTimeout(300);
     doit(!(await q.isVisible('#cookies')) && gtm.length === 0, nom + ' : après « Refuser », bandeau caché et rien de Google');
     await q.reload(); await q.waitForTimeout(400);
