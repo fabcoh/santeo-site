@@ -472,6 +472,10 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .o-marque-txt{display:flex;flex-direction:column;min-width:0;max-width:100%;line-height:1.2}
 .o-co{font-weight:800;color:var(--brand-1);font-size:.95rem}
 .o-formule{font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
+/* Logo seul, et le nom de la garantie en tout petit (Fabrice, 28/11/2026 : « ET EN TOUT PETIT LE NOM DE LA AGARANTIE ») ;
+   sans logo, le nom de la compagnie reste écrit */
+.o-logo+.o-marque-txt .o-co{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.o-logo+.o-marque-txt .o-formule{font-size:.68rem;letter-spacing:.01em}
 /* Formulaire */
 /* La demande de devis s'ouvre en fenêtre (Fabrice, 27/11/2026) */
 .devis-pop{border:0;border-radius:16px;margin:auto!important;width:min(31rem,calc(100vw - 2rem))!important;max-width:none;max-height:calc(100vh - 2rem);overflow:auto;color:var(--fg)}
@@ -1485,7 +1489,12 @@ const AVEC_LOGOS=(()=>{try{const q=new URLSearchParams(location.search).get("log
 if(AVEC_LOGOS)document.documentElement.classList.add("avec-logos");
 const VERSION_PAGE=AVEC_LOGOS?"avec logos":"sans logos";
 const PRODUIT_CO=Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits.map(p=>[p.code,{co:c.nom,nom:p.nom.replace(/\s*\(.*\)\s*$/,"")}])));
-function compagnieDe(x){return PRODUIT_CO[x.key]||PRODUIT_CO["APRIL:"+x.key]||null}
+// Compagnie d'une offre : par le code de la gamme ; les offres APRIL arrivent avec la clé « APRIL » et la gamme « APRIL <produit> »
+// (Fabrice, 28/11/2026 : « IL FAUT LES LOGOS PAROUT ») ; à défaut, la compagnie dont le nom commence la gamme
+function compagnieDe(x){
+  if(PRODUIT_CO[x.key])return PRODUIT_CO[x.key];
+  const g=String(x.gamme||""), c=CATALOGUE.compagnies.find(c=>x.key===c.nom.toUpperCase()||g.toUpperCase().startsWith(c.nom.toUpperCase()+" "));
+  return c?{co:c.nom,nom:g.slice(0,c.nom.length).toUpperCase()===c.nom.toUpperCase()?g.slice(c.nom.length).trim():g}:null}
 function logoDe(co){const im=document.querySelector('.logo-box[data-co="'+co+'"] img');return im?im.getAttribute("src"):""}
 const htmlTxt=t=>String(t==null?"":t).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 // Nom affiché d'une offre : « Option N » sans logos ; « Compagnie · formule » avec logos
