@@ -445,6 +445,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .dp-tete h3{margin:0;font-family:var(--f-display);font-size:1.2rem;color:var(--brand-1);display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .7rem}
 .dp-prix{font-size:1.15rem;color:var(--fg)}
 .dp-prix small{font-weight:400;font-size:.8rem;color:var(--muted)}
+.dp-logo{display:flex;margin-bottom:.45rem}
 .dp-tete .o-real{display:inline-block;margin-top:.35rem}
 .dp-corps{overflow:auto;padding:.6rem 1.1rem .8rem;-webkit-overflow-scrolling:touch}
 .dp-pied{display:flex;justify-content:flex-end;gap:.6rem;padding:.75rem 1.1rem;border-top:1px solid var(--line)}
@@ -1449,31 +1450,23 @@ function compute(){
 const CHAMP={hosp:"hospO",hono:"honoO",dent:"dent",opt:"opt",autres:"md"};
 // « n.c. » = non communiqué par l'assureur (APRIL sans tableau publié) : jamais affiché « non couvert » ni « — »
 const NC=s=>s==="n.c.";
-function fmtVal(s){if(NC(s))return "Non communiqué";if(NONE(s))return "Non couvert";if(/^incl/.test(String(s)))return "dans le forfait optique";return String(s).replace(/\s*BR$/,"").replace(/€\/s$/,"€/séance")}
+// Non couvert : un trait (Fabrice, 28/11/2026 : « tu n'écris pas non couvert tu ajoutes un trait »)
+function fmtVal(s){if(NC(s))return "Non communiqué";if(NONE(s))return "—";if(/^incl/.test(String(s)))return "dans le forfait optique";return String(s).replace(/\s*BR$/,"").replace(/€\/s$/,"€/séance")}
 function lignesEnPlus(p,x){return p.more.filter(f=>S.flt[f.id]&&f.v).map(f=>'<span class="sub"><span class="lab2">'+f.lib+'</span><b>'+fmtVal(f.v(x))+'</b></span>').join("")}
 // « Autres » n'apparaît dans les offres que si le visiteur le demande (curseur, précision ou texte)
 function postesAffiches(){return POSTES.filter(p=>p.k!=="autres"||S.need.autres>0||p.more.some(f=>S.flt[f.id])||(S.autre.autres||"").trim())}
 function valeur(p,x){const s=x[CHAMP[p.k]]; if(NC(s))return "n.c."; if(NONE(s))return "—"; return String(s).replace(/\s*BR$/,"").replace(/\s*\/an$/," /an").replace(/€\/s$/,"€/séance");}
-function detailHtml(x){
-  const v=s=>NC(s)?"Non communiqué":NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
-  const lentilles=(a,f)=>NC(a)&&NC(f)?"Non communiqué":NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
-  // poste principal (en gras, même valeur que sur la carte) puis ses sous-postes
-  const G=[
-    ["Hospitalisation",valeur(POSTES[0],x),[["Honoraires du chirurgien (OPTAM)",v(x.hospO)],["Honoraires du chirurgien (hors OPTAM)",v(x.hospN)],["Chambre particulière",v(x.ch)]]],
-    ["Honoraires médicaux",valeur(POSTES[1],x),[["Médecins et spécialistes (OPTAM)",v(x.honoO)],["Médecins et spécialistes (hors OPTAM)",v(x.honoN)],["Pharmacie remboursée",v(ex(x,"pharR"))],["Pharmacie non remboursée",v(ex(x,"pharN"))]]],
-    ["Dentaire",valeur(POSTES[2],x),[["Prothèses dentaires",v(x.dent)],["Implants",v(ex(x,"imp"))],["Orthodontie enfant",v(ex(x,"orthR"))],["Orthodontie adulte",v(ex(x,"orthN"))]]],
-    ["Optique",valeur(POSTES[3],x),[["Verres et monture simples",v(x.opt)],["Verres complexes",v(ex(x,"optC"))],["Lentilles (acceptées / refusées)",lentilles(ex(x,"lentA"),ex(x,"lentR"))]]],
-    ["Autres",valeur(POSTES[4],x),[["Médecines douces",v(x.md)],["Aides auditives",v(x.aud||ex(x,"aud"))]]]
-  ];
-  return tableDetail(G,x);
-}
+function detailHtml(x){return tableDetail(lignesDetail(x).slice(0,-1),x)}   // mêmes lignes que le tableau de comparaison
 function lignesDetail(x){
-  const v=s=>NC(s)?"Non communiqué":NONE(s)?"Non couvert":String(s).replace(/\s*BR$/,"");
-  const lentilles=(a,f)=>NC(a)&&NC(f)?"Non communiqué":NONE(a)&&NONE(f)?"Non couvert":v(a)+" / "+v(f);
-  const n=s=>s==="—"?"Non couvert":s==="n.c."?"Non communiqué":s;
+  const v=s=>NC(s)?"Non communiqué":NONE(s)?"—":String(s).replace(/\s*BR$/,"");
+  const lentilles=(a,f)=>NC(a)&&NC(f)?"Non communiqué":NONE(a)&&NONE(f)?"—":v(a)+" / "+v(f);
+  const n=s=>s==="n.c."?"Non communiqué":s;
+  // Médecin généraliste (Fabrice, 28/11/2026 : « ajoute la ligne généraliste ») : la donnée « honoG » du comparateur de Claude
+  // quand la gamme l'a (Cap NR) ; sinon la même valeur que les consultations OPTAM, comme l'ancienne ligne « Médecins et spécialistes »
+  const gG=G[x.key]&&G[x.key].honoG, gen=gG&&gG[x.fi]!==undefined?gG[x.fi]:x.honoO;
   return [
     ["Hospitalisation",n(valeur(POSTES[0],x)),[["Honoraires du chirurgien (OPTAM)",v(x.hospO)],["Honoraires du chirurgien (hors OPTAM)",v(x.hospN)],["Chambre particulière",v(x.ch)]]],
-    ["Honoraires médicaux",n(valeur(POSTES[1],x)),[["Médecins et spécialistes (OPTAM)",v(x.honoO)],["Médecins et spécialistes (hors OPTAM)",v(x.honoN)],["Pharmacie remboursée",v(ex(x,"pharR"))],["Pharmacie non remboursée",v(ex(x,"pharN"))]]],
+    ["Honoraires médicaux",n(valeur(POSTES[1],x)),[["Médecin généraliste (OPTAM)",v(gen)],["Spécialistes (OPTAM)",v(x.honoO)],["Médecins (hors OPTAM)",v(x.honoN)],["Pharmacie remboursée",v(ex(x,"pharR"))],["Pharmacie non remboursée",v(ex(x,"pharN"))]]],
     ["Dentaire",n(valeur(POSTES[2],x)),[["Prothèses dentaires",v(x.dent)],["Implants",v(ex(x,"imp"))],["Orthodontie enfant",v(ex(x,"orthR"))],["Orthodontie adulte",v(ex(x,"orthN"))]]],
     ["Optique",n(valeur(POSTES[3],x)),[["Verres et monture simples",v(x.opt)],["Verres complexes",v(ex(x,"optC"))],["Lentilles (acceptées / refusées)",lentilles(ex(x,"lentA"),ex(x,"lentR"))]]],
     ["Autres",n(valeur(POSTES[4],x)),[["Médecines douces",v(x.md)],["Aides auditives",v(x.aud||ex(x,"aud"))]]],
@@ -1481,7 +1474,7 @@ function lignesDetail(x){
 }
 function tableDetail(G,x){
   return '<table class="gar"><colgroup><col><col class="c-niv"></colgroup><thead><tr><th scope="col">Garantie</th><th scope="col">Niveau</th></tr></thead>'+
-    G.map(g=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th><td>'+(g[1]==="—"?"Non couvert":g[1]==="n.c."?"Non communiqué":g[1])+'</td></tr>'+
+    G.map(g=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th><td>'+(g[1]==="n.c."?"Non communiqué":g[1])+'</td></tr>'+
       g[2].map(l=>'<tr class="g-sous"><td>'+l[0]+'</td><td>'+l[1]+'</td></tr>').join("")+'</tbody>').join("")+
     '<tbody><tr class="g-poste"><th scope="row">Contrat responsable</th><td>'+(x.resp?"Oui":"Non")+'</td></tr></tbody></table>';
 }
@@ -1558,7 +1551,8 @@ $("devis-x").onclick=()=>{const f=$("form-panel");if(f.close)f.close();else f.re
 $("form-panel").addEventListener("click",e=>{const f=$("form-panel");if(e.target===f){if(f.close)f.close();else f.removeAttribute("open")}});
 function ouvrirDetail(i){
   const x=LAST[i], d=$("det-pop"); if(!x)return; d.classList.remove("cmp-pop");
-  d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">'+htmlTxt(nomOffre(i,x))+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
+  const lg=AVEC_LOGOS?logoDe((compagnieDe(x)||{co:x.gamme}).co):"";
+  d.innerHTML='<div class="dp-tete"><div>'+(lg?'<span class="o-logo dp-logo"><img src="'+lg+'" alt=""></span>':'')+'<h3 id="det-titre">'+htmlTxt(nomOffre(i,x))+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
     '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
     '<button type="button" class="np-x dp-x" aria-label="Fermer">×</button></div>'+
     '<div class="dp-corps">'+detailHtml(x)+'</div>'+
