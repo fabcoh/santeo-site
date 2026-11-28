@@ -465,6 +465,13 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .empty{padding:1rem;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
 @media (min-width:900px){.o-price{font-size:1.1rem}}
 
+/* Réglage « avec logos » (Fabrice, 28/11/2026) : logo, compagnie et formule en tête de carte */
+.o-marque{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;min-width:0;margin-bottom:.15rem}
+.o-logo{flex:none;width:92px;height:40px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:2px 4px}
+.o-logo img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.o-marque-txt{display:flex;flex-direction:column;min-width:0;max-width:100%;line-height:1.2}
+.o-co{font-weight:800;color:var(--brand-1);font-size:.95rem}
+.o-formule{font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
 /* Formulaire */
 /* La demande de devis s'ouvre en fenêtre (Fabrice, 27/11/2026) */
 .devis-pop{border:0;border-radius:16px;margin:auto!important;width:min(31rem,calc(100vw - 2rem))!important;max-width:none;max-height:calc(100vh - 2rem);overflow:auto;color:var(--fg)}
@@ -1469,6 +1476,22 @@ function tableDetail(G,x){
 /* ---------- Comparer cette offre (3 au plus) ---------- */
 const CMP_MAX=3;
 const idOffre=x=>x.key+"|"+x.fi;
+/* Logos des compagnies pour tous les visiteurs (Fabrice, 28/11/2026 : « il faut juste une option avec logo ou sans logo » ;
+   « Oui, on a l'accord, fais le modèle » ; « non tu le met pour tout le monde avec logo ») : logo et nom de la compagnie, nom de la
+   formule et bouton « Cette offre m'intéresse » à la place de « Option N ». ?logos=0 affiche l'ancienne présentation (contrôle) ;
+   les tests automatiques (navigator.webdriver) gardent l'ancienne présentation, ?logos=1 la force. */
+const AVEC_LOGOS=(()=>{try{const q=new URLSearchParams(location.search).get("logos");
+  if(q==="1"||q==="0")return q==="1"; return !navigator.webdriver}catch(e){return true}})();
+if(AVEC_LOGOS)document.documentElement.classList.add("avec-logos");
+const VERSION_PAGE=AVEC_LOGOS?"avec logos":"sans logos";
+const PRODUIT_CO=Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits.map(p=>[p.code,{co:c.nom,nom:p.nom.replace(/\s*\(.*\)\s*$/,"")}])));
+function compagnieDe(x){return PRODUIT_CO[x.key]||PRODUIT_CO["APRIL:"+x.key]||null}
+function logoDe(co){const im=document.querySelector('.logo-box[data-co="'+co+'"] img');return im?im.getAttribute("src"):""}
+const htmlTxt=t=>String(t==null?"":t).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+// Nom affiché d'une offre : « Option N » sans logos ; « Compagnie · formule » avec logos
+function nomOffre(i,x){if(!AVEC_LOGOS)return "Option "+(i+1);const c=compagnieDe(x);return (c?c.co:x.gamme)+" · "+(x.formule||"")}
+function teteLogo(x){const c=compagnieDe(x),co=c?c.co:x.gamme,src=logoDe(co);
+  return '<div class="o-marque">'+(src?'<span class="o-logo"><img src="'+src+'" alt="'+htmlTxt(co)+'"></span>':'')+'<span class="o-marque-txt"><span class="o-co">'+htmlTxt(co)+'</span><span class="o-formule">'+htmlTxt((c&&c.nom&&!String(x.formule||"").includes(c.nom.split(" ").pop())?c.nom+" · ":"")+(x.formule||""))+'</span></span></div>'}
 function boutonComparer(i,x){
   const pris=S.cmp.includes(idOffre(x)), plein=!pris&&S.cmp.length>=CMP_MAX;
   // Halo : les boutons des 3 premières offres pulsent deux fois à la première apparition des offres, une seule fois par visite
@@ -1490,7 +1513,7 @@ function majVolet(visible){
   document.documentElement.style.setProperty("--cmp-h",montre&&matchMedia("(max-width:599px)").matches?(v.offsetHeight+8)+"px":"0px");
   if(!montre)return;
   $("cmp-n").textContent=o.length+" sur "+CMP_MAX;
-  $("cmp-liste").innerHTML=o.map(e=>'<li><span class="cmp-l"><span><b>Option '+(e.i+1)+'</b> · '+eur(e.x.total)+'</span><button type="button" class="cmp-devis" data-devis="'+e.i+'" aria-label="Recevoir mon devis par mail : option '+(e.i+1)+'">✉ <span class="cmp-dl">Recevoir mon devis par mail</span><span class="cmp-dc">Devis par mail</span></button></span><button type="button" class="cmp-retirer" data-retirer="'+e.i+'" aria-label="Retirer l\'option '+(e.i+1)+' de la comparaison">×</button></li>').join("");
+  $("cmp-liste").innerHTML=o.map(e=>'<li><span class="cmp-l"><span><b>'+htmlTxt(AVEC_LOGOS?(compagnieDe(e.x)||{co:e.x.gamme}).co:"Option "+(e.i+1))+'</b> · '+eur(e.x.total)+'</span><button type="button" class="cmp-devis" data-devis="'+e.i+'" aria-label="Recevoir mon devis par mail : option '+(e.i+1)+'">✉ <span class="cmp-dl">Recevoir mon devis par mail</span><span class="cmp-dc">Devis par mail</span></button></span><button type="button" class="cmp-retirer" data-retirer="'+e.i+'" aria-label="Retirer l\'option '+(e.i+1)+' de la comparaison">×</button></li>').join("");
   $("cmp-liste").querySelectorAll("[data-retirer]").forEach(b=>b.onclick=()=>basculerComparaison(+b.dataset.retirer));
   $("cmp-liste").querySelectorAll("[data-devis]").forEach(b=>b.onclick=()=>choose(+b.dataset.devis));
   const go=$("cmp-go"); go.disabled=o.length<2; go.textContent=o.length<2?"Choisissez une 2e offre":"Comparer les garanties";
@@ -1499,7 +1522,7 @@ function majVolet(visible){
 function ouvrirComparaison(){
   const o=offresComparees(), d=$("det-pop"); if(o.length<2)return;
   const L=o.map(e=>lignesDetail(e.x));
-  const tete='<thead><tr><th scope="col">Garantie</th>'+o.map(e=>'<th scope="col" class="cmp-col"><b>Option '+(e.i+1)+'</b><span>'+eur(e.x.total)+' /mois</span><button type="button" class="btn" data-cmp-choisir="'+e.i+'">Recevoir mon devis par mail</button></th>').join("")+'</tr></thead>';
+  const tete='<thead><tr><th scope="col">Garantie</th>'+o.map(e=>'<th scope="col" class="cmp-col"><b>'+htmlTxt(nomOffre(e.i,e.x))+'</b><span>'+eur(e.x.total)+' /mois</span><button type="button" class="btn" data-cmp-choisir="'+e.i+'">Recevoir mon devis par mail</button></th>').join("")+'</tr></thead>';
   const corps=L[0].map((g,gi)=>'<tbody><tr class="g-poste"><th scope="row">'+g[0]+'</th>'+L.map(l=>'<td>'+l[gi][1]+'</td>').join("")+'</tr>'+
     g[2].map((s,si)=>'<tr class="g-sous"><td>'+s[0]+'</td>'+L.map(l=>'<td>'+l[gi][2][si][1]+'</td>').join("")+'</tr>').join("")+'</tbody>').join("");
   d.classList.add("cmp-pop");
@@ -1518,7 +1541,7 @@ $("devis-x").onclick=()=>{const f=$("form-panel");if(f.close)f.close();else f.re
 $("form-panel").addEventListener("click",e=>{const f=$("form-panel");if(e.target===f){if(f.close)f.close();else f.removeAttribute("open")}});
 function ouvrirDetail(i){
   const x=LAST[i], d=$("det-pop"); if(!x)return; d.classList.remove("cmp-pop");
-  d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">Option '+(i+1)+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
+  d.innerHTML='<div class="dp-tete"><div><h3 id="det-titre">'+htmlTxt(nomOffre(i,x))+' <span class="dp-prix">'+eur(x.total)+' <small>/mois</small></span></h3>'+
     '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div></div>'+
     '<button type="button" class="np-x dp-x" aria-label="Fermer">×</button></div>'+
     '<div class="dp-corps">'+detailHtml(x)+'</div>'+
@@ -1589,14 +1612,14 @@ function upd(){
   list.slice(0,S.shown).forEach((x,i)=>{
     const o=document.createElement("article"); o.className="offer"+(S.chosen===i?" chosen":"");
     const etoile=S.cmp.includes(idOffre(x));
-    o.setAttribute("aria-label","Option "+(i+1)+(etoile?", choisie pour la comparaison":""));
+    o.setAttribute("aria-label",nomOffre(i,x)+(etoile?", choisie pour la comparaison":""));
     o.innerHTML=boutonComparer(i,x)+
-      '<div class="o-left"><div class="o-name">Option '+(i+1)+'</div><div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+(isFinite(x.prix2027)?'<div class="o-2027">('+eur(x.prix2027)+' en 2027)</div>':'<div class="o-2027 vide" aria-hidden="true">&nbsp;</div>')+'</div>'+
+      '<div class="o-left">'+(AVEC_LOGOS?teteLogo(x):'<div class="o-name">Option '+(i+1)+'</div>')+'<div class="o-price">'+eur(x.total)+' <small>/mois</small></div>'+(isFinite(x.prix2027)?'<div class="o-2027">('+eur(x.prix2027)+' en 2027)</div>':'<div class="o-2027 vide" aria-hidden="true">&nbsp;</div>')+'</div>'+
       '<div class="o-gar">'+cols.map(p=>{const v=valeur(p,x);return '<div class="o-col"><span class="o-ico" aria-hidden="true">'+picto(p.k)+'</span><span class="o-txt"><span class="lab">'+p.nm+'</span>'+
         '<span class="pc'+(v==="—"||v==="n.c."?'':' pc-oui')+'" aria-label="'+p.nm+' : '+(v==="—"?"non couvert":v==="n.c."?"non communiqué":v)+'">'+v+'</span>'+lignesEnPlus(p,x)+'</span></div>'}).join("")+'</div>'+
       '<div class="o-real" title="Visible seulement dans la maquette et dans la vue de contrôle">'+REEL+x.gamme+' · '+x.formule+'</div>'+
       (iaLien(i,x)?'<a class="o-ia" href="'+iaLien(i,x)+'" target="_blank" rel="noopener" aria-label="Posez vos questions à notre IA sur l\'option '+(i+1)+' (WhatsApp)"><span class="o-ia-txt"><span>Posez vos questions</span> <span>à notre IA</span></span><span class="o-ia-pic" aria-hidden="true">'+OISEAU_IA+WA_PICTO+'</span></a>':'')+
-      '<div class="o-actions"><button type="button" class="btn" data-c="'+i+'" aria-label="Recevoir mon devis : option '+(i+1)+'">Recevoir mon devis</button>'+
+      '<div class="o-actions"><button type="button" class="btn" data-c="'+i+'" aria-label="'+(AVEC_LOGOS?'Cette offre m\'intéresse : ':'Recevoir mon devis : ')+htmlTxt(nomOffre(i,x))+'">'+(AVEC_LOGOS?'Cette offre m\'intéresse':'Recevoir mon devis')+'</button>'+
       '<button type="button" class="ghost" data-d="'+i+'" aria-haspopup="dialog" aria-label="Détails de l\'option '+(i+1)+'">(+) Détails</button></div>';
     box.appendChild(o);
   });
@@ -1617,12 +1640,12 @@ function besoinsPrecis(){
   return L; }
 function afficherChoix(i){
   const x=LAST[i], bp=besoinsPrecis();
-  $("chosen-box").innerHTML='<div class="ch-titre"><span class="ch-lib">Votre choix</span><strong>Option '+(i+1)+'</strong><span class="ch-prix">'+eur(x.total)+' <small>/mois</small></span></div>'+
+  $("chosen-box").innerHTML='<div class="ch-titre"><span class="ch-lib">Votre choix</span><strong>'+htmlTxt(nomOffre(i,x))+'</strong><span class="ch-prix">'+eur(x.total)+' <small>/mois</small></span></div>'+
     '<div class="ch-gar">'+postesAffiches().map(p=>'<span>'+p.nm+' <b>'+valeur(p,x)+'</b></span>').join("")+'</div>'+
     (bp.length?'<div class="ch-plus">Vos besoins précis : '+bp.join(", ")+'</div>':"");
 }
 function choose(i){
-  if(!window.__mesFormulaire){window.__mesFormulaire=1;window.mesure("formulaire_ouvert",{option:i+1})}
+  if(!window.__mesFormulaire){window.__mesFormulaire=1;window.mesure("formulaire_ouvert",{option:i+1,version_page:VERSION_PAGE})}
   S.chosen=i; S.choixId=LAST[i].key+"|"+LAST[i].fi; afficherChoix(i);
   $("done").hidden=true; $("lead").hidden=false;
   document.querySelector("#form-panel .form-intro").hidden=false; $("t-form").textContent="Recevoir mon devis par mail";
@@ -1663,7 +1686,7 @@ function laDemande(){
     offre:x?{numero:S.chosen+1,cotisation_mensuelle:Math.round(x.total*100)/100,gamme:x.gamme,formule:x.formule}:null,
     niveaux:Object.assign({},S.need),besoins:besoinsPrecis().map(t=>t.replace(/&lt;/g,"<")).join(" ; "),
     accord_recontact:$("c-accord").checked,texte_accord:$("c-accord").checked?texteAccord():"",date_accord:new Date().toISOString(),
-    provenance:provenance(),page:location.href.split("#")[0],site_web:$("site_web").value,test:/[?&]test=1(&|$)/.test(location.search)};
+    provenance:provenance(),version_page:VERSION_PAGE,page:location.href.split("#")[0],site_web:$("site_web").value,test:/[?&]test=1(&|$)/.test(location.search)};
 }
 function messageWhatsApp(d){
   const L=["Bonjour, je demande un devis depuis le site Santéo."];
@@ -1704,7 +1727,7 @@ function envoyer(){
     .then(rep=>rep.json().catch(()=>({})).then(j=>{if(!rep.ok||j.ok!==true){const e=new Error("refus");if(typeof j.erreur==="string")e.raison=j.erreur.slice(0,200);throw e}
       b.disabled=false;b.textContent=lib;
       if(window.tchatDemandeEnvoyee)window.tchatDemandeEnvoyee(d,j.id);
-      window.mesure("generate_lead",{provenance:provenance()});   // compté par Google seulement si le visiteur a accepté les cookies
+      window.mesure("generate_lead",{provenance:provenance(),version_page:VERSION_PAGE});   // compté par Google seulement si le visiteur a accepté les cookies
       const waQ=waLien("Bonjour, je viens de demander un devis sur le site Santéo"+(d.offre?" (option "+d.offre.numero+")":"")+".");
       fini('<p class="merci-titre">✓ Merci '+html(d.prenom)+', votre demande est bien arrivée.</p><ul class="merci-suite">'+
         '<li><b>Votre devis</b> : un conseiller Santéo l\'étudie et vous l\'envoie par e-mail à <b>'+html(d.email)+'</b>.</li>'+
@@ -1850,7 +1873,7 @@ const TCHAT_MODE="__TCHAT_MODE__", TCHAT_CRM="__TCHAT_CRM__";
       conversation:etat.conversation,texte:t,
       contexte:{age:c.age,code_postal:c.cp,regime:c.age!=null?c.reg:"",offre:c.offre?{numero:c.offre.numero,cotisation_mensuelle:Math.round(c.offre.prix*100)/100,gamme:c.offre.gamme,formule:c.offre.formule}:null},
       identite:identite&&(identite.fiche||identite.telephone)?identite:null,
-      pseudo:pseudoConnu(),provenance:provenance(),page:location.href.split("#")[0],site_web:"",test:ESSAI})})
+      pseudo:pseudoConnu(),provenance:provenance(),version_page:VERSION_PAGE,page:location.href.split("#")[0],site_web:"",test:ESSAI})})
     .then(j=>{if(!etat.conversation&&j.conversation)window.mesure("tchat_premier_message");
       etat.conversation=j.conversation||etat.conversation;if(j.message)m.id=String(j.message);m.statut="ok"})
     .catch(()=>{m.statut="echec"})
