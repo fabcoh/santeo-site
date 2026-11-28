@@ -324,6 +324,8 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 /* Offres floutées tant que le visiteur n'a pas indiqué de besoin (Fabrice, 25/11/2026 : « TU DOIS FLOUTER LES RESULTATS ET
    SUR LE FLOU DEMANDER / Indiquer vos besoins pour dévoiler les offres avec la photo des curseur ») */
 .offres-zone{position:relative}
+/* « Plus de résultats » plus grand et centré (Fabrice, 28/11/2026) */
+#more-offers:not([hidden]){display:block;margin:1.1rem auto 0;font-size:1.05rem;font-weight:700;padding:.8rem 2.2rem;min-width:min(18rem,100%);border-radius:12px}
 .offres-zone.floue .offers,.offres-zone.floue #more-offers{filter:blur(7px);pointer-events:none;user-select:none}
 .voile-offres{position:absolute;inset:0;z-index:3;display:flex;justify-content:center;align-items:flex-start;padding:2.2rem 1rem 0}
 .voile-offres[hidden]{display:none}
@@ -1647,7 +1649,8 @@ function upd(){
   majVolet(!!S.devoile);
   if(S.devoile&&list.length&&!window.__cmpVu&&!window.__cmpMinuteur)window.__cmpMinuteur=setTimeout(()=>{window.__cmpVu=true},4000);
 }
-$("more-offers").onclick=()=>{S.shown=LAST.length;upd()};
+// « Plus de résultats » ajoute 2 lignes, soit 6 offres (Fabrice, 28/11/2026 : « TU AJOUTES LES 2 LIGNES SOIT 6 BAGES »)
+$("more-offers").onclick=()=>{S.shown=Math.min(LAST.length,S.shown+6);upd()};
 
 /* ---------- Formulaire ---------- */
 function besoinsPrecis(){

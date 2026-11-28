@@ -88,7 +88,7 @@ const devoiler = async q => { if (await q.isVisible('#voile-tout')) { await q.cl
     if (name === 'pc') {
       await p.click('.precise[data-open="autres"]'); await p.fill('#f-autre', 'essai'); await p.press('#f-autre', 'Tab'); await p.keyboard.press('Escape'); await p.waitForTimeout(100);   // « Autres » affiché sans rien filtrer
       await devoiler(p);
-      for (let k = 0; k < 20 && await p.isVisible('#more-offers'); k++) { await devoiler(p); await p.click('#more-offers'); await p.waitForTimeout(80); }
+      for (let k = 0; k < 40 && await p.isVisible('#more-offers'); k++) { await devoiler(p); await p.click('#more-offers'); await p.waitForTimeout(80); }
       const ref = await p.$$eval('#offers article.offer', l => l.map(o => ({ id: o.querySelector('.o-real').textContent + ' ' + o.querySelector('.o-price').textContent,
         v: Object.fromEntries([...o.querySelectorAll('.o-col')].map(c => [c.querySelector('.lab').textContent, c.querySelector('.pc').textContent])) })));
       if (ref.length < 20 || !ref.every(o => Object.keys(o.v).length === 5)) errs.push('pc : liste de référence incomplète (' + ref.length + ' offres)');
