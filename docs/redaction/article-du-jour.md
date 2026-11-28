@@ -74,7 +74,7 @@ complémentaire peut apporter, sans promesse. Après le 23/11, reprendre la list
 - [x] Les médecines douces (ostéopathe, etc.) : ce que rembourse une complémentaire (15/11/2026)
 - [x] Les transports sanitaires : quand ils sont remboursés (16/11/2026)
 - [x] La prévention et le dépistage remboursés (vaccins, examens) (27/11/2026)
-- [ ] L'affection de longue durée (ALD) : ce qui reste à payer
+- [x] L'affection de longue durée (ALD) : ce qui reste à payer (28/11/2026)
 - [ ] La maternité : remboursements de la grossesse et de l'accouchement
 - [ ] Les soins à l'étranger : carte européenne et complémentaire
 - [ ] Le dentaire des enfants et des jeunes : examens de prévention

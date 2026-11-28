@@ -1,0 +1,33 @@
+{
+ "slug": "ald-reste-a-charge",
+ "chapitre": "situation",
+ "lien": "ALD : ce qui reste à payer",
+ "ordre": 44,
+ "publie": "2026-11-28",
+ "maj": "2026-11-28",
+ "titre_page": "ALD : ce qui reste à payer malgré le 100 %",
+ "description": "Affection de longue durée : ce que couvre le 100 %, ce qui reste à payer (dépassements, franchises, forfait hospitalier) et le rôle de la mutuelle.",
+ "h1": "Affection de longue durée (ALD) : ce qui reste à payer",
+ "faq": [
+  {
+   "q": "Avec une ALD, tout est-il remboursé à 100 % ?",
+   "r": "Non. Le 100 % ne concerne que les soins liés à l'ALD, et il porte sur le tarif de la Sécurité sociale. Les dépassements d'honoraires, la participation forfaitaire de 2 €, les franchises médicales et le forfait hospitalier restent à votre charge."
+  },
+  {
+   "q": "Qui fait la demande d'ALD ?",
+   "r": "En général, votre médecin traitant. Il remplit le protocole de soins, qui est ensuite soumis au médecin conseil de l'Assurance maladie. Dans certains cas, comme un diagnostic posé à l'hôpital ou en urgence, un autre médecin peut le faire."
+  },
+  {
+   "q": "Quelle différence entre une ALD exonérante et non exonérante ?",
+   "r": "L'ALD exonérante vous dispense du ticket modérateur pour les soins liés à la maladie. L'ALD non exonérante ne change pas les taux de remboursement : elle permet surtout de toucher des indemnités journalières au-delà de 6 mois d'arrêt de travail."
+  },
+  {
+   "q": "Le forfait hospitalier est-il payé en ALD ?",
+   "r": "Oui, il reste dû : 23 € par jour en hôpital ou en clinique, 17 € par jour en service psychiatrique. Un contrat responsable le prend en charge à 100 %, sans limitation de durée."
+  },
+  {
+   "q": "Ai-je encore besoin d'une mutuelle avec une ALD ?",
+   "r": "Une complémentaire peut prendre en charge ce que l'ALD ne couvre pas : forfait hospitalier, dépassements d'honoraires selon le contrat, soins sans lien avec la maladie, chambre particulière si le contrat le prévoit. Le choix dépend de vos besoins."
+  }
+ ]
+}
