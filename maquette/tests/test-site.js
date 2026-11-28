@@ -310,7 +310,7 @@ async function remplir(p) {
     q.on('pageerror', e => err(nom + ' api santé : ' + e.message));
     await q.goto('https://www.santeo.net/'); await q.waitForTimeout(300);
     await q.fill('#cp', '75012'); await q.type('#age', '21071966', { delay: 30 }); await q.waitForTimeout(1500);
-    const toutes = async () => { for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(150); }
+    const toutes = async () => { for (let k = 0; k < 40 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(150); }
       return q.$$eval('#offers article.offer', l => l.map((o, i) => ({ i, nom: (o.querySelector('.o-real') || {}).textContent || '', prix: (o.querySelector('.o-price') || {}).textContent || '' }))); };
     const liste = await toutes(), api = liste.filter(o => /API SANT/i.test(o.nom));
     doit(appelsApicil.length === 1, nom + ' : un seul appel au relais API Santé attendu (' + appelsApicil.length + ')');
@@ -343,7 +343,7 @@ async function remplir(p) {
     const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.tchat); const q = await c.newPage();
     q.on('pageerror', e => err(nom + ' réglages : ' + e.message));
     const etat = async () => { await q.fill('#cp', '75012'); await q.fill('#age', '21/07/1966'); await q.waitForTimeout(1300);
-      for (let k = 0; k < 10 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
+      for (let k = 0; k < 40 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
       return q.evaluate(() => ({ mcci: [...document.querySelectorAll('#offers .o-real')].filter(e => /MCCINOVA|FLEXIA|SOLENCIA/.test(e.textContent)).length,
         offres: document.querySelectorAll('#offers article.offer').length, logoMcci: !document.querySelector('.logo-box[data-co="MCCI"]').hidden,
         tchat: !document.getElementById('tchat').hidden })); };
@@ -380,7 +380,7 @@ async function remplir(p) {
     const c = await b.newContext(opt); await servir(c, 'https://www.santeo.net/', sites.crm); const q = await c.newPage();
     q.on('pageerror', e => err(nom + ' april : ' + e.message));
     await q.goto('https://www.santeo.net/?controle=1'); await q.fill('#cp', '75012'); await q.type('#age', '21071966', { delay: 30 }); await q.waitForTimeout(1800);
-    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
+    for (let k = 0; k < 40 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
     const april = await q.$$eval('#offers article.offer', l => l.map(o => o.querySelector('.o-real').textContent + ' ' + o.querySelector('.o-price').textContent).filter(t => /APRIL/.test(t)));
     const a0 = appelsApril[0] || {};
     doit(appelsApril.length === 1 && JSON.stringify(a0.produits) === '["SanteMix","SimplySante"]' && a0.regime === 'SS' && a0.cp === '75012' && a0.assures && a0.assures[0].naissance === '1966-07-21' && a0.remise === false,
@@ -427,7 +427,7 @@ async function remplir(p) {
     doit(m1.croissant && !m1.badges.length && vert && vert[0] === 'rgb(15, 107, 58)' && vert[1] === 'rgba(0, 0, 0, 0)' && vert[3] === 'rgb(15, 122, 64)' && (!vert[2] || /—|n\.c\./.test(vert[2])),
       nom + ' : sans besoin, ni « Petit prix » ni étoile ; niveaux en vert sur fond vert ' + JSON.stringify([m1.badges, vert]));
     // Toutes les offres (APRIL et API Santé comprises) : aucun nom d'assureur, de gamme ni de formule, aucune promesse
-    for (let k = 0; k < 12 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
+    for (let k = 0; k < 40 && await q.isVisible('#more-offers'); k++) { await devoiler(q); await q.click('#more-offers'); await q.waitForTimeout(120); }
     const m2 = await mesure();
     // Tarif 2027 en petit et gris sous le tarif, seulement sur les offres qui en ont un (Fabrice, 26/11/2026)
     const t27 = await q.evaluate(() => { const e = [...document.querySelectorAll('#offers .o-2027:not(.vide)')], v = [...document.querySelectorAll('#offers .o-2027.vide')]; return { n: e.length, offres: document.querySelectorAll('#offers article.offer').length,
