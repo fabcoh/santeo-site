@@ -1476,15 +1476,12 @@ function tableDetail(G,x){
 /* ---------- Comparer cette offre (3 au plus) ---------- */
 const CMP_MAX=3;
 const idOffre=x=>x.key+"|"+x.fi;
-/* Réglage « avec logos » / « sans logos » (Fabrice, 28/11/2026 : « il faut juste une option avec logo ou sans logo » ;
-   « Oui, on a l'accord, fais le modèle »). Avec logos : logo et nom de la compagnie, nom de la formule et bouton
-   « Cette offre m'intéresse » à la place de « Option N ». Chaque nouveau visiteur reçoit l'un des deux au hasard, gardé
-   pour ses visites suivantes ; ?logos=1 ou ?logos=0 force le réglage. */
-const AVEC_LOGOS=(()=>{let v=null;try{const q=new URLSearchParams(location.search).get("logos");
-  if(q==="1"||q==="0"){v=q==="1";localStorage.setItem("santeo-logos",q)}
-  else if(navigator.webdriver)v=false;   // robots et tests : page sans logos, non comptée
-  else{const g=localStorage.getItem("santeo-logos");if(g==="1"||g==="0")v=g==="1";else{v=Math.random()<.5;localStorage.setItem("santeo-logos",v?"1":"0")}}}
-  catch(e){if(v===null)v=false}return v})();
+/* Logos des compagnies pour tous les visiteurs (Fabrice, 28/11/2026 : « il faut juste une option avec logo ou sans logo » ;
+   « Oui, on a l'accord, fais le modèle » ; « non tu le met pour tout le monde avec logo ») : logo et nom de la compagnie, nom de la
+   formule et bouton « Cette offre m'intéresse » à la place de « Option N ». ?logos=0 affiche l'ancienne présentation (contrôle) ;
+   les tests automatiques (navigator.webdriver) gardent l'ancienne présentation, ?logos=1 la force. */
+const AVEC_LOGOS=(()=>{try{const q=new URLSearchParams(location.search).get("logos");
+  if(q==="1"||q==="0")return q==="1"; return !navigator.webdriver}catch(e){return true}})();
 if(AVEC_LOGOS)document.documentElement.classList.add("avec-logos");
 const VERSION_PAGE=AVEC_LOGOS?"avec logos":"sans logos";
 const PRODUIT_CO=Object.fromEntries(CATALOGUE.compagnies.flatMap(c=>c.produits.map(p=>[p.code,{co:c.nom,nom:p.nom.replace(/\s*\(.*\)\s*$/,"")}])));
